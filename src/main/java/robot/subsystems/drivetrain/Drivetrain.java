@@ -16,10 +16,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 
 public class Drivetrain extends Subsystem {
-    VictorSPX leftForward = new VictorSPX(-1);
-    VictorSPX leftBack = new VictorSPX(-1);
-    VictorSPX rightForward = new VictorSPX(-1);
-    VictorSPX rightBack = new VictorSPX(-1);
+    VictorSPX leftForward = new VictorSPX(Ports.leftForwardMotor);
+    VictorSPX leftBack = new VictorSPX(Ports.leftBackMotor);
+    VictorSPX rightForward = new VictorSPX(Ports.rightForwardMotor);
+    VictorSPX rightBack = new VictorSPX(Ports.rightBackMotor);
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
