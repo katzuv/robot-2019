@@ -7,6 +7,7 @@
 
 package robot.subsystems.drivetrain;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,8 +25,22 @@ public class Drivetrain extends Subsystem {
 
     Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
     Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+
+    public void setSpeed(double leftSpeed, double rightSpeed)
+    {
+        setLeftSpeed(leftSpeed);
+        setRightSpeed(rightSpeed);
+    }
+
+    private void setRightSpeed(double speed)
+    {
+        setRightSpeed(speed);
+    }
+
+    private void setLeftSpeed(double speed)
+    {
+        leftForward.set(ControlMode.PercentOutput, speed);
+    }
 
     @Override
     public void initDefaultCommand() {
