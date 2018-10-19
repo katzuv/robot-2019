@@ -70,6 +70,20 @@ public class Drivetrain extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
+    /**
+     * @return The distance driven on the right side of the robot since the last reset
+     */
+    public double getRightDistance() {
+        return rightEncoder.getDistance();
+    }
+
+    /**
+     * @return The distance driven on the left side of the robot since the last reset
+     */
+    public double getLeftDistance() {
+        return leftEncoder.getDistance();
+    }
+
     public void resetEncoders() {
         leftEncoder.reset();
         rightEncoder.reset();
