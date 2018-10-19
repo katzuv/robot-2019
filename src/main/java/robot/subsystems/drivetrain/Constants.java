@@ -1,7 +1,7 @@
 package robot.subsystems.drivetrain;
 
-public class Constants {
-    public static final double PULSE_PER_DISTANCE = 0.003451;
-    
+class Constants {
+    static final double PULSE_PER_DISTANCE = 0.003451;
+
 
 }
