@@ -1,4 +1,4 @@
-!.idea/fileTemplates
+
 # Created by https://www.gitignore.io/api/java,macos,linux,python,gradle,pycharm,windows,intellij,pycharm+iml,pycharm+all,intellij+all,intellij+iml
 
 ### Intellij ###
@@ -124,7 +124,7 @@ fabric.properties
 # Ignores the whole .idea folder and all .iml files
 # See https://github.com/joeblau/gitignore.io/issues/186 and https://github.com/joeblau/gitignore.io/issues/360
 
-.idea/
+
 
 # Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-249601023
 
@@ -560,3 +560,6 @@ gradle-app.setting
 
 
 # End of https://www.gitignore.io/api/java,macos,linux,python,gradle,pycharm,windows,intellij,pycharm+iml,pycharm+all,intellij+all,intellij+iml
+\.idea/\.name
+
+*.xml
