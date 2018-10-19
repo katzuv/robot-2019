@@ -55,5 +55,12 @@ public class Path {
         return path.get(index);
     }
 
+    /**
+     * Set a point at an index
+     * @param index
+     */
+    public void set(int index,Point p){
+        path.set(index, p);
+    }
 
 }
