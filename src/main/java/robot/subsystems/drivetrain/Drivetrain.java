@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import robot.subsystems.drivetrain.commands.JoystickDrive;
 
 /**
  * Add your docs here.
@@ -29,6 +30,11 @@ public class Drivetrain extends Subsystem {
     public Drivetrain() {
         leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
         rightEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        setDefaultCommand(new JoystickDrive());
     }
 
     /**
@@ -60,14 +66,6 @@ public class Drivetrain extends Subsystem {
     private void setLeftSpeed(double speed) {
         leftForward.set(ControlMode.PercentOutput, speed);
         leftBack.set(ControlMode.PercentOutput, speed);
-    }
-
-    @Override
-    public void initDefaultCommand() {
-
-
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
     }
 
     /**
