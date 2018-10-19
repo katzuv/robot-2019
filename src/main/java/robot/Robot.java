@@ -23,7 +23,7 @@ import robot.drivetrain.commands.JoystickDrive;
  * project.
  */
 public class Robot extends TimedRobot {
-    public static Drivetrain drivetrain = new Drivetrain();
+    public static final Drivetrain drivetrain = new Drivetrain();
     public static OI m_oi;
 
     Command m_autonomousCommand;
