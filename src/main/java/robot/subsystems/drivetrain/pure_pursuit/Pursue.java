@@ -12,8 +12,8 @@ public class Pursue {
 
     public void currentLocation()
     {
-        RobotCurrent.setX(RobotCurrent.getX()+(Math.cos(Robot.navx.getAngle())*(Robot.drivetrain.getLeftDistance()+Robot.drivetrain.getRightDistance())/2));
-        RobotCurrent.setY(RobotCurrent.getY()+(Math.sin(Robot.navx.getAngle())*(Robot.drivetrain.getLeftDistance()+Robot.drivetrain.getRightDistance())/2));
+        RobotCurrent.setX(Math.cos(Robot.navx.getAngle())*(Robot.drivetrain.getLeftDistance()+Robot.drivetrain.getRightDistance())/2);
+        RobotCurrent.setY(Math.sin(Robot.navx.getAngle())*(Robot.drivetrain.getLeftDistance()+Robot.drivetrain.getRightDistance())/2);
     }
 
 }
