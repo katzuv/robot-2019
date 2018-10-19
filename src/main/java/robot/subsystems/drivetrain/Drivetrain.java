@@ -25,8 +25,11 @@ public class Drivetrain extends Subsystem {
 
     private final Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
     private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
-    leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
-    rightEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+
+    Drivetrain() {
+        leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+        rightEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+    }
 
     /**
      * Set the speed for both sides.
