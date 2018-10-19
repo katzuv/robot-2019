@@ -1,5 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
+import robot.subsystems.drivetrain.Constants;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,26 +16,25 @@ public class Path {
     /**
      * Create an empty Path instance
      */
-    public Path()
-    {
+    public Path() {
 
     }
 
     /**
      * Create a Path instance
+     *
      * @param array the array of points to add into the arraylist
      */
-    public Path(Point[] array)
-    {
+    public Path(Point[] array) {
         path.addAll(Arrays.asList(array));
     }
+
     /**
      * Adds all of a Point array to the end of the path list.
      * The equivalent of 'addAll(-1, array)'
      * @param array the array of points to add to the end of the array.
      */
-    public void addAll(Point[] array)
-    {
+    public void addAll(Point[] array) {
         path.addAll(Arrays.asList(array));
     }
 
@@ -62,10 +63,12 @@ public class Path {
             throw new ClassCastException("Tried to call a non Point object from the path list.");
         return path.get(index % path.size());
     }
-    public void generatePoints()
-    {
 
+    public void generatePoints() {
+        double vector = Point.distance(path.get(0), path.get(path.size() - 1));
+        final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
     }
+
     /**
      * Set a point at an index.
      * @param index index of the desired point starting at zero, use -1 for last Point.
