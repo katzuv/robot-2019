@@ -54,9 +54,9 @@ public class Path {
             throw new ClassCastException("Tried to call a non Point object from the path list.");
         return path.get(index);
     }
-    public void generatePoints()
-    {
+    public void generatePoints() {
 
+    }
     /**
      * Set a point at an index
      * @param index
