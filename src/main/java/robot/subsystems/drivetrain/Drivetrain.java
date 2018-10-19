@@ -26,18 +26,31 @@ public class Drivetrain extends Subsystem {
     private Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
     private Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
 
+    /**
+     * Set the speed for both sides.
+     * @param leftSpeed Speed for the left side
+     * @param rightSpeed Speed for the right side
+     */
     public void setSpeed(double leftSpeed, double rightSpeed)
     {
         setLeftSpeed(leftSpeed);
         setRightSpeed(rightSpeed);
     }
 
+    /**
+     *Set the speed for the right side.
+     * @param speed speed for the motors of the right side
+     */
     private void setRightSpeed(double speed)
     {
         rightForward.set(ControlMode.PercentOutput, speed);
         rightBack.set(ControlMode.PercentOutput, speed);
     }
 
+    /**
+     *Set the speed for the left side.
+     * @param speed speed for the motors of the left side
+     */
     private void setLeftSpeed(double speed)
     {
         leftForward.set(ControlMode.PercentOutput, speed);
