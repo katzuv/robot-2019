@@ -28,7 +28,8 @@ public class Path {
         path.addAll(Arrays.asList(array));
     }
     /**
-     * Adds all of a Point array to the end of the path list
+     * Adds all of a Point array to the end of the path list.
+     * The equivalent of 'addAll(-1, array)'
      * @param array the array of points to add to the end of the array.
      */
     public void addAll(Point[] array)
@@ -40,36 +41,39 @@ public class Path {
      * Appends all of a Point array at a certain index.
      * Adds the first Point at the specified index.
      * all Points at an index greater than the specified index get moved to after the array.
-     * @param index the index to add the Point array (0 if you want the point array to be first in line.
+     * @param index the index to add the Point array (0 to place array at start)
      * @param array the array of points to add.
      */
-    public void addAll(int index, Point[] array)
-    {
-        path.addAll(index, Arrays.asList(array));
+    public void addAll(int index, Point[] array){
+        if(!(index < path.size() && index > -path.size()))
+            throw new ArrayIndexOutOfBoundsException();
+        path.addAll(index % path.size(), Arrays.asList(array));
     }
 
     /**
      * get a Point at a specific index.
-     * @param index index of the point starting at zero.
+     * @param index index of the desired point starting at zero, use -1 for last Point.
      * @return returns the Point.
      */
-    public Point get(int index)
-    {
-        if(path.get(index) == null)
+    public Point get(int index){
+        if(!(index < path.size() && index > -path.size()))
+            throw new ArrayIndexOutOfBoundsException();
+        if(path.get(index % path.size()) == null)
             throw new ClassCastException("Tried to call a non Point object from the path list.");
-        return path.get(index);
+        return path.get(index % path.size());
     }
     public void generatePoints()
     {
 
     }
     /**
-     * Set a point at an index
-     * @param index
+     * Set a point at an index.
+     * @param index index of the desired point starting at zero, use -1 for last Point.
      */
-    public void set(int index,Point p)
-    {
-        path.set(index, p);
+    public void set(int index,Point p){
+        if(!(index < path.size() && index > -path.size()))
+            throw new ArrayIndexOutOfBoundsException();
+        path.set(index % path.size(), p);
     }
 
 }
