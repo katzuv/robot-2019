@@ -7,7 +7,7 @@ import robot.subsystems.drivetrain.Drivetrain;
 
 
 public class Pursue {
-    private double distance = (Robot.drivetrain.getLeftDistance()+Robot.drivetrain.getRightDistance())/2;
+    
     private Point RobotCurrent = new Point(0,0);
 
     public void currentLocation()
