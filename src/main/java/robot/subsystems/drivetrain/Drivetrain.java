@@ -18,13 +18,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 
 public class Drivetrain extends Subsystem {
-    private VictorSPX leftForward = new VictorSPX(Ports.leftForwardMotor);
-    private VictorSPX leftBack = new VictorSPX(Ports.leftBackMotor);
-    private VictorSPX rightForward = new VictorSPX(Ports.rightForwardMotor);
-    private VictorSPX rightBack = new VictorSPX(Ports.rightBackMotor);
+    private final VictorSPX leftForward = new VictorSPX(Ports.leftForwardMotor);
+    private final VictorSPX leftBack = new VictorSPX(Ports.leftBackMotor);
+    private final VictorSPX rightForward = new VictorSPX(Ports.rightForwardMotor);
+    private final VictorSPX rightBack = new VictorSPX(Ports.rightBackMotor);
 
-    private Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
-    private Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
+    private final Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
+    private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
 
     /**
      * Set the speed for both sides.
