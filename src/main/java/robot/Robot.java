@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        drivetrain.resetEncoders();
         m_autonomousCommand = m_chooser.getSelected();
 
         /*
