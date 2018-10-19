@@ -20,6 +20,40 @@ public class Point {
     }
 
     /**
+     * @param p1 The first Point object reference
+     * @param p2 The second Point object reference
+     * @return returns the distance between the two points
+     */
+    public static double distance(Point p1, Point p2) {
+        return Math.hypot(p2.getX() - p1.getX(), p2.getY() - p1.getY());
+    }
+
+    /**
+     * @param p1 The first Point object reference
+     * @param p2 The second Point object reference
+     * @return returns a new Point which is the average of the two given points
+     */
+    public static Point average(Point p1, Point p2) {
+        return new Point(0.5 * (p1.getX() + p2.getX()), 0.5 * (p1.getY() + p2.getY()));
+    }
+
+    /**
+     * Rotate a point around a center, in degrees
+     *
+     * @param center  the center point object
+     * @param p       the turning point
+     * @param degrees the degrees to turn the point (clockwise positive)
+     * @return returns a new Point which is the rotated point
+     */
+    public static Point rotate(Point center, Point p, double degrees) {
+        double radians = -Math.toRadians(degrees);
+        double newX = center.getX() + (p.getX() - center.getX()) * Math.cos(radians) - (p.getY() - center.getY()) * Math.sin(radians);
+
+        double newY = center.getY() + (p.getX() - center.getX()) * Math.sin(radians) + (p.getY() - center.getY()) * Math.cos(radians);
+        return new Point(newX, newY);
+    }
+
+    /**
      * @return returns the X coordinate
      */
     public double getX() {
@@ -45,38 +79,5 @@ public class Point {
      */
     public void setY(double y) {
         this.y = y;
-    }
-
-    /**
-     * @param p1 The first Point object reference
-     * @param p2 The second Point object reference
-     * @return returns the distance between the two points
-     */
-    public static double distance(Point p1, Point p2) {
-        return Math.hypot(p2.getX() - p1.getX(), p2.getY() - p1.getY());
-    }
-
-    /**
-     * @param p1 The first Point object reference
-     * @param p2 The second Point object reference
-     * @return returns a new Point which is the average of the two given points
-     */
-    public static Point average(Point p1, Point p2) {
-        return new Point(0.5 * (p1.getX() + p2.getX()), 0.5 * (p1.getY() + p2.getY()));
-    }
-
-    /**
-     * Rotate a point around a center, in degrees
-     * @param center the center point object
-     * @param p the turning point
-     * @param degrees the degrees to turn the point (clockwise positive)
-     * @return returns a new Point which is the rotated point
-     */
-    public static Point rotate(Point center, Point p, double degrees) {
-        double radians = -Math.toRadians(degrees);
-        double newX = center.getX() + (p.getX()-center.getX())*Math.cos(radians) - (p.getY()-center.getY())*Math.sin(radians);
-
-        double newY = center.getY() + (p.getX()-center.getX())*Math.sin(radians) + (p.getY()-center.getY())*Math.cos(radians);
-        return new Point(newX, newY);
     }
 }
