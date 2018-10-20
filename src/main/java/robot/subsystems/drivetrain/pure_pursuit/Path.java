@@ -11,7 +11,7 @@ import java.util.Arrays;
  * This class is the instance of the path, holding the points.
  */
 public class Path {
-    private ArrayList<Point> path = new ArrayList<Point>();
+    private ArrayList<PathPoint> path = new ArrayList<>();
 
     /**
      * Create an empty Path instance
@@ -25,7 +25,7 @@ public class Path {
      *
      * @param array the array of points to add into the arraylist
      */
-    public Path(Point[] array) {
+    public Path(PathPoint[] array) {
         path.addAll(Arrays.asList(array));
     }
 
@@ -35,7 +35,7 @@ public class Path {
      *
      * @param array the array of points to add to the end of the array.
      */
-    public void addAll(Point[] array) {
+    public void addAll(PathPoint[] array) {
         path.addAll(Arrays.asList(array));
     }
 
@@ -47,10 +47,21 @@ public class Path {
      * @param index the index to add the Point array (0 to place array at start)
      * @param array the array of points to add.
      */
-    public void addAll(int index, Point[] array) {
+    public void addAll(int index, PathPoint[] array) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         path.addAll(index % path.size(), Arrays.asList(array));
+    }
+
+    /**
+     * Set a point at an index.
+     *
+     * @param index index of the desired point starting at zero, use -1 for last Point.
+     */
+    public void set(int index, PathPoint p) {
+        if (!(index < path.size() && index > -path.size()))
+            throw new ArrayIndexOutOfBoundsException();
+        path.set(index % path.size(), p);
     }
 
     /**
@@ -67,20 +78,28 @@ public class Path {
         return path.get(index % path.size());
     }
 
+    //Functions for path generation and optimisation:
+
+    /**
+     * Adds points at a certain spacing between them into all the segments
+     */
     public void generatePoints() {
         double vector = Point.distance(path.get(0), path.get(path.size() - 1));
         final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
     }
 
     /**
-     * Set a point at an index.
      *
-     * @param index index of the desired point starting at zero, use -1 for last Point.
      */
-    public void set(int index, Point p) {
-        if (!(index < path.size() && index > -path.size()))
-            throw new ArrayIndexOutOfBoundsException();
-        path.set(index % path.size(), p);
+    public void generateDistances(){
+
+    }
+
+    /**
+     *
+     */
+    public void generateSpeeds() {
+
     }
 
 }
