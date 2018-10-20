@@ -15,14 +15,21 @@ public class Vector extends Vector2d {
     public Vector(@NotNull Point start,@NotNull Point end){
         super(end.getX() - start.getX(), end.getY() - start.getY());
     }
-    
+
     public Vector add(Vector2d vec){
         return new Vector(x + vec.x, y + vec.y);
+    }
+
+    public Point add(Point p){
+        return new Point(p.getX()+x, p.getY()+y);
     }
 
     public Vector subtract(Vector2d vec){
         return new Vector(x - vec.x, y - vec.y);
     }
 
+    public Vector multiply(double d){
+        return new Vector(x*d, y*d);
+    }
 }
 
