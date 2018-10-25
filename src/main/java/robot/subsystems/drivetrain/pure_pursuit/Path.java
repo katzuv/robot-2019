@@ -83,23 +83,38 @@ public class Path {
     /**
      * Adds points at a certain spacing between them into all the segments
      */
-    public void generatePoints() {
+    private void generateFillPoint() {
         double vector = Point.distance(path.get(0), path.get(path.size() - 1));
         final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
-    }
-
-    /**
-     *
-     */
-    public void generateDistances(){
 
     }
 
     /**
      *
      */
-    public void generateSpeeds() {
+    private void generateSmoothing() {
 
     }
+    /**
+     *
+     */
+    private void generateDistance() {
+
+    }
+
+    /**
+     *
+     */
+    private void generateCurvature() {
+
+    }
+
+    /**
+     *
+     */
+    private void generateVelocity() {
+
+    }
+
 
 }
