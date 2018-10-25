@@ -7,6 +7,7 @@
 
 package robot.subsystems.drivetrain;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,20 +20,22 @@ import robot.subsystems.drivetrain.commands.JoystickDrive;
 
 
 public class Drivetrain extends Subsystem {
-    VictorSPX leftForward = new VictorSPX(Ports.leftForwardMotor);
-    VictorSPX leftBack = new VictorSPX(Ports.leftBackMotor);
-    VictorSPX rightForward = new VictorSPX(Ports.rightForwardMotor);
-    VictorSPX rightBack = new VictorSPX(Ports.rightBackMotor);
+    private final VictorSPX leftForward = new VictorSPX(Ports.leftForwardMotor);
+    private final VictorSPX leftBack = new VictorSPX(Ports.leftBackMotor);
+    private final VictorSPX rightForward = new VictorSPX(Ports.rightForwardMotor);
+    private final VictorSPX rightBack = new VictorSPX(Ports.rightBackMotor);
 
-    Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
-    Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+    private final Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
+    private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
+
+    public Drivetrain() {
+        leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+        rightEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+    }
 
     @Override
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new JoystickDrive());
     }
 
     /**
