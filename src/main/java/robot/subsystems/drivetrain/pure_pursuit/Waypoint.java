@@ -1,14 +1,14 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
-public class PathPoint extends Point {
+public class Waypoint extends Point {
     protected double distance, speed;
 
-    public PathPoint(double x, double y, double distance, double speed) {
+    public Waypoint(double x, double y, double distance, double speed) {
         super(x, y);
         this.speed = speed;
         this.distance = distance;
     }
-    public PathPoint(double x, double y){
+    public Waypoint(double x, double y){
         super(x, y);
     }
 

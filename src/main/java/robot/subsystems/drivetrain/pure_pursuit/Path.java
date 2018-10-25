@@ -11,7 +11,7 @@ import java.util.Arrays;
  * This class is the instance of the path, holding the points.
  */
 public class Path {
-    private ArrayList<PathPoint> path = new ArrayList<>();
+    private ArrayList<Waypoint> path = new ArrayList<>();
 
     /**
      * Create an empty Path instance
@@ -25,7 +25,7 @@ public class Path {
      *
      * @param array the array of points to add into the arraylist
      */
-    public Path(PathPoint[] array) {
+    public Path(Waypoint[] array) {
         path.addAll(Arrays.asList(array));
     }
 
@@ -35,7 +35,7 @@ public class Path {
      *
      * @param array the array of points to add to the end of the array.
      */
-    public void addAll(PathPoint[] array) {
+    public void addAll(Waypoint[] array) {
         path.addAll(Arrays.asList(array));
     }
 
@@ -47,7 +47,7 @@ public class Path {
      * @param index the index to add the Point array (0 to place array at start)
      * @param array the array of points to add.
      */
-    public void addAll(int index, PathPoint[] array) {
+    public void addAll(int index, Waypoint[] array) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         path.addAll(index % path.size(), Arrays.asList(array));
@@ -58,7 +58,7 @@ public class Path {
      *
      * @param index index of the desired point starting at zero, use -1 for last Point.
      */
-    public void set(int index, PathPoint p) {
+    public void set(int index, Waypoint p) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         path.set(index % path.size(), p);

@@ -12,7 +12,7 @@ public class PurePursue extends Command {
     private double lastRightEncoder;
     private double initAngle;
     private Path path;
-    private Point robot;
+    private Point currentPoint;
     private Drivetrain drive;
 
     /**
@@ -21,7 +21,7 @@ public class PurePursue extends Command {
     public PurePursue(Path path) {
         drive = Robot.drivetrain;
         this.path = path;
-        robot = new Point(0, 0);
+        currentPoint = new Point(0,0);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -56,9 +56,9 @@ public class PurePursue extends Command {
 
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
-        double distance = ((drive.getLeftDistance() - lastLeftEncoder) + (drive.getRightDistance() - lastRightEncoder)) / 2;
-        robot.setX(robot.getX() + distance * Math.cos(drive.getAngle() * (Math.PI / 180.0)));
-        robot.setY(robot.getY() + distance * Math.sin(drive.getAngle() * (Math.PI / 180.0)));
+        double distance = ((drive.getLeftDistance() - lastLeftEncoder) + (drive.getRightDistance() - lastRightEncoder))/2;
+        currentPoint.setX(currentPoint.getX() + distance*Math.cos(drive.getAngle() * (Math.PI / 180.0)));
+        currentPoint.setY(currentPoint.getY() + distance*Math.sin(drive.getAngle() * (Math.PI / 180.0)));
 
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
@@ -66,7 +66,6 @@ public class PurePursue extends Command {
 
     //Only Part of the function! doesn't run function through all of the path
     //https://stackoverflow.com/questions/1073336/circle-line-segment-collision-detection-algorithm/1084899#1084899
-
     /**
      * @param ref
      * @param lookahead
@@ -74,7 +73,7 @@ public class PurePursue extends Command {
      * @param point2
      * @return
      */
-    private Point findLookaheadInSegment(Point ref, double lookahead, PathPoint point1, PathPoint point2) {
+    private Point findNearPath(Point ref, double lookahead, Waypoint point1, Waypoint point2){
         Vector p = new Vector(point2, point1);
         Vector f = new Vector(point1, ref);
 
