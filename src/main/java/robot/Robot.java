@@ -7,6 +7,8 @@
 
 package robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -23,6 +25,9 @@ import robot.subsystems.drivetrain.Drivetrain;
  */
 public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
+    public static AHRS navx = new AHRS(SPI.Port.kMXP);
+
+
     public static OI m_oi;
 
     Command m_autonomousCommand;
@@ -50,6 +55,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+
     }
 
     /**
@@ -100,6 +106,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
+
         Scheduler.getInstance().run();
     }
 
