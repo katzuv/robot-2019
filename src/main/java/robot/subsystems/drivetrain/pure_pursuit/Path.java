@@ -2,7 +2,6 @@ package robot.subsystems.drivetrain.pure_pursuit;
 
 import robot.subsystems.drivetrain.Constants;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,7 +29,7 @@ public class Path {
         path.addAll(Arrays.asList(array));
     }
 
-    public Path(ArrayList<Waypoint> w){
+    public Path(ArrayList<Waypoint> w) {
         path.addAll(w);
     }
 
@@ -46,37 +45,35 @@ public class Path {
     }
 
     /**
+     * Adds point to the path.
      *
-     * @param index
-     * @param p
+     * @param index the index of the point to append.
+     * @param p     the waypoint to add.
      */
-    public void add(int index, Waypoint p){
+    public void add(int index, Waypoint p) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         path.add(index % path.size(), p);
     }
 
     /**
+     * Gives a new subPath of the path.
      *
-     * @param start
-     * @param length
-     * @return
+     * @param start  first index of the path
+     * @param length last index (subtracted by one)
+     * @return returns a new Path class which holds the specified sublist
      */
-    public Path get(int start, int length){
-        ArrayList p = path;
-        for(int i = 0; i<path.size(); i++){
-            if(i<start || i > start+length)
-                p.remove(i);
-        }
-        return new Path(p);
+    public Path getSubPath(int start, int length) {
+        return new Path(new ArrayList<>(path.subList(start, length)));
     }
+
     /**
      * get a Point at a specific index.
      *
      * @param index index of the desired point starting at zero, use -1 for last Point.
      * @return returns the Point.
      */
-    public Point get(int index) {
+    public Point getWaypoint(int index) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         if (path.get(index % path.size()) == null)
@@ -108,27 +105,36 @@ public class Path {
         path.addAll(index % path.size(), Arrays.asList(array));
     }
 
-    public void clear(){
+    /**
+     * Clears the path
+     */
+    public void clear() {
         path.clear();
     }
 
-    public double length(){
+    /**
+     * Returns the size of the path.
+     *
+     * @return returns the size() of the array.
+     */
+    public double length() {
         return path.size();
     }
 
     /**
      * Converts the path ArrayList to an array.
+     *
      * @param array needed to specify what type of array will copy over.
      * @return returns a Waypoint[] array.
      */
-    public Waypoint[] toArray(Waypoint[] array){
+    public Waypoint[] toArray(Waypoint[] array) {
         return path.toArray(array);
     }
 
     // ----== Functions for path generation and optimisation: ==----
 
     /**
-     * Adds points at a certain spacing between them into all the segments
+     * Adds points at a certain spacing between them into all the segments.
      */
     private void generateFillPoint() {
         double vector = Point.distance(path.get(0), path.get(path.size() - 1));
@@ -137,28 +143,28 @@ public class Path {
     }
 
     /**
-     *
+     * Takes all of the points and makes the curve smoother.
      */
     private void generateSmoothing() {
 
     }
 
     /**
-     *
+     * Attributes to all points their distance from the start.
      */
     private void generateDistance() {
 
     }
 
     /**
-     *
+     * Attributes to all points their curvature in correlation to their adjacent points.
      */
     private void generateCurvature() {
 
     }
 
     /**
-     *
+     * Arrributes to all points their intended velocity.
      */
     private void generateVelocity() {
 
