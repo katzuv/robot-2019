@@ -64,6 +64,7 @@ public class Path {
         path.set(index % path.size(), p);
     }
 
+
     /**
      * get a Point at a specific index.
      *
@@ -83,9 +84,21 @@ public class Path {
     /**
      * Adds points at a certain spacing between them into all the segments
      */
-    public void generatePoints() {
-        double vector = Point.distance(path.get(0), path.get(path.size() - 1));
-        final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
+    private void generateFillPoint() {
+
+        Vector[] pathVectors = new Vector[path.size()];
+        Path newPoints = new Path();
+        for (int i = 0; i < pathVectors.length - 1; i++) {
+            pathVectors[i] = new Vector(path.get(i), path.get(i + 1));
+            int AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
+            pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
+            for (int j = 0;j<AmountOfPoints;j++)
+            {
+                newPoints.add(j, (Waypoint)pathVectors[i].multiply(i).add(newPoints.getWaypoint(0)));
+            }
+        }
+        
+
     }
 
     /**
