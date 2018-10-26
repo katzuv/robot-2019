@@ -1,9 +1,9 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 public class Waypoint extends Point {
-    protected double distance, speed;
+    protected double distance, speed, curvature;
 
-    public Waypoint(double x, double y, double distance, double speed) {
+    public Waypoint(double x, double y, double distance, double speed, double curvature) {
         super(x, y);
         this.speed = speed;
         this.distance = distance;
@@ -28,4 +28,9 @@ public class Waypoint extends Point {
     public void setSpeed(double speed) {
         this.speed = speed;
     }
+
+    public double getCurvature() { return curvature;}
+
+    public void setCurvature(double curvature) { this.curvature = curvature;}
+
 }
