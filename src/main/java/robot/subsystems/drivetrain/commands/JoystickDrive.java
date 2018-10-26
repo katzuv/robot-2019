@@ -28,7 +28,49 @@ public class JoystickDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        drivetrain.setSpeed(Robot.m_oi.leftStick.getY(), Robot.m_oi.rightStick.getY());
+        // 1: linear
+        // 2: bell
+        // 3: x^3
+        // 4: e^5(x - 1)
+        int option = 1;
+        final int C = 5;
+        double leftInput = Robot.m_oi.leftStick.getY();
+        double rightInput = Robot.m_oi.rightStick.getY();
+
+        double leftOutput, rightOutput;
+        switch (option) {
+            case 1:
+                leftOutput = leftInput;
+                rightOutput = rightInput;
+                break;
+            case 2:
+                leftOutput = bell(leftInput, C);
+                rightOutput = bell(rightInput, C);
+                break;
+            case 3:
+                leftOutput = Math.pow(leftInput, 3);
+                rightOutput = Math.pow(rightInput, 3);
+                break;
+            case 4:
+                if (leftInput > 0) {
+                    leftOutput = Math.pow(Math.E, C * (leftInput - 1));
+                } else {
+                    leftOutput = -Math.pow(Math.E, C * (-leftInput - 1));
+                }
+                if (rightInput > 0) {
+                    rightOutput = Math.pow(Math.E, C * (rightInput - 1));
+                } else {
+                    rightOutput = -Math.pow(Math.E, C * (-rightInput - 1));
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Number must be 1-4");
+        }
+        drivetrain.setSpeed(leftOutput, rightOutput);
+    }
+
+    private double bell(double x, double c) {
+        return 2 / (1 + Math.pow(Math.E, -c * x)) - 1;
     }
 
     // Make this return true when this Command no longer needs to run execute()
