@@ -58,6 +58,7 @@ public class Path {
 
     /**
      * Appends an object to the end of the list.
+     *
      * @param p the waypoint to add.
      */
     public void append(Waypoint p) {
@@ -121,6 +122,21 @@ public class Path {
     }
 
     /**
+     * get a Point at a specific index.
+     *
+     * @param index index of the desired point starting at zero, use -1 for last Point.
+     * @return returns the Point.
+     */
+    public Point get(int index) {
+        if (!(index < path.size() && index > -path.size()))
+            throw new ArrayIndexOutOfBoundsException();
+        if (path.get(index % path.size()) == null)
+            throw new ClassCastException("Tried to call a non Point object from the path list.");
+        return path.get(index % path.size());
+    }
+
+    /**
+     * /**
      * Returns the size of the path.
      *
      * @return returns the size() of the array.
@@ -157,11 +173,38 @@ public class Path {
 
     }
 
-    /**
-     * Takes all of the points and makes the curve smoother.
-     */
-    private void generateSmoothing() {
 
+    /**
+     * @author Orel
+     * @param path the existed path
+     * @param weight_data amount of data
+     * @param weight_smooth amount of smooth
+     * @param tolerance the min change between points
+     * @return the new path with the way points
+     */
+    private Path genrate_smoothing(Path path, double weight_data, double weight_smooth, double tolerance) {
+        Path newPath = path.copy();
+        double change = tolerance;
+        Point aux;
+        Point newPoint;
+        Vector diff;
+        Point prev_Point;
+        Point next_Point;
+        while (change >= tolerance) {
+            change = 0.0;
+            for (int i = 1; i < newPath.length() - 1; i++) {
+                aux = newPath.get(i);
+                prev_Point = newPath.get(i - 1);
+                next_Point = newPath.get(i + 1);
+
+                newPoint = newPath.get(i);
+                newPoint.setX(newPoint.getX() + weight_data * (path.get(i).getX() - aux.getX()) + weight_smooth * (prev_Point.getX() + next_Point.getX()) - (2.0 * aux.getX()));
+                newPoint.setY(newPoint.getX() + weight_data * (path.get(i).getY() - aux.getY()) + weight_smooth * (prev_Point.getY() + next_Point.getY()) - (2.0 * aux.getY()));
+                newPath.set(i, (Waypoint)newPoint);
+                change += Math.abs(aux.getX() - newPoint.getX()) + Math.abs(aux.getY() - newPoint.getY());
+            }
+        }
+        return newPath;
     }
 
     /**
@@ -182,6 +225,7 @@ public class Path {
      * Arrributes to all points their intended velocity.
      */
     private void generateVelocity() {
+
 
     }
 
