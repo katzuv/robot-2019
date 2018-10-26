@@ -130,6 +130,13 @@ public class Path {
     }
 
     /**
+     * Copies the path
+     * @return
+     */
+    public Path copy(){
+        return new Path(path);
+    }
+    /**
      * Converts the path ArrayList to an array.
      *
      * @param array needed to specify what type of array will copy over.
