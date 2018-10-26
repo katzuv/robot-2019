@@ -57,6 +57,14 @@ public class Path {
     }
 
     /**
+     * Appends an object to the end of the list.
+     * @param p the waypoint to add.
+     */
+    public void append(Waypoint p) {
+        path.add(p);
+    }
+
+    /**
      * Gives a new subPath of the path.
      *
      * @param start  first index of the path
