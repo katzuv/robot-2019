@@ -1,0 +1,57 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('Roboto-Regular.ttf') format('truetype');
+}
+
+body {
+    padding: 8px;
+    font-family: 'Roboto', Serif;
+}
+
+#field {
+    display: block;
+}
+
+.parameter-input {
+    padding: 2px;
+    margin-bottom: 10px;
+    margin-right: 3px;
+
+    width: 100px;
+}
+
+button {
+    padding: 3px;
+    margin: 2px;
+    margin-bottom: 7px;
+}
+
+#parameters-config, #saves-explorer, #point-editor {
+    border: 2px solid gray;
+    padding: 5px 15px;
+    position: absolute;
+    left: 800px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+#saves-explorer {
+    position: relative;
+    top: 1000px;
+}
+
+#path-slider {
+    width: 600px;
+}
+
+.btn {
+    border: 1px solid gray;
+    padding: 2px;
+    border-radius: 1px;
+    margin: 1px;
+}
+
+.invisible-btn {
+    visibility: hidden;
+    display: none
+}

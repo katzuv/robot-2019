@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SPC Points Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>SPC Points Generator</h1>
+<div id="parameters-config">
+    <h4>Parameters</h4>
+    imageW: <input class="parameter-input" id="imageW"><br>
+    imageH: <input class="parameter-input" id="imageH"> <br>
+    fieldH: <input class="parameter-input" id="fieldH"><br>
+    fieldW: <input class="parameter-input" id="fieldW"> <br>
+    startX: <input class="parameter-input" id="startX"><br>
+    startY: <input class="parameter-input" id="startY"><br>
+    robotH: <input class="parameter-input" id="robotH"><br>
+    robotW: <input class="parameter-input" id="robotW"><br>
+
+    robotCenterToSide: <input class="parameter-input" id="robotCenterToSide"><br>
+    robotCenterToBack: <input class="parameter-input" id="robotCenterToBack"> <br>
+    rotationRadius: <input class="parameter-input" id="rotation Radius"><br>
+    rotationAngleStep: <input class="parameter-input" id="rotationAngleStep"> <br>
+    yDirectionVarName: <input class="parameter-input" id="yDirectionVarName"> <br>
+    isRelative: <input class="parameter-input" id="isRelative" type="checkbox"><br>
+    isBackwards: <input class="parameter-input" id="isBackwards" type="checkbox"><br>
+    <br>
+    <button id="save-parameters"> Save Parameters</button>
+</div>
+<div id="saves-explorer">
+    <h4>Saves</h4>
+    <button id="refresh-saves">refresh saves</button>
+    <ul id="saves-list">
+        Nothing saved
+    </ul>
+    KEY: <input value="Key Name" id="key-name">
+    <button id="save">save to KEY</button>
+    <button id="switch-saves">switch to KEY</button>
+    <button id="delete-save">delete KEY save</button>
+    <br>
+    <label for="import-input" class="btn">Import</label>
+    <input id="import-input" class="invisible-btn" type="file">
+    <label for="export" class="btn">Save as file</label>
+    <button id="export" class="invisible-btn">Export</button>
+
+</div>
+<input type="range" min="0" max="1000" value="0" class="slider" id="path-slider">
+<canvas width="400" height="200" id="field"></canvas>
+<p id="current-point">.</p>
+<button id="remove-point">Remove Last Point</button>
+<br>
+<div id="point-editor">
+    <h4>Edit a base point (shown in black)</h4>
+    <button id="previous-point">previous</button>
+    <button id="next-point">next</button>
+    <br>
+    x <input id="point-x">, y <input id="point-y">
+    <button id="save-point">SAVE</button>
+</div>
+<h4>Code Preview (copy & paste this code into a CommandGroup)</h4>
+<code id="code-preview">Code Preview</code>
+
+
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+</script>
+<script src="script.js"></script>
+<script src="fillet.js"></script>
+<script src="storage.js"></script>
+<script>
+    var editPointIndex = 1;
+    $("#save-parameters").on('click', function () {
+        saveParaemetersFromInputs();
+        updateAndPreview();
+        calcTotalLength();
+    });
+    $("#save").on('click', function () {
+        saveParaemetersFromInputs();
+        var key = $("#key-name").val();
+        saveToStorage(key);
+        refreshSaves();
+    });
+    $("#switch-saves").on('click', function () {
+        var key = $("#key-name").val();
+        if (getStorage(key) != null) {
+            switchToStorage(key);
+            refreshSaves();
+            refreshParametersInputs();
+            updateAndPreview();
+        } else {
+            alert(key + " not found!");
+        }
+    });
+    $("#delete-save").on('click', function () {
+        deleteStorage($("#key-name").val());
+        refreshSaves();
+        refreshParametersInputs();
+        updateAndPreview();
+    });
+    $("#refresh-saves").on('click', function () {
+        refreshSaves();
+    });
+
+    $("#export").on('click', function () {
+        download($("#key-name").val(), JSON.stringify(parameters));
+    });
+    $("#import-input").on("change", function (changeEvent) {
+        if (!window.FileReader) return; // not supported
+        (function (file) {
+            var loader = new FileReader();
+            loader.readAsText(file);
+            loader.onload = function (loadEvent) {
+                if (loadEvent.target.readyState != 2)
+                    return;
+                if (loadEvent.target.error) {
+                    alert("Error while reading file " + file.name + ": " + loadEvent.target.error);
+                    return;
+                }
+                parameters = JSON.parse(loadEvent.target.result);
+                $("#key-name").val(file.name);
+                refreshParametersInputs();
+                updateAndPreview();
+            };
+        })(changeEvent.target.files[0]);
+    });
+
+    $("#next-point").on('click', function () {
+        if (editPointIndex + 1 <= parameters.basePoints.length - 1) {
+            editPointIndex += 1;
+            updateAndPreview();
+        }
+    });
+    $("#previous-point").on('click', function () {
+        if (editPointIndex != 1) {
+            editPointIndex -= 1;
+            updateAndPreview();
+        }
+        ;
+    });
+    $("#save-point").on('click', function () {
+        parameters.basePoints[editPointIndex].x = parseFloat($("#point-x").val());
+        parameters.basePoints[editPointIndex].y = parseFloat($("#point-y").val());
+        basePointsToImagePoints();
+        updateAndPreview();
+    });
+    $("#path-slider").on('input', function () {
+        var precent = $("#path-slider").val() / 1000;
+        var dist = totalLength * precent;
+        console.log('dist', dist);
+        updateAndPreview();
+        drawRobotAtPosition(getPositionAtPath(dist).point, getPositionAtPath(dist).angle);
+    });
+
+    function calcTotalLength() {
+        totalLength = 0;
+        for (var i = 0; i < parameters.imagePathPoints.length - 1; i++) {
+            totalLength += getDist(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1]);
+        }
+    }
+
+    // {point , angle: }
+    function getPositionAtPath(dist) {
+        var distSoFar = 0;
+        for (i = 0; i < parameters.imagePathPoints.length - 1; i++) {
+            var distFirstPoint = distSoFar;
+            distSoFar += getDist(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1]);
+            if (distSoFar >= dist) {
+                var xy = getXYatLine(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1], dist - distFirstPoint);
+                var alpha = getXYAngle(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1]);
+                return {point: xy, angle: alpha};
+            }
+        }
+    }
+
+    function updatePointEditor() {
+        if (parameters.basePoints.length >= editPointIndex) {
+            $("#point-x").val(parameters.basePoints[editPointIndex].x);
+            $("#point-y").val(parameters.basePoints[editPointIndex].y);
+        }
+    }
+
+    function refreshParametersInputs() {
+        $(".parameter-input").each(function (i, elem) {
+            if ($(elem).attr("type") == "checkbox") {
+                $(elem).prop('checked', parameters[elem.id])
+            }
+            $(elem).val(parameters[elem.id]);
+        })
+    }
+
+    function saveParaemetersFromInputs() {
+        $(".parameter-input").each(function (i, elem) {
+            var input = $(elem).val();
+            if ($.isNumeric(input)) {
+                input = parseFloat(input);
+            } else if ($(elem).attr("type") == "checkbox") {
+                input = $(elem).is(":checked");
+            }
+            parameters[elem.id] = input;
+        });
+        updateAndPreview();
+    }
+
+    function refreshSaves() {
+        $("#saves-list").html("");
+        var keys = getAllStorageKeys();
+        if (keys.length == 0) {
+            $("#saves-list").html("Nothing is saved");
+            return;
+        }
+        for (var i = 0; i < keys.length; i++) {
+            $("#saves-list").append("<li>{0}</li>".format(keys[i]));
+        }
+    }
+
+    var canvas, ctx, background, totalLength;
+
+    function updateAndPreview() {
+        makeAllPointsCalculations();
+        calcTotalLength();
+        $("#code-preview").html(pathPointsToCode());
+        drawField();
+        drawPoints();
+        updatePointEditor();
+    }
+
+    function drawField() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(background, 0, 0)
+    }
+
+    function drawPoint(point, color='red', radius=5) {
+        drawXYPoint(point.x, point.y, color, radius);
+    }
+
+    function drawXYPoint(x, y, color='red', radius=5) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'black';
+        ctx.stroke();
+    }
+
+    function drawPoints() {
+        for (var i = 0; i < parameters.imagePathPoints.length; i++)
+            drawPoint(parameters.imagePathPoints[i], color = 'white', radius = 2)
+        if (parameters.isRelative) {
+            drawPoint(mToPx({x: 0, y: 0}), color = 'blue');
+        }
+        for (var i = 0; i < parameters.imageBasePoints.length; i++) {
+            if (i == editPointIndex - 1) {
+                drawPoint(parameters.imageBasePoints[i], color = 'black');
+            } else {
+                drawPoint(parameters.imageBasePoints[i]);
+            }
+
+        }
+    }
+
+    function drawRobotAtPosition(point, angle) {
+        ctx.translate(point.x, point.y);
+        ctx.rotate(angle);
+        var mx = 0.325;
+        if (parameters.isBackwards)
+            mx = parameters.robotW - mx;
+        var moveX = -(mx * (parameters.imageW / parameters.fieldW));
+        var moveY = -(0.5 * (parameters.imageH / parameters.fieldH));
+        var robotW = parameters.robotW * (parameters.imageW / parameters.fieldW);
+        var robotH = parameters.robotH * (parameters.imageH / parameters.fieldH);
+        ctx.rect(moveX, moveY, robotW, robotH);
+        ctx.stroke();
+        ctx.rotate(-angle);
+        ctx.translate(-point.x, -point.y);
+    }
+
+    $(function () {
+        refreshSaves();
+        refreshParametersInputs();
+        canvas = document.getElementById("field");
+        ctx = canvas.getContext("2d");
+
+        canvas.width = parameters.imageW;
+        canvas.height = parameters.imageH;
+
+        background = new Image();
+        background.src = "./field.png";
+
+// Make sure the image is loaded first otherwise nothing will draw.
+        background.onload = drawField;
+        $(canvas).mousemove(function (e) {
+            let rect = this.getBoundingClientRect(),
+                x = e.clientX - rect.left,
+                y = e.clientY - rect.top;
+
+            drawField();
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(parameters.imageW, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, parameters.imageH);
+            ctx.lineTo(x, 0);
+            ctx.stroke();
+            drawPoints();
+            var currentPoint = {x: x, y: y};
+            var currentPointM = pxToM(currentPoint);
+            $("#current-point").html("{0}, {1}".format(currentPointM.x, currentPointM.y))
+            drawPoint(currentPoint);
+            if (parameters.pathPoints.length > 0) {
+                var drawAngle = getXYAngle(parameters.imagePathPoints[parameters.imagePathPoints.length - 1], currentPoint);
+                // drawAngle = 30 * 180 / Math.PI;
+                drawRobotAtPosition(currentPoint, drawAngle);
+//                drawRobotAtPosition(mToPx(getPositionAtPath(1).point),getPositionAtPath(0).angle)
+            }
+        });
+        $(canvas).on('click', function (e) {
+            let rect = this.getBoundingClientRect(),
+                X = e.clientX - rect.left,
+                Y = e.clientY - rect.top;
+            parameters.imageBasePoints.push({x: X, y: Y});
+            updateAndPreview();
+            calcTotalLength();
+        })
+    });
+    $('#remove-point').on('click', function () {
+        parameters.imageBasePoints.pop();
+        updateAndPreview();
+    })
+</script>
+</body>
+</html>

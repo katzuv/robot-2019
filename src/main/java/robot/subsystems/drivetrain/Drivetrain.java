@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
 
 /**
@@ -86,4 +87,29 @@ public class Drivetrain extends Subsystem {
         leftEncoder.reset();
         rightEncoder.reset();
     }
+
+    /**
+     * returns the robot NAVX yaw angle
+     * @return navx yaw angle
+     */
+    public double getAngle(){
+        return Robot.navx.getAngle();
+    }
+
+    /**
+     * returns the robot NAVX pitch angle
+     * @return navx pitch angle
+     */
+    public double getPitch(){
+        return Robot.navx.getPitch();
+    }
+
+    /**
+     * returns the robot NAVX roll angle
+     * @return navx roll angle
+     */
+    public double getRoll(){
+        return Robot.navx.getRoll();
+    }
+
 }
