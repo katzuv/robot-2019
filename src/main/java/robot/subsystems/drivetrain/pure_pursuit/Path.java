@@ -58,6 +58,7 @@ public class Path {
 
     /**
      * Appends an object to the end of the list.
+     *
      * @param p the waypoint to add.
      */
     public void append(Waypoint p) {
@@ -132,11 +133,13 @@ public class Path {
 
     /**
      * Copies the path
+     *
      * @return
      */
-    public Path copy(){
+    public Path copy() {
         return new Path(path);
     }
+
     /**
      * Converts the path ArrayList to an array.
      *
@@ -152,20 +155,22 @@ public class Path {
     /**
      * Adds points at a certain spacing between them into all the segments.
      */
-    private void generateFillPoint() {
+    public Path generateFillPoint() {
 
         Vector[] pathVectors = new Vector[path.size()];
         Path newPoints = new Path();
-        for (int i = 0; i < pathVectors.length - 1; i++) {
+        int AmountOfPoints;
+        for (int i = 0; i < pathVectors.length-1; i++) {
             pathVectors[i] = new Vector(path.get(i), path.get(i + 1));
-            int AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
+            AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
             pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
-            for (int j = 0;j<AmountOfPoints;j++)
-            {
-                newPoints.add(j, (Waypoint)pathVectors[i].multiply(i).add(newPoints.getWaypoint(0)));
+            for (int j = 0; j < AmountOfPoints; j++) {
+                    newPoints.append(new Waypoint((pathVectors[i].multiply(j).add(this.getWaypoint(i)))));
             }
         }
-        
+        return newPoints;
+
+
 
     }
 
@@ -195,6 +200,10 @@ public class Path {
      */
     private void generateVelocity() {
 
+    }
+
+    public String toString() {
+        return path.toString();
     }
 
 

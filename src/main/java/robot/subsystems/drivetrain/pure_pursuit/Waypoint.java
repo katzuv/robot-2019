@@ -12,6 +12,9 @@ public class Waypoint extends Point {
         super(x, y);
     }
 
+    public Waypoint(Point p){
+        super(p.getX(), p.getY());
+    }
 
     public double getDistance() {
         return distance;
@@ -28,4 +31,6 @@ public class Waypoint extends Point {
     public void setSpeed(double speed) {
         this.speed = speed;
     }
+
+
 }
