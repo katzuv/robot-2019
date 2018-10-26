@@ -1,7 +1,6 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 import edu.wpi.first.wpilibj.drive.Vector2d;
-import org.jetbrains.annotations.NotNull;
 
 public class Vector extends Vector2d {
     public Vector(){
@@ -12,7 +11,7 @@ public class Vector extends Vector2d {
         super(x,y);
     }
 
-    public Vector(@NotNull Point start,@NotNull Point end){
+    public Vector(Point start, Point end){
         super(end.getX() - start.getX(), end.getY() - start.getY());
     }
 
@@ -30,6 +29,10 @@ public class Vector extends Vector2d {
 
     public Vector multiply(double d){
         return new Vector(x*d, y*d);
+    }
+
+    public Vector normalize() {
+        return this.multiply(1/this.magnitude());
     }
 }
 
