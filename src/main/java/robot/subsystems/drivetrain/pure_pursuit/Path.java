@@ -125,7 +125,7 @@ public class Path {
      *
      * @return returns the size() of the array.
      */
-    public double length() {
+    public int length() {
         return path.size();
     }
 
@@ -168,7 +168,22 @@ public class Path {
      * Attributes to all points their distance from the start.
      */
     private void generateDistance() {
+        this.recursiveDistance(this.length());
+    }
 
+    /**
+     * Returns the size of the largest length in the list.
+     * @param i index of current point
+     * @return returns sum of all distances before this point.
+     */
+    private double recursiveDistance(int i){
+        if(i==0)
+            return 0;
+        double d = recursiveDistance(i-1) + Point.distance(path.get(i),path.get(i-1));
+        Waypoint p = path.get(i);
+        p.setDistance(d);
+        path.set(i, p);
+        return d;
     }
 
     /**

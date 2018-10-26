@@ -1,7 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 public class Waypoint extends Point {
-    protected double distance, speed, curvature;
+    private double distance, speed, curvature;
 
     public Waypoint(double x, double y, double distance, double speed, double curvature) {
         super(x, y);
