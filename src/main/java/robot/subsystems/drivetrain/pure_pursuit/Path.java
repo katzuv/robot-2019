@@ -224,7 +224,11 @@ public class Path {
     /**
      * Arrributes to all points their intended velocity.
      */
-    private void generateVelocity() {
+    private void generateVelocity(Waypoint p1) {
+        int constant_for_velocity = 2;
+        int max_acc;
+        double distance;
+        double maximum_velocity = constant_for_velocity / p1.curvature;
 
 
     }
