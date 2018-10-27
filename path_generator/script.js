@@ -3,7 +3,7 @@ var parameters = {
     basePoints: [],
     imagePathPoints: [],
     pathPoints: [],
-    imageW: 1309,
+    imageW: 654,
     imageH: 656,
     fieldH: 8.23,
     fieldW: 16.46,
@@ -54,20 +54,20 @@ function pxToM(point) {
 }
 
 function imagePointsToBasePoints() {
-    parameters.basePoints = parameters.imageBasePoints.slice(0).map(pt = > pxToM(pt)
+    parameters.basePoints = parameters.imageBasePoints.slice(0).map(pt => pxToM(pt)
 )
     ;
     parameters.basePoints.splice(0, 0, {x: 0, y: 0});
 }
 
 function basePointsToImagePoints() {
-    parameters.imageBasePoints = parameters.basePoints.slice(0).slice(1, parameters.basePoints.length).map(pt = > mToPx(pt)
+    parameters.imageBasePoints = parameters.basePoints.slice(0).slice(1, parameters.basePoints.length).map(pt => mToPx(pt)
 )
     ;
 }
 
 function pathPointsToImagePathPoints() {
-    parameters.imagePathPoints = parameters.pathPoints.slice(0).map(pt = > mToPx(pt)
+    parameters.imagePathPoints = parameters.pathPoints.slice(0).map(pt => mToPx(pt)
 )
 }
 
