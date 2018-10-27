@@ -1,75 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>SPC Points Generator</title>
-    <link rel="stylesheet" href="styles.css">
+	<meta charset="UTF-8">
+	<title>SPC Points Generator</title>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <h1>SPC Points Generator</h1>
-<img id="logo_galaxia"  src="https://pbs.twimg.com/profile_images/845208777020329984/uJEIe25h_400x400.jpg" alt="galaxia 5987 logo" height="200" width="200">
+<img id="logo_galaxia" src="https://pbs.twimg.com/profile_images/845208777020329984/uJEIe25h_400x400.jpg"
+     alt="galaxia 5987 logo" height="200" width="200">
 <img id="first_logo"
      src="https://www.firstinspires.org/sites/default/files/uploads/resource_library/brand/FIRST_Vertical_RGB.jpg"
      alt="first logo" height="190" width="400">
 <div id="parameters-config">
-    <h4>Parameters</h4>
-    imageW: <input class="parameter-input" id="imageW"><br>
-    imageH: <input class="parameter-input" id="imageH"> <br>
-    fieldH: <input class="parameter-input" id="fieldH"><br>
-    fieldW: <input class="parameter-input" id="fieldW"> <br>
-    startX: <input class="parameter-input" id="startX"><br>
-    startY: <input class="parameter-input" id="startY"><br>
-    robotH: <input class="parameter-input" id="robotH"><br>
-    robotW: <input class="parameter-input" id="robotW"><br>
+	<h4>Parameters</h4>
+	imageW: <input class="parameter-input" id="imageW"><br>
+	imageH: <input class="parameter-input" id="imageH"> <br>
+	fieldH: <input class="parameter-input" id="fieldH"><br>
+	fieldW: <input class="parameter-input" id="fieldW"> <br>
+	startX: <input class="parameter-input" id="startX"><br>
+	startY: <input class="parameter-input" id="startY"><br>
+	robotH: <input class="parameter-input" id="robotH"><br>
+	robotW: <input class="parameter-input" id="robotW"><br>
 
-    robotCenterToSide: <input class="parameter-input" id="robotCenterToSide"><br>
-    robotCenterToBack: <input class="parameter-input" id="robotCenterToBack"> <br>
-    rotationRadius: <input class="parameter-input" id="rotation Radius"><br>
-    rotationAngleStep: <input class="parameter-input" id="rotationAngleStep"> <br>
-    yDirectionVarName: <input class="parameter-input" id="yDirectionVarName"> <br>
-    isRelative: <input class="parameter-input" id="isRelative" type="checkbox"><br>
-    isBackwards: <input class="parameter-input" id="isBackwards" type="checkbox"><br>
-    <br>
-    <button id="save-parameters"> Save Parameters</button>
+	robotCenterToSide: <input class="parameter-input" id="robotCenterToSide"><br>
+	robotCenterToBack: <input class="parameter-input" id="robotCenterToBack"> <br>
+	rotationRadius: <input class="parameter-input" id="rotation Radius"><br>
+	rotationAngleStep: <input class="parameter-input" id="rotationAngleStep"> <br>
+	yDirectionVarName: <input class="parameter-input" id="yDirectionVarName"> <br>
+	isRelative: <input class="parameter-input" id="isRelative" type="checkbox"><br>
+	isBackwards: <input class="parameter-input" id="isBackwards" type="checkbox"><br>
+	<br>
+	<button id="save-parameters"> Save Parameters</button>
 </div>
 <div id="saves-explorer">
-    <h4>Saves</h4>
-    <button id="refresh-saves">refresh saves</button>
-    <ul id="saves-list">
-        Nothing saved
-    </ul>
-    KEY: <input value="Key Name" id="key-name"><br>
-    <button id="save">save to KEY</button>
-    <button id="switch-saves">switch to KEY</button><br>
-    <button id="delete-save">delete KEY save</button>
-    <br>
-    <label for="import-input" class="btn">Import</label>
-    <input id="import-input" class="invisible-btn" type="file">
-    <label for="export" class="btn">Save as file</label>
-    <button id="export" class="invisible-btn">Export</button>
+	<h4>Saves</h4>
+	<button id="refresh-saves">refresh saves</button>
+	<ul id="saves-list">
+		Nothing saved
+	</ul>
+	KEY: <input value="Key Name" id="key-name"><br>
+	<button id="save">save to KEY</button>
+	<button id="switch-saves">switch to KEY</button>
+	<br>
+	<button id="delete-save">delete KEY save</button>
+	<br>
+	<label for="import-input" class="btn">Import</label>
+	<input id="import-input" class="invisible-btn" type="file">
+	<label for="export" class="btn">Save as file</label>
+	<button id="export" class="invisible-btn">Export</button>
 
 </div>
 <input type="range" min="0" max="1000" value="0" class="slider" id="path-slider">
 <canvas width="400" height="200" id="field"></canvas>
-<p id="current-point">.</p>
-<button id="remove-point">Remove Last Point</button>
-<br>
-<div id="point-editor">
-    <h4>Edit a base point (shown in black)</h4>
-    <button id="previous-point">previous</button>
-    <button id="next-point">next</button>
-    x <input id="point-x">, y <input id="point-y">
-    <button id="save-point">SAVE</button><br>
+<div id="bottom_part">
+
+	<p id="current-point">.</p>
+	<button id="remove-point">Remove Last Point</button>
+	<br>
+	<div id="point-editor">
+		<h4>Edit a base point (shown in black)</h4>
+		<button id="previous-point">previous</button>
+		<button id="next-point">next</button>
+		x <input id="point-x">, y <input id="point-y">
+		<button id="save-point">SAVE</button>
+		<br>
+	</div>
+
+	<h4>Code Preview (copy & paste this code into a CommandGroup)</h4>
+	<code id="code-preview">Code Preview</code>
 </div>
 
-<h4>Code Preview (copy & paste this code into a CommandGroup)</h4>
-<code id="code-preview">Code Preview</code>
-
-
 <script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous">
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
 </script>
 <script src="script.js"></script>
 <script src="fillet.js"></script>
@@ -236,11 +241,11 @@
         ctx.drawImage(background, 0, 0)
     }
 
-    function drawPoint(point, color='red', radius=5) {
+    function drawPoint(point, color = 'red', radius = 5) {
         drawXYPoint(point.x, point.y, color, radius);
     }
 
-    function drawXYPoint(x, y, color='red', radius=5) {
+    function drawXYPoint(x, y, color = 'red', radius = 5) {
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, 2 * Math.PI);
         ctx.fillStyle = color;

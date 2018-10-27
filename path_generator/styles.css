@@ -7,7 +7,10 @@
 /*-------------element selectors------------*/
 body {
     padding: 8px;
-    font-family: 'Roboto', Serif;
+    font-family: 'Roboto', Garamond, sans-serif;
+    width: fit-content;
+    height: fit-content;
+    overflow: scroll;
 
 }
 
@@ -15,6 +18,11 @@ button {
     padding: 3px;
     margin: 2px;
     margin-bottom: 7px;
+}
+
+canvas {
+    position: relative;
+    bottom: 880px;
 }
 
 /*---------------classes---------------*/
@@ -42,7 +50,7 @@ button {
 
 #logo_galaxia{
     position: relative;
-    left: 450px;
+    left: 350px;
     top: -100px;
 }
 
@@ -60,16 +68,19 @@ button {
 
 #parameters-config {
     position: relative;
-    left: 1050px;
+    left: 700px;
     top: 50px;
     width: fit-content;
     height: fit-content;
 }
 
+#bottom_part {
+    position: relative;
+    bottom: 850px;
+}
 
 #point-editor{
     position: relative;
-
     width: 500px;
 
 }
@@ -77,16 +88,18 @@ button {
 #saves-explorer {
     position: relative;
     top :50px;
-    left: 1050px;
+    left: 700px;
     width: fit-content;
 }
 
 #path-slider {
     width: 600px;
+    position: relative;
+    bottom: 900px;
 }
 
 #first_logo{
     position: relative;
-    left: 600px;
+    left: 400px;
     top: -100px;
 }
