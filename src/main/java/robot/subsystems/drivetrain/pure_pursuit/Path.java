@@ -82,7 +82,7 @@ public class Path {
      * @param index index of the desired point starting at zero, use -1 for last Point.
      * @return returns the Point.
      */
-    public Point getWaypoint(int index) {
+    public Waypoint getWaypoint(int index) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         if (path.get(index % path.size()) == null)
@@ -165,7 +165,7 @@ public class Path {
             AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
             pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
             for (int j = 0; j < AmountOfPoints; j++) {
-                    newPoints.append(new Waypoint((pathVectors[i].multiply(j).add(this.getWaypoint(i)))));
+                    newPoints.append(pathVectors[i].multiply(j).addWaypoint(this.getWaypoint(i)));
             }
         }
         return newPoints;
