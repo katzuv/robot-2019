@@ -81,7 +81,7 @@ public class Path {
      * @param index index of the desired point starting at zero, use -1 for last Point.
      * @return returns the Point.
      */
-    public Point getWaypoint(int index) {
+    public Waypoint getWaypoint(int index) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         if (path.get(index % path.size()) == null)
