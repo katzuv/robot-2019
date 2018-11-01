@@ -232,9 +232,9 @@ public class Path {
         double maximum_velocity_simplified;
         double maximum_velocity;
 //accurate calculation
-        for (int z =1; z< path.length()-1; z++){
-            maximum_velocity= Math.sqrt(2*const_acceleration*Constants.SPACING_BETWEEN_WAYPOINTS+ Math.pow(path.getWaypoint(z).getSpeed(),2));
-            path.getWaypoint(z).setSpeed(maximum_velocity);
+        for (int i = 1; i < path.length() - 1; i++) {
+            maximum_velocity = Math.sqrt(2 * const_acceleration * Constants.SPACING_BETWEEN_WAYPOINTS + Math.pow(path.getWaypoint(i).getSpeed(), 2));
+            path.getWaypoint(i).setSpeed(maximum_velocity);
         }
 
 //simplified calculation

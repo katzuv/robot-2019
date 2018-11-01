@@ -105,11 +105,21 @@ public class PurePursue extends Command {
         return null;
     }
 
-    /**
-     * @return
+    /**@author orel
+     * @param path the path that function work on
+     * @return point that closest to the robot position
      */
-    private Point closestPoint() {
-        return null;
+    private Point closestPoint(Path path) {
+        Point closest = path.get(0);
+        for (int i = 1; i < path.length(); i++) {
+
+            if (Point.distance(this.currentPoint, path.get(i)) < Point.distance(this.currentPoint, closest)) {
+                closest = path.get(i);
+            }
+
+
+        }
+        return closest;
     }
 
     /**
