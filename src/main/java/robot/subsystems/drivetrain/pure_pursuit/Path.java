@@ -1,7 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 import robot.subsystems.drivetrain.Constants;
-
+import java.math.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -82,7 +82,7 @@ public class Path {
      * @param index index of the desired point starting at zero, use -1 for last Point.
      * @return returns the Point.
      */
-    public Point getWaypoint(int index) {
+    public Waypoint getWaypoint(int index) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         if (path.get(index % path.size()) == null)
@@ -221,14 +221,26 @@ public class Path {
 
     }
 
+
     /**
-     * Arrributes to all points their intended velocity.
+     * @author orel
+     * @param path the path
+     * @param const_acceleration rhe acceleration constant
      */
-    private void generateVelocity(Waypoint p1) {
+    private void generateVelocity(Path path,double const_acceleration ) {
         int constant_for_velocity = 2;
-        int max_acc;
-        double distance;
-        double maximum_velocity = constant_for_velocity / p1.curvature;
+        double maximum_velocity_simplified;
+        double maximum_velocity;
+//accurate calculation
+        for (int z =1; z< path.length()-1; z++){
+            maximum_velocity= Math.sqrt(2*const_acceleration*Constants.SPACING_BETWEEN_WAYPOINTS+ Math.pow(path.getWaypoint(z).getSpeed(),2));
+            path.getWaypoint(z).setSpeed(maximum_velocity);
+        }
+
+//simplified calculation
+        for (int i =1; i< path.length()-1; i++) {
+            maximum_velocity_simplified = constant_for_velocity / path.getWaypoint(i).curvature;
+        }
 
 
     }
