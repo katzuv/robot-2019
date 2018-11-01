@@ -23,12 +23,20 @@ public class Vector extends Vector2d {
         return new Point(p.getX() + x, p.getY() + y);
     }
 
-    public Vector subtract(Vector2d vec) {
+    public Waypoint addWaypoint(Waypoint p){
+        return new Waypoint(p.getX()+x, p.getY()+y, p.getDistance(), p.getSpeed(), p.getCurvature());
+    }
+
+    public Vector subtract(Vector2d vec){
         return new Vector(x - vec.x, y - vec.y);
     }
 
-    public Vector multiply(double d) {
-        return new Vector(x * d, y * d);
+    public Waypoint subtractWaypoint(Waypoint p){
+        return new Waypoint(p.getX()-x, p.getY()-y, p.getDistance(), p.getSpeed(), p.getCurvature());
+    }
+
+    public Vector multiply(double d){
+        return new Vector(x*d, y*d);
     }
 
     public Vector normalize() {

@@ -155,6 +155,21 @@ public class Path {
         double vector = Point.distance(path.get(0), path.get(path.size() - 1));
         final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
 
+        Vector[] pathVectors = new Vector[path.size()];
+        Path newPoints = new Path();
+        int AmountOfPoints;
+        for (int i = 0; i < pathVectors.length-1; i++) {
+            pathVectors[i] = new Vector(path.get(i), path.get(i + 1));
+            AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
+            pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
+            for (int j = 0; j < AmountOfPoints; j++) {
+                    newPoints.append(pathVectors[i].multiply(j).addWaypoint(this.getWaypoint(i)));
+            }
+        }
+        return newPoints;
+
+
+
     }
 
     /**

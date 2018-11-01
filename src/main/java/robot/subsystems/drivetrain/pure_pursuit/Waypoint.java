@@ -7,11 +7,19 @@ public class Waypoint extends Point {
         super(x, y);
         this.speed = speed;
         this.distance = distance;
+        this.curvature = curvature;
     }
     public Waypoint(double x, double y){
         super(x, y);
     }
 
+
+    public Waypoint(Waypoint p){
+        super(p.getX(),p.getY());
+        this.speed = p.getSpeed();
+        this.distance = p.getDistance();
+        this.curvature = p.getCurvature();
+    }
 
     public double getDistance() {
         return distance;
