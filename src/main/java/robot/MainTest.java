@@ -1,5 +1,6 @@
 package robot;
 
+import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
@@ -14,7 +15,9 @@ public class MainTest {
         path.append(new Waypoint (0, 2));
         System.out.println(path);
         path = path.generateFillPoint();
-        path.generateCurvature();
+        System.out.println(path);
+//        Path newPath = path.generateSmoothing(Constants);
+        System.out.println("path2");
         System.out.println(path);
 
 

@@ -191,14 +191,14 @@ public class Path {
 
     /**
      * @author Orel
-     * @param path the existed path
      * @param weight_data amount of data
      * @param weight_smooth amount of smooth
      * @param tolerance the min change between points
      * @return the new path with the way points
      */
-    private Path genrate_smoothing(Path path, double weight_data, double weight_smooth, double tolerance) {
-        Path newPath = path.copy();
+
+    private Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
+        Path newPath = this.copy();
         double change = tolerance;
         Point aux;
         Point newPoint;
@@ -213,8 +213,8 @@ public class Path {
                 next_Point = newPath.get(i + 1);
 
                 newPoint = newPath.get(i);
-                newPoint.setX(newPoint.getX() + weight_data * (path.get(i).getX() - aux.getX()) + weight_smooth * (prev_Point.getX() + next_Point.getX()) - (2.0 * aux.getX()));
-                newPoint.setY(newPoint.getX() + weight_data * (path.get(i).getY() - aux.getY()) + weight_smooth * (prev_Point.getY() + next_Point.getY()) - (2.0 * aux.getY()));
+                newPoint.setX(newPoint.getX() + weight_data * (this.get(i).getX() - aux.getX()) + weight_smooth * (prev_Point.getX() + next_Point.getX()) - (2.0 * aux.getX()));
+                newPoint.setY(newPoint.getX() + weight_data * (this.get(i).getY() - aux.getY()) + weight_smooth * (prev_Point.getY() + next_Point.getY()) - (2.0 * aux.getY()));
                 newPath.set(i, (Waypoint)newPoint);
                 change += Math.abs(aux.getX() - newPoint.getX()) + Math.abs(aux.getY() - newPoint.getY());
             }
