@@ -27,9 +27,7 @@ public class Vector extends Vector2d {
         return new Waypoint(p.getX()+x, p.getY()+y, p.getDistance(), p.getSpeed(), p.getCurvature());
     }
 
-    public Waypoint addWaypoint(Waypoint p){
-        return new Waypoint(p.getX()+x, p.getY()+y, p.getDistance(), p.getSpeed(), p.getCurvature());
-    }
+
 
     public Vector subtract(Vector2d vec){
         return new Vector(x - vec.x, y - vec.y);
