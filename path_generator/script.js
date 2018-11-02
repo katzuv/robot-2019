@@ -120,7 +120,7 @@ function getXYatLine(startPt, endPt, distanceFromStart) {
 }
 
 function pathPointsToCode() {
-    var result = "addSequential(new PathPointsCommand(new Point[]{";
+    var result = "addSequential(new PurePursuit(new Point[] {";
     for (var i = 1; i < parameters.pathPoints.length; i++) {
         result += "<br>&nbsp&nbsp&nbsp new Point({0}, {1}".format(parameters.pathPoints[i].x, parameters.pathPoints[i].y);
         if (parameters.isRelative) {
