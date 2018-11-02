@@ -143,14 +143,14 @@ public class PurePursue extends Command {
     /**
      * @author orel
      * @param path current path
-     * @return the distance from the lockahead
+     * @return the distance from the lockahead positive mean to right negative mean to left
      */
     private double distance_lockahead(Path path){
         double tan_robot_angle = closestPoint(path).getY()-currentPoint.getX()/closestPoint(path).getX()-currentPoint.getX();
         double a = -tan_robot_angle;
         double b = 1;
         double c =tan_robot_angle* (currentPoint.getX()-currentPoint.getY());
-        return Math.abs(a*findLookaheadInPath().getX()+ b*findLookaheadInPath().getY()+c)/Math.sqrt(Math.pow(a,2)+Math.pow(b,2));
+        return a*findLookaheadInPath().getX()+ b*findLookaheadInPath().getY()+c/Math.sqrt(Math.pow(a,2)+Math.pow(b,2));
     }
 
     /**
