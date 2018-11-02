@@ -141,7 +141,7 @@ public class Path {
      *
      * @return returns the size() of the array.
      */
-    public double length() {
+    public int length() {
         return path.size();
     }
 
@@ -176,35 +176,54 @@ public class Path {
 
     /**
      * @author Orel
-     * @param path the existed path
      * @param weight_data amount of data
      * @param weight_smooth amount of smooth
      * @param tolerance the min change between points
      * @return the new path with the way points
      */
-    private Path genrate_smoothing(Path path, double weight_data, double weight_smooth, double tolerance) {
-        Path newPath = path.copy();
-        double change = tolerance;
-        Point aux;
-        Point newPoint;
-        Vector diff;
-        Point prev_Point;
-        Point next_Point;
-        while (change >= tolerance) {
-            change = 0.0;
-            for (int i = 1; i < newPath.length() - 1; i++) {
-                aux = newPath.get(i);
-                prev_Point = newPath.get(i - 1);
-                next_Point = newPath.get(i + 1);
+    private Path genrate_smoothing(double weight_data, double weight_smooth, double tolerance) {
+        Path newPathClass = this.copy();
+        double[][] newPath = new double[this.length()][2];
+        double a = weight_data;
+        double b = weight_smooth;
+        for(int i = 0; i<this.length(); i++){
+            newPath[i][0] = this.getWaypoint(i).getX();
+            newPath[i][1] = this.getWaypoint(i).getY();
 
-                newPoint = newPath.get(i);
-                newPoint.setX(newPoint.getX() + weight_data * (path.get(i).getX() - aux.getX()) + weight_smooth * (prev_Point.getX() + next_Point.getX()) - (2.0 * aux.getX()));
-                newPoint.setY(newPoint.getX() + weight_data * (path.get(i).getY() - aux.getY()) + weight_smooth * (prev_Point.getY() + next_Point.getY()) - (2.0 * aux.getY()));
-                newPath.set(i, (Waypoint)newPoint);
-                change += Math.abs(aux.getX() - newPoint.getX()) + Math.abs(aux.getY() - newPoint.getY());
+        }
+        double[][] path = doubleArrayCopy(newPath);
+        double change = tolerance;
+        while(change >= tolerance) {
+            change = 0.0;
+            for(int i=1; i<path.length-1; i++)
+                for(int j=0; j<path[i].length; j++) {
+                    double aux = newPath[i][j]; newPath[i][j] += a * (path[i][j] - newPath[i][j]) + b *
+                        (newPath[i-1][j] + newPath[i+1][j] - (2.0 * newPath[i][j]));
+                    change += Math.abs(aux - newPath[i][j]);
             }
         }
-        return newPath;
+        for(int i = 0; i<this.length(); i++){
+            Waypoint p = newPathClass.getWaypoint(i);
+            p.setX(newPath[i][0]);
+            p.setY(newPath[i][1]);
+            newPathClass.set(i, p);
+        }
+        return newPathClass;
+    }
+
+    public static double[][] doubleArrayCopy(double[][] arr)
+    {
+        //size first dimension of array
+        double[][] temp = new double[arr.length][arr[0].length];
+        for(int i=0; i<arr.length; i++)
+        {
+            //Resize second dimension of array
+            temp[i] = new double[arr[i].length];
+            //Copy Contents
+            for(int j=0; j<arr[i].length; j++)
+                temp[i][j] = arr[i][j];
+        }
+        return temp;
     }
 
     /**
