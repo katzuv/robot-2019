@@ -87,7 +87,7 @@ public class Path {
             throw new ArrayIndexOutOfBoundsException();
         if (path.get(index % path.size()) == null)
             throw new ClassCastException("Tried to call a non Point object from the path list.");
-        return path.get(index % path.size());
+        return new Waypoint(path.get(index % path.size()));
     }
 
     /**
@@ -177,52 +177,69 @@ public class Path {
         Vector[] pathVectors = new Vector[path.size()];
         Path newPoints = new Path();
         int AmountOfPoints;
-        for (int i = 0; i < pathVectors.length-1; i++) {
+        for (int i = 0; i < pathVectors.length - 1; i++) {
             pathVectors[i] = new Vector(path.get(i), path.get(i + 1));
             AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
             pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
             for (int j = 0; j < AmountOfPoints; j++) {
-                    newPoints.append(pathVectors[i].multiply(j).addWaypoint(this.getWaypoint(i)));
+                newPoints.append(pathVectors[i].multiply(j).addWaypoint(this.getWaypoint(i)));
             }
         }
         return newPoints;
-
 
 
     }
 
 
     /**
-     * @author Orel
-     * @param weight_data amount of data
+     * @param weight_data   amount of data
      * @param weight_smooth amount of smooth
-     * @param tolerance the min change between points
+     * @param tolerance     the min change between points
      * @return the new path with the way points
+     * @author Orel
      */
+    public Path generate_smoothing(double weight_data, double weight_smooth, double tolerance) {
+        Path newPathClass = this.copy();
+        double[][] newPath = new double[this.length()][2];
+        double a = weight_data;
+        double b = weight_smooth;
+        for (int i = 0; i < this.length(); i++) {
+            newPath[i][0] = this.getWaypoint(i).getX();
+            newPath[i][1] = this.getWaypoint(i).getY();
 
-    public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
-        Path newPath = this.copy();
+        }
+        double[][] path = doubleArrayCopy(newPath);
         double change = tolerance;
-        Point aux;
-        Point newPoint;
-        Vector diff;
-        Point prev_Point;
-        Point next_Point;
         while (change >= tolerance) {
             change = 0.0;
-            for (int i = 1; i < newPath.length() - 1; i++) {
-                aux = newPath.get(i);
-                prev_Point = newPath.get(i - 1);
-                next_Point = newPath.get(i + 1);
-
-                newPoint = newPath.get(i);
-                newPoint.setX(newPoint.getX() + weight_data * (this.get(i).getX() - aux.getX()) + weight_smooth * (prev_Point.getX() + next_Point.getX()) - (2.0 * aux.getX()));
-                newPoint.setY(newPoint.getY() + weight_data * (this.get(i).getY() - aux.getY()) + weight_smooth * (prev_Point.getY() + next_Point.getY()) - (2.0 * aux.getY()));
-                newPath.set(i, (Waypoint)newPoint);
-                change += Math.abs(aux.getX() - newPoint.getX()) + Math.abs(aux.getY() - newPoint.getY());
-            }
+            for (int i = 1; i < path.length - 1; i++)
+                for (int j = 0; j < path[i].length; j++) {
+                    double aux = newPath[i][j];
+                    newPath[i][j] += a * (path[i][j] - newPath[i][j]) + b *
+                            (newPath[i - 1][j] + newPath[i + 1][j] - (2.0 * newPath[i][j]));
+                    change += Math.abs(aux - newPath[i][j]);
+                }
         }
-        return newPath;
+        for (int i = 0; i < this.length(); i++) {
+            Waypoint p = newPathClass.getWaypoint(i);
+            p.setX(newPath[i][0]);
+            p.setY(newPath[i][1]);
+            newPathClass.set(i, p);
+        }
+        return newPathClass;
+    }
+
+    public static double[][] doubleArrayCopy(double[][] arr) {
+        //size first dimension of array
+        double[][] temp = new double[arr.length][arr[0].length];
+        for (int i = 0; i < arr.length; i++) {
+            //Resize second dimension of array
+            temp[i] = new double[arr[i].length];
+            //Copy Contents
+            for (int j = 0; j < arr[i].length; j++)
+                temp[i][j] = arr[i][j];
+        }
+        return temp;
     }
 
     /**
@@ -234,13 +251,14 @@ public class Path {
 
     /**
      * Returns the size of the largest length in the list.
+     *
      * @param i index of current point
      * @return returns sum of all distances before this point.
      */
-    private double recursiveDistance(int i){
-        if(i==0)
+    private double recursiveDistance(int i) {
+        if (i == 0)
             return 0;
-        double d = recursiveDistance(i-1) + Point.distance(path.get(i),path.get(i-1));
+        double d = recursiveDistance(i - 1) + Point.distance(path.get(i), path.get(i - 1));
         Waypoint p = path.get(i);
         p.setDistance(d);
         path.set(i, p);
@@ -252,21 +270,19 @@ public class Path {
      */
     public void generateCurvature() {
         double k1, k2, b, a, r;
-        for (int i = 1; i < path.size()-1;i++)
-        {
+        for (int i = 1; i < path.size() - 1; i++) {
             double x1 = path.get(i).getX();
-            if(path.get(i-1).getX() == x1)
+            if (path.get(i - 1).getX() == x1)
                 x1 += 0.0001;
-            k1 = 0.5*(Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i-1).getX(), 2) - Math.pow(path.get(i-1).getY(), 2))/(x1-path.get(i-1).getX());
-            k2 = (path.get(i).getY() - path.get(i-1).getY())/(x1 - path.get(i-1).getX());
-            b = 0.5 * (Math.pow(path.get(i-1).getX(), 2) - 2 * path.get(i-1).getX() * k1 + Math.pow(path.get(i-1).getY(),2) - Math.pow(path.get(i+1).getX(), 2) + 2 * path.get(i+1).getX() * k1 - path.get(i+1).getY())/(path.get(i+1).getX()*k2 - path.get(i+1).getY() + path.get(i-1).getY() - path.get(i-1).getX() * k2);
+            k1 = 0.5 * (Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i - 1).getX(), 2) - Math.pow(path.get(i - 1).getY(), 2)) / (x1 - path.get(i - 1).getX());
+            k2 = (path.get(i).getY() - path.get(i - 1).getY()) / (x1 - path.get(i - 1).getX());
+            b = 0.5 * (Math.pow(path.get(i - 1).getX(), 2) - 2 * path.get(i - 1).getX() * k1 + Math.pow(path.get(i - 1).getY(), 2) - Math.pow(path.get(i + 1).getX(), 2) + 2 * path.get(i + 1).getX() * k1 - path.get(i + 1).getY()) / (path.get(i + 1).getX() * k2 - path.get(i + 1).getY() + path.get(i - 1).getY() - path.get(i - 1).getX() * k2);
             a = k1 - k2 * b;
-            r = Math.sqrt(Math.pow(x1 - a,2) + Math.pow(path.get(i).getY() - b,2));
+            r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
             double curv = 0;
-            if(r==0){
+            if (r == 0) {
                 curv = Double.POSITIVE_INFINITY;
-            }
-            else{
+            } else {
                 curv = 1 / r;
             }
             path.get(i).setCurvature(curv);
