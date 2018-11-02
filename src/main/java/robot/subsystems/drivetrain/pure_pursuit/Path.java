@@ -151,7 +151,7 @@ public class Path {
     /**
      * Adds points at a certain spacing between them into all the segments.
      */
-    private Path generateFillPoint() {
+    public Path generateFillPoint() {
         double vector = Point.distance(path.get(0), path.get(path.size() - 1));
         final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
 
@@ -204,7 +204,7 @@ public class Path {
     /**
      * Attributes to all points their curvature in correlation to their adjacent points.
      */
-    private void generateCurvature() {
+    public void generateCurvature() {
         double k1, k2, b, a, r;
         for (int i = 1; i < path.size()-1;i++)
         {
