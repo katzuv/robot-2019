@@ -69,6 +69,7 @@
 	</div>
 
 	<h4>Code Preview (copy & paste this code into a CommandGroup)</h4>
+	<button onclick="copy_text()">copy points</button>
 	<code id="code-preview">Code Preview</code>
 </div>
 
@@ -286,6 +287,14 @@
         ctx.stroke();
         ctx.rotate(-angle);
         ctx.translate(-point.x, -point.y);
+    }
+
+    function copy_text() {
+        var item = document.getElementById("code-preview");
+        var text = item.innerText || item.textContent;
+        text.select();
+        document.execCommand("copy");
+
     }
 
     $(function () {
