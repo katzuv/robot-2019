@@ -563,3 +563,5 @@ gradle-app.setting
 \.idea/\.name
 
 \.idea/compiler\.xml
+
+\.idea/codeStyles/codeStyleConfig\.xml
