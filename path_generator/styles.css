@@ -69,7 +69,7 @@ canvas {
 #parameters-config {
     position: relative;
     left: 700px;
-    top: 50px;
+    top: -50px;
     width: fit-content;
     height: fit-content;
 }
@@ -87,7 +87,7 @@ canvas {
 
 #saves-explorer {
     position: relative;
-    top :50px;
+    top: -50px;
     left: 700px;
     width: fit-content;
 }

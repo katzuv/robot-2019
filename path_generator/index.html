@@ -217,9 +217,9 @@
     function refreshSaves() {
         $("#saves-list").html("");
         var keys = getAllStorageKeys();
-        if (keys.length == 0) {
+        if (keys.length === 0) {
             $("#saves-list").html("Nothing is saved");
-            return;
+
         }
         for (var i = 0; i < keys.length; i++) {
             $("#saves-list").append("<li>{0}</li>".format(keys[i]));
