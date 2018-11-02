@@ -562,4 +562,4 @@ gradle-app.setting
 # End of https://www.gitignore.io/api/java,macos,linux,python,gradle,pycharm,windows,intellij,pycharm+iml,pycharm+all,intellij+all,intellij+iml
 \.idea/\.name
 
-\.idea/compiler\.xml
+*.xml

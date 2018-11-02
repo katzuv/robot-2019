@@ -58,6 +58,7 @@ public class Path {
 
     /**
      * Appends an object to the end of the list.
+     *
      * @param p the waypoint to add.
      */
     public void append(Waypoint p) {
@@ -86,7 +87,7 @@ public class Path {
             throw new ArrayIndexOutOfBoundsException();
         if (path.get(index % path.size()) == null)
             throw new ClassCastException("Tried to call a non Point object from the path list.");
-        return path.get(index % path.size());
+        return new Waypoint(path.get(index % path.size()));
     }
 
     /**
@@ -121,6 +122,21 @@ public class Path {
     }
 
     /**
+     * get a Point at a specific index.
+     *
+     * @param index index of the desired point starting at zero, use -1 for last Point.
+     * @return returns the Point.
+     */
+    public Point get(int index) {
+        if (!(index < path.size() && index > -path.size()))
+            throw new ArrayIndexOutOfBoundsException();
+        if (path.get(index % path.size()) == null)
+            throw new ClassCastException("Tried to call a non Point object from the path list.");
+        return path.get(index % path.size());
+    }
+
+    /**
+     * /**
      * Returns the size of the path.
      *
      * @return returns the size() of the array.
@@ -129,13 +145,16 @@ public class Path {
         return path.size();
     }
 
+
     /**
      * Copies the path
+     *
      * @return
      */
-    public Path copy(){
+    public Path copy() {
         return new Path(path);
     }
+
     /**
      * Converts the path ArrayList to an array.
      *
@@ -158,16 +177,15 @@ public class Path {
         Vector[] pathVectors = new Vector[path.size()];
         Path newPoints = new Path();
         int AmountOfPoints;
-        for (int i = 0; i < pathVectors.length-1; i++) {
+        for (int i = 0; i < pathVectors.length - 1; i++) {
             pathVectors[i] = new Vector(path.get(i), path.get(i + 1));
             AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
             pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
             for (int j = 0; j < AmountOfPoints; j++) {
-                    newPoints.append(pathVectors[i].multiply(j).addWaypoint(this.getWaypoint(i)));
+                newPoints.append(pathVectors[i].multiply(j).addWaypoint(this.getWaypoint(i)));
             }
         }
         return newPoints;
-
 
 
     }
@@ -177,7 +195,7 @@ public class Path {
      */
     private void generateSmoothing() {
 
-    }
+        }
 
     /**
      * Attributes to all points their distance from the start.
@@ -188,13 +206,14 @@ public class Path {
 
     /**
      * Returns the size of the largest length in the list.
+     *
      * @param i index of current point
      * @return returns sum of all distances before this point.
      */
-    private double recursiveDistance(int i){
-        if(i==0)
+    private double recursiveDistance(int i) {
+        if (i == 0)
             return 0;
-        double d = recursiveDistance(i-1) + Point.distance(path.get(i),path.get(i-1));
+        double d = recursiveDistance(i - 1) + Point.distance(path.get(i), path.get(i - 1));
         Waypoint p = path.get(i);
         p.setDistance(d);
         path.set(i, p);
@@ -206,21 +225,19 @@ public class Path {
      */
     public void generateCurvature() {
         double k1, k2, b, a, r;
-        for (int i = 1; i < path.size()-1;i++)
-        {
+        for (int i = 1; i < path.size() - 1; i++) {
             double x1 = path.get(i).getX();
-            if(path.get(i-1).getX() == x1)
+            if (path.get(i - 1).getX() == x1)
                 x1 += 0.0001;
-            k1 = 0.5*(Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i-1).getX(), 2) - Math.pow(path.get(i-1).getY(), 2))/(x1-path.get(i-1).getX());
-            k2 = (path.get(i).getY() - path.get(i-1).getY())/(x1 - path.get(i-1).getX());
-            b = 0.5 * (Math.pow(path.get(i-1).getX(), 2) - 2 * path.get(i-1).getX() * k1 + Math.pow(path.get(i-1).getY(),2) - Math.pow(path.get(i+1).getX(), 2) + 2 * path.get(i+1).getX() * k1 - path.get(i+1).getY())/(path.get(i+1).getX()*k2 - path.get(i+1).getY() + path.get(i-1).getY() - path.get(i-1).getX() * k2);
+            k1 = 0.5 * (Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i - 1).getX(), 2) - Math.pow(path.get(i - 1).getY(), 2)) / (x1 - path.get(i - 1).getX());
+            k2 = (path.get(i).getY() - path.get(i - 1).getY()) / (x1 - path.get(i - 1).getX());
+            b = 0.5 * (Math.pow(path.get(i - 1).getX(), 2) - 2 * path.get(i - 1).getX() * k1 + Math.pow(path.get(i - 1).getY(), 2) - Math.pow(path.get(i + 1).getX(), 2) + 2 * path.get(i + 1).getX() * k1 - path.get(i + 1).getY()) / (path.get(i + 1).getX() * k2 - path.get(i + 1).getY() + path.get(i - 1).getY() - path.get(i - 1).getX() * k2);
             a = k1 - k2 * b;
-            r = Math.sqrt(Math.pow(x1 - a,2) + Math.pow(path.get(i).getY() - b,2));
+            r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
             double curv = 0;
-            if(r==0){
+            if (r == 0) {
                 curv = Double.POSITIVE_INFINITY;
-            }
-            else{
+            } else {
                 curv = 1 / r;
             }
             path.get(i).setCurvature(curv);
