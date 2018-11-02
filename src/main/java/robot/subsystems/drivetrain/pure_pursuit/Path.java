@@ -234,5 +234,9 @@ public class Path {
 
     }
 
+    public String toString() {
+        return path.toString();
+    }
+
 
 }
