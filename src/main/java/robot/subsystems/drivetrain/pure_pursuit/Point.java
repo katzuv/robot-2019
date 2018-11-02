@@ -88,5 +88,16 @@ public class Point {
                 " " + y
                 + "\n";
     }
+
+    public void addVector(Vector v){
+        x += v.x;
+        y += v.y;
+    }
+
+    public void subtractVector(Vector v){
+        x -= v.x;
+        y -= v.y;
+    }
+
 }
 
