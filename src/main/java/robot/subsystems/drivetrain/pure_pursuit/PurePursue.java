@@ -125,7 +125,9 @@ public class PurePursue extends Command {
     }
 
     /**
-     * @return
+     * @author orel
+     * @param path current path
+     * @return the curvature for point
      */
     private double curvatureCalculate(Path path) {
         double x = closestPoint(path).getX();
@@ -133,7 +135,22 @@ public class PurePursue extends Command {
         double L = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         double radius = Math.pow(L, 2) / 2 * x;
         double d = radius - x;
+
         return 1 / radius;
+
+    }
+
+    /**
+     * @author orel
+     * @param path current path
+     * @return the distance from the lockahead
+     */
+    private double distance_lockahead(Path path){
+        double tan_robot_angle = closestPoint(path).getY()-currentPoint.getX()/closestPoint(path).getX()-currentPoint.getX();
+        double a = -tan_robot_angle;
+        double b = 1;
+        double c =tan_robot_angle* (currentPoint.getX()-currentPoint.getY());
+        return Math.abs(a*findLookaheadInPath().getX()+ b*findLookaheadInPath().getY()+c)/Math.sqrt(Math.pow(a,2)+Math.pow(b,2));
     }
 
     /**
