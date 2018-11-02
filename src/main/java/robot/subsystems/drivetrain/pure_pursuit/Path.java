@@ -39,9 +39,12 @@ public class Path {
      * @param index index of the desired point starting at zero, use -1 for last Point.
      */
     public void setWaypoint(int index, Waypoint p) {
-        if (!(index < path.size() && index > -path.size()))
+        if (!(index <= path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        path.set(index % path.size(), p);
+        if(index == path.size())
+            this.append(p);
+        else
+            path.set(index % path.size(), p);
     }
 
     /**
@@ -53,7 +56,10 @@ public class Path {
     public void addWaypoint(int index, Waypoint p) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        path.add(index % path.size(), p);
+        if(index == path.size())
+            this.append(p);
+        else
+            path.add(index % path.size(), p);
     }
 
     /**
@@ -87,7 +93,7 @@ public class Path {
             throw new ArrayIndexOutOfBoundsException();
         if (path.get(index % path.size()) == null)
             throw new ClassCastException("Tried to call a non Point object from the path list.");
-        return new Waypoint(path.get(index % path.size()));
+        return path.get(index % path.size());
     }
 
     /**
@@ -119,20 +125,6 @@ public class Path {
      */
     public void clear() {
         path.clear();
-    }
-
-    /**
-     * get a Point at a specific index.
-     *
-     * @param index index of the desired point starting at zero, use -1 for last Point.
-     * @return returns the Point.
-     */
-    public Point get(int index) {
-        if (!(index < path.size() && index > -path.size()))
-            throw new ArrayIndexOutOfBoundsException();
-        if (path.get(index % path.size()) == null)
-            throw new ClassCastException("Tried to call a non Point object from the path list.");
-        return path.get(index % path.size());
     }
 
     /**
