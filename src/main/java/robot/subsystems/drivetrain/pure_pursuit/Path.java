@@ -151,7 +151,7 @@ public class Path {
     /**
      * Adds points at a certain spacing between them into all the segments.
      */
-    private void generateFillPoint() {
+    public Path generateFillPoint() {
         double vector = Point.distance(path.get(0), path.get(path.size() - 1));
         final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
 
@@ -204,8 +204,27 @@ public class Path {
     /**
      * Attributes to all points their curvature in correlation to their adjacent points.
      */
-    private void generateCurvature() {
-
+    public void generateCurvature() {
+        double k1, k2, b, a, r;
+        for (int i = 1; i < path.size()-1;i++)
+        {
+            double x1 = path.get(i).getX();
+            if(path.get(i-1).getX() == x1)
+                x1 += 0.0001;
+            k1 = 0.5*(Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i-1).getX(), 2) - Math.pow(path.get(i-1).getY(), 2))/(x1-path.get(i-1).getX());
+            k2 = (path.get(i).getY() - path.get(i-1).getY())/(x1 - path.get(i-1).getX());
+            b = 0.5 * (Math.pow(path.get(i-1).getX(), 2) - 2 * path.get(i-1).getX() * k1 + Math.pow(path.get(i-1).getY(),2) - Math.pow(path.get(i+1).getX(), 2) + 2 * path.get(i+1).getX() * k1 - path.get(i+1).getY())/(path.get(i+1).getX()*k2 - path.get(i+1).getY() + path.get(i-1).getY() - path.get(i-1).getX() * k2);
+            a = k1 - k2 * b;
+            r = Math.sqrt(Math.pow(x1 - a,2) + Math.pow(path.get(i).getY() - b,2));
+            double curv = 0;
+            if(r==0){
+                curv = Double.POSITIVE_INFINITY;
+            }
+            else{
+                curv = 1 / r;
+            }
+            path.get(i).setCurvature(curv);
+        }
     }
 
     /**
