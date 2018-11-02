@@ -197,7 +197,7 @@ public class Path {
      * @return the new path with the way points
      */
 
-    private Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
+    public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
         Path newPath = this.copy();
         double change = tolerance;
         Point aux;
