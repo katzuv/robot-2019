@@ -113,7 +113,7 @@
             var loader = new FileReader();
             loader.readAsText(file);
             loader.onload = function (loadEvent) {
-                if (loadEvent.target.readyState != 2)
+                if (loadEvent.target.readyState !== 2)
                     return;
                 if (loadEvent.target.error) {
                     alert("Error while reading file " + file.name + ": " + loadEvent.target.error);
@@ -134,7 +134,7 @@
         }
     });
     $("#previous-point").on('click', function () {
-        if (editPointIndex != 1) {
+        if (editPointIndex !== 1) {
             editPointIndex -= 1;
             updateAndPreview();
         }
@@ -184,7 +184,7 @@
 
     function refreshParametersInputs() {
         $(".parameter-input").each(function (i, elem) {
-            if ($(elem).attr("type") == "checkbox") {
+            if ($(elem).attr("type") === "checkbox") {
                 $(elem).prop('checked', parameters[elem.id])
             }
             $(elem).val(parameters[elem.id]);
@@ -196,7 +196,7 @@
             var input = $(elem).val();
             if ($.isNumeric(input)) {
                 input = parseFloat(input);
-            } else if ($(elem).attr("type") == "checkbox") {
+            } else if ($(elem).attr("type") === "checkbox") {
                 input = $(elem).is(":checked");
             }
             parameters[elem.id] = input;
@@ -207,7 +207,7 @@
     function refreshSaves() {
         $("#saves-list").html("");
         var keys = getAllStorageKeys();
-        if (keys.length == 0) {
+        if (keys.length === 0) {
             $("#saves-list").html("Nothing is saved");
             return;
         }
@@ -253,7 +253,7 @@
             drawPoint(mToPx({x: 0, y: 0}), color = 'blue');
         }
         for (var i = 0; i < parameters.imageBasePoints.length; i++) {
-            if (i == editPointIndex - 1) {
+            if (i === editPointIndex - 1) {
                 drawPoint(parameters.imageBasePoints[i], color = 'black');
             } else {
                 drawPoint(parameters.imageBasePoints[i]);
@@ -309,7 +309,7 @@
             drawPoints();
             var currentPoint = {x: x, y: y};
             var currentPointM = pxToM(currentPoint);
-            $("#current-point").html("{0}, {1}".format(currentPointM.x, currentPointM.y))
+            $("#current-point").html("{0}, {1}".format(currentPointM.x, currentPointM.y));
             drawPoint(currentPoint);
             if (parameters.pathPoints.length > 0) {
                 var drawAngle = getXYAngle(parameters.imagePathPoints[parameters.imagePathPoints.length - 1], currentPoint);
