@@ -217,7 +217,7 @@ public class Path {
 
                 newPoint = newPath.get(i);
                 newPoint.setX(newPoint.getX() + weight_data * (this.get(i).getX() - aux.getX()) + weight_smooth * (prev_Point.getX() + next_Point.getX()) - (2.0 * aux.getX()));
-                newPoint.setY(newPoint.getX() + weight_data * (this.get(i).getY() - aux.getY()) + weight_smooth * (prev_Point.getY() + next_Point.getY()) - (2.0 * aux.getY()));
+                newPoint.setY(newPoint.getY() + weight_data * (this.get(i).getY() - aux.getY()) + weight_smooth * (prev_Point.getY() + next_Point.getY()) - (2.0 * aux.getY()));
                 newPath.set(i, (Waypoint)newPoint);
                 change += Math.abs(aux.getX() - newPoint.getX()) + Math.abs(aux.getY() - newPoint.getY());
             }
