@@ -122,11 +122,26 @@ public class Path {
     }
 
     /**
+     * get a Point at a specific index.
+     *
+     * @param index index of the desired point starting at zero, use -1 for last Point.
+     * @return returns the Point.
+     */
+    public Point get(int index) {
+        if (!(index < path.size() && index > -path.size()))
+            throw new ArrayIndexOutOfBoundsException();
+        if (path.get(index % path.size()) == null)
+            throw new ClassCastException("Tried to call a non Point object from the path list.");
+        return path.get(index % path.size());
+    }
+
+    /**
+     * /**
      * Returns the size of the path.
      *
      * @return returns the size() of the array.
      */
-    public double length() {
+    public int length() {
         return path.size();
     }
 
@@ -156,6 +171,8 @@ public class Path {
      * Adds points at a certain spacing between them into all the segments.
      */
     public Path generateFillPoint() {
+        double vector = Point.distance(path.get(0), path.get(path.size() - 1));
+        final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
 
         Vector[] pathVectors = new Vector[path.size()];
         Path newPoints = new Path();
@@ -174,31 +191,93 @@ public class Path {
 
     }
 
-    /**
-     * Takes all of the points and makes the curve smoother.
-     */
-    private void generateSmoothing() {
 
+    /**
+     * @author Orel
+     * @param weight_data amount of data
+     * @param weight_smooth amount of smooth
+     * @param tolerance the min change between points
+     * @return the new path with the way points
+     */
+
+    public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
+        Path newPath = this.copy();
+        double change = tolerance;
+        Point aux;
+        Point newPoint;
+        Vector diff;
+        Point prev_Point;
+        Point next_Point;
+        while (change >= tolerance) {
+            change = 0.0;
+            for (int i = 1; i < newPath.length() - 1; i++) {
+                aux = newPath.get(i);
+                prev_Point = newPath.get(i - 1);
+                next_Point = newPath.get(i + 1);
+
+                newPoint = newPath.get(i);
+                newPoint.setX(newPoint.getX() + weight_data * (this.get(i).getX() - aux.getX()) + weight_smooth * (prev_Point.getX() + next_Point.getX()) - (2.0 * aux.getX()));
+                newPoint.setY(newPoint.getX() + weight_data * (this.get(i).getY() - aux.getY()) + weight_smooth * (prev_Point.getY() + next_Point.getY()) - (2.0 * aux.getY()));
+                newPath.set(i, (Waypoint)newPoint);
+                change += Math.abs(aux.getX() - newPoint.getX()) + Math.abs(aux.getY() - newPoint.getY());
+            }
+        }
+        return newPath;
     }
 
     /**
      * Attributes to all points their distance from the start.
      */
     private void generateDistance() {
+        this.recursiveDistance(this.length());
+    }
 
+    /**
+     * Returns the size of the largest length in the list.
+     * @param i index of current point
+     * @return returns sum of all distances before this point.
+     */
+    private double recursiveDistance(int i){
+        if(i==0)
+            return 0;
+        double d = recursiveDistance(i-1) + Point.distance(path.get(i),path.get(i-1));
+        Waypoint p = path.get(i);
+        p.setDistance(d);
+        path.set(i, p);
+        return d;
     }
 
     /**
      * Attributes to all points their curvature in correlation to their adjacent points.
      */
-    private void generateCurvature() {
-
+    public void generateCurvature() {
+        double k1, k2, b, a, r;
+        for (int i = 1; i < path.size()-1;i++)
+        {
+            double x1 = path.get(i).getX();
+            if(path.get(i-1).getX() == x1)
+                x1 += 0.0001;
+            k1 = 0.5*(Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i-1).getX(), 2) - Math.pow(path.get(i-1).getY(), 2))/(x1-path.get(i-1).getX());
+            k2 = (path.get(i).getY() - path.get(i-1).getY())/(x1 - path.get(i-1).getX());
+            b = 0.5 * (Math.pow(path.get(i-1).getX(), 2) - 2 * path.get(i-1).getX() * k1 + Math.pow(path.get(i-1).getY(),2) - Math.pow(path.get(i+1).getX(), 2) + 2 * path.get(i+1).getX() * k1 - path.get(i+1).getY())/(path.get(i+1).getX()*k2 - path.get(i+1).getY() + path.get(i-1).getY() - path.get(i-1).getX() * k2);
+            a = k1 - k2 * b;
+            r = Math.sqrt(Math.pow(x1 - a,2) + Math.pow(path.get(i).getY() - b,2));
+            double curv = 0;
+            if(r==0){
+                curv = Double.POSITIVE_INFINITY;
+            }
+            else{
+                curv = 1 / r;
+            }
+            path.get(i).setCurvature(curv);
+        }
     }
 
     /**
      * Arrributes to all points their intended velocity.
      */
     private void generateVelocity() {
+
 
     }
 
