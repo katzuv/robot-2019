@@ -289,7 +289,7 @@ public class    Path {
      * @param const_acceleration rhe acceleration constant
      * @author orel
      */
-    private void generateVelocity(double const_acceleration ) {
+    public void generateVelocity(double const_acceleration ) {
         double maximum_velocity;
 //accurate calculation
         for (int i = 1; i < this.length() - 1; i++) {
