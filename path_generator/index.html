@@ -14,7 +14,7 @@
 <a href="https://www.firstinspires.org/">
 	<img id="first_logo"
 	     src="https://www.firstinspires.org/sites/default/files/uploads/resource_library/brand/FIRST_Vertical_RGB.jpg"
-	     alt="first logo" height="190" width="300">
+	     alt="first logo" height="180" width="300">
 </a>
 <div id="parameters-config">
 	<h4>Parameters</h4>
@@ -29,8 +29,7 @@
 
 	Robot Center To Side: <input class="parameter-input" id="robotCenterToSide"><br>
 	Robot Center To Back: <input class="parameter-input" id="robotCenterToBack"> <br>
-	Is Relative: <input class="parameter-input" id="isRelative" type="checkbox"><br>
-	Is Backwards: <input class="parameter-input" id="isBackwards" type="checkbox"><br>
+
 	<br>
 	<button id="save-parameters"> Save Parameters</button>
 </div>
@@ -69,7 +68,6 @@
 	</div>
 
 	<h4>Code Preview (copy & paste this code into a CommandGroup)</h4>
-	<button onclick="copy_text()">copy points</button>
 	<code id="code-preview">Code Preview</code>
 </div>
 
@@ -294,7 +292,8 @@
         var text = item.innerText || item.textContent;
         text.select();
         document.execCommand("copy");
-
+        selectedItem.options.add(text);
+	return text
     }
 
     $(function () {
