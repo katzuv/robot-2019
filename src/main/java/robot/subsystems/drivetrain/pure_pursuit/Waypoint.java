@@ -48,12 +48,12 @@ public class Waypoint extends Point {
 
     @Override
     public String toString() {
-        return "Waypoint{" +
-                "distance=" + distance +
-                ", speed=" + speed +
+        return "" +
+   //             "distance=" + distance +
+    //            ", speed=" + speed +
                 ", curvature=" + curvature +
                 ", x=" + x +
                 ", y=" + y +
-                '}';
+                  "\n";
     }
 }
