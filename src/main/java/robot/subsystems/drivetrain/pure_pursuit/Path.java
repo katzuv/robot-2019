@@ -42,7 +42,7 @@ public class Path {
         if (!(index <= path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         if(index == path.size())
-            this.append(p);
+            this.appendWaypoint(p);
         else
             path.set(index % path.size(), p);
     }
@@ -57,7 +57,7 @@ public class Path {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         if(index == path.size())
-            this.append(p);
+            this.appendWaypoint(p);
         else
             path.add(index % path.size(), p);
     }
