@@ -1,7 +1,9 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 public class Waypoint extends Point {
-    private double distance, speed, curvature;
+    public double distance;
+    public double speed;
+    public double curvature;
 
     public Waypoint(double x, double y, double distance, double speed, double curvature) {
         super(x, y);
@@ -42,6 +44,16 @@ public class Waypoint extends Point {
 
     public void setCurvature(double curvature) { this.curvature = curvature;}
 
+    @Override
+    public String toString() {
+        return "Waypoint{" +
+                "distance=" + distance +
+                ", speed=" + speed +
+                ", curvature=" + curvature +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
+    }
     public static Waypoint rotate(Point center, Waypoint p, double degrees) {
         double radians = -Math.toRadians(degrees);
         Waypoint newWaypoint = new Waypoint(p);
