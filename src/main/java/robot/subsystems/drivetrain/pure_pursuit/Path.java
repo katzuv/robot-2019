@@ -175,7 +175,8 @@ public class Path {
 
 
     /**
-     * @author Orel
+     * @author Paulo
+     * @author Lior
      * @param weight_data amount of data
      * @param weight_smooth amount of smooth
      * @param tolerance the min change between points
