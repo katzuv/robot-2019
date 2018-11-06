@@ -111,11 +111,11 @@ public class PurePursue extends Command {
      * @author orel
      */
     private Point closestPoint(Path path) {
-        Point closest = path.get(0);
+        Point closest = path.getWaypoint(0).copy();
         for (int i = 1; i < path.length(); i++) {
 
-            if (Point.distance(this.currentPoint, path.get(i)) < Point.distance(this.currentPoint, closest)) {
-                closest = path.get(i);
+            if (Point.distance(this.currentPoint, path.getWaypoint(i)) < Point.distance(this.currentPoint, closest)) {
+                closest = path.getWaypoint(i);
             }
 
 
