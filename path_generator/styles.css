@@ -9,8 +9,7 @@ body {
     padding: 8px;
     font-family: 'Roboto', Garamond, sans-serif;
     width: fit-content;
-    height: fit-content;
-    overflow: scroll;
+    height: 400px;
 
 }
 
