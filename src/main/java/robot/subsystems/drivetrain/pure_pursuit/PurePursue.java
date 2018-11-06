@@ -130,14 +130,16 @@ public class PurePursue extends Command {
      * @return the curvature for point
      */
     private double curvatureCalculate(Path path) {
-        double x = closestPoint(path).getX();
-        double y = closestPoint(path).getY();
+        double x = closestPoint(path).getX() - currentPoint.getX();
+        double y = closestPoint(path).getY() - currentPoint.getY();
         double L = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         double radius = Math.pow(L, 2) / 2 * x;
         double d = radius - x;
-
-        return 1 / radius;
-
+        if (radius == 0) {
+            return Double.POSITIVE_INFINITY;
+        } else {
+            return 1 / radius;
+        }
     }
 
     /**
