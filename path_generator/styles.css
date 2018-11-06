@@ -51,7 +51,7 @@ canvas {
 #logo_galaxia{
     position: relative;
     left: 350px;
-    top: -100px;
+    top: -110px;
 }
 
 #field {
@@ -101,5 +101,5 @@ canvas {
 #first_logo{
     position: relative;
     left: 400px;
-    top: -100px;
+    top: -110px;
 }
