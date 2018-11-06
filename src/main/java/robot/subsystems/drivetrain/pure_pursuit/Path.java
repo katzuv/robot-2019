@@ -277,7 +277,7 @@ public class Path {
                 x1 += 0.0001;
             k1 = 0.5 * (Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i - 1).getX(), 2) - Math.pow(path.get(i - 1).getY(), 2)) / (x1 - path.get(i - 1).getX());
             k2 = (path.get(i).getY() - path.get(i - 1).getY()) / (x1 - path.get(i - 1).getX());
-            b = 0.5 * (Math.pow(path.get(i - 1).getX(), 2) - 2 * path.get(i - 1).getX() * k1 + Math.pow(path.get(i - 1).getY(), 2) - Math.pow(path.get(i + 1).getX(), 2) + 2 * path.get(i + 1).getX() * k1 - path.get(i + 1).getY()) / (path.get(i + 1).getX() * k2 - path.get(i + 1).getY() + path.get(i - 1).getY() - path.get(i - 1).getX() * k2);
+            b = 0.5 * (Math.pow(path.get(i - 1).getX(), 2) - 2 * path.get(i - 1).getX() * k1 + Math.pow(path.get(i - 1).getY(), 2) - Math.pow(path.get(i + 1).getX(), 2) + 2 * path.get(i + 1).getX() * k1 - Math.pow(path.get(i + 1).getY(), 2)) / (path.get(i + 1).getX() * k2 - path.get(i + 1).getY() + path.get(i - 1).getY() - path.get(i - 1).getX() * k2);
             a = k1 - k2 * b;
             r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
             double curv = 0;
