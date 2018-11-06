@@ -46,4 +46,14 @@ public class Waypoint extends Point {
 
     public void setCurvature(double curvature) { this.curvature = curvature;}
 
+    @Override
+    public String toString() {
+        return "Waypoint{" +
+                "distance=" + distance +
+                ", speed=" + speed +
+                ", curvature=" + curvature +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
