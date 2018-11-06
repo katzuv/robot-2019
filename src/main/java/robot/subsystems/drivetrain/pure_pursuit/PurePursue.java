@@ -63,7 +63,6 @@ public class PurePursue extends Command {
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
     }
-
     //Only Part of the function! doesn't run function through all of the path
     //https://stackoverflow.com/questions/1073336/circle-line-segment-collision-detection-algorithm/1084899#1084899
 

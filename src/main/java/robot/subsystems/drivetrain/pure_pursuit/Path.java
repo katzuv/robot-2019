@@ -38,10 +38,13 @@ public class Path {
      *
      * @param index index of the desired point starting at zero, use -1 for last Point.
      */
-    public void set(int index, Waypoint p) {
-        if (!(index < path.size() && index > -path.size()))
+    public void setWaypoint(int index, Waypoint p) {
+        if (!(index <= path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        path.set(index % path.size(), p);
+        if(index == path.size())
+            this.appendWaypoint(p);
+        else
+            path.set(index % path.size(), p);
     }
 
     /**
@@ -50,10 +53,13 @@ public class Path {
      * @param index the index of the point to append.
      * @param p     the waypoint to add.
      */
-    public void add(int index, Waypoint p) {
+    public void addWaypoint(int index, Waypoint p) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        path.add(index % path.size(), p);
+        if(index == path.size())
+            this.appendWaypoint(p);
+        else
+            path.add(index % path.size(), p);
     }
 
     /**
@@ -61,7 +67,7 @@ public class Path {
      *
      * @param p the waypoint to add.
      */
-    public void append(Waypoint p) {
+    public void appendWaypoint(Waypoint p) {
         path.add(p);
     }
 
@@ -122,20 +128,6 @@ public class Path {
     }
 
     /**
-     * get a Point at a specific index.
-     *
-     * @param index index of the desired point starting at zero, use -1 for last Point.
-     * @return returns the Point.
-     */
-    public Point get(int index) {
-        if (!(index < path.size() && index > -path.size()))
-            throw new ArrayIndexOutOfBoundsException();
-        if (path.get(index % path.size()) == null)
-            throw new ClassCastException("Tried to call a non Point object from the path list.");
-        return path.get(index % path.size());
-    }
-
-    /**
      * /**
      * Returns the size of the path.
      *
@@ -147,11 +139,13 @@ public class Path {
 
     /**
      * Copies the path
+     *
      * @return
      */
-    public Path copy(){
+    public Path copy() {
         return new Path(path);
     }
+
     /**
      * Converts the path ArrayList to an array.
      *
