@@ -293,29 +293,28 @@ public class Path {
 
     /**
      * @author orel
-     * @param path the path
      * @param const_acceleration rhe acceleration constant
      */
-    private void generateVelocity(Path path,double const_acceleration ) {
+    private void generateVelocity(double const_acceleration ) {
         int constant_for_velocity = 2;
         double maximum_velocity_simplified;
         double maximum_velocity;
 //accurate calculation
-        for (int i = 1; i < path.length() - 1; i++) {
-            maximum_velocity = Math.sqrt(2 * const_acceleration * Constants.SPACING_BETWEEN_WAYPOINTS + Math.pow(path.getWaypoint(i).getSpeed(), 2));
-            path.getWaypoint(i).setSpeed(maximum_velocity);
+        for (int i = 1; i < this.length() - 1; i++) {
+            maximum_velocity = Math.sqrt(2 * const_acceleration * Constants.SPACING_BETWEEN_WAYPOINTS + Math.pow(this.getWaypoint(i).getSpeed(), 2));
+            this.getWaypoint(i).setSpeed(maximum_velocity);
         }
 
 //simplified calculation
-        for (int i =1; i< path.length()-1; i++) {
-            maximum_velocity_simplified = constant_for_velocity / path.getWaypoint(i).curvature;
+        for (int i =1; i< this.length()-1; i++) {
+            maximum_velocity_simplified = constant_for_velocity / this.getWaypoint(i).curvature;
         }
 
 
     }
 
     public String toString() {
-        return path.toString();
+        return this.toString();
     }
 
 
