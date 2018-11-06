@@ -1,7 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 import robot.subsystems.drivetrain.Constants;
-import java.math.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,6 +33,19 @@ public class Path {
         path.addAll(w);
     }
 
+    public static double[][] doubleArrayCopy(double[][] arr) {
+        //size first dimension of array
+        double[][] temp = new double[arr.length][arr[0].length];
+        for (int i = 0; i < arr.length; i++) {
+            //Resize second dimension of array
+            temp[i] = new double[arr[i].length];
+            //Copy Contents
+            for (int j = 0; j < arr[i].length; j++)
+                temp[i][j] = arr[i][j];
+        }
+        return temp;
+    }
+
     /**
      * Set a point at an index.
      *
@@ -41,7 +54,7 @@ public class Path {
     public void setWaypoint(int index, Waypoint p) {
         if (!(index <= path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        if(index == path.size())
+        if (index == path.size())
             this.appendWaypoint(p);
         else
             path.set(index % path.size(), p);
@@ -56,7 +69,7 @@ public class Path {
     public void addWaypoint(int index, Waypoint p) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        if(index == path.size())
+        if (index == path.size())
             this.appendWaypoint(p);
         else
             path.add(index % path.size(), p);
@@ -146,6 +159,8 @@ public class Path {
         return new Path(path);
     }
 
+    // ----== Functions for path generation and optimisation: ==----
+
     /**
      * Converts the path ArrayList to an array.
      *
@@ -156,24 +171,25 @@ public class Path {
         return path.toArray(array);
     }
 
-    // ----== Functions for path generation and optimisation: ==----
-
     /**
      * Adds points at a certain spacing between them into all the segments.
      */
     public Path generateFillPoint() {
-        double vector = Point.distance(path.get(0), path.get(path.size() - 1));
-        final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
+        //double vector = Point.distance(path.get(0), path.get(path.size() - 1));
+        //final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
 
-        Vector[] pathVectors = new Vector[path.size()];
-        Path newPoints = new Path();
+        Vector[] pathVectors = new Vector[path.size()]; //create an array of vectors per point.
+        Path newPoints = new Path(); //create a new path class
         int AmountOfPoints;
-        for (int i = 0; i < pathVectors.length - 1; i++) {
-            pathVectors[i] = new Vector(path.get(i), path.get(i + 1));
+        for (int i = 0; i < pathVectors.length - 1; i++) {//for every point on the path
+            //Creates a vector with the slope of the two points we are checking
+            //Sets the vectors magnitude to the constant of the spacing
+            //calculates the amount of fill-points that can fit between the two points.
+            pathVectors[i] = new Vector(this.getWaypoint(i), this.getWaypoint(i + 1));
             AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
             pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
             for (int j = 0; j < AmountOfPoints; j++) {
-                newPoints.append(pathVectors[i].multiply(j).addWaypoint(this.getWaypoint(i)));
+                newPoints.appendWaypoint(pathVectors[i].multiply(j).add(this.getWaypoint(i)));
             }
         }
         return newPoints;
@@ -181,14 +197,13 @@ public class Path {
 
     }
 
-
     /**
+     * @param weight_data   amount of data
+     * @param weight_smooth amount of smooth
+     * @param tolerance     the min change between points
+     * @return the new path with the way points
      * @author Paulo
      * @author Lior
-     * @param weight_data amount of data
-     * @param weight_smooth amount of smooth
-     * @param tolerance the min change between points
-     * @return the new path with the way points
      */
     public Path generate_smoothing(double weight_data, double weight_smooth, double tolerance) {
         Path newPathClass = this.copy();
@@ -216,22 +231,9 @@ public class Path {
             Waypoint p = newPathClass.getWaypoint(i);
             p.setX(newPath[i][0]);
             p.setY(newPath[i][1]);
-            newPathClass.set(i, p);
+            newPathClass.setWaypoint(i, p);
         }
         return newPathClass;
-    }
-
-    public static double[][] doubleArrayCopy(double[][] arr) {
-        //size first dimension of array
-        double[][] temp = new double[arr.length][arr[0].length];
-        for (int i = 0; i < arr.length; i++) {
-            //Resize second dimension of array
-            temp[i] = new double[arr[i].length];
-            //Copy Contents
-            for (int j = 0; j < arr[i].length; j++)
-                temp[i][j] = arr[i][j];
-        }
-        return temp;
     }
 
     /**
@@ -283,11 +285,11 @@ public class Path {
 
 
     /**
-     * @author orel
-     * @param path the path
+     * @param path               the path
      * @param const_acceleration rhe acceleration constant
+     * @author orel
      */
-    private void generateVelocity(Path path,double const_acceleration ) {
+    private void generateVelocity(Path path, double const_acceleration) {
         int constant_for_velocity = 2;
         double maximum_velocity_simplified;
         double maximum_velocity;
@@ -298,8 +300,8 @@ public class Path {
         }
 
 //simplified calculation
-        for (int i =1; i< path.length()-1; i++) {
-            maximum_velocity_simplified = constant_for_velocity / path.getWaypoint(i).curvature;
+        for (int i = 1; i < path.length() - 1; i++) {
+            maximum_velocity_simplified = constant_for_velocity / path.getWaypoint(i).getCurvature();
         }
 
 
