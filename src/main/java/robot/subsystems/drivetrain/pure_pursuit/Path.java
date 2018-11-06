@@ -1,7 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 import robot.subsystems.drivetrain.Constants;
-
+import java.math.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -192,11 +192,12 @@ public class Path {
 
 
     /**
-     * @param weight_data   amount of data
+     * @author Paulo
+     * @author Lior
+     * @param weight_data amount of data
      * @param weight_smooth amount of smooth
-     * @param tolerance     the min change between points
+     * @param tolerance the min change between points
      * @return the new path with the way points
-     * @author Orel
      */
     public Path generate_smoothing(double weight_data, double weight_smooth, double tolerance) {
         Path newPathClass = this.copy();
@@ -289,10 +290,26 @@ public class Path {
         }
     }
 
+
     /**
-     * Arrributes to all points their intended velocity.
+     * @author orel
+     * @param path the path
+     * @param const_acceleration rhe acceleration constant
      */
-    private void generateVelocity() {
+    private void generateVelocity(Path path,double const_acceleration ) {
+        int constant_for_velocity = 2;
+        double maximum_velocity_simplified;
+        double maximum_velocity;
+//accurate calculation
+        for (int i = 1; i < path.length() - 1; i++) {
+            maximum_velocity = Math.sqrt(2 * const_acceleration * Constants.SPACING_BETWEEN_WAYPOINTS + Math.pow(path.getWaypoint(i).getSpeed(), 2));
+            path.getWaypoint(i).setSpeed(maximum_velocity);
+        }
+
+//simplified calculation
+        for (int i =1; i< path.length()-1; i++) {
+            maximum_velocity_simplified = constant_for_velocity / path.getWaypoint(i).curvature;
+        }
 
 
     }
