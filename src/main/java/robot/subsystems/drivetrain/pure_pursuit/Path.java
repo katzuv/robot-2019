@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @author Lior Barkai
  * This class is the instance of the path, holding the points.
  */
-public class Path {
+public class    Path {
     private ArrayList<Waypoint> path = new ArrayList<>();
 
     /**
@@ -296,20 +296,12 @@ public class Path {
      * @param const_acceleration rhe acceleration constant
      */
     private void generateVelocity(double const_acceleration ) {
-        int constant_for_velocity = 2;
-        double maximum_velocity_simplified;
         double maximum_velocity;
 //accurate calculation
         for (int i = 1; i < this.length() - 1; i++) {
             maximum_velocity = Math.sqrt(2 * const_acceleration * Constants.SPACING_BETWEEN_WAYPOINTS + Math.pow(this.getWaypoint(i).getSpeed(), 2));
             this.getWaypoint(i).setSpeed(maximum_velocity);
         }
-
-//simplified calculation
-        for (int i =1; i< this.length()-1; i++) {
-            maximum_velocity_simplified = constant_for_velocity / this.getWaypoint(i).curvature;
-        }
-
 
     }
 
