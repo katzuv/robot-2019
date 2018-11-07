@@ -17,7 +17,6 @@ dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
-    compile junit()
 }
 
 def ROBOT_CLASS = "robot.Robot"
