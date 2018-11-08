@@ -14,7 +14,7 @@ public class PurePursue extends Command {
     private Path path;
     private Point currentPoint;
     private Drivetrain drive;
-
+    private Point currentLookahead;
     /**
      * A command class.
      * @param path the Path class that the robot is going to follow
@@ -86,7 +86,7 @@ public class PurePursue extends Command {
      * @author Lior barkai
      * @author Paulo
      */
-    private Point findNearPath(Point ref, double lookahead, Waypoint point1, Waypoint point2) {
+    private Point findNearPath(Point ref, double lookahead, Point point1, Point point2) {
         Vector p = new Vector(point2, point1);
         Vector f = new Vector(point1, ref);
 
@@ -99,14 +99,20 @@ public class PurePursue extends Command {
         if (discriminant < 0)
             return null; //means that the circle doesnt reach the line
         else {
+            Point newLookaheadPoint = null;
             discriminant = Math.sqrt(discriminant);
             double opt1 = (-b - discriminant) / (2 * a);
             double opt2 = (-b + discriminant) / (2 * a);
             if (opt1 >= 0 && opt1 <= 1) {
-                return p.multiply(opt1).add(point1);
+                newLookaheadPoint = p.multiply(opt1).add(point1);
             }
             if (opt2 >= 0 && opt2 <= 1)
-                return p.multiply(opt2).add(point1);
+                if (newLookaheadPoint != null) {
+                    if (opt2 > opt1)
+                        newLookaheadPoint = p.multiply(opt2).add(point1);
+                } else
+                    newLookaheadPoint = p.multiply(opt2).add(point1);
+            return newLookaheadPoint;
         }
     }
 
