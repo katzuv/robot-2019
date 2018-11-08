@@ -243,6 +243,7 @@
 
     var canvas, ctx, background, totalLength;
 
+
     function updateAndPreview() {
         makeAllPointsCalculations();
         calcTotalLength();
@@ -327,9 +328,37 @@
 // Make sure the image is loaded first otherwise nothing will draw.
         background.onload = drawField;
         $(canvas).mousemove(function (e) {
+            var xOr = false;
+            var yOr = false;
+            var X = event.keyCode;
+            if (X === 47) {
+                xOr = true;
+            } else if (X === 21) {
+                yOr = true;
+            } else if (X === 110) {
+                yOr = false;
+                xOr = false;
+
+            }
             var rect = this.getBoundingClientRect(),
-                x = e.clientX - rect.left,
+                x = null, y = null;
+            if (xOr === false && yOr === false) {
+                x = e.clientX - rect.left;
                 y = e.clientY - rect.top;
+                console.log(
+                    "fuck js"
+                )
+            } else if (xOr === true) {
+
+                x = e.clientX - rect.left;
+                y = 0;
+            } else {
+
+                x = 0;
+                y = e.clientY - rect.top;
+            }
+
+
 
             drawField();
             ctx.beginPath();
