@@ -121,7 +121,7 @@ public class PurePursue extends Command {
      * Checks for the next intersection thats index is higher than the current lookahead point.
      * @return the Lookahead Point.
      */
-    private Point findLookaheadInPath() {
+    private Point findLookaheadInPath(Path path) {
         return null;
     }
 
@@ -151,8 +151,8 @@ public class PurePursue extends Command {
      * @author orel
      */
     private double curvatureCalculate(Path path) {
-        double x = closestPoint(path).getX() - currentPoint.getX();
-        double y = closestPoint(path).getY() - currentPoint.getY();
+        double x = findLookaheadInPath(path).getX() - currentPoint.getX();
+        double y = findLookaheadInPath(path).getY() - currentPoint.getY();
         double L = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         double radius = Math.pow(L, 2) / 2 * x;
         double d = radius - x;
