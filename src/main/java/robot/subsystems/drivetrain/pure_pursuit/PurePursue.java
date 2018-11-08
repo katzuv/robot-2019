@@ -16,7 +16,8 @@ public class PurePursue extends Command {
     private Drivetrain drive;
 
     /**
-     * @param path
+     * A command class.
+     * @param path the Path class that the robot is going to follow
      */
     public PurePursue(Path path) {
         drive = Robot.drivetrain;
@@ -36,7 +37,12 @@ public class PurePursue extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         updatePoint();
-
+        /*
+        Main methods:
+            updatePoint()
+            findLookaheadInPath()
+            closest Point
+         */
 
     }
 
@@ -54,6 +60,10 @@ public class PurePursue extends Command {
     protected void interrupted() {
     }
 
+    /**
+     * @author Paulo
+     * Updates the Point object holding the robots x and y cooridinates
+     */
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
         double distance = ((drive.getLeftDistance() - lastLeftEncoder) + (drive.getRightDistance() - lastRightEncoder)) / 2;
@@ -67,11 +77,14 @@ public class PurePursue extends Command {
     //https://stackoverflow.com/questions/1073336/circle-line-segment-collision-detection-algorithm/1084899#1084899
 
     /**
-     * @param ref
-     * @param lookahead
-     * @param point1
-     * @param point2
-     * @return
+     * This method finds the furthest point in a segment that is in a specified distance from the robot.
+     * @param ref       Center point of the robot
+     * @param lookahead lookahead distance (units of measurements are the same as those stored in the points)
+     * @param point1    start of a segment
+     * @param point2    end of a segment
+     * @return returns the furthest point
+     * @author Lior barkai
+     * @author Paulo
      */
     private Point findNearPath(Point ref, double lookahead, Waypoint point1, Waypoint point2) {
         Vector p = new Vector(point2, point1);
@@ -95,19 +108,21 @@ public class PurePursue extends Command {
             if (opt2 >= 0 && opt2 <= 1)
                 return p.multiply(opt2).add(point1);
         }
-        return null; //means that the segment is entirely inside the line.
     }
 
     /**
-     * @return
+     * Uses the 'FindNearPath' method on all segments to find the closest point.
+     * Checks for the next intersection thats index is higher than the current lookahead point.
+     * @return the Lookahead Point.
      */
     private Point findLookaheadInPath() {
         return null;
     }
 
     /**
-     * @param path the path that function work on
-     * @return point that closest to the robot position
+     * Runs through a specified path and finds the closest waypoint to the robot.
+     * @param path the path that this method work on
+     * @return the closest point to the robots position
      * @author orel
      */
     private Point closestPoint(Path path) {
@@ -124,9 +139,10 @@ public class PurePursue extends Command {
     }
 
     /**
-     * @author orel
+     * Calculates the curvature between the tangent of the robot and its lookahead point.
      * @param path current path
-     * @return the curvature for point
+     * @return The curvature from the tangent of the robot to the setpoint
+     * @author orel
      */
     private double curvatureCalculate(Path path) {
         double x = closestPoint(path).getX() - currentPoint.getX();
@@ -142,16 +158,18 @@ public class PurePursue extends Command {
     }
 
     /**
+     * Calculates how far the robots tangent is from the lookahead point.
+     * This method is used to check whether the robot is left or right of the point aswell.
      * @author orel
      * @param path current path
-     * @return the distance from the lockahead positive mean to right negative mean to left
+     * @return The X axis distance (relative to robot) from the lookahead, right side being positive.
      */
-    private double distance_lockahead(Path path){
-        double tan_robot_angle = closestPoint(path).getY()-currentPoint.getX()/closestPoint(path).getX()-currentPoint.getX();
+    private double distance_lookahead(Path path) {
+        double tan_robot_angle = closestPoint(path).getY() - currentPoint.getX() / closestPoint(path).getX() - currentPoint.getX();
         double a = -tan_robot_angle;
         double b = 1;
-        double c =tan_robot_angle* (currentPoint.getX()-currentPoint.getY());
-        return a*findLookaheadInPath().getX()+ b*findLookaheadInPath().getY()+c/Math.sqrt(Math.pow(a,2)+Math.pow(b,2));
+        double c = tan_robot_angle * (currentPoint.getX() - currentPoint.getY());
+        return a * findLookaheadInPath(path).getX() + b * findLookaheadInPath(path).getY() + c / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
     }
 
     /**
