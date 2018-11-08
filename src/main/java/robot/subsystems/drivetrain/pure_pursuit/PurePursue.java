@@ -15,6 +15,7 @@ public class PurePursue extends Command {
     private Point currentPoint;
     private Drivetrain drive;
     private Point currentLookahead;
+    private double lastLookaheadDistance;
     /**
      * A command class.
      * @param path the Path class that the robot is going to follow
@@ -32,6 +33,7 @@ public class PurePursue extends Command {
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
         initAngle = Robot.navx.getAngle();
+        currentLookahead = path.getWaypoint(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -122,6 +124,14 @@ public class PurePursue extends Command {
      * @return the Lookahead Point.
      */
     private Point findLookaheadInPath(Path path) {
+        for(int i = 0; i < path.length() - 1; i++){
+            Point wp = findNearPath(currentPoint, Constants.LOOKAHEAD_DISTANCE, path.getWaypoint(i), path.getWaypoint(i + 1));
+            if(Point.distance(wp,path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
+                lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
+                currentLookahead = wp;
+                return currentPoint;
+            }
+        }
         return null;
     }
 
