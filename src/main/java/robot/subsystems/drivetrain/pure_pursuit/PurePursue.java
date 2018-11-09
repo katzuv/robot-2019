@@ -13,6 +13,7 @@ public class PurePursue extends Command {
     private double initAngle;
     private Path path;
     private Waypoint currentPoint;
+    private Waypoint lastPoint;
     private Drivetrain drive;
     private Point currentLookahead;
     private double lastLookaheadDistance;
@@ -72,6 +73,7 @@ public class PurePursue extends Command {
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
         double distance = ((drive.getLeftDistance() - lastLeftEncoder) + (drive.getRightDistance() - lastRightEncoder)) / 2;
+        lastPoint = currentPoint;
         currentPoint.setX(currentPoint.getX() + distance * Math.cos(drive.getAngle() * (Math.PI / 180.0)));
         currentPoint.setY(currentPoint.getY() + distance * Math.sin(drive.getAngle() * (Math.PI / 180.0)));
 
@@ -203,16 +205,18 @@ public class PurePursue extends Command {
     /**
      * @return
      */
-    public double getRightSpeed(Path path) {
-        return (closestPoint(path).getSpeed()*(2-curvatureCalculate(path)*Constants.TRACK_WIDTH)/2);
+    public double getRightSpeedVoltage(Path path) {
+        double target_accel = Drivetrain.getRightSpeed()/0.02;
+        return Constants.Kv*(closestPoint(path).getSpeed()*(2-curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel);
 
     }
 
     /**
      * @return
      */
-    public double getLeftSpeed() {
-        return (closestPoint(path).getSpeed()*(2+curvatureCalculate(path)*Constants.TRACK_WIDTH)/2);
+    public double getLeftSpeedVoltage(Path path) {
+        double target_accel = Drivetrain.getLeftSpeed()/0.02;
+        return Constants.Kv*(closestPoint(path).getSpeed()*(2+curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel);
     }
 
 }
