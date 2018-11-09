@@ -54,7 +54,7 @@ public class PurePursue extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return (closestPoint(path).getX() == path.getWaypoint(path.length()-1).getX() && closestPoint(path).getY() == path.getWaypoint(path.length()-1).getY());
     }
 
     // Called once after isFinished returns true
