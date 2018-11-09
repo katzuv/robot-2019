@@ -18,7 +18,7 @@ public class PurePursue extends Command {
     private Drivetrain drive;
     private Point currentLookahead;
     private double lastLookaheadDistance;
-    private int direction = 1;
+    private int direction;
 
     /**
      * A command class.
