@@ -31,11 +31,11 @@
 	<br>
 	<button id="save-parameters"> Save Parameters</button>
 </div>
-<div id = "z">
+<div id="z">
 	<h4>Smoothing</h4>
-	Weight data:  <input class="parameter-input" id="weightdata"><br>
-	Weight smooth:  <input class="parameter-input" id="weightsmooth"><br>
-	Tolerance:  <input class="parameter-input" id="tolerance">
+	Weight data: <input class="parameter-input" id="weightdata"><br>
+	Weight smooth: <input class="parameter-input" id="weightsmooth"><br>
+	Tolerance: <input class="parameter-input" id="tolerance">
 </div>
 
 <div id="b">
@@ -288,6 +288,7 @@
         }
     }
 
+
     function drawRobotAtPosition(point, angle) {
         ctx.translate(point.x, point.y);
         ctx.rotate(angle);
@@ -310,8 +311,9 @@
         text.select();
         document.execCommand("copy");
         selectedItem.options.add(text);
-	return text
+        return text
     }
+
 
     $(function () {
         refreshSaves();
@@ -328,36 +330,47 @@
 // Make sure the image is loaded first otherwise nothing will draw.
         background.onload = drawField;
         $(canvas).mousemove(function (e) {
-            var xOr = false;
-            var yOr = false;
-            var X = event.keyCode;
-            if (X === 47) {
-                xOr = true;
-            } else if (X === 21) {
-                yOr = true;
-            } else if (X === 110) {
-                yOr = false;
-                xOr = false;
-
-            }
+            $(this).toggleClass('active');
             var rect = this.getBoundingClientRect(),
-                x = null, y = null;
-            if (xOr === false && yOr === false) {
-                x = e.clientX - rect.left;
-                y = e.clientY - rect.top;
-                console.log(
-                    "fuck js"
-                )
-            } else if (xOr === true) {
+                x = e.clientX - rect.left, y = e.clientY - rect.top;
+            /*          $(canvas).onkeypress(function (z) {
+						  var xOr = false;
+						  var yOr = false;
+						  var X = event.keyCode;
+						  if (X === 47) {
 
-                x = e.clientX - rect.left;
-                y = 0;
-            } else {
+							  xOr = true;
+																																		  } else if (X === 21) {
+							  yOr = true;
+						  } else if (X === 110) {
+							  yOr = false;
+							  xOr = false;
 
-                x = 0;
-                y = e.clientY - rect.top;
-            }
+						  }
 
+						  function return_x() {
+							  if (yOr === false) {
+								  x = e.clientX - rect.left;
+
+
+							  } else {
+								  x = 0;
+							  }
+
+						  }
+
+						  function return_y() {
+							  if (xOr === false) {
+								  y = e.clientY - rect.top;
+
+							  } else {
+								  y = 0;
+							  }
+
+						  }
+
+					  });
+		  */
 
 
             drawField();

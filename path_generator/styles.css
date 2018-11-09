@@ -32,6 +32,10 @@ canvas {
     margin: 1px;
 }
 
+.active {
+
+}
+
 .invisible-btn {
     visibility: hidden;
     display: none
