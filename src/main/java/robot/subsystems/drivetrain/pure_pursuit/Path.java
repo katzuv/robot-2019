@@ -299,9 +299,10 @@ public class    Path {
 
     }
 
+    @Override
     public String toString() {
-        return this.toString();
+        return "Path{" +
+                "path=" + path +
+                '}';
     }
-
-
 }
