@@ -39,6 +39,8 @@ public class Vector extends Vector2d {
         return new Vector(x*d, y*d);
     }
 
+
+
     public Vector normalize() {
         return this.multiply(1 / this.magnitude());
     }

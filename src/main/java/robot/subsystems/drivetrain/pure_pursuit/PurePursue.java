@@ -12,7 +12,7 @@ public class PurePursue extends Command {
     private double lastRightEncoder;
     private double initAngle;
     private Path path;
-    private Point currentPoint;
+    private Waypoint currentPoint;
     private Drivetrain drive;
     private Point currentLookahead;
     private double lastLookaheadDistance;
@@ -25,7 +25,7 @@ public class PurePursue extends Command {
     public PurePursue(Path path) {
         drive = Robot.drivetrain;
         this.path = path;
-        currentPoint = new Point(0, 0);
+        currentPoint = new Waypoint(0, 0);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -91,7 +91,7 @@ public class PurePursue extends Command {
      * @author Lior barkai
      * @author Paulo
      */
-    private Point findNearPath(Point ref, double lookahead, Point point1, Point point2) {
+    private Waypoint findNearPath(Point ref, double lookahead, Waypoint point1, Waypoint point2) {
         Vector p = new Vector(point2, point1);
         Vector f = new Vector(point1, ref);
 
@@ -104,7 +104,7 @@ public class PurePursue extends Command {
         if (discriminant < 0)
             return null; //means that the circle doesnt reach the line
         else {
-            Point newLookaheadPoint = null;
+            Waypoint newLookaheadPoint = null;
             discriminant = Math.sqrt(discriminant);
             double opt1 = (-b - discriminant) / (2 * a);
             double opt2 = (-b + discriminant) / (2 * a);
@@ -127,9 +127,9 @@ public class PurePursue extends Command {
      *
      * @return the Lookahead Point.
      */
-    private Point findLookaheadInPath(Path path) {
+    private Waypoint findLookaheadInPath(Path path) {
         for (int i = 0; i < path.length() - 1; i++) {
-            Point wp = findNearPath(currentPoint, Constants.LOOKAHEAD_DISTANCE, path.getWaypoint(i), path.getWaypoint(i + 1));
+            Waypoint wp = findNearPath(currentPoint, Constants.LOOKAHEAD_DISTANCE, path.getWaypoint(i), path.getWaypoint(i + 1));
             if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                 lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
                 currentLookahead = wp;
@@ -146,8 +146,8 @@ public class PurePursue extends Command {
      * @return the closest point to the robots position
      * @author orel
      */
-    private Point closestPoint(Path path) {
-        Point closest = path.getWaypoint(0).copy();
+    private Waypoint closestPoint(Path path) {
+        Waypoint closest = path.getWaypoint(0).copy();
         for (int i = 1; i < path.length(); i++) {
 
             if (Point.distance(this.currentPoint, path.getWaypoint(i)) < Point.distance(this.currentPoint, closest)) {
@@ -204,15 +204,16 @@ public class PurePursue extends Command {
     /**
      * @return
      */
-    public double getRightSpeed() {
-        return 0;
+    public double getRightSpeed(Path path) {
+        return (closestPoint(path).getSpeed()*(2-curvatureCalculate(path)*Constants.TRACK_WIDTH)/2);
+
     }
 
     /**
      * @return
      */
     public double getLeftSpeed() {
-        return 0;
+        return (closestPoint(path).getSpeed()*(2+curvatureCalculate(path)*Constants.TRACK_WIDTH)/2);
     }
 
 }
