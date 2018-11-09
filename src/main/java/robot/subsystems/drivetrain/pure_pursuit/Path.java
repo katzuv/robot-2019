@@ -67,7 +67,7 @@ public class    Path {
      * @param p     the waypoint to add.
      */
     public void addWaypoint(int index, Waypoint p) {
-        if (!(index < path.size() && index > -path.size()))
+        if (!(index <= path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
         if (index == path.size())
             this.appendWaypoint(p);
