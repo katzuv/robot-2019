@@ -65,11 +65,13 @@ public class PurePursue extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+        drive.setSpeed(0, 0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        end();
     }
 
     /**
@@ -85,7 +87,6 @@ public class PurePursue extends Command {
 
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
-
         drive.robotPoint.setX(currentPoint.getX());
         drive.robotPoint.setY(currentPoint.getY());
     }
@@ -223,8 +224,7 @@ public class PurePursue extends Command {
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drive.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drive.getRightSpeed();
-        return Constants.Kv * (direction * closestPoint(path).getSpeed() * (2 - curvatureCalculate(path) * Constants.TRACK_WIDTH) / 2) +
-                Constants.Ka * (target_accel) + Constants.Kp * (direction * closestPoint(path).getSpeed() - drive.getRightSpeed());
+        return Constants.Kv * (closestPoint(path).getSpeed() * (2 - curvatureCalculate(path) * Constants.TRACK_WIDTH) / 2) + Constants.Ka * (target_accel) + Constants.Kp * (closestPoint(path).getSpeed() - drive.getRightSpeed());
 
     }
 
@@ -238,8 +238,7 @@ public class PurePursue extends Command {
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = (drive.getLeftSpeed() - lastLeftSpeed) / 0.02;
         lastLeftSpeed = drive.getLeftSpeed();
-        return Constants.Kv * (direction * closestPoint(path).getSpeed() * (2 + curvatureCalculate(path) * Constants.TRACK_WIDTH) / 2) +
-                Constants.Ka * (target_accel) + Constants.Kp * (direction * closestPoint(path).getSpeed() - drive.getLeftSpeed());
+        return Constants.Kv * (closestPoint(path).getSpeed() * (2 + curvatureCalculate(path) * Constants.TRACK_WIDTH) / 2) + Constants.Ka * (target_accel) + Constants.Kp * (closestPoint(path).getSpeed() - drive.getLeftSpeed());
     }
 
 }
