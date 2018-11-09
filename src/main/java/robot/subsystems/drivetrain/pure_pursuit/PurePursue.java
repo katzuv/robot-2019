@@ -73,10 +73,8 @@ public class PurePursue extends Command {
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
         double distance = ((drive.getLeftDistance() - lastLeftEncoder) + (drive.getRightDistance() - lastRightEncoder)) / 2;
-        lastPoint = currentPoint;
         currentPoint.setX(currentPoint.getX() + distance * Math.cos(drive.getAngle() * (Math.PI / 180.0)));
         currentPoint.setY(currentPoint.getY() + distance * Math.sin(drive.getAngle() * (Math.PI / 180.0)));
-
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
     }
@@ -210,8 +208,9 @@ public class PurePursue extends Command {
      * @return applied voltage to right engine
      */
     public double getRightSpeedVoltage(Path path) {
-        double target_accel = Drivetrain.getRightSpeed()/0.02;
-        return Constants.Kv*(closestPoint(path).getSpeed()*(2-curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel) + Constants.Kp*(closestPoint(path).getSpeed()-Drivetrain.getRightSpeed);
+        double target_accel = (drive.getRightSpeed()-lastRightSpeed)/0.02;
+        lastRightSpeed = drive.getRightSpeed();
+        return Constants.Kv*(closestPoint(path).getSpeed()*(2-curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel) + Constants.Kp*(closestPoint(path).getSpeed()-drive.getRightSpeed());
 
     }
 
@@ -223,8 +222,9 @@ public class PurePursue extends Command {
      *@return applied voltage to left engine
      */
     public double getLeftSpeedVoltage(Path path) {
-        double target_accel = Drivetrain.getLeftSpeed()/0.02;
-        return Constants.Kv*(closestPoint(path).getSpeed()*(2+curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel) + Constants.Kp*(closestPoint(path).getSpeed()-Drivetrain.getLeftSpeed;
+        double target_accel = (drive.getLeftSpeed()-lastLeftSpeed)/0.02;
+        lastLeftSpeed = drive.getLeftSpeed();
+        return Constants.Kv*(closestPoint(path).getSpeed()*(2+curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel) + Constants.Kp*(closestPoint(path).getSpeed()-drive.getLeftSpeed());
     }
 
 }
