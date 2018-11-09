@@ -48,6 +48,7 @@
 	kP: <input class="parameter-input" id="kP">
 </div>
 
+<embed src="http://www.json-csv.com" style="width:500px; height: 300px;position: relative; left: 800px">
 
 <div id="saves-explorer">
 	<h4>Saves</h4>
@@ -193,7 +194,7 @@
             var distFirstPoint = distSoFar;
             distSoFar += getDist(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1]);
             if (distSoFar >= dist) {
-                var xy = getXYatLine(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1], dist - distFirstPoint);
+	            var xy = getXYatLine(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1], dist - distFirstPoint);
                 var alpha = getXYAngle(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1]);
                 return {point: xy, angle: alpha};
             }
