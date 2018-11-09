@@ -26,7 +26,7 @@ public class PurePursue extends Command {
     public PurePursue(Path path) {
         drive = Robot.drivetrain;
         this.path = path;
-        currentPoint = new Waypoint(0, 0);
+        currentPoint = new Waypoint(drive.robotPoint.getX(), drive.robotPoint.getY());
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -79,7 +79,12 @@ public class PurePursue extends Command {
 
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
+
+        drive.robotPoint.setX(currentPoint.getX());
+        drive.robotPoint.setY(currentPoint.getY());
     }
+
+
     //Only Part of the function! doesn't run function through all of the path
     //https://stackoverflow.com/questions/1073336/circle-line-segment-collision-detection-algorithm/1084899#1084899
 

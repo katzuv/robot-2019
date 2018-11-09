@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
+import robot.subsystems.drivetrain.pure_pursuit.Point;
 
 /**
  * Add your docs here.
@@ -24,7 +25,7 @@ public class Drivetrain extends Subsystem {
     private final VictorSPX leftBack = new VictorSPX(Ports.leftBackMotor);
     private final VictorSPX rightForward = new VictorSPX(Ports.rightForwardMotor);
     private final VictorSPX rightBack = new VictorSPX(Ports.rightBackMotor);
-
+    public Point robotPoint;
     private final Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
     private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
 
