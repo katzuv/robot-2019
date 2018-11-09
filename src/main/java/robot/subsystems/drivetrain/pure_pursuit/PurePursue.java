@@ -41,10 +41,11 @@ public class PurePursue extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         updatePoint();
+        updateLookaheadInPath(path);
         /*
         Main methods:
             updatePoint()
-            findLookaheadInPath()
+            updateLookaheadInPath()
             closest Point
          */
 
@@ -127,16 +128,15 @@ public class PurePursue extends Command {
      *
      * @return the Lookahead Point.
      */
-    private Point findLookaheadInPath(Path path) {
+    private void updateLookaheadInPath(Path path) {
         for (int i = 0; i < path.length() - 1; i++) {
             Point wp = findNearPath(currentPoint, Constants.LOOKAHEAD_DISTANCE, path.getWaypoint(i), path.getWaypoint(i + 1));
             if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                 lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
                 currentLookahead = wp;
-                return currentPoint;
+                return;
             }
         }
-        return null;
     }
 
     /**
@@ -195,9 +195,8 @@ public class PurePursue extends Command {
         //Another point on the robots tangent
         double sign = Math.signum(Math.cos(robot_angle) * (currentLookahead.getX() - currentPoint.getX()) -
                 Math.sin(robot_angle) * (currentLookahead.getY() - currentPoint.getY()));
-        return sign * Math.abs(a * findLookaheadInPath(path).getX() + b * findLookaheadInPath(path).getY() + c) /
+        return sign * Math.abs(a * currentLookahead.getX() + b * currentLookahead.getY() + c) /
                 Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-
     }
 
 
