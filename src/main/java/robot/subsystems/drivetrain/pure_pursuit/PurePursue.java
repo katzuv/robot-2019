@@ -8,17 +8,17 @@ import robot.subsystems.drivetrain.Drivetrain;
  *
  */
 public class PurePursue extends Command {
-    private double lastLeftEncoder;
-    private double lastRightEncoder;
-    private double initAngle;
-    private Path path;
-    private Point currentPoint;
-    private double lastRightSpeed;
-    private double lastLeftSpeed;
-    private Drivetrain drive;
-    private Point currentLookahead;
-    private double lastLookaheadDistance;
-    private int direction;
+    private Drivetrain drive; //Instance of the subsystem
+    private Path path; //Command specific path to follow
+    private Point currentPoint; //holds X and Y variables for the robot
+    private Point currentLookahead; //holds X and Y variables for the Lookahead point
+    private int direction; //whether the robot drives forward or backwards (-1 or 1)
+    private double lastLeftSpeed; //the last speed of the left encoder
+    private double lastRightSpeed; //the last speed of the right encoder
+    private double lastLeftEncoder; //the last distance of the left encoder
+    private double lastRightEncoder; //the last distance of the right encoder
+    //private double initAngle;
+    private double lastLookaheadDistance; //distance of the last lookahead from the start of the path
 
     /**
      * A command class.
@@ -39,7 +39,7 @@ public class PurePursue extends Command {
     protected void initialize() {
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
-        initAngle = drive.getAngle() + (direction == -1 ? 180 : 0);
+        //initAngle = drive.getAngle() + (direction == -1 ? 180 : 0);
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drive.getLeftSpeed();
         lastRightSpeed = direction * drive.getRightSpeed();
