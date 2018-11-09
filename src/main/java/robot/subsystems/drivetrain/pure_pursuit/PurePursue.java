@@ -207,7 +207,7 @@ public class PurePursue extends Command {
      */
     public double getRightSpeedVoltage(Path path) {
         double target_accel = Drivetrain.getRightSpeed()/0.02;
-        return Constants.Kv*(closestPoint(path).getSpeed()*(2-curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel);
+        return Constants.Kv*(closestPoint(path).getSpeed()*(2-curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel) + Constants.Kp*(closestPoint(path).getSpeed()-Drivetrain.getRightSpeed);
 
     }
 
@@ -216,7 +216,7 @@ public class PurePursue extends Command {
      */
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = Drivetrain.getLeftSpeed()/0.02;
-        return Constants.Kv*(closestPoint(path).getSpeed()*(2+curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel);
+        return Constants.Kv*(closestPoint(path).getSpeed()*(2+curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel) + Constants.Kp*(closestPoint(path).getSpeed()-Drivetrain.getLeftSpeed;
     }
 
 }
