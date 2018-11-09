@@ -18,7 +18,7 @@ public class MainTest {
         Path newPath = path.generate_smoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         System.out.println("path2");
         newPath.generateCurvature();
-        newPath.generateVelocity();
+        newPath.generateVelocity(Constants.MAX_ACCEL);
         System.out.println(newPath);
 
 
