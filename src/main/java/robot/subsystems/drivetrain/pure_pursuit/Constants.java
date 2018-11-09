@@ -6,5 +6,7 @@ public class Constants {
     public final static double TOLERANCE = 0.001;
     public final static double LOOKAHEAD_DISTANCE = 0.3;
     public final static double TRACK_WIDTH = 3;
-
+    public final static double Kv = 0;
+    public final static double Ka = 0;
+    public final static double Kp = 0;
 }
