@@ -203,7 +203,11 @@ public class PurePursue extends Command {
 
 
     /**
-     * @return
+     * calculates the speed needed in the right wheel and makes so we can apply it straight to the right engine
+     *
+     * @param path current path
+     * @author lior
+     * @return applied voltage to right engine
      */
     public double getRightSpeedVoltage(Path path) {
         double target_accel = Drivetrain.getRightSpeed()/0.02;
@@ -212,7 +216,11 @@ public class PurePursue extends Command {
     }
 
     /**
-     * @return
+     * calculates the speed needed in the left wheel and makes so we can apply it straight to the left engine
+     *
+     * @param path current path
+     * @author lior
+     *@return applied voltage to left engine
      */
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = Drivetrain.getLeftSpeed()/0.02;
