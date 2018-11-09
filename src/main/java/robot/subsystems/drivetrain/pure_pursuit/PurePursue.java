@@ -16,8 +16,10 @@ public class PurePursue extends Command {
     private Drivetrain drive;
     private Point currentLookahead;
     private double lastLookaheadDistance;
+
     /**
      * A command class.
+     *
      * @param path the Path class that the robot is going to follow
      */
     public PurePursue(Path path) {
@@ -32,7 +34,7 @@ public class PurePursue extends Command {
     protected void initialize() {
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
-        initAngle = Robot.navx.getAngle();
+        initAngle = drive.getAngle();
         currentLookahead = path.getWaypoint(0);
     }
 
@@ -80,6 +82,7 @@ public class PurePursue extends Command {
 
     /**
      * This method finds the furthest point in a segment that is in a specified distance from the robot.
+     *
      * @param ref       Center point of the robot
      * @param lookahead lookahead distance (units of measurements are the same as those stored in the points)
      * @param point1    start of a segment
@@ -121,12 +124,13 @@ public class PurePursue extends Command {
     /**
      * Uses the 'FindNearPath' method on all segments to find the closest point.
      * Checks for the next intersection thats index is higher than the current lookahead point.
+     *
      * @return the Lookahead Point.
      */
     private Point findLookaheadInPath(Path path) {
-        for(int i = 0; i < path.length() - 1; i++){
+        for (int i = 0; i < path.length() - 1; i++) {
             Point wp = findNearPath(currentPoint, Constants.LOOKAHEAD_DISTANCE, path.getWaypoint(i), path.getWaypoint(i + 1));
-            if(Point.distance(wp,path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
+            if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                 lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
                 currentLookahead = wp;
                 return currentPoint;
@@ -137,6 +141,7 @@ public class PurePursue extends Command {
 
     /**
      * Runs through a specified path and finds the closest waypoint to the robot.
+     *
      * @param path the path that this method work on
      * @return the closest point to the robots position
      * @author orel
@@ -156,16 +161,16 @@ public class PurePursue extends Command {
 
     /**
      * Calculates the curvature between the tangent of the robot and its lookahead point.
+     *
      * @param path current path
      * @return The curvature from the tangent of the robot to the setpoint
      * @author orel
+     * @author Paulo
      */
     private double curvatureCalculate(Path path) {
-        double x = findLookaheadInPath(path).getX() - currentPoint.getX();
-        double y = findLookaheadInPath(path).getY() - currentPoint.getY();
-        double L = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        double x = distance_lookahead(path);
+        double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2) / 2 * x;
-        double d = radius - x;
         if (radius == 0) {
             return Double.POSITIVE_INFINITY;
         } else {
@@ -176,17 +181,25 @@ public class PurePursue extends Command {
     /**
      * Calculates how far the robots tangent is from the lookahead point.
      * This method is used to check whether the robot is left or right of the point aswell.
-     * @author orel
+     *
      * @param path current path
      * @return The X axis distance (relative to robot) from the lookahead, right side being positive.
+     * @author orel
+     * @author Paulo
      */
     private double distance_lookahead(Path path) {
-        double tan_robot_angle = closestPoint(path).getY() - currentPoint.getX() / closestPoint(path).getX() - currentPoint.getX();
-        double a = -tan_robot_angle;
+        double robot_angle = Math.toRadians(drive.getAngle());
+        double a = -Math.tan(robot_angle);
         double b = 1;
-        double c = tan_robot_angle * (currentPoint.getX() - currentPoint.getY());
-        return a * findLookaheadInPath(path).getX() + b * findLookaheadInPath(path).getY() + c / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+        double c = -Math.tan(robot_angle) * (currentPoint.getX() - currentPoint.getY());
+        //Another point on the robots tangent
+        double sign = Math.signum(Math.cos(robot_angle) * (currentLookahead.getX() - currentPoint.getX()) -
+                Math.sin(robot_angle) * (currentLookahead.getY() - currentPoint.getY()));
+        return sign * Math.abs(a * findLookaheadInPath(path).getX() + b * findLookaheadInPath(path).getY() + c) /
+                Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+
     }
+
 
     /**
      * @return
