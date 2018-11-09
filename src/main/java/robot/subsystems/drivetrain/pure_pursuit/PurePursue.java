@@ -12,8 +12,9 @@ public class PurePursue extends Command {
     private double lastRightEncoder;
     private double initAngle;
     private Path path;
-    private Waypoint currentPoint;
-    private Waypoint lastPoint;
+    private Point currentPoint;
+    private double lastRightSpeed;
+    private double lastLeftSpeed;
     private Drivetrain drive;
     private Point currentLookahead;
     private double lastLookaheadDistance;
@@ -37,6 +38,8 @@ public class PurePursue extends Command {
         lastRightEncoder = drive.getRightDistance();
         initAngle = drive.getAngle();
         currentLookahead = path.getWaypoint(0);
+        lastLeftSpeed = drive.getLeftSpeed();
+        lastRightSpeed = drive.getRightSpeed();
     }
 
     // Called repeatedly when this Command is scheduled to run
