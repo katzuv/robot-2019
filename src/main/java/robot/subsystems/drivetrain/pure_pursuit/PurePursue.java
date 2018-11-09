@@ -18,13 +18,16 @@ public class PurePursue extends Command {
     private Drivetrain drive;
     private Point currentLookahead;
     private double lastLookaheadDistance;
+    private int direction = 1;
 
     /**
      * A command class.
      *
-     * @param path the Path class that the robot is going to follow
+     * @param path       the Path class that the robot is going to follow
+     * @param isReversed states if the robot should drive forward or backwards along the path.
      */
-    public PurePursue(Path path) {
+    public PurePursue(Path path, boolean isReversed) {
+        direction = isReversed ? -1 : 1;
         drive = Robot.drivetrain;
         this.path = path;
         currentPoint = new Waypoint(drive.robotPoint.getX(), drive.robotPoint.getY());
@@ -36,10 +39,10 @@ public class PurePursue extends Command {
     protected void initialize() {
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
-        initAngle = drive.getAngle();
+        initAngle = drive.getAngle() + (direction == -1 ? 180 : 0);
         currentLookahead = path.getWaypoint(0);
-        lastLeftSpeed = drive.getLeftSpeed();
-        lastRightSpeed = drive.getRightSpeed();
+        lastLeftSpeed = direction * drive.getLeftSpeed();
+        lastRightSpeed = direction * drive.getRightSpeed();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -57,7 +60,7 @@ public class PurePursue extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (closestPoint(path).getX() == path.getWaypoint(path.length()-1).getX() && closestPoint(path).getY() == path.getWaypoint(path.length()-1).getY());
+        return (closestPoint(path).getX() == path.getWaypoint(path.length() - 1).getX() && closestPoint(path).getY() == path.getWaypoint(path.length() - 1).getY());
     }
 
     // Called once after isFinished returns true
@@ -76,8 +79,10 @@ public class PurePursue extends Command {
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
         double distance = ((drive.getLeftDistance() - lastLeftEncoder) + (drive.getRightDistance() - lastRightEncoder)) / 2;
-        currentPoint.setX(currentPoint.getX() + distance * Math.cos(drive.getAngle() * (Math.PI / 180.0)));
-        currentPoint.setY(currentPoint.getY() + distance * Math.sin(drive.getAngle() * (Math.PI / 180.0)));
+
+        currentPoint.setX(currentPoint.getX() + direction * distance * Math.cos(drive.getAngle() * (Math.PI / 180.0)));
+        currentPoint.setY(currentPoint.getY() + direction * distance * Math.sin(drive.getAngle() * (Math.PI / 180.0)));
+
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
 
@@ -196,7 +201,7 @@ public class PurePursue extends Command {
      * @author Paulo
      */
     private double distance_lookahead(Path path) {
-        double robot_angle = Math.toRadians(drive.getAngle());
+        double robot_angle = Math.toRadians(drive.getAngle() + (direction == -1 ? 180 : 0));
         double a = -Math.tan(robot_angle);
         double b = 1;
         double c = -Math.tan(robot_angle) * (currentPoint.getX() - currentPoint.getY());
@@ -212,13 +217,14 @@ public class PurePursue extends Command {
      * calculates the speed needed in the right wheel and makes so we can apply it straight to the right engine
      *
      * @param path current path
-     * @author lior
      * @return applied voltage to right engine
+     * @author lior
      */
     public double getRightSpeedVoltage(Path path) {
-        double target_accel = (drive.getRightSpeed()-lastRightSpeed)/0.02;
+        double target_accel = (drive.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drive.getRightSpeed();
-        return Constants.Kv*(closestPoint(path).getSpeed()*(2-curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel) + Constants.Kp*(closestPoint(path).getSpeed()-drive.getRightSpeed());
+        return Constants.Kv * (direction * closestPoint(path).getSpeed() * (2 - curvatureCalculate(path) * Constants.TRACK_WIDTH) / 2) +
+                Constants.Ka * (target_accel) + Constants.Kp * (direction * closestPoint(path).getSpeed() - drive.getRightSpeed());
 
     }
 
@@ -226,13 +232,14 @@ public class PurePursue extends Command {
      * calculates the speed needed in the left wheel and makes so we can apply it straight to the left engine
      *
      * @param path current path
+     * @return applied voltage to left engine
      * @author lior
-     *@return applied voltage to left engine
      */
     public double getLeftSpeedVoltage(Path path) {
-        double target_accel = (drive.getLeftSpeed()-lastLeftSpeed)/0.02;
+        double target_accel = (drive.getLeftSpeed() - lastLeftSpeed) / 0.02;
         lastLeftSpeed = drive.getLeftSpeed();
-        return Constants.Kv*(closestPoint(path).getSpeed()*(2+curvatureCalculate(path)*Constants.TRACK_WIDTH)/2) + Constants.Ka*(target_accel) + Constants.Kp*(closestPoint(path).getSpeed()-drive.getLeftSpeed());
+        return Constants.Kv * (direction * closestPoint(path).getSpeed() * (2 + curvatureCalculate(path) * Constants.TRACK_WIDTH) / 2) +
+                Constants.Ka * (target_accel) + Constants.Kp * (direction * closestPoint(path).getSpeed() - drive.getLeftSpeed());
     }
 
 }
