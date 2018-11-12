@@ -27,6 +27,10 @@ public class PurePursue extends Command {
      *
      * @param path            the Path class that the robot is going to follow
      * @param isReversed      states if the robot should drive forward or backwards along the path.
+     * @param lookaheadRadius constant. the distance of the setpoint the robot tries to follow.
+     * @param kP              driving constant. Multiplied by the difference between left and right speeds.
+     * @param kA              driving constant. Multiplied by the robots acceleration.
+     * @param kV              driving constant. Multiplied by the target velocity of the nearest point.
      */
     public PurePursue(Path path, boolean isReversed, double lookaheadRadius, double kP, double kA, double kV) {
         requires(drive);
@@ -144,6 +148,7 @@ public class PurePursue extends Command {
      * Checks for the next intersection thats index is higher than the current lookahead point.
      *
      * @return the Lookahead Point.
+     * @path the path the robot is driving on.
      */
     private void updateLookaheadInPath(Path path) {
         for (int i = 0; i < path.length() - 1; i++) {
