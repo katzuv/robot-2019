@@ -21,11 +21,12 @@ public class PurePursue extends Command {
     private double lastLookaheadDistance; //distance of the last lookahead from the start of the path
     private double kP, kA, kV;
     private double lookaheadRadius;
+
     /**
      * A command class.
      *
-     * @param path       the Path class that the robot is going to follow
-     * @param isReversed states if the robot should drive forward or backwards along the path.
+     * @param path            the Path class that the robot is going to follow
+     * @param isReversed      states if the robot should drive forward or backwards along the path.
      */
     public PurePursue(Path path, boolean isReversed, double lookaheadRadius, double kP, double kA, double kV) {
         requires(drive);
@@ -55,7 +56,7 @@ public class PurePursue extends Command {
     protected void execute() {
         updatePoint();
         updateLookaheadInPath(path);
-        drive.setSpeed(getLeftSpeedVoltage(path),getRightSpeedVoltage(path));
+        drive.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -224,7 +225,9 @@ public class PurePursue extends Command {
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drive.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drive.getRightSpeed();
-        return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.TRACK_WIDTH) / 2) + kA * (target_accel) + kP * (closestPoint(path).getSpeed() - drive.getRightSpeed());
+        return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.TRACK_WIDTH) / 2) +
+                kA * (target_accel) +
+                kP * (closestPoint(path).getSpeed() - drive.getRightSpeed());
 
     }
 
@@ -238,7 +241,9 @@ public class PurePursue extends Command {
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = (drive.getLeftSpeed() - lastLeftSpeed) / 0.02;
         lastLeftSpeed = drive.getLeftSpeed();
-        return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.TRACK_WIDTH) / 2) + kA * (target_accel) + kP * (closestPoint(path).getSpeed() - drive.getLeftSpeed());
+        return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.TRACK_WIDTH) / 2) +
+                kA * (target_accel) +
+                kP * (closestPoint(path).getSpeed() - drive.getLeftSpeed());
     }
 
 }

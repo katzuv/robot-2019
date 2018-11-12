@@ -1,7 +1,5 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
-import robot.subsystems.drivetrain.Constants;
-import java.math.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -41,7 +39,7 @@ public class Path {
     public void setWaypoint(int index, Waypoint p) {
         if (!(index <= path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        if(index == path.size())
+        if (index == path.size())
             this.appendWaypoint(p);
         else
             path.set(index % path.size(), p);
@@ -56,7 +54,7 @@ public class Path {
     public void addWaypoint(int index, Waypoint p) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        if(index == path.size())
+        if (index == path.size())
             this.appendWaypoint(p);
         else
             path.add(index % path.size(), p);
