@@ -11,9 +11,9 @@ public class Constants {
     public final static double TOLERANCE = 0.001;
 
     //DRIVING CONSTANTS (pure numbers)
-    public final static double Kv = 0;
-    public final static double Ka = 0;
-    public final static double Kp = 0;
+    public final static double kV = 0;
+    public final static double kA = 0;
+    public final static double kP = 0;
 
     public final static double STOP_SPEED_THRESH = 0.1; //the speed the robot could stop at the end of the path.
 }
