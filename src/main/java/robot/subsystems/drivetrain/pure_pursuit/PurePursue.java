@@ -28,6 +28,7 @@ public class PurePursue extends Command {
      * @param isReversed states if the robot should drive forward or backwards along the path.
      */
     public PurePursue(Path path, boolean isReversed, double lookaheadRadius, double Kp, double Ka, double Kv) {
+        requires(drive);
         this.lookaheadRadius = lookaheadRadius;
         this.Kp = Kp;
         this.Ka = Ka;
@@ -35,9 +36,8 @@ public class PurePursue extends Command {
         direction = isReversed ? -1 : 1;
         drive = Robot.drivetrain;
         this.path = path;
-        currentPoint = new Waypoint(drive.robotPoint.getX(), drive.robotPoint.getY());
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        // eg.
     }
 
     // Called just before this Command runs the first time
