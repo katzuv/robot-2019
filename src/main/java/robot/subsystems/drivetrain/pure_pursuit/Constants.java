@@ -9,4 +9,5 @@ public class Constants {
     public final static double Kv = 0;
     public final static double Ka = 0;
     public final static double Kp = 0;
+    public final static double STOP_SPEED_THRESH = 0.1;
 }

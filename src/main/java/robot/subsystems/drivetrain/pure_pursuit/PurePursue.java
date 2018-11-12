@@ -60,7 +60,9 @@ public class PurePursue extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (closestPoint(path).getX() == path.getWaypoint(path.length() - 1).getX() && closestPoint(path).getY() == path.getWaypoint(path.length() - 1).getY());
+        return (closestPoint(path) == path.getWaypoint(path.length() - 1) &&
+                drive.getLeftSpeed() < Constants.STOP_SPEED_THRESH &&
+                drive.getRightSpeed() < Constants.STOP_SPEED_THRESH);
     }
 
     // Called once after isFinished returns true
