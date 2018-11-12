@@ -47,7 +47,7 @@ public class PurePursue extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        currentPoint = new Waypoint(drive.robotPoint.getX(), drive.robotPoint.getY());
+        currentPoint = new Waypoint(drive.currentLocation.getX(), drive.currentLocation.getY());
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
         //initAngle = drive.getAngle() + (direction == -1 ? 180 : 0);
@@ -94,8 +94,8 @@ public class PurePursue extends Command {
 
         lastLeftEncoder = drive.getLeftDistance();
         lastRightEncoder = drive.getRightDistance();
-        drive.robotPoint.setX(currentPoint.getX());
-        drive.robotPoint.setY(currentPoint.getY());
+        drive.currentLocation.setX(currentPoint.getX());
+        drive.currentLocation.setY(currentPoint.getY());
     }
 
 

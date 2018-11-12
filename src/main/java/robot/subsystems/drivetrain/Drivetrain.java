@@ -27,7 +27,7 @@ public class Drivetrain extends Subsystem {
     private final VictorSPX rightBack = new VictorSPX(Ports.rightBackMotor);
     private final Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
     private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
-    public Point robotPoint;
+    public Point currentLocation;
 
     public Drivetrain() {
         leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
