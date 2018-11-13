@@ -206,7 +206,7 @@ public class Path {
      * @author Paulo
      * @author Lior
      */
-    public Path generate_smoothing(double weight_data, double weight_smooth, double tolerance) {
+    public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
         Path newPathClass = this.copy();
         double[][] newPath = new double[this.length()][2];
         double a = weight_data;
