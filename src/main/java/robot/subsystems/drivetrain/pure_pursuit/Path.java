@@ -306,8 +306,6 @@ public class Path {
 
     @Override
     public String toString() {
-        return "Path{" +
-                "path=" + path +
-                '}';
+        return "Path{" + "path=" + path + '}';
     }
 }
