@@ -1,7 +1,9 @@
 package robot.subsystems.drivetrain;
 
 public class Constants {
-    static final double DISTANCE_PER_PULSE = 0.003451;//meters
+    public static final boolean LEFT_REVERSED = false;
+    public static final boolean RIGHT_REVERSED = false;
+    static final double PULSE_PER_DISTANCE = 0.003451;
 
 
 

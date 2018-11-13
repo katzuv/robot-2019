@@ -20,6 +20,5 @@ public class Constants {
     public final static double kP = 0;
 
     public final static double STOP_SPEED_THRESH = 0.1; //the speed the robot could stop at the end of the path.
-
-
+  
 }
