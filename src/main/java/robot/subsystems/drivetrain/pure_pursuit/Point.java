@@ -83,18 +83,15 @@ public class Point {
 
     @Override
     public String toString() {
-        return
-                x +
-                " " + y
-                + "\n";
+        return x + " " + y + "\n";
     }
 
-    public void addVector(Vector v){
+    public void addVector(Vector v) {
         x += v.x;
         y += v.y;
     }
 
-    public void subtractVector(Vector v){
+    public void subtractVector(Vector v) {
         x -= v.x;
         y -= v.y;
     }

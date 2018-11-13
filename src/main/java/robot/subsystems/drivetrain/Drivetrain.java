@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
+import robot.subsystems.drivetrain.pure_pursuit.Point;
 
 /**
  * Add your docs here.
@@ -24,13 +25,15 @@ public class Drivetrain extends Subsystem {
     private final VictorSPX leftBack = new VictorSPX(Ports.leftBackMotor);
     private final VictorSPX rightForward = new VictorSPX(Ports.rightForwardMotor);
     private final VictorSPX rightBack = new VictorSPX(Ports.rightBackMotor);
-
     private final Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
     private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
+    public Point currentLocation;
 
     public Drivetrain() {
-        leftEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
-        rightEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+        leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+        rightEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+        leftForward.setInverted(Constants.LEFT_REVERSED);
+        rightForward.setInverted(Constants.RIGHT_REVERSED);
     }
 
     @Override
@@ -49,14 +52,8 @@ public class Drivetrain extends Subsystem {
         setRightSpeed(rightSpeed);
     }
 
-    /**
-     * Set the speed for the right side.
-     *
-     * @param speed speed for the motors of the right side
-     */
-    private void setRightSpeed(double speed) {
-        rightForward.set(ControlMode.PercentOutput, speed);
-        rightBack.set(ControlMode.PercentOutput, speed);
+    public double getLeftSpeed() {
+        return leftEncoder.getRate();
     }
 
     /**
@@ -67,6 +64,20 @@ public class Drivetrain extends Subsystem {
     private void setLeftSpeed(double speed) {
         leftForward.set(ControlMode.PercentOutput, speed);
         leftBack.set(ControlMode.PercentOutput, speed);
+    }
+
+    public double getRightSpeed() {
+        return rightEncoder.getRate();
+    }
+
+    /**
+     * Set the speed for the right side.
+     *
+     * @param speed speed for the motors of the right side
+     */
+    private void setRightSpeed(double speed) {
+        rightForward.set(ControlMode.PercentOutput, speed);
+        rightBack.set(ControlMode.PercentOutput, speed);
     }
 
     /**
@@ -90,25 +101,28 @@ public class Drivetrain extends Subsystem {
 
     /**
      * returns the robot NAVX yaw angle
+     *
      * @return navx yaw angle
      */
-    public double getAngle(){
+    public double getAngle() {
         return Robot.navx.getAngle();
     }
 
     /**
      * returns the robot NAVX pitch angle
+     *
      * @return navx pitch angle
      */
-    public double getPitch(){
+    public double getPitch() {
         return Robot.navx.getPitch();
     }
 
     /**
      * returns the robot NAVX roll angle
+     *
      * @return navx roll angle
      */
-    public double getRoll(){
+    public double getRoll() {
         return Robot.navx.getRoll();
     }
 
