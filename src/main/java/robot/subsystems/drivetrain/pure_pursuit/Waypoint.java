@@ -46,8 +46,7 @@ public class Waypoint extends Point {
 
     @Override
     public String toString() {
-        return "" +
-                "distance=" + distance + ", \t speed=" + speed + ", \t curvature=" + curvature + ",\t x=" + x + ",\t  y=" + y + "\n";
+        return "" + "distance=" + distance + ", \t speed=" + speed + ", \t curvature=" + curvature + ",\t x=" + x + ",\t  y=" + y + "\n";
     }
     public static Waypoint rotate(Point center, Waypoint p, double degrees) {
         double radians = -Math.toRadians(degrees);

@@ -294,12 +294,12 @@ public class Path {
         double maximum_velocity;
 //accurate calculation
         for (int i = 1; i < this.length() - 1; i++) {
-            maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Constants.SPACING_BETWEEN_WAYPOINTS + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)), const_acceleration / this.getWaypoint(i).getCurvature());
+            maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i-1)) + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)), const_acceleration / this.getWaypoint(i).getCurvature());
             this.getWaypoint(i).setSpeed(maximum_velocity);
         }
-        //new velocity at point i = min(old target velocity at point i,√(velocity at point (i + 1)) 2 istance )
+
         for (int i = this.length() - 2; i > 0; i--) {
-            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(this.getWaypoint(i + 1).getSpeed(), 2) + 2 * const_acceleration * robot.subsystems.drivetrain.pure_pursuit.Constants.SPACING_BETWEEN_WAYPOINTS)));
+            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(this.getWaypoint(i + 1).getSpeed(), 2) + 2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i-1)))));
         }
 
     }
