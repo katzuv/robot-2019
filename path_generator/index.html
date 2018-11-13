@@ -48,7 +48,7 @@
 	kP: <input class="parameter-input" id="kP">
 </div>
 
-<embed src="http://www.json-csv.com" style="width:500px; height: 300px;position: relative; left: 800px">
+<embed src="http://www.json-csv.com" style="width:500px; height: 300px;position: relative; left: 800px ;bottom: 250px;">
 
 <div id="saves-explorer">
 	<h4>Saves</h4>
@@ -170,6 +170,7 @@
         parameters.basePoints[editPointIndex].x = parseFloat($("#point-x").val());
         parameters.basePoints[editPointIndex].y = parseFloat($("#point-y").val());
         basePointsToImagePoints();
+        drawPoint(parameters.basePoints[editPointIndex]);
         updateAndPreview();
     });
     $("#path-slider").on('input', function () {
@@ -248,7 +249,10 @@
     function updateAndPreview() {
         makeAllPointsCalculations();
         calcTotalLength();
+
         $("#code-preview").html(pathPointsToCode());
+		pathPointsToImagePathPoints();
+drawPoints();
         drawField();
         drawPoints();
         updatePointEditor();
@@ -314,6 +318,7 @@
         selectedItem.options.add(text);
         return text
     }
+
 
 
     $(function () {

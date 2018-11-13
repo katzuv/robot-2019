@@ -8,7 +8,7 @@ function getXYAngle(p0, p1) {
     var dx = p1.x - p0.x;
     var dy = p1.y - p0.y;
     var angle;
-    if (dx == 0) {
+    if (dx === 0) {
         if (dy < 0) {
             angle = -Math.PI / 2;
         } else {
@@ -76,3 +76,25 @@ function getRotationPoints(startPt, middlePt, endPt, r, step) {
     rotationPoints.push(getPointByAngle(endAngle, middlePt, isRight, r, a, b));
     return rotationPoints;
 }
+
+function smoother() {
+
+    //copy array
+    var newPath = parameters.pathPoints.clone();
+
+    var change = parameters.tolerance;
+    while (change >= parameters.tolerance) {
+        change = 0.0;
+        for (var i = 1; i < parameters.pathPoints.length - 1; i++)
+            for (var j = 0; j < parameters.pathPoints[i].length; j++) {
+                var aux = newPath[i][j];
+                newPath[i][j] += parameters.weightData * (path[i][j] - newPath[i][j]) + parameters.weightSmooth * (newPath[i - 1][j] + newPath[i + 1][j] - (2.0 * newPath[i][j]));
+                change += Math.abs(aux - newPath[i][j]);
+            }
+    }
+
+    parameters.pathPoints = newPath;
+
+}
+
+smoother();
