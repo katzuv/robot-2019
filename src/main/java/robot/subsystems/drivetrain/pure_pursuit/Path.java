@@ -1,7 +1,5 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
-import robot.subsystems.drivetrain.Constants;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 

@@ -22,6 +22,5 @@ public class MainTest {
         newPath.generateVelocity(Constants.MAX_ACCEL);
         System.out.println(newPath);
 
-
     }
 }
