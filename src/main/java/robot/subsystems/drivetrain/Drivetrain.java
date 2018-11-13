@@ -29,8 +29,8 @@ public class Drivetrain extends Subsystem {
     private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
 
     public Drivetrain() {
-        leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
-        rightEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+        leftEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+        rightEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
     }
 
     @Override

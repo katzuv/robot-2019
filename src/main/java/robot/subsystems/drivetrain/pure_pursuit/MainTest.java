@@ -11,7 +11,7 @@ public class MainTest {
         Path path = new Path();
         path.appendWaypoint(new Waypoint(0, 0));
         path.appendWaypoint(new Waypoint(0.9, 0));
-        path.appendWaypoint(new Waypoint (1.3, -0.5));
+        path.appendWaypoint(new Waypoint(1.3, -0.5));
         path.appendWaypoint(new Waypoint(5, 3));
         System.out.println(path);
         path = path.generateFillPoint();
