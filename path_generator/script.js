@@ -19,9 +19,9 @@ var parameters = {
     VelocityK:0,
     MaxAcceleration:0,
     Lookahead:0,
-    weightData:0,
-    weightSmooth:0,
-    tolerance:0,
+    weightData:0.15,
+    weightSmooth:0.85,
+    tolerance:0.001,
     kA : 0.002,
     kP : 0.01,
     kv:0,
@@ -117,7 +117,7 @@ function getDist(p1, p2) {
 
 function getRotationRadiusPoints(startPt, middlePt, endPt) {
 //	 return [middlePt];
-    return getRotationPoints(startPt, middlePt, endPt, parameters.rotationRadius, parameters.rotationAngleStep);
+    return getRotationPoints(startPt, middlePt, endPt, parameters.rotationRadius, parameters.weightSmooth);
 }
 
 function getXYatLine(startPt, endPt, distanceFromStart) {

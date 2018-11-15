@@ -33,8 +33,8 @@
 </div>
 <div id="z">
 	<h4>Smoothing</h4>
-	Weight data: <input class="parameter-input" id="weightdata"><br>
-	Weight smooth: <input class="parameter-input" id="weightsmooth"><br>
+	Weight data: <input class="parameter-input" id="weightData"><br>
+	Weight smooth: <input class="parameter-input" id="weightSmooth"><br>
 	Tolerance: <input class="parameter-input" id="tolerance">
 </div>
 
@@ -195,7 +195,7 @@
             var distFirstPoint = distSoFar;
             distSoFar += getDist(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1]);
             if (distSoFar >= dist) {
-	            var xy = getXYatLine(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1], dist - distFirstPoint);
+                var xy = getXYatLine(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1], dist - distFirstPoint);
                 var alpha = getXYAngle(parameters.imagePathPoints[i], parameters.imagePathPoints[i + 1]);
                 return {point: xy, angle: alpha};
             }
@@ -278,13 +278,14 @@ drawPoints();
     }
 
     function drawPoints() {
+        console.log(parameters.weightSmooth);
         for (var i = 0; i < parameters.imagePathPoints.length; i++)
             drawPoint(parameters.imagePathPoints[i], color = 'white', radius = 2)
         if (parameters.isRelative) {
             drawPoint(mToPx({x: 0, y: 0}), color = 'blue');
         }
         for (var i = 0; i < parameters.imageBasePoints.length; i++) {
-            if (i == editPointIndex - 1) {
+            if (i === editPointIndex - 1) {
                 drawPoint(parameters.imageBasePoints[i], color = 'black');
             } else {
                 drawPoint(parameters.imageBasePoints[i]);
