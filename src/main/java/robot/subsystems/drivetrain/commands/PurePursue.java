@@ -1,6 +1,5 @@
 package robot.subsystems.drivetrain.commands;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 import robot.subsystems.drivetrain.Drivetrain;
@@ -18,8 +17,8 @@ public class PurePursue extends Command {
     private int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double lastLeftSpeed; //the last speed of the left encoder
     private double lastRightSpeed; //the last speed of the right encoder
-    private double lastLeftEncoder; //the last distance of the left encoder
-    private double lastRightEncoder; //the last distance of the right encoder
+    private double lastLeftDistance; //the last distance of the left encoder
+    private double lastRightDistance; //the last distance of the right encoder
     //private double initAngle;
     private double lastLookaheadDistance; //distance of the last lookahead from the start of the path
     private double kP, kA, kV;
@@ -51,8 +50,8 @@ public class PurePursue extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         currentPoint = new Waypoint(drive.currentLocation.getX(), drive.currentLocation.getY());
-        lastLeftEncoder = drive.getLeftDistance();
-        lastRightEncoder = drive.getRightDistance();
+        lastLeftDistance = drive.getLeftDistance();
+        lastRightDistance = drive.getRightDistance();
         //initAngle = drive.getAngle() + (direction == -1 ? 180 : 0);
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drive.getLeftSpeed();
@@ -90,13 +89,13 @@ public class PurePursue extends Command {
      */
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
-        double distance = ((drive.getLeftDistance() - lastLeftEncoder) + (drive.getRightDistance() - lastRightEncoder)) / 2;
+        double distance = ((drive.getLeftDistance() - lastLeftDistance) + (drive.getRightDistance() - lastRightDistance)) / 2;
 
         currentPoint.setX(currentPoint.getX() + direction * distance * Math.cos(drive.getAngle() * (Math.PI / 180.0)));
         currentPoint.setY(currentPoint.getY() + direction * distance * Math.sin(drive.getAngle() * (Math.PI / 180.0)));
 
-        lastLeftEncoder = drive.getLeftDistance();
-        lastRightEncoder = drive.getRightDistance();
+        lastLeftDistance = drive.getLeftDistance();
+        lastRightDistance = drive.getRightDistance();
         drive.currentLocation.setX(currentPoint.getX());
         drive.currentLocation.setY(currentPoint.getY());
     }
