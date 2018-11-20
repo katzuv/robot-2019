@@ -340,45 +340,6 @@ drawPoints();
             $(this).toggleClass('active');
             var rect = this.getBoundingClientRect(),
                 x = e.clientX - rect.left, y = e.clientY - rect.top;
-            /*          $(canvas).onkeypress(function (z) {
-						  var xOr = false;
-						  var yOr = false;
-						  var X = event.keyCode;
-						  if (X === 47) {
-
-							  xOr = true;
-																																		  } else if (X === 21) {
-							  yOr = true;
-						  } else if (X === 110) {
-							  yOr = false;
-							  xOr = false;
-
-						  }
-
-						  function return_x() {
-							  if (yOr === false) {
-								  x = e.clientX - rect.left;
-
-
-							  } else {
-								  x = 0;
-							  }
-
-						  }
-
-						  function return_y() {
-							  if (xOr === false) {
-								  y = e.clientY - rect.top;
-
-							  } else {
-								  y = 0;
-							  }
-
-						  }
-
-					  });
-		  */
-
 
             drawField();
             ctx.beginPath();

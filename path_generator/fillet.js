@@ -75,55 +75,7 @@ function getRotationPoints(startPt, middlePt, endPt, r, step) {
         }
     }
     rotationPoints.push(getPointByAngle(endAngle, middlePt, isRight, r, a, b));
-    return rotationPoints;
-   /* var newPath = parameters.pathPoints.slice(0,parameters.pathPoints.length);
-
-    var change = parameters.tolerance;
-    while (change >= parameters.tolerance) {
-        change = 0.0;
-        for (var i = 1; i < parameters.pathPoints.length - 1; i++)
-            for (var j = 0; j < parameters.pathPoints[i].length; j++) {
-                var aux = newPath[i][j];
-                newPath[i][j] += parameters.weightData * (parameters.basePoints[i][j] - newPath[i][j]) + parameters.weightSmooth * (newPath[i - 1][j] + newPath[i + 1][j] - (2.0 * newPath[i][j]));
-                change += Math.abs(aux - newPath[i][j]);
-            }
-    }return newPath;
-}*/
-/*  var pi = Math.PI;
-    step /= 180 / pi;
-    var b = parameters.weightSmooth;
-    var c = parameters.tolerance;
-    var a = parameters.weightData;
-    if (a === c / 2)
-        return [middlePt];
-    var isRight = a < pi / 2;
-    var startAngle, endAngle;
-    if (isRight) {
-        endAngle = pi / 2 - a;
-        startAngle = 3 * pi / 2 + a;
-//        step *= -1;
-    } else {
-        startAngle = pi/ 2 + a;
-        endAngle = pi/ 2 - a;
-    }
-    var rotationPoints = [];
-    if (isRight) {
-        for (var angle = startAngle; angle > endAngle; angle -= step) {
-            rotationPoints.push(getPointByAngle(angle, middlePt, isRight, r, a, b));
-        }
-    } else {
-        for (var angle = startAngle; angle < endAngle; angle += step) {
-            rotationPoints.push(getPointByAngle(angle, middlePt, isRight, r, a, b));
-        }
-    }
-    rotationPoints.push(getPointByAngle(endAngle, middlePt, isRight, r, a, b));
-    return rotationPoints;
-   /* var newPath = paramet*/
-function smoother() {
-
-    //copy array
+    return rotationPoints;}
 
 
-
-}}
 
