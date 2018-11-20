@@ -7,13 +7,14 @@
 
 package robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.drivetrain.Drivetrain;
-import robot.drivetrain.commands.JoystickDrive;
+import robot.subsystems.drivetrain.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,7 +24,10 @@ import robot.drivetrain.commands.JoystickDrive;
  * project.
  */
 public class Robot extends TimedRobot {
-    public static Drivetrain drivetrain = new Drivetrain();
+    public static final Drivetrain drivetrain = new Drivetrain();
+    public static AHRS navx = new AHRS(SPI.Port.kMXP);
+
+
     public static OI m_oi;
 
     Command m_autonomousCommand;
@@ -51,6 +55,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+
     }
 
     /**
@@ -80,6 +85,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        drivetrain.resetEncoders();
         m_autonomousCommand = m_chooser.getSelected();
 
         /*
@@ -100,6 +106,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
+
         Scheduler.getInstance().run();
     }
 

@@ -1,0 +1,105 @@
+/*----------font imports-------------*/
+@font-face {
+    font-family: 'Roboto';
+    src: url('Roboto-Regular.ttf') format('truetype');
+}
+
+/*-------------element selectors------------*/
+body {
+    padding: 8px;
+    font-family: 'Roboto', Garamond, sans-serif;
+    width: fit-content;
+    height: fit-content;
+    overflow: scroll;
+
+}
+
+button {
+    padding: 3px;
+    margin: 2px;
+    margin-bottom: 7px;
+}
+
+canvas {
+    position: relative;
+    bottom: 880px;
+}
+
+/*---------------classes---------------*/
+.btn {
+    border: 1px solid gray;
+    padding: 2px;
+    border-radius: 1px;
+    margin: 1px;
+}
+
+.invisible-btn {
+    visibility: hidden;
+    display: none
+}
+
+.parameter-input {
+    padding: 2px;
+    margin-bottom: 10px;
+    margin-right: 3px;
+
+    width: 100px;
+}
+
+/*--------------id------------------*/
+
+#logo_galaxia{
+    position: relative;
+    left: 350px;
+    top: -100px;
+}
+
+#field {
+    display: block;
+}
+
+
+#parameters-config, #saves-explorer, #point-editor {
+    border: 2px solid gray;
+    padding: 5px 15px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+#parameters-config {
+    position: relative;
+    left: 700px;
+    top: 50px;
+    width: fit-content;
+    height: fit-content;
+}
+
+#bottom_part {
+    position: relative;
+    bottom: 850px;
+}
+
+#point-editor{
+    position: relative;
+    width: 500px;
+
+}
+
+#saves-explorer {
+    position: relative;
+    top :50px;
+    left: 700px;
+    width: fit-content;
+}
+
+#path-slider {
+    width: 600px;
+    position: relative;
+    bottom: 900px;
+}
+
+#first_logo{
+    position: relative;
+    left: 400px;
+    top: -100px;
+}
