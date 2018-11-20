@@ -1,10 +1,9 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
-import robot.subsystems.drivetrain.pure_pursuit.Constants;
+import robot.subsystems.drivetrain.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 /**
  * @author Paulo Khayat
@@ -34,31 +33,15 @@ public class Path {
         path.addAll(w);
     }
 
-    public static double[][] doubleArrayCopy(double[][] arr) {
-        //size first dimension of array
-        double[][] temp = new double[arr.length][arr[0].length];
-        for (int i = 0; i < arr.length; i++) {
-            //Resize second dimension of array
-            temp[i] = new double[arr[i].length];
-            //Copy Contents
-            for (int j = 0; j < arr[i].length; j++)
-                temp[i][j] = arr[i][j];
-        }
-        return temp;
-    }
-
     /**
      * Set a point at an index.
      *
      * @param index index of the desired point starting at zero, use -1 for last Point.
      */
-    public void setWaypoint(int index, Waypoint p) {
-        if (!(index <= path.size() && index > -path.size()))
+    public void set(int index, Waypoint p) {
+        if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        if (index == path.size())
-            this.appendWaypoint(p);
-        else
-            path.set(index % path.size(), p);
+        path.set(index % path.size(), p);
     }
 
     /**
@@ -67,21 +50,17 @@ public class Path {
      * @param index the index of the point to append.
      * @param p     the waypoint to add.
      */
-    public void addWaypoint(int index, Waypoint p) {
-        if (!(index <= path.size() && index > -path.size()))
+    public void add(int index, Waypoint p) {
+        if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException();
-        if (index == path.size())
-            this.appendWaypoint(p);
-        else
-            path.add(index % path.size(), p);
+        path.add(index % path.size(), p);
     }
 
     /**
      * Appends an object to the end of the list.
-     *
      * @param p the waypoint to add.
      */
-    public void appendWaypoint(Waypoint p) {
+    public void append(Waypoint p) {
         path.add(p);
     }
 
@@ -142,7 +121,6 @@ public class Path {
     }
 
     /**
-     * /**
      * Returns the size of the path.
      *
      * @return returns the size() of the array.
@@ -153,15 +131,11 @@ public class Path {
 
     /**
      * Copies the path
-     *
      * @return
      */
-    public Path copy() {
+    public Path copy(){
         return new Path(path);
     }
-
-    // ----== Functions for path generation and optimisation: ==----
-
     /**
      * Converts the path ArrayList to an array.
      *
@@ -172,88 +146,55 @@ public class Path {
         return path.toArray(array);
     }
 
+    // ----== Functions for path generation and optimisation: ==----
+
     /**
      * Adds points at a certain spacing between them into all the segments.
      */
-    public Path generateFillPoint() {
-        //double vector = Point.distance(path.get(0), path.get(path.size() - 1));
-        //final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
+    private void generateFillPoint() {
+        double vector = Point.distance(path.get(0), path.get(path.size() - 1));
+        final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
 
-        Vector[] pathVectors = new Vector[path.size()]; //create an array of vectors per point.
-        Path newPoints = new Path(); //create a new path class
+        Vector[] pathVectors = new Vector[path.size()];
+        Path newPoints = new Path();
         int AmountOfPoints;
-        for (int i = 0; i < pathVectors.length - 1; i++) {//for every point on the path
-            //Creates a vector with the slope of the two points we are checking
-            //Sets the vectors magnitude to the constant of the spacing
-            //calculates the amount of fill-points that can fit between the two points.
-            pathVectors[i] = new Vector(this.getWaypoint(i), this.getWaypoint(i + 1));
+        for (int i = 0; i < pathVectors.length-1; i++) {
+            pathVectors[i] = new Vector(path.get(i), path.get(i + 1));
             AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
             pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
             for (int j = 0; j < AmountOfPoints; j++) {
-                newPoints.appendWaypoint(pathVectors[i].multiply(j).add(this.getWaypoint(i)));
+                    newPoints.append(pathVectors[i].multiply(j).addWaypoint(this.getWaypoint(i)));
             }
         }
         return newPoints;
 
 
+
     }
 
     /**
-     * @param weight_data   amount of data
-     * @param weight_smooth amount of smooth
-     * @param tolerance     the min change between points
-     * @return the new path with the way points
-     * @author Paulo
-     * @author Lior
+     * Takes all of the points and makes the curve smoother.
      */
-    public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
-        Path newPathClass = this.copy();
-        double[][] newPath = new double[this.length()][2];
-        double a = weight_data;
-        double b = weight_smooth;
-        for (int i = 0; i < this.length(); i++) {
-            newPath[i][0] = this.getWaypoint(i).getX();
-            newPath[i][1] = this.getWaypoint(i).getY();
+    private void generateSmoothing() {
 
-        }
-        double[][] path = doubleArrayCopy(newPath);
-        double change = tolerance;
-        while (change >= tolerance) {
-            change = 0.0;
-            for (int i = 1; i < path.length - 1; i++)
-                for (int j = 0; j < path[i].length; j++) {
-                    double aux = newPath[i][j];
-                    newPath[i][j] += a * (path[i][j] - newPath[i][j]) + b *
-                            (newPath[i - 1][j] + newPath[i + 1][j] - (2.0 * newPath[i][j]));
-                    change += Math.abs(aux - newPath[i][j]);
-                }
-        }
-        for (int i = 0; i < this.length(); i++) {
-            Waypoint p = newPathClass.getWaypoint(i);
-            p.setX(newPath[i][0]);
-            p.setY(newPath[i][1]);
-            newPathClass.setWaypoint(i, p);
-        }
-        return newPathClass;
     }
 
     /**
      * Attributes to all points their distance from the start.
      */
     private void generateDistance() {
-        this.recursiveDistance(this.length() - 1);
+        this.recursiveDistance(this.length());
     }
 
     /**
      * Returns the size of the largest length in the list.
-     *
      * @param i index of current point
      * @return returns sum of all distances before this point.
      */
-    private double recursiveDistance(int i) {
-        if (i == 0)
+    private double recursiveDistance(int i){
+        if(i==0)
             return 0;
-        double d = recursiveDistance(i - 1) + Point.distance(path.get(i), path.get(i - 1));
+        double d = recursiveDistance(i-1) + Point.distance(path.get(i),path.get(i-1));
         Waypoint p = path.get(i);
         p.setDistance(d);
         path.set(i, p);
@@ -263,49 +204,16 @@ public class Path {
     /**
      * Attributes to all points their curvature in correlation to their adjacent points.
      */
-    public void generateCurvature() {
-        double k1, k2, b, a, r;
-        for (int i = 1; i < path.size() - 1; i++) {
-            double x1 = path.get(i).getX();
-            if (path.get(i - 1).getX() == x1)
-                x1 += 0.0001;
-            k1 = 0.5 * (Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i - 1).getX(), 2) - Math.pow(path.get(i - 1).getY(), 2)) / (x1 - path.get(i - 1).getX());
-            k2 = (path.get(i).getY() - path.get(i - 1).getY()) / (x1 - path.get(i - 1).getX());
-            b = 0.5 * (Math.pow(path.get(i - 1).getX(), 2) - 2 * path.get(i - 1).getX() * k1 + Math.pow(path.get(i - 1).getY(), 2) - Math.pow(path.get(i + 1).getX(), 2) + 2 * path.get(i + 1).getX() * k1 - Math.pow(path.get(i + 1).getY(), 2)) / (path.get(i + 1).getX() * k2 - path.get(i + 1).getY() + path.get(i - 1).getY() - path.get(i - 1).getX() * k2);
-            a = k1 - k2 * b;
-            r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
-            double curv = 0;
-            if (r == 0) {
-                curv = Double.POSITIVE_INFINITY;
-            } else {
-                curv = 1 / r;
-            }
-            path.get(i).setCurvature(curv);
-        }
-    }
+    private void generateCurvature() {
 
+    }
 
     /**
-     * @param const_acceleration rhe acceleration constant
-     * @author orel
-     * @author orel
+     * Arrributes to all points their intended velocity.
      */
-    public void generateVelocity(double const_acceleration) {
-        double maximum_velocity;
-//accurate calculation
-        for (int i = 1; i < this.length() - 1; i++) {
-            maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i-1)) + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)), const_acceleration / this.getWaypoint(i).getCurvature());
-            this.getWaypoint(i).setSpeed(maximum_velocity);
-        }
-
-        for (int i = this.length() - 2; i > 0; i--) {
-            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(this.getWaypoint(i + 1).getSpeed(), 2) + 2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i-1)))));
-        }
+    private void generateVelocity() {
 
     }
 
-    @Override
-    public String toString() {
-        return "Path{" + "path=" + path + '}';
-    }
+
 }
