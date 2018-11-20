@@ -16,15 +16,15 @@ var parameters = {
     robotCenterToSide: 0.5,
     robotCenterToBack: 0.325,
     MaxVelocity: 0,
-    VelocityK: 0,
-    MaxAcceleration: 0,
-    Lookahead: 0,
-    weightData: 0.15,
-    weightSmooth: 0.85,
-    tolerance: 0.001,
-    kA: 0.002,
-    kP: 0.01,
-    kv: 0,
+    VelocityK:0,
+    MaxAcceleration:0,
+    Lookahead:0,
+    weightData:0.15,
+    weightSmooth:0.85,
+    tolerance:0.001,
+    kA : 0.002,
+    kP : 0.01,
+    kv:0,
     yDirectionVarName: "Y_DIRECTION",
     isRelative: true,
     isBackwards: false
@@ -64,20 +64,20 @@ function pxToM(point) {
 }
 
 function imagePointsToBasePoints() {
-    parameters.basePoints = parameters.imageBasePoints.slice(0).map(pt = > pxToM(pt)
+    parameters.basePoints = parameters.imageBasePoints.slice(0).map(pt => pxToM(pt)
 )
     ;
     parameters.basePoints.splice(0, 0, {x: 0, y: 0});
 }
 
 function basePointsToImagePoints() {
-    parameters.imageBasePoints = parameters.basePoints.slice(0).slice(1, parameters.basePoints.length).map(pt = > mToPx(pt)
+    parameters.imageBasePoints = parameters.basePoints.slice(0).slice(1, parameters.basePoints.length).map(pt => mToPx(pt)
 )
     ;
 }
 
 function pathPointsToImagePathPoints() {
-    parameters.imagePathPoints = parameters.pathPoints.slice(0).map(pt = > mToPx(pt)
+    parameters.imagePathPoints = parameters.pathPoints.slice(0).map(pt => mToPx(pt)
 )
 }
 
@@ -135,12 +135,15 @@ function pathPointsToCode() {
         var x = Math.round(parameters.basePoints[i].x * 1000) / 1000;
         var y = Math.round(parameters.basePoints[i].y * 1000) / 1000;
         result += "<br>&nbsp&nbsp&nbsp new Point({0}, {1}".format(x, y);
-
-        result += ",{0}".format(parameters.Lookahead);
-        result += ",{0}".format(parameters.kP);
-        result += ",{0}".format(parameters.kA);
-        result += ",(0)".format(parameters.kv);
-        result += "}, {0}, {1}));".format(parameters.isBackwards, parameters.isRelative);
-        return result;
+        result += ")";
+        if (i != parameters.pathPoints.length - 1)
+            result += ",";
     }
+    result += "} {0})".format( parameters.isBackwards);
+
+    result+= ", {0}".format(parameters.Lookahead);
+    result+=", {0}".format(parameters.kP);
+    result+=", {0}".format(parameters.kA);
+    result+=", {0});".format(parameters.kv);
+    return result;
 }
