@@ -2,37 +2,56 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>SPC Points Generator</title>
+	<title>Path Generator</title>
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>SPC Points Generator</h1>
-<img id="logo_galaxia" src="https://pbs.twimg.com/profile_images/845208777020329984/uJEIe25h_400x400.jpg"
-     alt="galaxia 5987 logo" height="400" width="400">
-<img id="first_logo"
-     src="https://www.firstinspires.org/sites/default/files/uploads/resource_library/brand/FIRST_Vertical_RGB.jpg"
-     alt="first logo" height="380" width="600">
+<h1>Path Generator</h1>
+<a href="https://www.galaxia5987.com/">
+	<img id="logo_galaxia" src="https://pbs.twimg.com/profile_images/845208777020329984/uJEIe25h_400x400.jpg"
+	     alt="galaxia 5987 logo" height="200" width="200">
+</a>
+<a href="https://www.firstinspires.org/">
+	<img id="first_logo"
+	     src="https://www.firstinspires.org/sites/default/files/uploads/resource_library/brand/FIRST_Vertical_RGB.jpg"
+	     alt="first logo" height="180" width="300">
+</a>
 <div id="parameters-config">
 	<h4>Parameters</h4>
-	imageW: <input class="parameter-input" id="imageW"><br>
-	imageH: <input class="parameter-input" id="imageH"> <br>
-	fieldH: <input class="parameter-input" id="fieldH"><br>
-	fieldW: <input class="parameter-input" id="fieldW"> <br>
-	startX: <input class="parameter-input" id="startX"><br>
-	startY: <input class="parameter-input" id="startY"><br>
-	robotH: <input class="parameter-input" id="robotH"><br>
-	robotW: <input class="parameter-input" id="robotW"><br>
-
-	robotCenterToSide: <input class="parameter-input" id="robotCenterToSide"><br>
-	robotCenterToBack: <input class="parameter-input" id="robotCenterToBack"> <br>
-	rotationRadius: <input class="parameter-input" id="rotation Radius"><br>
-	rotationAngleStep: <input class="parameter-input" id="rotationAngleStep"> <br>
-	yDirectionVarName: <input class="parameter-input" id="yDirectionVarName"> <br>
-	isRelative: <input class="parameter-input" id="isRelative" type="checkbox"><br>
+	Image width: <input class="parameter-input" id="imageW"><br>
+	Image height: <input class="parameter-input" id="imageH"> <br>
+	Field height: <input class="parameter-input" id="fieldH"><br>
+	Field width: <input class="parameter-input" id="fieldW"> <br>
+	Starting point X: <input class="parameter-input" id="startX"><br>
+	Starting Y: <input class="parameter-input" id="startY"><br>
+	Robot height: <input class="parameter-input" id="robotH"><br>
+	Robot width: <input class="parameter-input" id="robotW"><br>
+	Robot Center To Side: <input class="parameter-input" id="robotCenterToSide"><br>
+	Robot Center To Back: <input class="parameter-input" id="robotCenterToBack"> <br>
 	isBackwards: <input class="parameter-input" id="isBackwards" type="checkbox"><br>
 	<br>
+	
 	<button id="save-parameters"> Save Parameters</button>
 </div>
+<div id="z">
+	<h4>Smoothing</h4>
+	Weight data: <input class="parameter-input" id="weightData"><br>
+	Weight smooth: <input class="parameter-input" id="weightSmooth"><br>
+	Tolerance: <input class="parameter-input" id="tolerance">
+</div>
+
+<div id="b">
+	<h4>Pure Pursuit</h4>
+	Max velocity: <input class="parameter-input" id="MaxVelocity"><br>
+	Velocity k: <input class="parameter-input" id="MaxAcceleration"><br>
+	Lookahead Distance: <input class="parameter-input" id="Lookahead"><br>
+	kV: <input class="parameter-input" id="kv"><BR>
+	kA: <input class="parameter-input" id="kA"><br>
+	kP: <input class="parameter-input" id="kP">
+</div>
+
+<embed src="http://www.json-csv.com" style="width:500px; height: 300px;position: relative; left: 800px ;bottom: 250px;">
+
 <div id="saves-explorer">
 	<h4>Saves</h4>
 	<button id="refresh-saves">refresh saves</button>
@@ -153,6 +172,7 @@
         parameters.basePoints[editPointIndex].x = parseFloat($("#point-x").val());
         parameters.basePoints[editPointIndex].y = parseFloat($("#point-y").val());
         basePointsToImagePoints();
+        drawPoint(parameters.basePoints[editPointIndex]);
         updateAndPreview();
     });
     $("#path-slider").on('input', function () {
@@ -216,9 +236,9 @@
     function refreshSaves() {
         $("#saves-list").html("");
         var keys = getAllStorageKeys();
-        if (keys.length == 0) {
+        if (keys.length === 0) {
             $("#saves-list").html("Nothing is saved");
-            return;
+
         }
         for (var i = 0; i < keys.length; i++) {
             $("#saves-list").append("<li>{0}</li>".format(keys[i]));
@@ -227,10 +247,14 @@
 
     var canvas, ctx, background, totalLength;
 
+
     function updateAndPreview() {
         makeAllPointsCalculations();
         calcTotalLength();
+
         $("#code-preview").html(pathPointsToCode());
+		pathPointsToImagePathPoints();
+drawPoints();
         drawField();
         drawPoints();
         updatePointEditor();
@@ -241,11 +265,11 @@
         ctx.drawImage(background, 0, 0)
     }
 
-    function drawPoint(point, color = 'red', radius = 5) {
+    function drawPoint(point, color ='red', radius= 5) {
         drawXYPoint(point.x, point.y, color, radius);
     }
 
-    function drawXYPoint(x, y, color = 'red', radius = 5) {
+    function drawXYPoint(x, y, color= 'red', radius = 5) {
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, 2 * Math.PI);
         ctx.fillStyle = color;
@@ -256,13 +280,14 @@
     }
 
     function drawPoints() {
+        console.log(parameters.weightSmooth);
         for (var i = 0; i < parameters.imagePathPoints.length; i++)
             drawPoint(parameters.imagePathPoints[i], color = 'white', radius = 2)
         if (parameters.isRelative) {
             drawPoint(mToPx({x: 0, y: 0}), color = 'blue');
         }
         for (var i = 0; i < parameters.imageBasePoints.length; i++) {
-            if (i == editPointIndex - 1) {
+            if (i === editPointIndex - 1) {
                 drawPoint(parameters.imageBasePoints[i], color = 'black');
             } else {
                 drawPoint(parameters.imageBasePoints[i]);
@@ -270,6 +295,7 @@
 
         }
     }
+
 
     function drawRobotAtPosition(point, angle) {
         ctx.translate(point.x, point.y);
@@ -287,6 +313,17 @@
         ctx.translate(-point.x, -point.y);
     }
 
+    function copy_text() {
+        var item = document.getElementById("code-preview");
+        var text = item.innerText || item.textContent;
+        text.select();
+        document.execCommand("copy");
+        selectedItem.options.add(text);
+        return text
+    }
+
+
+
     $(function () {
         refreshSaves();
         refreshParametersInputs();
@@ -302,9 +339,9 @@
 // Make sure the image is loaded first otherwise nothing will draw.
         background.onload = drawField;
         $(canvas).mousemove(function (e) {
-            let rect = this.getBoundingClientRect(),
-                x = e.clientX - rect.left,
-                y = e.clientY - rect.top;
+            $(this).toggleClass('active');
+            var rect = this.getBoundingClientRect(),
+                x = e.clientX - rect.left, y = e.clientY - rect.top;
 
             drawField();
             ctx.beginPath();
@@ -328,7 +365,7 @@
             }
         });
         $(canvas).on('click', function (e) {
-            let rect = this.getBoundingClientRect(),
+            var rect = this.getBoundingClientRect(),
                 X = e.clientX - rect.left,
                 Y = e.clientY - rect.top;
             parameters.imageBasePoints.push({x: X, y: Y});
