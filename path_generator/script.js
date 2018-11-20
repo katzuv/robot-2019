@@ -135,13 +135,9 @@ function pathPointsToCode() {
         var x = Math.round(parameters.pathPoints[i].x * 1000) / 1000;
         var y = Math.round(parameters.pathPoints[i].y * 1000) / 1000;
         result += "<br>&nbsp&nbsp&nbsp new Point({0}, {1}".format(x, y);
-        if (parameters.isRelative) {
-            result += " * {0}".format(parameters.yDirectionVarName);
+
+        result += ",{0}".format(parameters.Lookahead);
         }
-        result += ")";
-        if (i != parameters.pathPoints.length - 1)
-            result += ",";
     }
     result += "}, {0}, {1}));".format(parameters.isBackwards, parameters.isRelative);
     return result;
-}
