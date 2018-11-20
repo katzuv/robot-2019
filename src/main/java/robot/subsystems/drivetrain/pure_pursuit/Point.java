@@ -80,4 +80,21 @@ public class Point {
     public void setY(double y) {
         this.y = y;
     }
+
+    @Override
+    public String toString() {
+        return x + " " + y + "\n";
+    }
+
+    public void addVector(Vector v) {
+        x += v.x;
+        y += v.y;
+    }
+
+    public void subtractVector(Vector v) {
+        x -= v.x;
+        y -= v.y;
+    }
+
 }
+
