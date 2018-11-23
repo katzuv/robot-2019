@@ -201,9 +201,10 @@ public class Path {
      */
     public void generateAll(double weight_data, double weight_smooth, double tolerance, double const_acceleration) {
         Waypoint copy[] = {};
-        Path tempPath = this.generateFillPoint();
+        this.generateFillPoint();
+        Path tempPath = this.copy();
         tempPath = tempPath.generateSmoothing(weight_data, weight_smooth, tolerance);
-        tempPath.toArray(copy);
+        copy = tempPath.toArray();
         this.clear();
         this.addAll(copy);
         this.generateCurvature();
@@ -214,12 +215,12 @@ public class Path {
     /**
      * Adds points at a certain spacing between them into all the segments.
      */
-    public Path generateFillPoint() {
+    public void generateFillPoint() {
         //double vector = Point.distance(path.get(0), path.get(path.size() - 1));
         //final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
 
         Vector[] pathVectors = new Vector[path.size()]; //create an array of vectors per point.
-        Path newPoints = new Path(); //create a new path class
+        Path newPathClass = new Path(); //create a new path class
         int AmountOfPoints;
         for (int i = 0; i < pathVectors.length - 1; i++) {//for every point on the path
             //Creates a vector with the slope of the two points we are checking
@@ -229,10 +230,11 @@ public class Path {
             AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
             pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
             for (int j = 0; j < AmountOfPoints; j++) {
-                newPoints.appendWaypoint(pathVectors[i].multiply(j).add(this.getWaypoint(i)));
+                newPathClass.appendWaypoint(pathVectors[i].multiply(j).add(this.getWaypoint(i)));
             }
         }
-        return newPoints;
+        clear();
+        addAll(newPathClass);
 
 
     }
