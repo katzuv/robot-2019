@@ -104,9 +104,9 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.start();
         }
         Path path = new Path();
-        path.appendWaypoint(new Waypoint(0.1, 0.5));
-        path.appendWaypoint(new Waypoint(0.6, 0.5));
-        path.appendWaypoint(new Waypoint(1, 1));
+        path.appendWaypoint(new Waypoint(0, 0));
+        path.appendWaypoint(new Waypoint(1, 1.5));
+        path.appendWaypoint(new Waypoint(1.5, 3.0));
         path = path.generateFillPoint();
         path = path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         path.generateCurvature();
@@ -143,6 +143,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("Speed" , (drivetrain.getLeftSpeed()+drivetrain.getRightSpeed())/2);
+
     }
 
     /**
