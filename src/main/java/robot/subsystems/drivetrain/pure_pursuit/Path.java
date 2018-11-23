@@ -166,8 +166,8 @@ public class Path {
      * @param array needed to specify what type of array will copy over.
      * @return returns a Waypoint[] array.
      */
-    public Waypoint[] toArray(Waypoint[] array) {
-        return path.toArray(array);
+    public Waypoint[] toArray() {
+        return (Waypoint[]) path.toArray();
     }
 
     /**
