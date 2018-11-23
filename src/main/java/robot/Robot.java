@@ -15,6 +15,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.drivetrain.Drivetrain;
+import robot.subsystems.drivetrain.pure_pursuit.Constants;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -99,6 +103,13 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
         }
+        Path path = new Path();
+        path.appendWaypoint(new Waypoint(0.1, 0.5));
+        path.appendWaypoint(new Waypoint(0.6, 0.5));
+        path.appendWaypoint(new Waypoint(1, 1));
+        PurePursue pursue = new PurePursue(path, false, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV);
+        SmartDashboard.putString("pursue command", "start");
+        pursue.start();
     }
 
     /**
