@@ -34,6 +34,7 @@ public class Drivetrain extends Subsystem {
         leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
         rightEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
         leftForward.setInverted(Constants.LEFT_REVERSED);
+        leftBack.setInverted(Constants.LEFT_REVERSED);
         rightForward.setInverted(Constants.RIGHT_REVERSED);
     }
 
@@ -63,8 +64,10 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the left side
      */
     private void setLeftSpeed(double speed) {
-        leftForward.set(speed);
-        leftBack.set(speed);
+        if (speed > -0.4 && speed < 0.4) {
+            leftForward.set(speed);
+            leftBack.set(speed);
+        }
     }
 
     public double getRightSpeed() {
@@ -77,8 +80,10 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
-        rightForward.set(speed);
-        rightBack.set(speed);
+        if (speed > -0.4 && speed < 0.4) {
+            rightForward.set(speed);
+            rightBack.set(speed);
+        }
     }
 
     /**
