@@ -240,7 +240,7 @@ public class Path {
     /**
      * Attributes to all points their distance from the start.
      */
-    private void generateDistance() {
+    public void generateDistance() {
         this.recursiveDistance(this.length() - 1);
     }
 
