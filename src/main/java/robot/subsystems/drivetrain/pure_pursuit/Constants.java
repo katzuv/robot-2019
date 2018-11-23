@@ -3,11 +3,11 @@ package robot.subsystems.drivetrain.pure_pursuit;
 public class Constants {
     //DRIVING CONSTANTS
     public final static double LOOKAHEAD_DISTANCE = 0.3; //in meters
-    final static double TRACK_WIDTH = 3;
+    final static double TRACK_WIDTH = 0.6; //width of the robot
 
     //PATH GENERATION CONSTANTS
     public static final double SPACING_BETWEEN_WAYPOINTS = 0.1524; //meters
-    public static final double MAX_ACCEL = 2;
+    public static final double MAX_ACCEL = 0.3;
 
     //SMOOTHING CONSTANTS (pure numbers)
     public final static double WEIGHT_SMOOTH = 0.85;
@@ -15,7 +15,7 @@ public class Constants {
     public final static double TOLERANCE = 0.001;
 
     //DRIVING CONSTANTS (pure numbers)
-    public final static double kV = 0;
+    public final static double kV = 0.5;
     public final static double kA = 0;
     public final static double kP = 0;
 
