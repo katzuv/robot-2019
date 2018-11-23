@@ -107,6 +107,11 @@ public class Robot extends TimedRobot {
         path.appendWaypoint(new Waypoint(0.1, 0.5));
         path.appendWaypoint(new Waypoint(0.6, 0.5));
         path.appendWaypoint(new Waypoint(1, 1));
+        path = path.generateFillPoint();
+        path = path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
+        path.generateCurvature();
+        path.generateDistance();
+        path.generateVelocity(Constants.MAX_ACCEL);
         PurePursue pursue = new PurePursue(path, false, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV);
         SmartDashboard.putString("pursue command", "start");
         pursue.start();
