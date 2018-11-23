@@ -15,6 +15,16 @@ var parameters = {
     rotationAngleStep: 6.8,
     robotCenterToSide: 0.5,
     robotCenterToBack: 0.325,
+    MaxVelocity: 0,
+    VelocityK:0,
+    MaxAcceleration:0,
+    Lookahead:0,
+    weightData:0.15,
+    weightSmooth:0.85,
+    tolerance:0.001,
+    kA : 0.002,
+    kP : 0.01,
+    kv:0,
     yDirectionVarName: "Y_DIRECTION",
     isRelative: true,
     isBackwards: false
@@ -107,7 +117,7 @@ function getDist(p1, p2) {
 
 function getRotationRadiusPoints(startPt, middlePt, endPt) {
 //	 return [middlePt];
-    return getRotationPoints(startPt, middlePt, endPt, parameters.rotationRadius, parameters.rotationAngleStep);
+    return getRotationPoints(startPt, middlePt, endPt, parameters.rotationRadius, parameters.weightSmooth);
 }
 
 function getXYatLine(startPt, endPt, distanceFromStart) {
@@ -120,16 +130,20 @@ function getXYatLine(startPt, endPt, distanceFromStart) {
 }
 
 function pathPointsToCode() {
-    var result = "addSequential(new PathPointsCommand(new Point[]{";
-    for (var i = 1; i < parameters.pathPoints.length; i++) {
-        result += "<br>&nbsp&nbsp&nbsp new Point({0}, {1}".format(parameters.pathPoints[i].x, parameters.pathPoints[i].y);
-        if (parameters.isRelative) {
-            result += " * {0}".format(parameters.yDirectionVarName);
-        }
+    var result = "addSequential(new PurePursuit(new Point[] {";
+    for (var i = 1; i < parameters.basePoints.length; i++) {
+        var x = Math.round(parameters.basePoints[i].x * 1000) / 1000;
+        var y = Math.round(parameters.basePoints[i].y * 1000) / 1000;
+        result += "<br>&nbsp&nbsp&nbsp new Point({0}, {1}".format(x, y);
         result += ")";
         if (i != parameters.pathPoints.length - 1)
             result += ",";
     }
-    result += "}, {0}, {1}));".format(parameters.isBackwards, parameters.isRelative);
+    result += "} {0})".format( parameters.isBackwards);
+
+    result+= ", {0}".format(parameters.Lookahead);
+    result+=", {0}".format(parameters.kP);
+    result+=", {0}".format(parameters.kA);
+    result+=", {0});".format(parameters.kv);
     return result;
 }

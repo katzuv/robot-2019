@@ -9,8 +9,7 @@ body {
     padding: 8px;
     font-family: 'Roboto', Garamond, sans-serif;
     width: fit-content;
-    height: fit-content;
-    overflow: scroll;
+    height: 300px;
 
 }
 
@@ -33,6 +32,10 @@ canvas {
     margin: 1px;
 }
 
+.active {
+
+}
+
 .invisible-btn {
     visibility: hidden;
     display: none
@@ -51,32 +54,56 @@ canvas {
 #logo_galaxia{
     position: relative;
     left: 350px;
-    top: -100px;
+    top: -110px;
 }
 
 #field {
+    position: relative;
+    top: -1550px;
     display: block;
 }
 
 
-#parameters-config, #saves-explorer, #point-editor {
+#parameters-config, #saves-explorer, #point-editor ,#z,#b{
     border: 2px solid gray;
     padding: 5px 15px;
     display: block;
     margin-bottom: 10px;
 }
 
+
+
+#b{
+    position: relative;
+    left: 1050px;
+    top: -704px;
+    width: fit-content;
+    height: fit-content;
+}
+#z{
+
+    position: relative;
+    left: 700px;
+    top: -50px;
+    width: fit-content;
+    height: fit-content;
+}
+
+
+
+
+
 #parameters-config {
     position: relative;
     left: 700px;
-    top: 50px;
+    top: -50px;
     width: fit-content;
     height: fit-content;
 }
 
 #bottom_part {
     position: relative;
-    bottom: 850px;
+    bottom: 1450px;
 }
 
 #point-editor{
@@ -87,19 +114,19 @@ canvas {
 
 #saves-explorer {
     position: relative;
-    top :50px;
-    left: 700px;
+    top: -950px;
+    left: 1050px;
     width: fit-content;
 }
 
 #path-slider {
     width: 600px;
     position: relative;
-    bottom: 900px;
+    bottom: 1600px;
 }
 
 #first_logo{
     position: relative;
     left: 400px;
-    top: -100px;
+    top: -110px;
 }
