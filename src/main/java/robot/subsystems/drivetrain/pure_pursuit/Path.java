@@ -1,7 +1,5 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
-import robot.subsystems.drivetrain.pure_pursuit.Constants;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -173,6 +171,26 @@ public class Path {
     }
 
     /**
+     * Run all generate methods at once.
+     *
+     * @param weight_data        generateSmoothing parameter. See documentation of the generateSmoothing method for more information.
+     * @param weight_smooth      generateSmoothing parameter. See documentation of the generateSmoothing method for more information.
+     * @param tolerance          generateSmoothing parameter. See documentation of the generateSmoothing method for more information.
+     * @param const_acceleration generateVelocities parameter. See documentation of the generateVelocities method for more information.
+     */
+    public void generateAll(double weight_data, double weight_smooth, double tolerance, double const_acceleration) {
+        Waypoint copy[] = {};
+        Path tempPath = this.generateFillPoint();
+        tempPath = tempPath.generateSmoothing(weight_data, weight_smooth, tolerance);
+        tempPath.toArray(copy);
+        this.clear();
+        this.addAll(copy);
+        this.generateCurvature();
+        this.generateDistance();
+        this.generateVelocity(const_acceleration);
+    }
+
+    /**
      * Adds points at a certain spacing between them into all the segments.
      */
     public Path generateFillPoint() {
@@ -240,7 +258,7 @@ public class Path {
     /**
      * Attributes to all points their distance from the start.
      */
-    private void generateDistance() {
+    public void generateDistance() {
         this.recursiveDistance(this.length() - 1);
     }
 
@@ -294,12 +312,12 @@ public class Path {
         double maximum_velocity;
 //accurate calculation
         for (int i = 1; i < this.length() - 1; i++) {
-            maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i-1)) + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)), const_acceleration / this.getWaypoint(i).getCurvature());
+            maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)) + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)), const_acceleration / this.getWaypoint(i).getCurvature());
             this.getWaypoint(i).setSpeed(maximum_velocity);
         }
 
         for (int i = this.length() - 2; i > 0; i--) {
-            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(this.getWaypoint(i + 1).getSpeed(), 2) + 2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i-1)))));
+            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(this.getWaypoint(i + 1).getSpeed(), 2) + 2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)))));
         }
 
     }
