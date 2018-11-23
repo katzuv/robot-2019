@@ -6,13 +6,13 @@ public class Constants {
     final static double TRACK_WIDTH = 3;
 
     //PATH GENERATION CONSTANTS
-    static final double SPACING_BETWEEN_WAYPOINTS = 0.1524; //meters
-    static final double MAX_ACCEL = 2;
+    public static final double SPACING_BETWEEN_WAYPOINTS = 0.1524; //meters
+    public static final double MAX_ACCEL = 2;
 
     //SMOOTHING CONSTANTS (pure numbers)
-    final static double WEIGHT_SMOOTH = 0.85;
-    final static double WEIGHT_DATA = 1 - WEIGHT_SMOOTH;
-    final static double TOLERANCE = 0.001;
+    public final static double WEIGHT_SMOOTH = 0.85;
+    public final static double WEIGHT_DATA = 1 - WEIGHT_SMOOTH;
+    public final static double TOLERANCE = 0.001;
 
     //DRIVING CONSTANTS (pure numbers)
     public final static double kV = 0;
