@@ -59,6 +59,9 @@ public class PurePursue extends Command {
     protected void execute() {
         updatePoint();
         updateLookaheadInPath(path);
+        SmartDashboard.putNumber("voltagesent sent left" , getLeftSpeedVoltage(path));
+        SmartDashboard.putNumber("voltage sent right" , getRightSpeedVoltage(path));
+        SmartDashboard.putNumber("curvature calculate" , curvatureCalculate());
         drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
     }
 
@@ -196,6 +199,11 @@ public class PurePursue extends Command {
         double x = distanceLookahead();
         double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2) / 2 * x;
+
+        SmartDashboard.putNumber("lookahead distance" , x);
+
+        SmartDashboard.putString("lookahead point" , currentLookahead.getX() + " "+ currentLookahead.getY());
+        SmartDashboard.putNumber("radius" , radius);
         if (radius == 0) {
             return Double.POSITIVE_INFINITY;
         } else {
