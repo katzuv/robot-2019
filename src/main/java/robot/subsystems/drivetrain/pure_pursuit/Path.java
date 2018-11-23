@@ -200,13 +200,8 @@ public class Path {
      * @param const_acceleration generateVelocities parameter. See documentation of the generateVelocities method for more information.
      */
     public void generateAll(double weight_data, double weight_smooth, double tolerance, double const_acceleration) {
-        Waypoint copy[] = {};
         this.generateFillPoint();
-        Path tempPath = this.copy();
-        tempPath = tempPath.generateSmoothing(weight_data, weight_smooth, tolerance);
-        copy = tempPath.toArray();
-        this.clear();
-        this.addAll(copy);
+        this.generateSmoothing(weight_data,weight_smooth,tolerance);
         this.generateCurvature();
         this.generateDistance();
         this.generateVelocity(const_acceleration);
@@ -247,7 +242,7 @@ public class Path {
      * @author Paulo
      * @author Lior
      */
-    public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
+    public void generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
         Path newPathClass = this.copy();
         double[][] newPath = new double[this.length()][2];
         double a = weight_data;
@@ -275,7 +270,8 @@ public class Path {
             p.setY(newPath[i][1]);
             newPathClass.setWaypoint(i, p);
         }
-        return newPathClass;
+        this.clear();
+        this.addAll(newPathClass);
     }
 
     /**
