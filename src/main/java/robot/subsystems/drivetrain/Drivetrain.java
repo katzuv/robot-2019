@@ -36,6 +36,7 @@ public class Drivetrain extends Subsystem {
         leftForward.setInverted(Constants.LEFT_REVERSED);
         leftBack.setInverted(Constants.LEFT_REVERSED);
         rightForward.setInverted(Constants.RIGHT_REVERSED);
+        rightBack.setInverted(Constants.RIGHT_REVERSED);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the left side
      */
     private void setLeftSpeed(double speed) {
-        if (speed > -0.4 && speed < 0.4) {
+        if (speed >= -0.5 && speed <= 0.5) {
             leftForward.set(speed);
             leftBack.set(speed);
         }
@@ -80,7 +81,7 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
-        if (speed > -0.4 && speed < 0.4) {
+        if (speed >= -0.5 && speed <= 0.5) {
             rightForward.set(speed);
             rightBack.set(speed);
         }
@@ -131,5 +132,7 @@ public class Drivetrain extends Subsystem {
     public double getRoll() {
         return Robot.navx.getRoll();
     }
+
+    public double getYaw(){ return Robot.navx.getYaw();}
 
 }
