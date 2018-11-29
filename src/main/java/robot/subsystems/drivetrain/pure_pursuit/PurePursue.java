@@ -119,8 +119,8 @@ public class PurePursue extends Command {
         assert ref != null;
         assert point1 != null;
         assert point2 != null;
-        Vector p = new Vector(point2, point1);
-        Vector f = new Vector(point1, ref);
+        Vector p = new Vector(point1, point2);
+        Vector f = new Vector(ref, point1);
 
         //p*p + 2*f*p + f*f - r*r = 0
         double a = p.dot(p);
