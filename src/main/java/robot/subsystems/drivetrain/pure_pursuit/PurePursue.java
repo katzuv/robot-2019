@@ -89,7 +89,7 @@ public class PurePursue extends Command {
      */
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
-        double distance = ((drivetrain.getLeftDistance() - lastLeftEncoder) + (drivetrain.getRightDistance() - lastRightEncoder)) / 2;
+        double distance = -((drivetrain.getLeftDistance() - lastLeftEncoder) + (drivetrain.getRightDistance() - lastRightEncoder)) / 2;
 
         currentPoint.setX(currentPoint.getX() + direction * distance * Math.cos(drivetrain.getAngle() * (Math.PI / 180.0)));
         currentPoint.setY(currentPoint.getY() + direction * distance * Math.sin(drivetrain.getAngle() * (Math.PI / 180.0)));
@@ -136,15 +136,11 @@ public class PurePursue extends Command {
             double opt1 = (-b - discriminant) / (2 * a);
             double opt2 = (-b + discriminant) / (2 * a);
             if (opt1 >= 0 && opt1 <= 1) {
-                newLookaheadPoint = p.multiply(opt1).add(point1);
+                return p.multiply(opt1).add(point1);
             }
             if (opt2 >= 0 && opt2 <= 1)
-                if (newLookaheadPoint != null) {
-                    if (opt2 > opt1)
-                        newLookaheadPoint = p.multiply(opt2).add(point1);
-                } else
-                    newLookaheadPoint = p.multiply(opt2).add(point1);
-            return newLookaheadPoint;
+                return p.multiply(opt2).add(point1);
+            return null;
         }
     }
 
@@ -195,19 +191,21 @@ public class PurePursue extends Command {
      * @author orel
      * @author Paulo
      */
-    private double curvatureCalculate() {
+        private double curvatureCalculate() {
         double x = distanceLookahead();
         double L = Point.distance(currentPoint, currentLookahead);
-        double radius = Math.pow(L, 2) / 2 * x;
+        double radius = Math.pow(L, 2);
 
+        SmartDashboard.putNumber("distance from currentPoint to the current lookahead point" , L);
         SmartDashboard.putNumber("lookahead distance" , x);
-
         SmartDashboard.putString("lookahead point" , currentLookahead.getX() + " "+ currentLookahead.getY());
+
         SmartDashboard.putNumber("radius" , radius);
+
         if (radius == 0) {
-            return Double.POSITIVE_INFINITY;
+            return Math.pow(10,5);
         } else {
-            return 1 / radius;
+            return (x*2) / radius;
         }
     }
 
@@ -242,6 +240,11 @@ public class PurePursue extends Command {
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drivetrain.getRightSpeed();
+        SmartDashboard.putNumber("current target vel", closestPoint(path).getSpeed());
+        SmartDashboard.putString("current closet point", closestPoint(path).toString());
+        if (curvatureCalculate() >= Math.pow(10,3))
+            return kV*(closestPoint(path).getSpeed());
+        else
         return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.TRACK_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getRightSpeed());
