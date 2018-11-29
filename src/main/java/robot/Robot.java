@@ -104,10 +104,10 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.start();
         }
         Path path = new Path();
-        path.appendWaypoint(new Waypoint(0, 0));
-        path.appendWaypoint(new Waypoint(1.2, 0.7));
-        path.appendWaypoint(new Waypoint(2, 1));
-        path.appendWaypoint(new Waypoint(3, 1.5));
+
+        path.appendWaypoint(new Waypoint(0, 0.1));
+        path.appendWaypoint(new Waypoint(0.2, 0.3));
+        path.appendWaypoint(new Waypoint(0, 1.2/2));
         path = path.generateFillPoint();
         path = path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         path.generateCurvature();
@@ -129,6 +129,12 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
         SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
+        SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
+
+        SmartDashboard.putNumber("current angle", drivetrain.getAngle());
+        SmartDashboard.putNumber("current yaw", drivetrain.getYaw());
+        SmartDashboard.putNumber("current pitch", drivetrain.getPitch());
+        SmartDashboard.putNumber("current roll", drivetrain.getRoll());
     }
 
     @Override
@@ -140,6 +146,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+
     }
 
     /**
@@ -147,8 +154,12 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        drivetrain.setSpeed(-0.5,-0.5);
         Scheduler.getInstance().run();
-        drivetrain.setSpeed(0.3, 0.3);
+        SmartDashboard.putNumber("current angle", drivetrain.getAngle());
+        SmartDashboard.putNumber("current yaw", drivetrain.getYaw());
+        SmartDashboard.putNumber("current pitch", drivetrain.getPitch());
+        SmartDashboard.putNumber("current roll", drivetrain.getRoll());
 
     }
 
