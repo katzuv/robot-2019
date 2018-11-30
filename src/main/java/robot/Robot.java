@@ -107,7 +107,7 @@ public class Robot extends TimedRobot {
 
         path.appendWaypoint(new Waypoint(0, 0.1));
         path.appendWaypoint(new Waypoint(0.2, 0.3));
-        path.appendWaypoint(new Waypoint(0, 1.2/2));
+        path.appendWaypoint(new Waypoint(0, 0.6));
         path = path.generateFillPoint();
         path = path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         path.generateCurvature();
@@ -130,11 +130,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
         SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
         SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
-
-        SmartDashboard.putNumber("current angle", drivetrain.getAngle());
-        SmartDashboard.putNumber("current yaw", drivetrain.getYaw());
-        SmartDashboard.putNumber("current pitch", drivetrain.getPitch());
-        SmartDashboard.putNumber("current roll", drivetrain.getRoll());
     }
 
     @Override
@@ -154,12 +149,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        drivetrain.setSpeed(-0.5,-0.5);
+
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("current angle", drivetrain.getAngle());
-        SmartDashboard.putNumber("current yaw", drivetrain.getYaw());
-        SmartDashboard.putNumber("current pitch", drivetrain.getPitch());
-        SmartDashboard.putNumber("current roll", drivetrain.getRoll());
 
     }
 
