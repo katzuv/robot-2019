@@ -1,7 +1,5 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
-import robot.subsystems.drivetrain.pure_pursuit.Constants;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,7 +7,11 @@ import java.util.Arrays;
 /**
  * @author Paulo Khayat
  * @author Lior Barkai
+ * <p>
  * This class is the instance of the path, holding the points.
+ * The generation methods written here are all part of the Pure pursuit algorithm
+ * all instances of the name 'the pure pursuit article' refer to this article by team DAWGMA 1712:
+ * https://www.chiefdelphi.com/media/papers/download/5533
  */
 public class Path {
     private ArrayList<Waypoint> path = new ArrayList<>();
@@ -62,7 +64,7 @@ public class Path {
     }
 
     /**
-     * Adds point to the path.
+     * Add a point to the path.
      *
      * @param index the index of the point to append.
      * @param p     the waypoint to add.
@@ -79,7 +81,7 @@ public class Path {
     }
 
     /**
-     * Appends an object to the end of the list.
+     * Append an object to the end of the list.
      *
      * @param p the waypoint to add.
      */
@@ -88,18 +90,18 @@ public class Path {
     }
 
     /**
-     * Gives a new subPath of the path.
+     * Return a new subPath of the path.
      *
-     * @param start  first index of the path
-     * @param length last index (subtracted by one)
-     * @return returns a new Path class which holds the specified sublist
+     * @param start  first index of the path.
+     * @param length last index (subtracted by one).
+     * @return returns a new Path class which holds the specified sublist of waypoints.
      */
     public Path getSubPath(int start, int length) {
         return new Path(new ArrayList<>(path.subList(start, length)));
     }
 
     /**
-     * get a Point at a specific index.
+     * Return a Waypoint at a specific index.
      *
      * @param index index of the desired point starting at zero, use -1 for last Point.
      * @return returns the Point.
@@ -107,13 +109,11 @@ public class Path {
     public Waypoint getWaypoint(int index) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
-        if (path.get(index % path.size()) == null)
-            throw new ClassCastException("Tried to call a non Point object from the path list.");
         return path.get(index % path.size());
     }
 
     /**
-     * Adds all of a Point array to the end of the path list.
+     * Add all of a Point array to the end of the path list.
      * The equivalent of 'addAll(-1, array)'
      *
      * @param array the array of points to add to the end of the array.
@@ -123,7 +123,7 @@ public class Path {
     }
 
     /**
-     * Appends all of a Point array at a certain index.
+     * Append all of a Point array at a certain index.
      * Adds the first Point at the specified index.
      * all Points at an index greater than the specified index get moved to after the array.
      *
@@ -145,7 +145,7 @@ public class Path {
 
     /**
      * /**
-     * Returns the size of the path.
+     * Return the size of the path.
      *
      * @return returns the size() of the array.
      */
@@ -154,7 +154,7 @@ public class Path {
     }
 
     /**
-     * Copies the path
+     * Create a new instance of the path.
      *
      * @return
      */
@@ -165,7 +165,7 @@ public class Path {
     // ----== Functions for path generation and optimisation: ==----
 
     /**
-     * Converts the path ArrayList to an array.
+     * Convert the path ArrayList to an array.
      *
      * @param array needed to specify what type of array will copy over.
      * @return returns a Waypoint[] array.
@@ -175,12 +175,12 @@ public class Path {
     }
 
     /**
-     * Adds points at a certain spacing between them into all the segments.
+     * Add points at a certain spacing between them into all the segments.
+     * <p>
+     * The first of the five methods used in the path generation, needed for the pure pursuit.
+     * (Pure pursuit article, 'Path Generation' > 'Injecting points' , Page 5)
      */
     public Path generateFillPoint() {
-        //double vector = Point.distance(path.get(0), path.get(path.size() - 1));
-        //final int NUM_OF_POINTS_THAT_CAN_FIT = (int) Math.ceil(vector / Constants.SPACING_BETWEEN_WAYPOINTS);
-
         Vector[] pathVectors = new Vector[path.size()]; //create an array of vectors per point.
         Path newPoints = new Path(); //create a new path class
         int AmountOfPoints;
@@ -201,14 +201,28 @@ public class Path {
     }
 
     /**
-     * @param weight_data   amount of data
-     * @param weight_smooth amount of smooth
-     * @param tolerance     the min change between points
-     * @return the new path with the way points
+     * Smooth the points in the path class.
+     * <p>
+     * The second of the five methods used in the path generation, needed for the pure pursuit.
+     * (Pure pursuit article, 'Path Generation' > 'Smoothing' , Page 5)
+     *
+     * @param weight_data   smooth constant. controls the proportional distance from the original point.
+     * @param weight_smooth smooth constant. controls the proportional distance from the midpoint.
+     * @param tolerance     the minimum change between points.
+     * @return the new path with the way points.
      * @author Paulo
      * @author Lior
      */
     public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
+        /*
+         * For simplification and parallelism with the article with the pure pursuit article, we converted the Waypoint
+         * path into a matrix of doubles. the first dimension represents the index of the waypoint, the second dimension
+         * the first column (column [0]) holding the x values and the second column (column [1]) holding the Y values.
+         *
+         * this smoothing algorithm takes each point on the path, tries to move it towards the midpoint of the next and
+         * previous point, proportionally to the distance from the midpoint, minus the amount it already moved until now.
+         * the program ends when the amount of change passes the tolerance.
+         */
         Path newPathClass = this.copy();
         double[][] newPath = new double[this.length()][2];
         double a = weight_data; //multiplied by the distance the point has already moved.
@@ -240,14 +254,18 @@ public class Path {
     }
 
     /**
-     * Attributes to all points their distance from the start.
+     * Attribute to all points their distance from the start.
+     * sets the distance of each point from the start and saves as a parameter, so that it doesnt have to be calculated real time.
+     * <p>
+     * The third of the five methods used in the path generation, needed for the pure pursuit.
+     * (see the Pure pursuit article, 'Path Generation' > 'Distances Between Points' , Page 6)
      */
     public void generateDistance() {
-        this.recursiveDistance(this.length() - 1);
+        this.recursiveDistance(this.length() - 1); //uses a recursive method to attribute each distance from the start.
     }
 
     /**
-     * Returns the size of the largest length in the list.
+     * Return the size of the largest length in the list.
      *
      * @param i index of current point
      * @return returns sum of all distances before this point.
@@ -263,9 +281,19 @@ public class Path {
     }
 
     /**
-     * Attributes to all points their curvature in correlation to their adjacent points.
+     * Attribute to all points their curvature in correlation to their adjacent points.
+     * sets the curvature of each point and saves as a parameter, so that it doesnt have to be calculated real time.
+     * <p>
+     * The fourth of the five methods used in the path generation, needed for the pure pursuit.
+     * (see the Pure pursuit article, 'Path Generation' > 'Curvature of Path' , Page 6)
      */
     public void generateCurvature() {
+        /*
+         * for each point on the path:
+         * (a, b) are the center of the circle that intersects with the point, its previous point and its next point.
+         * r is the radius of that given circle.
+         * k1 and k2 are used to find the center of the circle.
+         */
         double k1, k2, b, a, r;
         for (int i = 1; i < path.size() - 1; i++) {
             double x1 = path.get(i).getX();
@@ -288,20 +316,30 @@ public class Path {
 
 
     /**
+     * Each point on the path will have a target velocity the robot tries to reach.
+     * The robot uses the target velocity of the point closest to it when calculating the target left and right wheel speeds.
+     * When calculating the target velocity for a point we take into account the curvature at the point so the robot slows down around sharp turns.
+     * (For this reason you must run the methods in order).
+     * <p>
+     * The last of the five methods used in the path generation, needed for the pure pursuit.
+     * (see the Pure pursuit article, 'Path Generation' > 'Velocities' , Page 8)
+     *
      * @param const_acceleration rhe acceleration constant
-     * @author orel
      * @author orel
      */
     public void generateVelocity(double const_acceleration) {
+        /*
+         *
+         */
         double maximum_velocity;
-//accurate calculation
         for (int i = 1; i < this.length() - 1; i++) {
-            maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i-1)) + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)), const_acceleration / this.getWaypoint(i).getCurvature());
+            maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)) + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)),
+                    const_acceleration / this.getWaypoint(i).getCurvature());
             this.getWaypoint(i).setSpeed(maximum_velocity);
         }
 
         for (int i = this.length() - 2; i > 0; i--) {
-            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(this.getWaypoint(i + 1).getSpeed(), 2) + 2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i-1)))));
+            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(this.getWaypoint(i + 1).getSpeed(), 2) + 2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)))));
         }
 
     }
