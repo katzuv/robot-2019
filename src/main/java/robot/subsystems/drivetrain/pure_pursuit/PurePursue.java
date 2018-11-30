@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static robot.Robot.drivetrain;
 
 /**
- *
+ * The methods written here are all part of the Pure pursuit algorithm
+ * all instances of the name 'the pure pursuit article' refer to this article by team DAWGMA 1712:
+ * https://www.chiefdelphi.com/media/papers/download/5533
  */
 public class PurePursue extends Command {
     private Path path; //Command specific path to follow
@@ -15,15 +17,14 @@ public class PurePursue extends Command {
     private int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double lastLeftSpeed; //the last speed of the left encoder
     private double lastRightSpeed; //the last speed of the right encoder
-    private double lastLeftEncoder; //the last distance of the left encoder
-    private double lastRightEncoder; //the last distance of the right encoder
-    //private double initAngle;
+    private double lastLeftDistance; //the last distance of the left encoder
+    private double lastRightDistance; //the last distance of the right encoder
     private double lastLookaheadDistance; //distance of the last lookahead from the start of the path
     private double kP, kA, kV;
     private double lookaheadRadius;
 
     /**
-     * A command class.
+     * An implementation of these command class. for more information see documentation on the wpilib command class.
      *
      * @param path            the Path class that the robot is going to follow
      * @param isReversed      states if the robot should drivetrain forward or backwards along the path.
@@ -40,16 +41,13 @@ public class PurePursue extends Command {
         this.kV = kV;
         direction = isReversed ? -1 : 1;
         this.path = path;
-        // Use requires() here to declare subsystem dependencies
-        // eg.
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
         currentPoint = new Waypoint(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
-        lastLeftEncoder = drivetrain.getLeftDistance();
-        lastRightEncoder = drivetrain.getRightDistance();
-        //initAngle = drivetrain.getAngle() + (direction == -1 ? 180 : 0);
+        lastLeftDistance = drivetrain.getLeftDistance();
+        lastRightDistance = drivetrain.getRightDistance();
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drivetrain.getLeftSpeed();
         lastRightSpeed = direction * drivetrain.getRightSpeed();
@@ -89,13 +87,15 @@ public class PurePursue extends Command {
      */
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
-        double distance = -((drivetrain.getLeftDistance() - lastLeftEncoder) + (drivetrain.getRightDistance() - lastRightEncoder)) / 2;
+        double distance = ((drivetrain.getLeftDistance() - lastLeftDistance) + (drivetrain.getRightDistance() - lastRightDistance)) / 2;
 
+        //update the x, y coordinates based on the robot angle and the distance the robot moved.
         currentPoint.setX(currentPoint.getX() + direction * distance * Math.cos(drivetrain.getAngle() * (Math.PI / 180.0)));
         currentPoint.setY(currentPoint.getY() + direction * distance * Math.sin(drivetrain.getAngle() * (Math.PI / 180.0)));
 
-        lastLeftEncoder = drivetrain.getLeftDistance();
-        lastRightEncoder = drivetrain.getRightDistance();
+        //updates values for next run
+        lastLeftDistance = drivetrain.getLeftDistance();
+        lastRightDistance = drivetrain.getRightDistance();
         drivetrain.currentLocation.setX(currentPoint.getX());
         drivetrain.currentLocation.setY(currentPoint.getY());
     }
@@ -106,6 +106,7 @@ public class PurePursue extends Command {
 
     /**
      * This method finds the furthest point in a segment that is in a specified distance from the robot.
+     * (Pure pursuit article, 'Following the path' > 'lookahead point', Page 10)
      *
      * @param ref       Center point of the robot
      * @param lookahead lookahead distance (units of measurements are the same as those stored in the points)
@@ -122,18 +123,23 @@ public class PurePursue extends Command {
         Vector p = new Vector(point1, point2);
         Vector f = new Vector(ref, point1);
 
-        //p*p + 2*f*p + f*f - r*r = 0
+        /* using the equation: |t*p + f| = r, we try to find the value(s) of 't' where the length of the vector from the
+         * robot center to the point is equal to the radius 'r'.
+         * if you square both sides we get a quadratic formula with a, b, c. we use the quadratic formula and check for
+         * the intersections, and then check if the intersection is within the segment (if t is between zero and one.)
+         * the final method is: (p^2)*t^2 + (2*p*f)*t + (f^2 - r^2) = 0
+         */
+
         double a = p.dot(p);
         double b = 2 * f.dot(p);
         double c = f.dot(f) - lookahead * lookahead;
         double discriminant = b * b - 4 * a * c;
 
         if (discriminant < 0)
-            return null; //means that the circle doesnt reach the line
+            return null; //means that the circle doesn't reach the line
         else {
-            Waypoint newLookaheadPoint = null;
             discriminant = Math.sqrt(discriminant);
-            double opt1 = (-b - discriminant) / (2 * a);
+            double opt1 = (-b - discriminant) / (2 * a); //solve format of a quardatic formula
             double opt2 = (-b + discriminant) / (2 * a);
             if (opt1 >= 0 && opt1 <= 1) {
                 return p.multiply(opt1).add(point1);
@@ -142,6 +148,7 @@ public class PurePursue extends Command {
                 return p.multiply(opt2).add(point1);
             return null;
         }
+        return null;
     }
 
     /**
@@ -152,9 +159,9 @@ public class PurePursue extends Command {
      * @path the path the robot is driving on.
      */
     private void updateLookaheadInPath(Path path) {
-        for (int i = 0; i < path.length() - 1; i++) {
+        for (int i = 0; i < path.length() - 1; i++) { //goes through each segment in path.
             Waypoint wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
-            if (wp != null) {
+            if (wp != null) { //updates lookahead point to the first lookahead point the path finds
                 if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                     lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
                     currentLookahead = wp;
@@ -174,12 +181,9 @@ public class PurePursue extends Command {
     private Waypoint closestPoint(Path path) {
         Waypoint closest = path.getWaypoint(0).copy();
         for (int i = 1; i < path.length(); i++) {
-
             if (Point.distance(this.currentPoint, path.getWaypoint(i)) < Point.distance(this.currentPoint, closest)) {
                 closest = path.getWaypoint(i);
             }
-
-
         }
         return closest;
     }
