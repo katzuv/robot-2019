@@ -138,21 +138,16 @@ public class PurePursue extends Command {
         if (discriminant < 0)
             return null; //means that the circle doesn't reach the line
         else {
-            Waypoint newLookaheadPoint = null;
             discriminant = Math.sqrt(discriminant);
             double opt1 = (-b - discriminant) / (2 * a); //solve format of a quardatic formula
             double opt2 = (-b + discriminant) / (2 * a);
             if (opt1 >= 0 && opt1 <= 1) {
-                newLookaheadPoint = p.multiply(opt1).add(point1);
+                return p.multiply(opt1).add(point1);
             }
             if (opt2 >= 0 && opt2 <= 1)
-                if (newLookaheadPoint != null) {
-                    if (opt2 > opt1)
-                        newLookaheadPoint = p.multiply(opt2).add(point1);
-                } else
-                    newLookaheadPoint = p.multiply(opt2).add(point1);
-            return newLookaheadPoint;
+                return p.multiply(opt1).add(point1);
         }
+        return null;
     }
 
     /**
