@@ -196,12 +196,6 @@ public class PurePursue extends Command {
         double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2);
 
-        SmartDashboard.putNumber("distance from currentPoint to the current lookahead point" , L);
-        SmartDashboard.putNumber("lookahead distance" , x);
-        SmartDashboard.putString("lookahead point" , currentLookahead.getX() + " "+ currentLookahead.getY());
-
-        SmartDashboard.putNumber("radius" , radius);
-
         if (radius == 0) {
             return Math.pow(10,5);
         } else {
@@ -240,8 +234,6 @@ public class PurePursue extends Command {
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drivetrain.getRightSpeed();
-        SmartDashboard.putNumber("current target vel", closestPoint(path).getSpeed());
-        SmartDashboard.putString("current closet point", closestPoint(path).toString());
         if (curvatureCalculate() >= Math.pow(10,3))
             return kV*(closestPoint(path).getSpeed());
         else
