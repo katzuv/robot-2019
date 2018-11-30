@@ -34,7 +34,7 @@ public class Path {
         path.addAll(w);
     }
 
-    public static double[][] doubleArrayCopy(double[][] arr) {
+    private static double[][] doubleArrayCopy(double[][] arr) {
         //size first dimension of array
         double[][] temp = new double[arr.length][arr[0].length];
         for (int i = 0; i < arr.length; i++) {
