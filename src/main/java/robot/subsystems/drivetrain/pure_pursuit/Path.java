@@ -54,8 +54,8 @@ public class Path {
      */
     public void setWaypoint(int index, Waypoint p) {
         if (!(index <= path.size() && index > -path.size()))
-            throw new ArrayIndexOutOfBoundsException();
-        if (index == path.size())
+            throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
+        if (index == path.size()) //if set is just out of bounds the method appends the waypoint instead.
             this.appendWaypoint(p);
         else
             path.set(index % path.size(), p);
@@ -69,8 +69,10 @@ public class Path {
      */
     public void addWaypoint(int index, Waypoint p) {
         if (!(index <= path.size() && index > -path.size()))
-            throw new ArrayIndexOutOfBoundsException();
-        if (index == path.size())
+            throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
+        if (path.get(index % path.size()) == null)
+            throw new ClassCastException("Tried to call a non Point object from the path list.");
+        if (index == path.size()) //if set is just out of bounds the method appends the waypoint instead.
             this.appendWaypoint(p);
         else
             path.add(index % path.size(), p);
@@ -104,7 +106,7 @@ public class Path {
      */
     public Waypoint getWaypoint(int index) {
         if (!(index < path.size() && index > -path.size()))
-            throw new ArrayIndexOutOfBoundsException();
+            throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
         if (path.get(index % path.size()) == null)
             throw new ClassCastException("Tried to call a non Point object from the path list.");
         return path.get(index % path.size());
@@ -130,7 +132,7 @@ public class Path {
      */
     public void addAll(int index, Waypoint[] array) {
         if (!(index < path.size() && index > -path.size()))
-            throw new ArrayIndexOutOfBoundsException();
+            throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
         path.addAll(index % path.size(), Arrays.asList(array));
     }
 
@@ -209,9 +211,9 @@ public class Path {
     public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
         Path newPathClass = this.copy();
         double[][] newPath = new double[this.length()][2];
-        double a = weight_data;
-        double b = weight_smooth;
-        for (int i = 0; i < this.length(); i++) {
+        double a = weight_data; //multiplied by the distance the point has already moved.
+        double b = weight_smooth; //multiplied by the distance of the point from the midpoint
+        for (int i = 0; i < this.length(); i++) { //copying the path to an array.
             newPath[i][0] = this.getWaypoint(i).getX();
             newPath[i][1] = this.getWaypoint(i).getY();
 
@@ -275,7 +277,7 @@ public class Path {
             a = k1 - k2 * b;
             r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
             double curv = 0;
-            if (r == 0) {
+            if (r == 0) { //if the radius is zero, we would get a zero division error.
                 curv = Double.POSITIVE_INFINITY;
             } else {
                 curv = 1 / r;
