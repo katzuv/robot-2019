@@ -145,7 +145,7 @@ public class PurePursue extends Command {
                 return p.multiply(opt1).add(point1);
             }
             if (opt2 >= 0 && opt2 <= 1)
-                return p.multiply(opt1).add(point1);
+                return p.multiply(opt2).add(point1);
         }
         return null;
     }
