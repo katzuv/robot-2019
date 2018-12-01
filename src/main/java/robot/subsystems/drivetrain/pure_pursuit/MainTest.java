@@ -6,8 +6,9 @@ public class MainTest {
     public static void main(String[] args) {
         Path path = new Path();
         path.appendWaypoint(new Waypoint(0, 0));
-        path.appendWaypoint(new Waypoint(7, 1.5));
-        path.appendWaypoint(new Waypoint(10, 5));
+        path.appendWaypoint(new Waypoint(1.2, 0.7));
+        path.appendWaypoint(new Waypoint(2, 1));
+        path.appendWaypoint(new Waypoint(3, 1.5));
         path = path.generateFillPoint();
         path = path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         path.generateCurvature();
@@ -17,4 +18,5 @@ public class MainTest {
         System.out.println(path);
 
     }
+
 }

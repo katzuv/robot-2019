@@ -7,8 +7,6 @@
 
 package robot.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -28,7 +26,7 @@ public class Drivetrain extends Subsystem {
     private final VictorSP rightBack = new VictorSP(Ports.rightBackMotor);
     private final Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
     private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
-    public Point currentLocation = new Point(0,0 );
+    public Point currentLocation = new Point(0, 0);
 
     public Drivetrain() {
         leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
@@ -36,6 +34,7 @@ public class Drivetrain extends Subsystem {
         leftForward.setInverted(Constants.LEFT_REVERSED);
         leftBack.setInverted(Constants.LEFT_REVERSED);
         rightForward.setInverted(Constants.RIGHT_REVERSED);
+        rightBack.setInverted(Constants.RIGHT_REVERSED);
     }
 
     @Override
@@ -64,10 +63,10 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the left side
      */
     private void setLeftSpeed(double speed) {
-        if (speed > -0.4 && speed < 0.4) {
-            leftForward.set(speed);
-            leftBack.set(speed);
-        }
+
+        leftForward.set(speed);
+        leftBack.set(speed);
+
     }
 
     public double getRightSpeed() {
@@ -80,10 +79,10 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
-        if (speed > -0.4 && speed < 0.4) {
-            rightForward.set(speed);
-            rightBack.set(speed);
-        }
+
+        rightForward.set(speed/2);
+        rightBack.set(speed/2);
+
     }
 
     /**
@@ -130,6 +129,10 @@ public class Drivetrain extends Subsystem {
      */
     public double getRoll() {
         return Robot.navx.getRoll();
+    }
+
+    public double getYaw() {
+        return Robot.navx.getYaw();
     }
 
 }

@@ -1,5 +1,8 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.subsystems.drivetrain.pure_pursuit.Constants;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 

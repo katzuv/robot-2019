@@ -104,15 +104,16 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.start();
         }
         Path path = new Path();
-        path.appendWaypoint(new Waypoint(0.2, 0));
-        path.appendWaypoint(new Waypoint(7, 1.5));
-        path.appendWaypoint(new Waypoint(10, 5));
+
+        path.appendWaypoint(new Waypoint(0, 0.1));
+        path.appendWaypoint(new Waypoint(0.2, 0.3));
+        path.appendWaypoint(new Waypoint(0, 0.6));
         path = path.generateFillPoint();
         path = path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         path.generateCurvature();
         path.generateDistance();
         path.generateVelocity(Constants.MAX_ACCEL);
-        path.getWaypoint(0).setSpeed(path.getWaypoint(1).getSpeed()/2);
+        path.getWaypoint(0).setSpeed(path.getWaypoint(1).getSpeed() / 2);
         System.out.println(path);
         PurePursue pursue = new PurePursue(path, false, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV);
         SmartDashboard.putString("pursue command", "start");
@@ -126,6 +127,9 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
 
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
+        SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
     }
 
     @Override
@@ -137,6 +141,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+
     }
 
     /**
@@ -144,9 +149,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+
         Scheduler.getInstance().run();
-        drivetrain.setSpeed(0.2,0.2);
-        SmartDashboard.putNumber("Speed" , (drivetrain.getLeftSpeed()));
 
     }
 

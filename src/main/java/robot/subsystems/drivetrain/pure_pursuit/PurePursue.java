@@ -120,8 +120,8 @@ public class PurePursue extends Command {
         assert ref != null;
         assert point1 != null;
         assert point2 != null;
-        Vector p = new Vector(point2, point1); //vector of the segment
-        Vector f = new Vector(point1, ref); //vector from the robot center to the start of the segment
+        Vector p = new Vector(point1, point2);
+        Vector f = new Vector(ref, point1);
 
         /* using the equation: |t*p + f| = r, we try to find the value(s) of 't' where the length of the vector from the
          * robot center to the point is equal to the radius 'r'.
@@ -194,19 +194,15 @@ public class PurePursue extends Command {
      * @author orel
      * @author Paulo
      */
-    private double curvatureCalculate() {
+        private double curvatureCalculate() {
         double x = distanceLookahead();
         double L = Point.distance(currentPoint, currentLookahead);
-        double radius = Math.pow(L, 2) / 2 * x;
+        double radius = Math.pow(L, 2);
 
-        SmartDashboard.putNumber("lookahead distance" , x);
-
-        SmartDashboard.putString("lookahead point" , currentLookahead.getX() + " "+ currentLookahead.getY());
-        SmartDashboard.putNumber("radius" , radius);
         if (radius == 0) {
-            return Double.POSITIVE_INFINITY;
+            return Math.pow(10,5);
         } else {
-            return 1 / radius;
+            return (x*2) / radius;
         }
     }
 
@@ -241,6 +237,9 @@ public class PurePursue extends Command {
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drivetrain.getRightSpeed();
+        if (curvatureCalculate() >= Math.pow(10,3))
+            return kV*(closestPoint(path).getSpeed());
+        else
         return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.TRACK_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getRightSpeed());
