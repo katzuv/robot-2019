@@ -144,12 +144,7 @@ public class PurePursue extends Command {
                 newLookaheadPoint = p.multiply(opt1).add(point1);
             }
             if (opt2 >= 0 && opt2 <= 1)
-                if (newLookaheadPoint != null) {
-                    if (opt2 > opt1)
-                        newLookaheadPoint = p.multiply(opt2).add(point1);
-                } else
-                    newLookaheadPoint = p.multiply(opt2).add(point1);
-            return newLookaheadPoint;
+                return p.multiply(opt2).add(point1);
         }
     }
 
