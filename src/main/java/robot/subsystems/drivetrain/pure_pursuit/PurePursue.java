@@ -17,8 +17,8 @@ public class PurePursue extends Command {
     private int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double lastLeftSpeed; //the last speed of the left encoder
     private double lastRightSpeed; //the last speed of the right encoder
-    private double lastLeftDistance; //the last distance of the left encoder
-    private double lastRightDistance; //the last distance of the right encoder
+    private double lastLeftEncoder; //the last distance of the left encoder
+    private double lastRightEncoder; //the last distance of the right encoder
     private double lastLookaheadDistance; //distance of the last lookahead from the start of the path
     private double kP, kA, kV;
     private double lookaheadRadius;
@@ -46,8 +46,10 @@ public class PurePursue extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         currentPoint = new Waypoint(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
-        lastLeftDistance = drivetrain.getLeftDistance();
-        lastRightDistance = drivetrain.getRightDistance();
+        System.out.println(currentPoint);
+        lastLeftEncoder = drivetrain.getLeftDistance();
+        lastRightEncoder = drivetrain.getRightDistance();
+        //initAngle = drivetrain.getAngle() + (direction == -1 ? 180 : 0);
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drivetrain.getLeftSpeed();
         lastRightSpeed = direction * drivetrain.getRightSpeed();
@@ -58,14 +60,21 @@ public class PurePursue extends Command {
     protected void execute() {
         updatePoint();
         updateLookaheadInPath(path);
+
+        SmartDashboard.putNumber("lastlookaheaddistance" , lastLookaheadDistance);
+
         SmartDashboard.putNumber("voltagesent sent left" , getLeftSpeedVoltage(path));
         SmartDashboard.putNumber("voltage sent right" , getRightSpeedVoltage(path));
         SmartDashboard.putNumber("curvature calculate" , curvatureCalculate());
+        SmartDashboard.putString("current lookahead point", this.currentLookahead.getX() + " " + this.currentLookahead.getY());
+
         drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        //return false;
         return (closestPoint(path) == path.getWaypoint(path.length() - 1) &&
                 drivetrain.getLeftSpeed() < Constants.STOP_SPEED_THRESH &&
                 drivetrain.getRightSpeed() < Constants.STOP_SPEED_THRESH);
@@ -89,15 +98,15 @@ public class PurePursue extends Command {
      */
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
-        double distance = ((drivetrain.getLeftDistance() - lastLeftDistance) + (drivetrain.getRightDistance() - lastRightDistance)) / 2;
+        double distance = ((drivetrain.getLeftDistance() - lastLeftEncoder) + (drivetrain.getRightDistance() - lastRightEncoder)) / 2;
 
         //update the x, y coordinates based on the robot angle and the distance the robot moved.
-        currentPoint.setX(currentPoint.getX() + direction * distance * Math.cos(drivetrain.getAngle() * (Math.PI / 180.0)));
-        currentPoint.setY(currentPoint.getY() + direction * distance * Math.sin(drivetrain.getAngle() * (Math.PI / 180.0)));
+        currentPoint.setX(currentPoint.getX() + direction * distance * Math.sin(drivetrain.getAngle() * (Math.PI / 180.0)));
+        currentPoint.setY(currentPoint.getY() + direction * distance * Math.cos(drivetrain.getAngle() * (Math.PI / 180.0)));
 
         //updates values for next run
-        lastLeftDistance = drivetrain.getLeftDistance();
-        lastRightDistance = drivetrain.getRightDistance();
+        lastLeftEncoder = drivetrain.getLeftDistance();
+        lastRightEncoder = drivetrain.getRightDistance();
         drivetrain.currentLocation.setX(currentPoint.getX());
         drivetrain.currentLocation.setY(currentPoint.getY());
     }
@@ -140,6 +149,8 @@ public class PurePursue extends Command {
             discriminant = Math.sqrt(discriminant);
             double opt1 = (-b - discriminant) / (2 * a); //solve format of a quardatic formula
             double opt2 = (-b + discriminant) / (2 * a);
+            SmartDashboard.putNumber("opt",opt1);
+            SmartDashboard.putString("opt point", p.multiply(opt1).add(point1).toString());
             if (opt1 >= 0 && opt1 <= 1) {
                 return p.multiply(opt1).add(point1);
             }
@@ -157,12 +168,14 @@ public class PurePursue extends Command {
      * @path the path the robot is driving on.
      */
     private void updateLookaheadInPath(Path path) {
-        for (int i = 0; i < path.length() - 1; i++) { //goes through each segment in path.
+        for (int i = 0; i < path.length() - 1; i++) {
             Waypoint wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
-            if (wp != null) { //updates lookahead point to the first lookahead point the path finds
+            if (wp != null) {
                 if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                     lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
                     currentLookahead = wp;
+                    SmartDashboard.putNumber("testnumber", i);
+                    SmartDashboard.putString("currentlookahead again" , wp.getX() + " " + wp.getY());
                     return;
                 }
             }
@@ -179,6 +192,7 @@ public class PurePursue extends Command {
     private Waypoint closestPoint(Path path) {
         Waypoint closest = path.getWaypoint(0).copy();
         for (int i = 1; i < path.length(); i++) {
+
             if (Point.distance(this.currentPoint, path.getWaypoint(i)) < Point.distance(this.currentPoint, closest)) {
                 closest = path.getWaypoint(i);
             }
@@ -214,7 +228,7 @@ public class PurePursue extends Command {
      * @author Paulo
      */
     private double distanceLookahead() {
-        double robot_angle = Math.toRadians(drivetrain.getAngle() + (direction == -1 ? 180 : 0));
+        double robot_angle = Math.toRadians(drivetrain.getAngle() - (direction == -1 ? 270 : 90));
         double a = -Math.tan(robot_angle);
         double b = 1;
         double c = -Math.tan(robot_angle) * (currentPoint.getX() - currentPoint.getY());
@@ -252,6 +266,9 @@ public class PurePursue extends Command {
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / 0.02;
         lastLeftSpeed = drivetrain.getLeftSpeed();
+        SmartDashboard.putNumber("current closest point speed", closestPoint(path).getSpeed());
+        SmartDashboard.putNumber("current curvature calculate", curvatureCalculate());
+
         return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.TRACK_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());
