@@ -148,7 +148,6 @@ public class PurePursue extends Command {
                 return p.multiply(opt2).add(point1);
             return null;
         }
-        return null;
     }
 
     /**
