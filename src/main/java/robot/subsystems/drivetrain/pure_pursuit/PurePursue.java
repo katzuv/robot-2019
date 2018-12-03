@@ -233,8 +233,8 @@ public class PurePursue extends Command {
         double b = 1;
         double c = -a * currentPoint.getX() - currentPoint.getY();
         //Another point on the robots tangent
-        double sign = -Math.signum(Math.sin(robot_angle) * (currentLookahead.getX() - currentPoint.getX()) -
-                Math.cos(robot_angle) * (currentLookahead.getY() - currentPoint.getY()));
+        double sign = -Math.signum(Math.cos(robot_angle) * (currentLookahead.getX() - currentPoint.getX()) -
+                Math.sin(robot_angle) * (currentLookahead.getY() - currentPoint.getY()));
         return sign * Math.abs(a * currentLookahead.getX() + b * currentLookahead.getY() + c) /
                 Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
 
