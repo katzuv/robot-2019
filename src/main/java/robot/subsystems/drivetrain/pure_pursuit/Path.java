@@ -285,29 +285,15 @@ public class Path {
      * (see the Pure pursuit article, 'Path Generation' > 'Curvature of Path' , Page 6)
      */
     public void generateCurvature() {
-        /*
-         * for each point on the path:
-         * (a, b) are the center of the circle that intersects with the point, its previous point and its next point.
-         * r is the radius of that given circle.
-         * k1 and k2 are used to find the center of the circle.
-         */
-        double k1, k2, b, a, r;
+
         for (int i = 1; i < path.size() - 1; i++) {
-            double x1 = path.get(i).getX();
-            if (path.get(i - 1).getX() == x1)
-                x1 += 0.0001;
-            k1 = 0.5 * (Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i - 1).getX(), 2) - Math.pow(path.get(i - 1).getY(), 2)) / (x1 - path.get(i - 1).getX());
-            k2 = (path.get(i).getY() - path.get(i - 1).getY()) / (x1 - path.get(i - 1).getX());
-            b = 0.5 * (Math.pow(path.get(i - 1).getX(), 2) - 2 * path.get(i - 1).getX() * k1 + Math.pow(path.get(i - 1).getY(), 2) - Math.pow(path.get(i + 1).getX(), 2) + 2 * path.get(i + 1).getX() * k1 - Math.pow(path.get(i + 1).getY(), 2)) / (path.get(i + 1).getX() * k2 - path.get(i + 1).getY() + path.get(i - 1).getY() - path.get(i - 1).getX() * k2);
-            a = k1 - k2 * b;
-            r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
-            double curv;
-            if (r == 0) { //if the radius is zero, we would get a zero division error.
-                curv = Double.POSITIVE_INFINITY;
-            } else {
-                curv = 1 / r;
-            }
-            path.get(i).setCurvature(curv);
+            Waypoint prev = path.get(i - 1); //Waypoint
+            Waypoint curr = path.get(i);
+            Waypoint next = path.get(i + 1);
+            double area = (curr.getX() - prev.getX()) * (next.getY() - prev.getY()) -
+                          (curr.getY() - prev.getY()) * (next.getX() - prev.getX());
+            double curvature = 2 * area / (Waypoint.distance(prev, curr))
+            path.get(i).setCurvature();
         }
     }
 
