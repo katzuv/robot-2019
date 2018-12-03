@@ -51,6 +51,7 @@ public class PurePursue extends Command {
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drivetrain.getLeftSpeed();
         lastRightSpeed = direction * drivetrain.getRightSpeed();
+        SmartDashboard.putString("pursue command", "start");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -73,6 +74,7 @@ public class PurePursue extends Command {
     // Called once after isFinished returns true
     protected void end() {
         drivetrain.setSpeed(0, 0);
+        SmartDashboard.putString("pursue command",  "end");
     }
 
     // Called when another command which requires one or more of the same
