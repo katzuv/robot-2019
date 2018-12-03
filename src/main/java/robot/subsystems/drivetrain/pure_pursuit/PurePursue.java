@@ -60,7 +60,7 @@ public class PurePursue extends Command {
     protected void execute() {
         updatePoint();
         updateLookaheadInPath(path);
-
+        System.out.println(getLeftSpeedVoltage(path)- getRightSpeedVoltage(path));
         SmartDashboard.putNumber("lastlookaheaddistance" , lastLookaheadDistance);
 
         SmartDashboard.putNumber("voltagesent sent left" , getLeftSpeedVoltage(path));
@@ -231,12 +231,13 @@ public class PurePursue extends Command {
         double robot_angle = Math.toRadians(drivetrain.getAngle() - (direction == -1 ? 270 : 90));
         double a = -Math.tan(robot_angle);
         double b = 1;
-        double c = -Math.tan(robot_angle) * (currentPoint.getX() - currentPoint.getY());
+        double c = -a * currentPoint.getX() - currentPoint.getY();
         //Another point on the robots tangent
-        double sign = Math.signum(Math.cos(robot_angle) * (currentLookahead.getX() - currentPoint.getX()) -
-                Math.sin(robot_angle) * (currentLookahead.getY() - currentPoint.getY()));
+        double sign = -Math.signum(Math.sin(robot_angle) * (currentLookahead.getX() - currentPoint.getX()) -
+                Math.cos(robot_angle) * (currentLookahead.getY() - currentPoint.getY()));
         return sign * Math.abs(a * currentLookahead.getX() + b * currentLookahead.getY() + c) /
                 Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+
     }
 
 
@@ -268,7 +269,6 @@ public class PurePursue extends Command {
         lastLeftSpeed = drivetrain.getLeftSpeed();
         SmartDashboard.putNumber("current closest point speed", closestPoint(path).getSpeed());
         SmartDashboard.putNumber("current curvature calculate", curvatureCalculate());
-
         return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.TRACK_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());

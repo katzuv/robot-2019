@@ -16,7 +16,7 @@ public class Constants {
     public final static double TOLERANCE = 0.001;
 
     //DRIVING CONSTANTS (pure numbers)
-    public final static double kV = 0.5;
+    public final static double kV = 0.75;
     public final static double kA = 0.000;
     public final static double kP = 0;
 
