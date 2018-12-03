@@ -1,8 +1,5 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.drivetrain.pure_pursuit.Constants;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -324,22 +321,20 @@ public class Path {
      * The last of the five methods used in the path generation, needed for the pure pursuit.
      * (see the Pure pursuit article, 'Path Generation' > 'Velocities' , Page 8)
      *
-     * @param const_acceleration rhe acceleration constant
+     * @param constAcceleration rhe acceleration constant
      * @author orel
      */
-    public void generateVelocity(double const_acceleration) {
-        /*
-         *
-         */
-        double maximum_velocity;
+    public void generateVelocity(double constAcceleration) {
         for (int i = 1; i < this.length() - 1; i++) {
-            maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)) + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)),
-                    const_acceleration / this.getWaypoint(i).getCurvature());
-            this.getWaypoint(i).setSpeed(maximum_velocity);
+            final Waypoint previous = this.getWaypoint(i - 1);
+            double velocity = Math.min(Math.sqrt(2 * constAcceleration * Point.distance(this.getWaypoint(i), previous) + Math.pow(previous.getSpeed(), 2)),
+                    3 / this.getWaypoint(i).getCurvature());
+            this.getWaypoint(i).setSpeed(velocity);
         }
 
         for (int i = this.length() - 2; i > 0; i--) {
-            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(this.getWaypoint(i + 1).getSpeed(), 2) + 2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)))));
+            final Waypoint next = this.getWaypoint(i + 1);
+            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(next.getSpeed(), 2) + 2 * constAcceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)))));
         }
 
     }
