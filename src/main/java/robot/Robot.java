@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
+        navx.reset();
     }
 
     /**
@@ -89,6 +90,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        navx.reset();
         drivetrain.resetEncoders();
         m_autonomousCommand = m_chooser.getSelected();
 
@@ -103,11 +105,13 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
         }
+        drivetrain.currentLocation.setX(0);
+        drivetrain.currentLocation.setY(0);
         Path path = new Path();
-
-        path.appendWaypoint(new Waypoint(0, 0.1));
-        path.appendWaypoint(new Waypoint(0.2, 0.3));
-        path.appendWaypoint(new Waypoint(0, 0.6));
+        drivetrain.resetLocation();
+        path.appendWaypoint(new Waypoint(0, 0.5));
+        path.appendWaypoint(new Waypoint(0.2, 0.7));
+        path.appendWaypoint(new Waypoint(0, 0.9));
         path = path.generateFillPoint();
         path = path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         path.generateCurvature();
@@ -130,6 +134,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
         SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
         SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
+        SmartDashboard.putNumber("current Angle" , navx.getAngle());
     }
 
     @Override
@@ -141,6 +146,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        navx.reset();
 
     }
 
@@ -151,6 +157,9 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
 
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("current Angle teleop" , navx.getAngle());
+        SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
+        SmartDashboard.putNumber("current right encoder" , drivetrain.getRightDistance());
 
     }
 

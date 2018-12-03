@@ -29,8 +29,8 @@ public class Drivetrain extends Subsystem {
     public Point currentLocation = new Point(0, 0);
 
     public Drivetrain() {
-        leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
-        rightEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+        leftEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+        rightEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
         leftForward.setInverted(Constants.LEFT_REVERSED);
         leftBack.setInverted(Constants.LEFT_REVERSED);
         rightForward.setInverted(Constants.RIGHT_REVERSED);
@@ -80,8 +80,8 @@ public class Drivetrain extends Subsystem {
      */
     private void setRightSpeed(double speed) {
 
-        rightForward.set(speed/2);
-        rightBack.set(speed/2);
+        rightForward.set(speed);
+        rightBack.set(speed);
 
     }
 

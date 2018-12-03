@@ -6,7 +6,7 @@ public class Constants {
     final static double TRACK_WIDTH = 0.6; //width of the robot
 
     //PATH GENERATION CONSTANTS
-    public static final double SPACING_BETWEEN_WAYPOINTS = 0.3524; //meters
+    public static final double SPACING_BETWEEN_WAYPOINTS = 0.1524; //meters
     public static final double MAX_ACCEL = 0.3;
 
     //SMOOTHING CONSTANTS (pure numbers)
@@ -15,7 +15,7 @@ public class Constants {
     public final static double TOLERANCE = 0.001;
 
     //DRIVING CONSTANTS (pure numbers)
-    public final static double kV = 0.6;
+    public final static double kV = 1/3.762;
     public final static double kA = 0.000;
     public final static double kP = 0;
 
