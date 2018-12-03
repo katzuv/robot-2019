@@ -6,7 +6,7 @@ package robot.subsystems.drivetrain.pure_pursuit;
  * @author Paulo Khayat
  */
 public class Point {
-    protected double x, y;
+    double x, y;
 
     /**
      * Gets the two coordinates of the point

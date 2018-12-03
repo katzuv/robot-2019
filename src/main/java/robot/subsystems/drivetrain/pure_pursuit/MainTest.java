@@ -1,6 +1,6 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
-public class MainTest {
+class MainTest {
 
 
     public static void main(String[] args) {

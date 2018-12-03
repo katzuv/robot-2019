@@ -46,8 +46,7 @@ public class Path {
             //Resize second dimension of array
             temp[i] = new double[arr[i].length];
             //Copy Contents
-            for (int j = 0; j < arr[i].length; j++)
-                temp[i][j] = arr[i][j];
+            if (arr[i].length >= 0) System.arraycopy(arr[i], 0, temp[i], 0, arr[i].length);
         }
         return temp;
     }
@@ -57,7 +56,7 @@ public class Path {
      *
      * @param index index of the desired point starting at zero, use -1 for last Point.
      */
-    public void setWaypoint(int index, Waypoint p) {
+    private void setWaypoint(int index, Waypoint p) {
         if (!(index <= path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
         if (index == path.size()) //if set is just out of bounds the method appends the waypoint instead.
@@ -152,7 +151,7 @@ public class Path {
      *
      * @return returns the size() of the array.
      */
-    public int length() {
+    int length() {
         return path.size();
     }
 
@@ -161,7 +160,7 @@ public class Path {
      *
      * @return
      */
-    public Path copy() {
+    private Path copy() {
         return new Path(path);
     }
 
@@ -228,8 +227,6 @@ public class Path {
          */
         Path newPathClass = this.copy();
         double[][] newPath = new double[this.length()][2];
-        double a = weight_data; //multiplied by the distance the point has already moved.
-        double b = weight_smooth; //multiplied by the distance of the point from the midpoint
         for (int i = 0; i < this.length(); i++) { //copying the path to an array.
             newPath[i][0] = this.getWaypoint(i).getX();
             newPath[i][1] = this.getWaypoint(i).getY();
@@ -242,7 +239,7 @@ public class Path {
             for (int i = 1; i < path.length - 1; i++)
                 for (int j = 0; j < path[i].length; j++) {
                     double aux = newPath[i][j];
-                    newPath[i][j] += a * (path[i][j] - newPath[i][j]) + b *
+                    newPath[i][j] += weight_data * (path[i][j] - newPath[i][j]) + weight_smooth *
                             (newPath[i - 1][j] + newPath[i + 1][j] - (2.0 * newPath[i][j]));
                     change += Math.abs(aux - newPath[i][j]);
                 }
@@ -307,7 +304,7 @@ public class Path {
             b = 0.5 * (Math.pow(path.get(i - 1).getX(), 2) - 2 * path.get(i - 1).getX() * k1 + Math.pow(path.get(i - 1).getY(), 2) - Math.pow(path.get(i + 1).getX(), 2) + 2 * path.get(i + 1).getX() * k1 - Math.pow(path.get(i + 1).getY(), 2)) / (path.get(i + 1).getX() * k2 - path.get(i + 1).getY() + path.get(i - 1).getY() - path.get(i - 1).getX() * k2);
             a = k1 - k2 * b;
             r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
-            double curv = 0;
+            double curv;
             if (r == 0) { //if the radius is zero, we would get a zero division error.
                 curv = Double.POSITIVE_INFINITY;
             } else {
