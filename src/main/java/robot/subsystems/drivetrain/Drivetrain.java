@@ -96,7 +96,7 @@ public class Drivetrain extends Subsystem {
      * @return The distance driven on the left side of the robot since the last reset
      */
     public double getLeftDistance() {
-        return leftEncoder.getDistance();
+        return -leftEncoder.getDistance();
     }
 
     public void resetEncoders() {
@@ -133,6 +133,11 @@ public class Drivetrain extends Subsystem {
 
     public double getYaw() {
         return Robot.navx.getYaw();
+    }
+
+    public void resetLocation(){
+        currentLocation.setX(0);
+        currentLocation.setY(0);
     }
 
 }

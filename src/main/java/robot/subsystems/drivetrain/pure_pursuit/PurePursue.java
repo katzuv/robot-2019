@@ -12,7 +12,7 @@ import static robot.Robot.drivetrain;
  */
 public class PurePursue extends Command {
     private Path path; //Command specific path to follow
-    private Point currentPoint; //holds X and Y variables for the robot
+    private Point currentPoint = new Point(0,0); //holds X and Y variables for the robot
     private Point currentLookahead; //holds X and Y variables for the Lookahead point
     private int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double lastLeftSpeed; //the last speed of the left encoder
@@ -51,7 +51,7 @@ public class PurePursue extends Command {
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drivetrain.getLeftSpeed();
         lastRightSpeed = direction * drivetrain.getRightSpeed();
-        SmartDashboard.putString("pursue command", "start");
+        drivetrain.resetLocation();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -119,9 +119,6 @@ public class PurePursue extends Command {
      * @author Paulo
      */
     private Waypoint findNearPath(Point ref, double lookahead, Waypoint point1, Waypoint point2) {
-        assert ref != null;
-        assert point1 != null;
-        assert point2 != null;
         Vector p = new Vector(point1, point2);
         Vector f = new Vector(ref, point1);
 
@@ -196,15 +193,15 @@ public class PurePursue extends Command {
      * @author orel
      * @author Paulo
      */
-        private double curvatureCalculate() {
+    private double curvatureCalculate() {
         double x = distanceLookahead();
         double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2);
 
         if (radius == 0) {
-            return Math.pow(10,5);
+            return Math.pow(10,6);
         } else {
-            return (x*2) / radius;
+            return 2*x / radius;
         }
     }
 
@@ -239,9 +236,6 @@ public class PurePursue extends Command {
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drivetrain.getRightSpeed();
-        if (curvatureCalculate() >= Math.pow(10,3))
-            return kV*(closestPoint(path).getSpeed());
-        else
         return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.TRACK_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getRightSpeed());
