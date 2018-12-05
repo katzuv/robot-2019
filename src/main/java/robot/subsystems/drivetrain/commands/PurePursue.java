@@ -7,7 +7,9 @@ import robot.subsystems.drivetrain.pure_pursuit.*;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 
 /**
- *
+ * The methods written here are all part of the Pure pursuit algorithm
+ * all instances of the name 'the pure pursuit article' refer to this article by team DAWGMA 1712:
+ * https://www.chiefdelphi.com/media/papers/download/5533
  */
 public class PurePursue extends Command {
     private Drivetrain drive; //Instance of the subsystem
@@ -25,7 +27,7 @@ public class PurePursue extends Command {
     private double lookaheadRadius;
 
     /**
-     * A command class.
+     * An implementation of these command class. for more information see documentation on the wpilib command class.
      *
      * @param path            the Path class that the robot is going to follow
      * @param isReversed      states if the robot should drive forward or backwards along the path.
@@ -149,18 +151,18 @@ public class PurePursue extends Command {
      * Uses the 'FindNearPath' method on all segments to find the closest point.
      * Checks for the next intersection thats index is higher than the current lookahead point.
      *
-     * @return the Lookahead Point.
-     * @path the path the robot is driving on.
      */
     private void updateLookaheadInPath(Path path) {
-        for (int i = 0; i < path.length() - 1; i++) {
+        for (int i = 0; i < path.length() - 1; i++) { //goes through each segment in path.
             Waypoint wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
+            if (wp != null) { //updates lookahead point to the first lookahead point the path finds
             if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                 lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
                 currentLookahead = wp;
                 return;
             }
         }
+    }
     }
 
     /**
@@ -173,12 +175,9 @@ public class PurePursue extends Command {
     private Waypoint closestPoint(Path path) {
         Waypoint closest = path.getWaypoint(0).copy();
         for (int i = 1; i < path.length(); i++) {
-
             if (Point.distance(this.currentPoint, path.getWaypoint(i)) < Point.distance(this.currentPoint, closest)) {
                 closest = path.getWaypoint(i);
             }
-
-
         }
         return closest;
     }
@@ -221,6 +220,20 @@ public class PurePursue extends Command {
                 Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
     }
 
+    /**
+     * Takes the current output, and gradually raises it to the target velocity, while making sure it doesn't change
+     * in a rate that is faster than the maximum acceleration rate.
+     *
+     * @param input the target velocity.
+     * @param lastOutput current output.
+     * @param limitRate maximum acceleration rate
+     * @return returns an updated output.
+     * @author Paulo
+     */
+    public double limitRate(double input, double lastOutput, double limitRate) {
+        double maxChange = 0.02 * limitRate;
+        return lastOutput + Math.min(-maxChange, Math.max(input - lastOutput, maxChange));
+    }
 
     /**
      * calculates the speed needed in the right wheel and makes so we can apply it straight to the right engine
