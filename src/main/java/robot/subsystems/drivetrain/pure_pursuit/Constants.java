@@ -3,7 +3,7 @@ package robot.subsystems.drivetrain.pure_pursuit;
 public class Constants {
     //DRIVING CONSTANTS
     public final static double LOOKAHEAD_DISTANCE = 0.3; //in meters
-    public final static double TRACK_WIDTH = 3;
+    public final static double ROBOT_WIDTH = 0.6; //the distance between the left and right wheels on the robot
 
     //PATH GENERATION CONSTANTS
     static final double SPACING_BETWEEN_WAYPOINTS = 0.1524; //meters
