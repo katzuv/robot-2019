@@ -137,6 +137,28 @@ public class Path {
     }
 
     /**
+     * Adds all of a Point array to the end of the path list.
+     * The equivalent of 'addAll(-1, array)'
+     *
+     * @param path the path class of points to add to the end of the array.
+     */
+    public void addAll(Path path) {
+        addAll(path.toArray());
+    }
+
+    /**
+     * Appends all of a Point array at a certain index.
+     * Adds the first Point at the specified index.
+     * all Points at an index greater than the specified index get moved to after the array.
+     *
+     * @param index the index to add the Point array (0 to place array at start)
+     * @param path  the path class of points to add.
+     */
+    public void addAll(int index, Path path) {
+        addAll(index, path.toArray());
+    }
+
+    /**
      * Clears the path
      */
     public void clear() {
@@ -167,11 +189,26 @@ public class Path {
     /**
      * Convert the path ArrayList to an array.
      *
-     * @param array needed to specify what type of array will copy over.
      * @return returns a Waypoint[] array.
      */
-    public Waypoint[] toArray(Waypoint[] array) {
-        return path.toArray(array);
+    public Waypoint[] toArray() {
+        return (Waypoint[]) path.toArray();
+    }
+
+    /**
+     * Run all generate methods at once.
+     *
+     * @param weight_data        generateSmoothing parameter. See documentation of the generateSmoothing method for more information.
+     * @param weight_smooth      generateSmoothing parameter. See documentation of the generateSmoothing method for more information.
+     * @param tolerance          generateSmoothing parameter. See documentation of the generateSmoothing method for more information.
+     * @param const_acceleration generateVelocities parameter. See documentation of the generateVelocities method for more information.
+     */
+    public void generateAll(double weight_data, double weight_smooth, double tolerance, double const_acceleration) {
+        this.generateFillPoint();
+        this.generateSmoothing(weight_data,weight_smooth,tolerance);
+        this.generateCurvature();
+        this.generateDistance();
+        this.generateVelocity(const_acceleration);
     }
 
     /**
@@ -182,7 +219,7 @@ public class Path {
      */
     public Path generateFillPoint() {
         Vector[] pathVectors = new Vector[path.size()]; //create an array of vectors per point.
-        Path newPoints = new Path(); //create a new path class
+        Path newPathClass = new Path(); //create a new path class
         int AmountOfPoints;
         for (int i = 0; i < pathVectors.length - 1; i++) {//for every point on the path
             //Creates a vector with the slope of the two points we are checking
@@ -192,10 +229,11 @@ public class Path {
             AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
             pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
             for (int j = 0; j < AmountOfPoints; j++) {
-                newPoints.appendWaypoint(pathVectors[i].multiply(j).add(this.getWaypoint(i)));
+                newPathClass.appendWaypoint(pathVectors[i].multiply(j).add(this.getWaypoint(i)));
             }
         }
-        return newPoints;
+        clear();
+        addAll(newPathClass);
 
 
     }
@@ -213,7 +251,7 @@ public class Path {
      * @author Paulo
      * @author Lior
      */
-    public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
+    public void generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
         /*
          * For simplification and parallelism with the article with the pure pursuit article, we converted the Waypoint
          * path into a matrix of doubles. the first dimension represents the index of the waypoint, the second dimension
@@ -250,7 +288,8 @@ public class Path {
             p.setY(newPath[i][1]);
             newPathClass.setWaypoint(i, p);
         }
-        return newPathClass;
+        this.clear();
+        this.addAll(newPathClass);
     }
 
     /**
@@ -335,6 +374,7 @@ public class Path {
         for (int i = 1; i < this.length() - 1; i++) {
             maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)) + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)),
                     const_acceleration / this.getWaypoint(i).getCurvature());
+            maximum_velocity = Math.min(Math.sqrt(2 * const_acceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)) + Math.pow(this.getWaypoint(i - 1).getSpeed(), 2)), const_acceleration / this.getWaypoint(i).getCurvature());
             this.getWaypoint(i).setSpeed(maximum_velocity);
         }
 
