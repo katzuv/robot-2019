@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static robot.Robot.drivetrain;
+import static robot.Robot.navx;
 
 /**
  * The methods written here are all part of the Pure pursuit algorithm
@@ -228,16 +229,11 @@ public class PurePursue extends Command {
      * @author Paulo
      */
     private double distanceLookahead() {
-        double robot_angle = Math.toRadians(drivetrain.getAngle() - (direction == -1 ? 270 : 90));
-        double a = -Math.tan(robot_angle);
+        double a = -Math.tan(navx.getAngle());
         double b = 1;
-        double c = -a * currentPoint.getX() - currentPoint.getY();
-        //Another point on the robots tangent
-        double sign = -Math.signum(Math.cos(robot_angle) * (currentLookahead.getX() - currentPoint.getX()) -
-                Math.sin(robot_angle) * (currentLookahead.getY() - currentPoint.getY()));
-        return sign * Math.abs(a * currentLookahead.getX() + b * currentLookahead.getY() + c) /
-                Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-
+        double c = Math.tan(navx.getAngle())*drivetrain.currentLocation.getX() - drivetrain.currentLocation.getY();
+        double x = Math.abs(a*this.currentLookahead.getX() + b*this.currentLookahead.getY() + c) / Math.hypot(a, b);
+        double side = Math.signum()
     }
 
 

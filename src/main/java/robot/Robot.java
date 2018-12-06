@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
-
+    
     public static OI m_oi;
 
     Command m_autonomousCommand;
@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
         Path path = new Path();
         drivetrain.resetLocation();
         path.appendWaypoint(new Waypoint(0, 0));
-        path.appendWaypoint(new Waypoint(0, 25));
+        path.appendWaypoint(new Waypoint(0, 1));
 
         //path.appendWaypoint(new Waypoint(25, 25));
         path = path.generateFillPoint();
