@@ -343,7 +343,7 @@ public class Path {
             r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
             double curv = 0;
             if (r == 0) { //if the radius is zero, we would get a zero division error.
-                curv = Double.POSITIVE_INFINITY;
+                curv = Math.pow(10,6);
             } else {
                 curv = 1 / r;
             }
