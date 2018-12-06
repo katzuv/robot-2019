@@ -6,6 +6,8 @@ import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.*;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 
+import static robot.Robot.drivetrain;
+
 /**
  * The methods written here are all part of the Pure pursuit algorithm
  * all instances of the name 'the pure pursuit article' refer to this article by team DAWGMA 1712:
@@ -21,7 +23,6 @@ public class PurePursue extends Command {
     private double lastRightSpeed; //the last speed of the right encoder
     private double lastLeftDistance; //the last distance of the left encoder
     private double lastRightDistance; //the last distance of the right encoder
-    //private double initAngle;
     private double lastLookaheadDistance; //distance of the last lookahead from the start of the path
     private double kP, kA, kV;
     private double lookaheadRadius;
@@ -43,18 +44,15 @@ public class PurePursue extends Command {
         this.kA = kA;
         this.kV = kV;
         direction = isReversed ? -1 : 1;
-        drive = Robot.drivetrain;
+        drive = drivetrain;
         this.path = path;
-        // Use requires() here to declare subsystem dependencies
-        // eg.
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        currentPoint = new Waypoint(drive.currentLocation.getX(), drive.currentLocation.getY());
-        lastLeftDistance = drive.getLeftDistance();
-        lastRightDistance = drive.getRightDistance();
-        //initAngle = drive.getAngle() + (direction == -1 ? 180 : 0);
+        currentPoint = new Waypoint(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
+        lastLeftDistance = drivetrain.getLeftDistance();
+        lastRightDistance = drivetrain.getRightDistance();
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drive.getLeftSpeed();
         lastRightSpeed = direction * drive.getRightSpeed();
@@ -91,15 +89,17 @@ public class PurePursue extends Command {
      */
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
-        double distance = ((drive.getLeftDistance() - lastLeftDistance) + (drive.getRightDistance() - lastRightDistance)) / 2;
+        double distance = ((drivetrain.getLeftDistance() - lastLeftDistance) + (drivetrain.getRightDistance() - lastRightDistance)) / 2;
 
-        currentPoint.setX(currentPoint.getX() + direction * distance * Math.cos(drive.getAngle() * (Math.PI / 180.0)));
-        currentPoint.setY(currentPoint.getY() + direction * distance * Math.sin(drive.getAngle() * (Math.PI / 180.0)));
+        //update the x, y coordinates based on the robot angle and the distance the robot moved.
+        currentPoint.setX(currentPoint.getX() + direction * distance * Math.cos(drivetrain.getAngle() * (Math.PI / 180.0)));
+        currentPoint.setY(currentPoint.getY() + direction * distance * Math.sin(drivetrain.getAngle() * (Math.PI / 180.0)));
 
-        lastLeftDistance = drive.getLeftDistance();
-        lastRightDistance = drive.getRightDistance();
-        drive.currentLocation.setX(currentPoint.getX());
-        drive.currentLocation.setY(currentPoint.getY());
+        //updates values for next run
+        lastLeftDistance = drivetrain.getLeftDistance();
+        lastRightDistance = drivetrain.getRightDistance();
+        drivetrain.currentLocation.setX(currentPoint.getX());
+        drivetrain.currentLocation.setY(currentPoint.getY());
     }
 
 
@@ -108,6 +108,7 @@ public class PurePursue extends Command {
 
     /**
      * This method finds the furthest point in a segment that is in a specified distance from the robot.
+     * (Pure pursuit article, 'Following the path' > 'lookahead point', Page 10)
      *
      * @param ref       Center point of the robot
      * @param lookahead lookahead distance (units of measurements are the same as those stored in the points)
@@ -118,10 +119,16 @@ public class PurePursue extends Command {
      * @author Paulo
      */
     private Waypoint findNearPath(Point ref, double lookahead, Waypoint point1, Waypoint point2) {
-        Vector p = new Vector(point2, point1);
-        Vector f = new Vector(point1, ref);
+        Vector f = new Vector(point1, ref); //vector from the robot center to the start of the segment
+        Vector p = new Vector(point2, point1); //vector of the segment
 
-        //p*p + 2*f*p + f*f - r*r = 0
+        /* using the equation: |t*p + f| = r, we try to find the value(s) of 't' where the length of the vector from the
+         * robot center to the point is equal to the radius 'r'.
+         * if you square both sides we get a quadratic formula with a, b, c. we use the quadratic formula and check for
+         * the intersections, and then check if the intersection is within the segment (if t is between zero and one.)
+         * the final method is: (p^2)*t^2 + (2*p*f)*t + (f^2 - r^2) = 0
+         */
+
         double a = p.dot(p);
         double b = 2 * f.dot(p);
         double c = f.dot(f) - lookahead * lookahead;
@@ -132,10 +139,10 @@ public class PurePursue extends Command {
         else {
             Waypoint newLookaheadPoint = null;
             discriminant = Math.sqrt(discriminant);
-            double opt1 = (-b - discriminant) / (2 * a);
+            double opt1 = (-b - discriminant) / (2 * a); //solve format of a quardatic formula
             double opt2 = (-b + discriminant) / (2 * a);
             if (opt1 >= 0 && opt1 <= 1) {
-                newLookaheadPoint = p.multiply(opt1).add(point1);
+                return p.multiply(opt1).add(point1);
             }
             if (opt2 >= 0 && opt2 <= 1)
                 if (newLookaheadPoint != null) {
@@ -156,13 +163,13 @@ public class PurePursue extends Command {
         for (int i = 0; i < path.length() - 1; i++) { //goes through each segment in path.
             Waypoint wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
             if (wp != null) { //updates lookahead point to the first lookahead point the path finds
-            if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
-                lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
-                currentLookahead = wp;
-                return;
+                if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
+                    lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
+                    currentLookahead = wp;
+                    return;
+                }
             }
         }
-    }
     }
 
     /**
