@@ -110,6 +110,7 @@ public class Robot extends TimedRobot {
         Path path = new Path();
         drivetrain.resetLocation();
         path.appendWaypoint(new Waypoint(0, 0));
+        path.appendWaypoint(new Waypoint(0, 0.5));
         path.appendWaypoint(new Waypoint(0, 1));
         path = path.generateFillPoint();
         path = path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
@@ -120,6 +121,7 @@ public class Robot extends TimedRobot {
         System.out.println(path);
         PurePursue pursue = new PurePursue(path, false, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV);
         SmartDashboard.putString("pursue command", "start");
+        SmartDashboard.putString("last waypoint", path.getWaypoint(path.length()-1).toString());
         pursue.start();
     }
 
@@ -134,6 +136,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
         SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
         SmartDashboard.putNumber("current Angle" , navx.getAngle());
+
     }
 
     @Override
