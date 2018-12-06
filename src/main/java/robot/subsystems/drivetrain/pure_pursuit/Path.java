@@ -60,7 +60,7 @@ public class Path {
         if (index == path.size()) //if set is just out of bounds the method appends the waypoint instead.
             this.appendWaypoint(p);
         else
-            path.set(index % path.size(), p);
+            path.set(Math.floorMod(index, path.size()), p);
     }
 
     /**
@@ -72,12 +72,12 @@ public class Path {
     public void addWaypoint(int index, Waypoint p) {
         if (!(index <= path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
-        if (path.get(index % path.size()) == null)
+        if (path.get(Math.floorMod(index, path.size())) == null)
             throw new ClassCastException("Tried to call a non Point object from the path list.");
         if (index == path.size()) //if set is just out of bounds the method appends the waypoint instead.
             this.appendWaypoint(p);
         else
-            path.add(index % path.size(), p);
+            path.add(Math.floorMod(index, path.size()), p);
     }
 
     /**
@@ -109,7 +109,7 @@ public class Path {
     public Waypoint getWaypoint(int index) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
-        return path.get(index % path.size());
+        return path.get(Math.floorMod(index, path.size()));
     }
 
     /**
@@ -133,7 +133,7 @@ public class Path {
     public void addAll(int index, Waypoint[] array) {
         if (!(index < path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
-        path.addAll(index % path.size(), Arrays.asList(array));
+        path.addAll(Math.floorMod(index, path.size()), Arrays.asList(array));
     }
 
     /**
@@ -372,7 +372,6 @@ public class Path {
             else
                 this.getWaypoint(i).setSpeed(pathMaximumVelocity);
         }
-
         this.getWaypoint(-1).setSpeed(0);
 
         //Goes in reverse from the end to the beggining, lowering the speeds so that the robot doesn't de accelerate as fast.
