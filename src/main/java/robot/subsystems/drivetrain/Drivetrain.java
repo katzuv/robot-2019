@@ -63,9 +63,10 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the left side
      */
     private void setLeftSpeed(double speed) {
-
-        leftForward.set(speed);
-        leftBack.set(speed);
+        if (speed <= 1 && speed >= -1) {
+            leftForward.set(speed);
+            leftBack.set(speed);
+        }
 
     }
 
@@ -79,9 +80,10 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
-
-        rightForward.set(speed);
-        rightBack.set(speed);
+        if (speed <= 1 && speed >= -1) {
+            rightForward.set(speed);
+            rightBack.set(speed);
+        }
 
     }
 
