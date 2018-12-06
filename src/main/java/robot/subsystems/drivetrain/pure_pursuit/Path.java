@@ -148,7 +148,7 @@ public class Path {
      *
      * @return returns the size() of the array.
      */
-    int length() {
+    public int length() {
         return path.size();
     }
 
@@ -292,8 +292,8 @@ public class Path {
             Waypoint next = path.get(i + 1);
             double area = (curr.getX() - prev.getX()) * (next.getY() - prev.getY()) -
                           (curr.getY() - prev.getY()) * (next.getX() - prev.getX());
-            double curvature = 2 * area / (Waypoint.distance(prev, curr))
-            path.get(i).setCurvature();
+            double curvature = 2 * area / (Waypoint.distance(prev, curr) * Waypoint.distance(prev, next) * Waypoint.distance(next, curr));
+            path.get(i).setCurvature(curvature);
         }
     }
 
