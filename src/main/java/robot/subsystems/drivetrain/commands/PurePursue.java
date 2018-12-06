@@ -1,8 +1,6 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import robot.Robot;
-import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.*;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 
@@ -239,7 +237,7 @@ public class PurePursue extends Command {
      * @author Paulo
      */
     public double limitRate(double input, double lastOutput, double limitRate) {
-        double maxChange = 0.02 * limitRate;
+        double maxChange = Constants.CYCLE_TIME * limitRate;
         return lastOutput + Math.min(-maxChange, Math.max(input - lastOutput, maxChange));
     }
 
@@ -253,7 +251,7 @@ public class PurePursue extends Command {
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drivetrain.getRightSpeed();
-        return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
+        return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * robot.subsystems.drivetrain.Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getRightSpeed());
 
@@ -269,7 +267,7 @@ public class PurePursue extends Command {
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / 0.02;
         lastLeftSpeed = drivetrain.getLeftSpeed();
-        return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
+        return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * robot.subsystems.drivetrain.Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());
     }
