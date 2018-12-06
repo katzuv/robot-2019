@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
-
+    
     public static OI m_oi;
 
     Command m_autonomousCommand;
