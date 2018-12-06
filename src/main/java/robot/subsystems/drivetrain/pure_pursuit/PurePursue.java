@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static robot.Robot.drivetrain;
-import static robot.Robot.navx;
 
 /**
  * The methods written here are all part of the Pure pursuit algorithm
@@ -13,7 +12,7 @@ import static robot.Robot.navx;
  */
 public class PurePursue extends Command {
     private Path path; //Command specific path to follow
-    private Point currentPoint = new Point(0,0); //holds X and Y variables for the robot
+    private Point currentPoint = new Point(0, 0); //holds X and Y variables for the robot
     private Point currentLookahead; //holds X and Y variables for the Lookahead point
     private int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double lastLeftSpeed; //the last speed of the left encoder
@@ -61,12 +60,12 @@ public class PurePursue extends Command {
     protected void execute() {
         updatePoint();
         updateLookaheadInPath(path);
-        System.out.println(getLeftSpeedVoltage(path)- getRightSpeedVoltage(path));
-        SmartDashboard.putNumber("lastlookaheaddistance" , lastLookaheadDistance);
+        System.out.println(getLeftSpeedVoltage(path) - getRightSpeedVoltage(path));
+        SmartDashboard.putNumber("lastlookaheaddistance", lastLookaheadDistance);
 
-        SmartDashboard.putNumber("voltagesent sent left" , getLeftSpeedVoltage(path));
-        SmartDashboard.putNumber("voltage sent right" , getRightSpeedVoltage(path));
-        SmartDashboard.putNumber("curvature calculate" , curvatureCalculate());
+        SmartDashboard.putNumber("voltagesent sent left", getLeftSpeedVoltage(path));
+        SmartDashboard.putNumber("voltage sent right", getRightSpeedVoltage(path));
+        SmartDashboard.putNumber("curvature calculate", curvatureCalculate());
         SmartDashboard.putString("current lookahead point", this.currentLookahead.getX() + " " + this.currentLookahead.getY());
 
         drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
@@ -76,8 +75,8 @@ public class PurePursue extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
 //        return false;
-        boolean closeToLast = (drivetrain.currentLocation.getX() >= path.getWaypoint(path.length()-1).getX()-0.3 &&
-                drivetrain.currentLocation.getY() >= path.getWaypoint(path.length()-1).getY()-0.3);
+        boolean closeToLast = (drivetrain.currentLocation.getX() >= path.getWaypoint(path.length() - 1).getX() - 0.1 &&
+                drivetrain.currentLocation.getY() >= path.getWaypoint(path.length() - 1).getY() - 0.1);
         return (closeToLast &&
                 drivetrain.getLeftSpeed() < Constants.STOP_SPEED_THRESH &&
                 drivetrain.getRightSpeed() < Constants.STOP_SPEED_THRESH);
@@ -86,7 +85,7 @@ public class PurePursue extends Command {
     // Called once after isFinished returns true
     protected void end() {
         drivetrain.setSpeed(0, 0);
-        SmartDashboard.putString("pursue command",  "end");
+        SmartDashboard.putString("pursue command", "end");
     }
 
     // Called when another command which requires one or more of the same
@@ -152,7 +151,7 @@ public class PurePursue extends Command {
             discriminant = Math.sqrt(discriminant);
             double opt1 = (-b - discriminant) / (2 * a); //solve format of a quardatic formula
             double opt2 = (-b + discriminant) / (2 * a);
-            SmartDashboard.putNumber("opt",opt1);
+            SmartDashboard.putNumber("opt", opt1);
             SmartDashboard.putString("opt point", p.multiply(opt1).add(point1).toString());
             if (opt1 >= 0 && opt1 <= 1) {
                 return p.multiply(opt1).add(point1);
@@ -178,7 +177,7 @@ public class PurePursue extends Command {
                     lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
                     currentLookahead = wp;
                     SmartDashboard.putNumber("testnumber", i);
-                    SmartDashboard.putString("currentlookahead again" , wp.getX() + " " + wp.getY());
+                    SmartDashboard.putString("currentlookahead again", wp.getX() + " " + wp.getY());
                     return;
                 }
             }
@@ -215,10 +214,12 @@ public class PurePursue extends Command {
         double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2);
 
+//        return 2 * (Math.cos(drivetrain.getAngle()+Math.toDegrees(Math.atan2(currentLookahead.getY() - currentPoint.getY(), currentLookahead.getX() - currentPoint.getY())) - 90)) / Point.distance(currentLookahead, currentPoint);
+
         if (radius == 0) {
-            return Math.pow(10,6);
+            return Math.pow(10, 6);
         } else {
-            return 2*x / radius;
+            return 2 * x / radius;
         }
     }
 
@@ -229,13 +230,19 @@ public class PurePursue extends Command {
      * @return The X axis distance (relative to robot) from the lookahead, right side being positive.
      * @author orel
      * @author Paulo
+     * @author Lior
      */
     private double distanceLookahead() {
-        double a = -Math.tan(navx.getAngle());
+        double a = -Math.tan(Math.toRadians(drivetrain.getAngle()));
         double b = 1;
-        double c = Math.tan(navx.getAngle())*drivetrain.currentLocation.getX() - drivetrain.currentLocation.getY();
-        double x = Math.abs(a*this.currentLookahead.getX() + b*this.currentLookahead.getY() + c) / Math.hypot(a, b);
-        double side = Math.signum()
+        double c = Math.tan(Math.toRadians(drivetrain.getAngle())) * drivetrain.currentLocation.getX() - this.currentLookahead.getY();
+        double x = Math.abs(a * this.currentLookahead.getX() + b * this.currentLookahead.getY() + c) / Math.hypot(a, b);
+        double side = Math.signum(Math.sin(Math.toRadians(drivetrain.getAngle())) * (this.currentLookahead.getX() - drivetrain.currentLocation.getX()
+        ) - Math.cos(Math.toRadians(drivetrain.getAngle())) * (this.currentLookahead.getY() - drivetrain.currentLocation.getY()));
+        SmartDashboard.putString("a, c", a + " " + c);
+        SmartDashboard.putNumber("current x value", x);
+        SmartDashboard.putNumber("current side value ", side);
+        return x * side;
     }
 
 

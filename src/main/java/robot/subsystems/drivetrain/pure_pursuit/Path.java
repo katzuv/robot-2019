@@ -313,7 +313,7 @@ public class Path {
     public void generateVelocity(double constAcceleration) {
         for (int i = 1; i < this.length() - 1; i++) {
             final Waypoint previous = this.getWaypoint(i - 1);
-            double velocity = Math.min(Math.sqrt(2 * constAcceleration * Point.distance(this.getWaypoint(i), previous) + Math.pow(previous.getSpeed(), 2)),
+            double velocity = Math.max(Math.sqrt(2 * constAcceleration * Point.distance(this.getWaypoint(i), previous) + Math.pow(previous.getSpeed(), 2)),
                     3 / this.getWaypoint(i).getCurvature());
             this.getWaypoint(i).setSpeed(velocity);
         }
