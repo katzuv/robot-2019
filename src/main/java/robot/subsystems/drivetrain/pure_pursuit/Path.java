@@ -263,8 +263,6 @@ public class Path {
          */
         Path newPathClass = this.copy();
         double[][] newPath = new double[this.length()][2];
-        double a = weight_data; //multiplied by the distance the point has already moved.
-        double b = weight_smooth; //multiplied by the distance of the point from the midpoint
         for (int i = 0; i < this.length(); i++) { //copying the path to an array.
             newPath[i][0] = this.getWaypoint(i).getX();
             newPath[i][1] = this.getWaypoint(i).getY();
@@ -277,7 +275,7 @@ public class Path {
             for (int i = 1; i < path.length - 1; i++)
                 for (int j = 0; j < path[i].length; j++) {
                     double aux = newPath[i][j];
-                    newPath[i][j] += a * (path[i][j] - newPath[i][j]) + b *
+                    newPath[i][j] += weight_data * (path[i][j] - newPath[i][j]) + weight_smooth *
                             (newPath[i - 1][j] + newPath[i + 1][j] - (2.0 * newPath[i][j]));
                     change += Math.abs(aux - newPath[i][j]);
                 }
