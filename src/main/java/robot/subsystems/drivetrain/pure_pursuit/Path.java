@@ -217,7 +217,7 @@ public class Path {
      * The first of the five methods used in the path generation, needed for the pure pursuit.
      * (Pure pursuit article, 'Path Generation' > 'Injecting points' , Page 5)
      */
-    public Path generateFillPoint() {
+    public void generateFillPoint() {
         Vector[] pathVectors = new Vector[path.size()]; //create an array of vectors per point.
         Path newPathClass = new Path(); //create a new path class
         int AmountOfPoints;
