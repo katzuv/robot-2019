@@ -294,9 +294,9 @@ public class Path {
 
     /**
      * Attribute to all points their distance from the start.
-     * sets the distance of each point from the start and saves as a parameter, so that it doesnt have to be calculated real time.
+     * Set the distance of each point from the start and save as a parameter, so that it doesn't have to be calculated real time.
      * <p>
-     * The third of the five methods used in the path generation, needed for the pure pursuit.
+     * The third of the five methods used in the path generation, needed for the Pure Pursuit.
      * (see the Pure pursuit article, 'Path Generation' > 'Distances Between Points' , Page 6)
      */
     public void generateDistance() {
@@ -321,14 +321,14 @@ public class Path {
 
     /**
      * Attribute to all points their curvature in correlation to their adjacent points.
-     * sets the curvature of each point and saves as a parameter, so that it doesnt have to be calculated real time.
+     * set the curvature of each point and save as a parameter, so that it doesn't have to be calculated real time.
      * <p>
-     * The fourth of the five methods used in the path generation, needed for the pure pursuit.
+     * The fourth of the five methods used in the path generation, needed for the Pure Pursuit.
      * (see the Pure pursuit article, 'Path Generation' > 'Curvature of Path' , Page 6)
      */
     public void generateCurvature() {
         /*
-         * for each point on the path:
+         * For each point on the path:
          * (a, b) are the center of the circle that intersects with the point, its previous point and its next point.
          * r is the radius of that given circle.
          * k1 and k2 are used to find the center of the circle.

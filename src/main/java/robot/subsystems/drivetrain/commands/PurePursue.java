@@ -221,7 +221,7 @@ public class PurePursue extends Command {
     }
 
     /**
-     * Takes the current output, and gradually raises it to the target velocity, while making sure it doesn't change
+     * Take the current output and gradually raise it to the target velocity, while making sure it doesn't change
      * in a rate that is faster than the maximum acceleration rate.
      *
      * @param input the target velocity.
