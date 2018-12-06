@@ -192,7 +192,7 @@ public class Path {
      * @return returns a Waypoint[] array.
      */
     public Waypoint[] toArray() {
-        return (Waypoint[]) path.toArray();
+        return path.toArray(new Waypoint[] {});
     }
 
     /**
