@@ -376,10 +376,11 @@ public class Path {
         this.getWaypoint(-1).setSpeed(0);
 
         //Goes in reverse from the end to the beggining, lowering the speeds so that the robot doesn't de accelerate as fast.
-        for (int i = this.length() - 1; i >= 0; i--) {
+        for (int i = this.length() - 2; i >= 0; i--) {
             getWaypoint(i).setSpeed(
                     Math.min( getWaypoint(i).getSpeed(), Math.sqrt(
-                            Math.pow(getWaypoint(i+1).getSpeed(),2) * 2 * maxAcceleration * Waypoint.distance(getWaypoint(i), getWaypoint(i+1)))
+                            Math.pow(getWaypoint(i+1).getSpeed(),2) + 2 * maxAcceleration * Waypoint.distance(getWaypoint(i), getWaypoint(i+1))
+                            )
                     )
             );
         }
