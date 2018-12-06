@@ -24,6 +24,7 @@ public class PurePursue extends Command {
     private double lastLeftDistance; //the last distance of the left encoder
     private double lastRightDistance; //the last distance of the right encoder
     private double lastLookaheadDistance; //distance of the last lookahead from the start of the path
+    private double lastRightSpeedOutput;
     private double kP, kA, kV;
     private double lookaheadRadius;
 
@@ -56,13 +57,19 @@ public class PurePursue extends Command {
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drive.getLeftSpeed();
         lastRightSpeed = direction * drive.getRightSpeed();
+        lastLeftSpeedOutput = 0;
+        lastRightSpeedOutput = 0;
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         updatePoint();
         updateLookaheadInPath(path);
-        drive.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+        lastLeftSpeedOutput = limitRate(getLeftSpeedVoltage(path), lastLeftSpeedOutput, robot.subsystems.drivetrain.Constants.MAX_RATE);
+        lastRightSpeedOutput = limitRate(getRightSpeedVoltage(path), lastRightSpeedOutput, robot.subsystems.drivetrain.Constants.MAX_RATE);
+
+        drive.setSpeed(lastLeftSpeedOutput, lastRightSpeedOutput);
     }
 
     // Make this return true when this Command no longer needs to run execute()
