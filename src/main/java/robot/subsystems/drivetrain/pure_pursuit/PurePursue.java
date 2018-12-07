@@ -256,7 +256,7 @@ public class PurePursue extends Command {
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drivetrain.getRightSpeed();
-        return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.TRACK_WIDTH) / 2) +
+        return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getRightSpeed());
 
@@ -274,7 +274,7 @@ public class PurePursue extends Command {
         lastLeftSpeed = drivetrain.getLeftSpeed();
         SmartDashboard.putNumber("current closest point speed", closestPoint(path).getSpeed());
         SmartDashboard.putNumber("current curvature calculate", curvatureCalculate());
-        return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.TRACK_WIDTH) / 2) +
+        return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());
     }

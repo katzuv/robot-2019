@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.commands.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 /**
@@ -111,7 +111,7 @@ public class Robot extends TimedRobot {
         drivetrain.resetLocation();
         path.appendWaypoint(new Waypoint(0, 0));
         path.appendWaypoint(new Waypoint(0, 1));
-        path.appendWaypoint(new Waypoint(1, 1));
+        //path.appendWaypoint(new Waypoint(1, 1));
         path.generateFillPoint();
         path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         path.generateCurvature();
