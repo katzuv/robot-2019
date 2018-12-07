@@ -212,7 +212,7 @@ public class Path {
      * @author Paulo
      * @author Lior
      */
-    public Path generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
+    public void generateSmoothing(double weight_data, double weight_smooth, double tolerance) {
         /*
          * For simplification and parallelism with the article with the pure pursuit article, we converted the Waypoint
          * path into a matrix of doubles. the first dimension represents the index of the waypoint, the second dimension
@@ -247,7 +247,8 @@ public class Path {
             p.setY(newPath[i][1]);
             newPathClass.setWaypoint(i, p);
         }
-        return newPathClass;
+        this.clear();
+        this.addAll(newPathClass);
     }
 
     /**
