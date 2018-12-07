@@ -308,22 +308,28 @@ public class Path {
      * The last of the five methods used in the path generation, needed for the pure pursuit.
      * (see the Pure pursuit article, 'Path Generation' > 'Velocities' , Page 8)
      *
-     * @param constAcceleration rhe acceleration constant
-     * @author orel
+     * @param maxAcceleration rhe acceleration constant
+     * @author paulo
      */
-    public void generateVelocity(double constAcceleration) {
-        for (int i = 1; i < this.length() - 1; i++) {
-            final Waypoint previous = this.getWaypoint(i - 1);
-            double velocity = Math.max(Math.sqrt(2 * constAcceleration * Point.distance(this.getWaypoint(i), previous) + Math.pow(previous.getSpeed(), 2)),
-                    3 / this.getWaypoint(i).getCurvature());
-            this.getWaypoint(i).setSpeed(velocity);
+    public void generateVelocity(double maxAcceleration, double pathMaximumVelocity) {
+        //Each point is given a speed based on its curvature, and the maximum velocity allowed.
+        for (int i = 0; i < this.length(); i++){
+            if(this.getWaypoint(i).getCurvature() != 0) //prevent zero division error
+                this.getWaypoint(i).setSpeed(Math.min(pathMaximumVelocity, Constants.K_CURVE / this.getWaypoint(i).getCurvature()));
+            else
+                this.getWaypoint(i).setSpeed(pathMaximumVelocity);
         }
+        this.getWaypoint(-1).setSpeed(0);
 
-        for (int i = this.length() - 2; i > 0; i--) {
-            final Waypoint next = this.getWaypoint(i + 1);
-            this.getWaypoint(i).setSpeed(Math.min(this.getWaypoint(i).getSpeed(), Math.sqrt(Math.pow(next.getSpeed(), 2) + 2 * constAcceleration * Point.distance(this.getWaypoint(i), this.getWaypoint(i - 1)))));
+        //Goes in reverse from the end to the beggining, lowering the speeds so that the robot doesn't de accelerate as fast.
+        for (int i = this.length() - 2; i >= 0; i--) {
+            getWaypoint(i).setSpeed(
+                    Math.min( getWaypoint(i).getSpeed(), Math.sqrt(
+                            Math.pow(getWaypoint(i+1).getSpeed(),2) + 2 * maxAcceleration * Waypoint.distance(getWaypoint(i), getWaypoint(i+1))
+                            )
+                    )
+            );
         }
-
     }
 
     @Override
