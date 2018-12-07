@@ -43,7 +43,8 @@ public class Path {
             //Resize second dimension of array
             temp[i] = new double[arr[i].length];
             //Copy Contents
-            if (arr[i].length >= 0) System.arraycopy(arr[i], 0, temp[i], 0, arr[i].length);
+            for (int j = 0; j < arr[i].length; j++)
+                temp[i][j] = arr[i][j];
         }
         return temp;
     }
@@ -53,7 +54,7 @@ public class Path {
      *
      * @param index index of the desired point starting at zero, use -1 for last Point.
      */
-    private void setWaypoint(int index, Waypoint p) {
+    public void setWaypoint(int index, Waypoint p) {
         if (!(index <= path.size() && index > -path.size()))
             throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
         if (index == path.size()) //if set is just out of bounds the method appends the waypoint instead.
@@ -179,7 +180,7 @@ public class Path {
      *
      * @return
      */
-    private Path copy() {
+    public Path copy() {
         return new Path(path);
     }
 
@@ -324,15 +325,29 @@ public class Path {
      * (see the Pure pursuit article, 'Path Generation' > 'Curvature of Path' , Page 6)
      */
     public void generateCurvature() {
-
+        /*
+         * For each point on the path:
+         * (a, b) are the center of the circle that intersects with the point, its previous point and its next point.
+         * r is the radius of that given circle.
+         * k1 and k2 are used to find the center of the circle.
+         */
+        double k1, k2, b, a, r;
         for (int i = 1; i < path.size() - 1; i++) {
-            Waypoint prev = path.get(i - 1); //Waypoint
-            Waypoint curr = path.get(i);
-            Waypoint next = path.get(i + 1);
-            double area = (curr.getX() - prev.getX()) * (next.getY() - prev.getY()) -
-                          (curr.getY() - prev.getY()) * (next.getX() - prev.getX());
-            double curvature = 2 * area / (Waypoint.distance(prev, curr) * Waypoint.distance(prev, next) * Waypoint.distance(next, curr));
-            path.get(i).setCurvature(curvature);
+            double x1 = path.get(i).getX();
+            if (path.get(i - 1).getX() == x1)
+                x1 += 0.0001;
+            k1 = 0.5 * (Math.pow(x1, 2) + Math.pow(path.get(i).getY(), 2) - Math.pow(path.get(i - 1).getX(), 2) - Math.pow(path.get(i - 1).getY(), 2)) / (x1 - path.get(i - 1).getX());
+            k2 = (path.get(i).getY() - path.get(i - 1).getY()) / (x1 - path.get(i - 1).getX());
+            b = 0.5 * (Math.pow(path.get(i - 1).getX(), 2) - 2 * path.get(i - 1).getX() * k1 + Math.pow(path.get(i - 1).getY(), 2) - Math.pow(path.get(i + 1).getX(), 2) + 2 * path.get(i + 1).getX() * k1 - Math.pow(path.get(i + 1).getY(), 2)) / (path.get(i + 1).getX() * k2 - path.get(i + 1).getY() + path.get(i - 1).getY() - path.get(i - 1).getX() * k2);
+            a = k1 - k2 * b;
+            r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
+            double curv = 0;
+            if (r == 0) { //if the radius is zero, we would get a zero division error.
+                curv = Math.pow(10,6);
+            } else {
+                curv = 1 / r;
+            }
+            path.get(i).setCurvature(curv);
         }
     }
 
