@@ -111,7 +111,7 @@ public class Robot extends TimedRobot {
         drivetrain.resetLocation();
         path.appendWaypoint(new Waypoint(0, 0));
         path.appendWaypoint(new Waypoint(0, 1));
-        //path.appendWaypoint(new Waypoint(1, 1));
+        path.appendWaypoint(new Waypoint(1, 1));
         path.generateFillPoint();
         path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         path.generateCurvature();

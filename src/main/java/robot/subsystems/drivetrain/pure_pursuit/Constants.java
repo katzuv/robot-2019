@@ -8,7 +8,7 @@ public class Constants {
 
     //PATH GENERATION CONSTANTS
     public static final double SPACING_BETWEEN_WAYPOINTS = 0.1524; //meters
-    public static final double MAX_ACCEL = 0.3;
+    public static final double MAX_ACCEL = 0.1;
 
 
     //SMOOTHING CONSTANTS (pure numbers)
@@ -17,7 +17,7 @@ public class Constants {
     public final static double TOLERANCE = 0.001;
 
     //VELOCITY CONSTANTS
-    public static final double MAX_PATH_VELOCITY = 1.5;
+    public static final double MAX_PATH_VELOCITY = 0.4;
     static final double K_CURVE = 2; //number from 1 to 5
 
     //DRIVING CONSTANTS (pure numbers)
