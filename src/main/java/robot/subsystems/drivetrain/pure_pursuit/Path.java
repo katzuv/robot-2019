@@ -136,6 +136,28 @@ public class Path {
     }
 
     /**
+     * Adds all of a Point array to the end of the path list.
+     * The equivalent of 'addAll(-1, array)'
+     *
+     * @param path the path class of points to add to the end of the array.
+     */
+    public void addAll(Path path) {
+        addAll(path.toArray());
+    }
+
+    /**
+     * Appends all of a Point array at a certain index.
+     * Adds the first Point at the specified index.
+     * all Points at an index greater than the specified index get moved to after the array.
+     *
+     * @param index the index to add the Point array (0 to place array at start)
+     * @param path  the path class of points to add.
+     */
+    public void addAll(int index, Path path) {
+        addAll(index, path.toArray());
+    }
+
+    /**
      * Clears the path
      */
     public void clear() {
