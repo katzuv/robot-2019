@@ -211,8 +211,10 @@ public class PurePursue extends Command {
      */
     private double curvatureCalculate() {
         double x = distanceLookahead();
+
         double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2);
+        SmartDashboard.putNumber("x distance", x);
 
 //        return 2 * (Math.cos(drivetrain.getAngle()+Math.toDegrees(Math.atan2(currentLookahead.getY() - currentPoint.getY(), currentLookahead.getX() - currentPoint.getY())) - 90)) / Point.distance(currentLookahead, currentPoint);
 
@@ -233,12 +235,12 @@ public class PurePursue extends Command {
      * @author Lior
      */
     private double distanceLookahead() {
-        double a = -Math.tan(Math.toRadians(drivetrain.getAngle()));
+        double a = -Math.tan(Math.toRadians(drivetrain.getAngle()+90));
         double b = 1;
-        double c = Math.tan(Math.toRadians(drivetrain.getAngle())) * drivetrain.currentLocation.getX() - this.currentLookahead.getY();
+        double c = Math.tan(Math.toRadians(drivetrain.getAngle()+90)) * drivetrain.currentLocation.getX() - this.currentLookahead.getY();
         double x = Math.abs(a * this.currentLookahead.getX() + b * this.currentLookahead.getY() + c) / Math.hypot(a, b);
-        double side = Math.signum(Math.sin(Math.toRadians(drivetrain.getAngle())) * (this.currentLookahead.getX() - drivetrain.currentLocation.getX()
-        ) - Math.cos(Math.toRadians(drivetrain.getAngle())) * (this.currentLookahead.getY() - drivetrain.currentLocation.getY()));
+        double side = Math.signum(Math.sin(Math.toRadians(drivetrain.getAngle()+90)) * (this.currentLookahead.getX() - drivetrain.currentLocation.getX()
+        ) - Math.cos(Math.toRadians(drivetrain.getAngle()+90)) * (this.currentLookahead.getY() - drivetrain.currentLocation.getY()));
         SmartDashboard.putString("a, c", a + " " + c);
         SmartDashboard.putNumber("current x value", x);
         SmartDashboard.putNumber("current side value ", side);
