@@ -173,6 +173,22 @@ public class Path {
     }
 
     /**
+     * Run all generate methods at once.
+     *
+     * @param weight_data        generateSmoothing parameter. See documentation of the generateSmoothing method for more information.
+     * @param weight_smooth      generateSmoothing parameter. See documentation of the generateSmoothing method for more information.
+     * @param tolerance          generateSmoothing parameter. See documentation of the generateSmoothing method for more information.
+     * @param const_acceleration generateVelocities parameter. See documentation of the generateVelocities method for more information.
+     */
+    public void generateAll(double weight_data, double weight_smooth, double tolerance, double const_acceleration, double max_path_velocity) {
+        this.generateFillPoint();
+        this.generateSmoothing(weight_data,weight_smooth,tolerance);
+        this.generateCurvature();
+        this.generateDistance();
+        this.generateVelocity(const_acceleration, max_path_velocity);
+    }
+
+    /**
      * Add points at a certain spacing between them into all the segments.
      * <p>
      * The first of the five methods used in the path generation, needed for the pure pursuit.
