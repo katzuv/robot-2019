@@ -235,15 +235,19 @@ public class PurePursue extends Command {
      * @author Lior
      */
     private double distanceLookahead() {
-        double a = -Math.tan(Math.toRadians(drivetrain.getAngle()+90));
-        double b = 1;
-        double c = Math.tan(Math.toRadians(drivetrain.getAngle()+90)) * drivetrain.currentLocation.getX() - this.currentLookahead.getY();
-        double x = Math.abs(a * this.currentLookahead.getX() + b * this.currentLookahead.getY() + c) / Math.hypot(a, b);
-        double side = Math.signum(Math.sin(Math.toRadians(drivetrain.getAngle()+90)) * (this.currentLookahead.getX() - drivetrain.currentLocation.getX()
-        ) - Math.cos(Math.toRadians(drivetrain.getAngle()+90)) * (this.currentLookahead.getY() - drivetrain.currentLocation.getY()));
-        SmartDashboard.putString("a, c", a + " " + c);
-        SmartDashboard.putNumber("current x value", x);
-        SmartDashboard.putNumber("current side value ", side);
+        double angle = 90 - drivetrain.getAngle();
+        SmartDashboard.putNumber("XDIST: angle", angle);
+        angle = Math.toRadians(angle);
+        double a = -Math.tan(angle);
+        double c = Math.tan(angle) * currentPoint.getX() - currentPoint.getY();
+        double x = Math.abs(currentLookahead.getX() * a + currentLookahead.getY() + c) / Math.sqrt(a*a + 1);
+        double sign = Math.sin(angle) * (currentLookahead.getX() - currentPoint.getX()) - Math.cos(angle) * (currentLookahead.getY() - currentPoint.getY());
+        double side = Math.signum(sign);
+        SmartDashboard.putNumber("XDIST: a", a);
+        SmartDashboard.putNumber("XDIST: c", c);
+        SmartDashboard.putNumber("XDIST: x", x);
+        SmartDashboard.putNumber("XDIST: sign", sign);
+
         return x * side;
     }
 
