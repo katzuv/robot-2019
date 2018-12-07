@@ -210,7 +210,7 @@ public class PurePursue extends Command {
      * @author Paulo
      */
     private double curvatureCalculate() {
-        double x = distanceLookahead();
+        double x = distanceXLookahead();
 
         double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2);
@@ -234,7 +234,7 @@ public class PurePursue extends Command {
      * @author Paulo
      * @author Lior
      */
-    private double distanceLookahead() {
+    private double distanceXLookahead() {
         double angle = 90 - drivetrain.getAngle();
         SmartDashboard.putNumber("XDIST: angle", angle);
         angle = Math.toRadians(angle);
