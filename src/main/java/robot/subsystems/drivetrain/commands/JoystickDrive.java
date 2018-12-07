@@ -34,8 +34,8 @@ public class JoystickDrive extends Command {
         // 4: e^C(x - 1)
         int option = 1;
         final int C = 5;
-        double leftInput = Robot.m_oi.leftStick.getY();
-        double rightInput = Robot.m_oi.rightStick.getY();
+        double leftInput = -Robot.m_oi.leftStick.getY();
+        double rightInput = -Robot.m_oi.rightStick.getY();
 
         double leftOutput, rightOutput;
         switch (option) {
