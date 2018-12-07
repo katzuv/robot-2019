@@ -178,9 +178,9 @@ public class Path {
      * The first of the five methods used in the path generation, needed for the pure pursuit.
      * (Pure pursuit article, 'Path Generation' > 'Injecting points' , Page 5)
      */
-    public Path generateFillPoint() {
+    public void generateFillPoint() {
         Vector[] pathVectors = new Vector[path.size()]; //create an array of vectors per point.
-        Path newPoints = new Path(); //create a new path class
+        Path newPathClass = new Path(); //create a new path class
         int AmountOfPoints;
         for (int i = 0; i < pathVectors.length - 1; i++) {//for every point on the path
             //Creates a vector with the slope of the two points we are checking
@@ -190,10 +190,11 @@ public class Path {
             AmountOfPoints = (int) Math.ceil(pathVectors[i].magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
             pathVectors[i] = pathVectors[i].normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
             for (int j = 0; j < AmountOfPoints; j++) {
-                newPoints.appendWaypoint(pathVectors[i].multiply(j).add(this.getWaypoint(i)));
+                newPathClass.appendWaypoint(pathVectors[i].multiply(j).add(this.getWaypoint(i)));
             }
         }
-        return newPoints;
+        clear();
+        addAll(newPathClass);
 
 
     }
