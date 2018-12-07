@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.drivetrain.Drivetrain;
+import robot.subsystems.drivetrain.commands.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 /**
@@ -112,11 +112,11 @@ public class Robot extends TimedRobot {
         path.appendWaypoint(new Waypoint(0, 0));
         path.appendWaypoint(new Waypoint(0, 1));
         path.appendWaypoint(new Waypoint(1, 1));
-        path = path.generateFillPoint();
-        path = path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
+        path.generateFillPoint();
+        path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
         path.generateCurvature();
         path.generateDistance();
-        path.generateVelocity(Constants.MAX_ACCEL);
+        path.generateVelocity(Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         path.getWaypoint(0).setSpeed(path.getWaypoint(1).getSpeed() / 2);
         System.out.println(path);
         PurePursue pursue = new PurePursue(path, false, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV);
