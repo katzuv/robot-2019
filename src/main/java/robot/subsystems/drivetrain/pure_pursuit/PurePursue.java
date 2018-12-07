@@ -235,6 +235,7 @@ public class PurePursue extends Command {
      * @author Lior
      */
     private double distanceXLookahead() {
+        //Calculates the robot's line of view  as a line formula (a*x + b*y + c)/sqrt(a*a + b*b)
         double angle = 90 - drivetrain.getAngle();
         SmartDashboard.putNumber("XDIST: angle", angle);
         angle = Math.toRadians(angle);
