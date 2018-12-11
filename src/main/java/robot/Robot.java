@@ -91,38 +91,32 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         navx.reset();
+        drivetrain.resetLocation();
         drivetrain.resetEncoders();
-        m_autonomousCommand = m_chooser.getSelected();
 
-        /*
-         * String autoSelected = SmartDashboard.getString("Auto Selector",
-         * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-         * = new MyAutoCommand(); break; case "Default Auto": default:
-         * autonomousCommand = new ExampleCommand(); break; }
-         */
-
+        // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
         // schedule the autonomous command (example)
+        m_autonomousCommand = m_chooser.getSelected();
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
         }
-        drivetrain.currentLocation.setX(0);
-        drivetrain.currentLocation.setY(0);
+
+        //Create the path and points.
         Path path = new Path();
-        drivetrain.resetLocation();
         path.appendWaypoint(new Waypoint(0, 0));
         path.appendWaypoint(new Waypoint(0, 1));
         path.appendWaypoint(new Waypoint(-2, 2));
-        path.generateFillPoint();
-        path.generateSmoothing(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE);
-        path.generateCurvature();
-        path.generateDistance();
-        path.generateVelocity(Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-        path.getWaypoint(0).setSpeed(path.getWaypoint(1).getSpeed() / 2);
-        System.out.println(path);
+        //Generate the path to suit the pure pursuit.
+        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+
         PurePursue pursue = new PurePursue(path, false, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV);
+
+        //Print the variables for testing.
+        System.out.println(path);
         SmartDashboard.putString("pursue command", "start");
         SmartDashboard.putString("last waypoint", path.getWaypoint(path.length()-1).toString());
-        pursue.start();
+
+        pursue.start(); //Run the command.
     }
 
     /**
