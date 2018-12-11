@@ -46,7 +46,6 @@ public class PurePursue extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         currentPoint = new Waypoint(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
-        System.out.println(currentPoint);
         lastLeftEncoder = drivetrain.getLeftDistance();
         lastRightEncoder = drivetrain.getRightDistance();
         //initAngle = drivetrain.getAngle() + (direction == -1 ? 180 : 0);
@@ -60,14 +59,6 @@ public class PurePursue extends Command {
     protected void execute() {
         updatePoint();
         updateLookaheadInPath(path);
-        System.out.println(getLeftSpeedVoltage(path) - getRightSpeedVoltage(path));
-        SmartDashboard.putNumber("lastlookaheaddistance", lastLookaheadDistance);
-
-        SmartDashboard.putNumber("voltagesent sent left", getLeftSpeedVoltage(path));
-        SmartDashboard.putNumber("voltage sent right", getRightSpeedVoltage(path));
-        SmartDashboard.putNumber("curvature calculate", curvatureCalculate());
-        SmartDashboard.putString("current lookahead point", this.currentLookahead.getX() + " " + this.currentLookahead.getY());
-
         drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
 
     }
@@ -85,7 +76,6 @@ public class PurePursue extends Command {
     // Called once after isFinished returns true
     protected void end() {
         drivetrain.setSpeed(0, 0);
-        SmartDashboard.putString("pursue command", "end");
     }
 
     // Called when another command which requires one or more of the same
@@ -151,8 +141,6 @@ public class PurePursue extends Command {
             discriminant = Math.sqrt(discriminant);
             double opt1 = (-b - discriminant) / (2 * a); //solve format of a quardatic formula
             double opt2 = (-b + discriminant) / (2 * a);
-            SmartDashboard.putNumber("opt", opt1);
-            SmartDashboard.putString("opt point", p.multiply(opt1).add(point1).toString());
             if (opt1 >= 0 && opt1 <= 1) {
                 return p.multiply(opt1).add(point1);
             }
@@ -168,6 +156,7 @@ public class PurePursue extends Command {
      *
      * @return the Lookahead Point.
      * @path the path the robot is driving on.
+     * @author paulo
      */
     private void updateLookaheadInPath(Path path) {
         for (int i = 0; i < path.length() - 1; i++) {
@@ -176,8 +165,6 @@ public class PurePursue extends Command {
                 if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                     lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
                     currentLookahead = wp;
-                    SmartDashboard.putNumber("testnumber", i);
-                    SmartDashboard.putString("currentlookahead again", wp.getX() + " " + wp.getY());
                     return;
                 }
             }
@@ -194,7 +181,6 @@ public class PurePursue extends Command {
     private Waypoint closestPoint(Path path) {
         Waypoint closest = path.getWaypoint(0).copy();
         for (int i = 1; i < path.length(); i++) {
-
             if (Point.distance(this.currentPoint, path.getWaypoint(i)) < Point.distance(this.currentPoint, closest)) {
                 closest = path.getWaypoint(i);
             }
@@ -211,13 +197,8 @@ public class PurePursue extends Command {
      */
     private double curvatureCalculate() {
         double x = distanceXLookahead();
-
         double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2);
-        SmartDashboard.putNumber("x distance", x);
-
-//        return 2 * (Math.cos(drivetrain.getAngle()+Math.toDegrees(Math.atan2(currentLookahead.getY() - currentPoint.getY(), currentLookahead.getX() - currentPoint.getY())) - 90)) / Point.distance(currentLookahead, currentPoint);
-
         if (radius == 0) {
             return Math.pow(10, 6);
         } else {
@@ -236,18 +217,12 @@ public class PurePursue extends Command {
      */
     private double distanceXLookahead() {
         double angle = 90 - drivetrain.getAngle();
-        SmartDashboard.putNumber("XDIST: angle", angle);
         angle = Math.toRadians(angle);
         double a = -Math.tan(angle);
         double c = Math.tan(angle) * currentPoint.getX() - currentPoint.getY();
         double x = Math.abs(currentLookahead.getX() * a + currentLookahead.getY() + c) / Math.sqrt(a*a + 1);
         double sign = Math.sin(angle) * (currentLookahead.getX() - currentPoint.getX()) - Math.cos(angle) * (currentLookahead.getY() - currentPoint.getY());
         double side = Math.signum(sign);
-        SmartDashboard.putNumber("XDIST: a", a);
-        SmartDashboard.putNumber("XDIST: c", c);
-        SmartDashboard.putNumber("XDIST: x", x);
-        SmartDashboard.putNumber("XDIST: sign", sign);
-
         return x * side;
     }
 
@@ -278,8 +253,6 @@ public class PurePursue extends Command {
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / 0.02;
         lastLeftSpeed = drivetrain.getLeftSpeed();
-        SmartDashboard.putNumber("current closest point speed", closestPoint(path).getSpeed());
-        SmartDashboard.putNumber("current curvature calculate", curvatureCalculate());
         return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());
