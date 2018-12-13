@@ -7,9 +7,8 @@
 
 package robot.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
@@ -21,19 +20,21 @@ import robot.subsystems.drivetrain.pure_pursuit.Point;
 
 
 public class Drivetrain extends Subsystem {
-    private final VictorSPX leftForward = new VictorSPX(Ports.leftForwardMotor);
-    private final VictorSPX leftBack = new VictorSPX(Ports.leftBackMotor);
-    private final VictorSPX rightForward = new VictorSPX(Ports.rightForwardMotor);
-    private final VictorSPX rightBack = new VictorSPX(Ports.rightBackMotor);
+    private final VictorSP leftForward = new VictorSP(Ports.leftForwardMotor);
+    private final VictorSP leftBack = new VictorSP(Ports.leftBackMotor);
+    private final VictorSP rightForward = new VictorSP(Ports.rightForwardMotor);
+    private final VictorSP rightBack = new VictorSP(Ports.rightBackMotor);
     private final Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
     private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
-    public Point currentLocation;
+    public Point currentLocation = new Point(0, 0);
 
     public Drivetrain() {
-        leftEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
-        rightEncoder.setDistancePerPulse(Constants.PULSE_PER_DISTANCE);
+        leftEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+        rightEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
         leftForward.setInverted(Constants.LEFT_REVERSED);
+        leftBack.setInverted(Constants.LEFT_REVERSED);
         rightForward.setInverted(Constants.RIGHT_REVERSED);
+        rightBack.setInverted(Constants.RIGHT_REVERSED);
     }
 
     @Override
@@ -62,8 +63,11 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the left side
      */
     private void setLeftSpeed(double speed) {
-        leftForward.set(ControlMode.PercentOutput, speed);
-        leftBack.set(ControlMode.PercentOutput, speed);
+        if (speed <= 1 && speed >= -1) {
+            leftForward.set(speed);
+            leftBack.set(speed);
+        }
+
     }
 
     public double getRightSpeed() {
@@ -76,8 +80,11 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
-        rightForward.set(ControlMode.PercentOutput, speed);
-        rightBack.set(ControlMode.PercentOutput, speed);
+        if (speed <= 1 && speed >= -1) {
+            rightForward.set(speed);
+            rightBack.set(speed);
+        }
+
     }
 
     /**
@@ -91,7 +98,7 @@ public class Drivetrain extends Subsystem {
      * @return The distance driven on the left side of the robot since the last reset
      */
     public double getLeftDistance() {
-        return leftEncoder.getDistance();
+        return -leftEncoder.getDistance();
     }
 
     public void resetEncoders() {
@@ -124,6 +131,15 @@ public class Drivetrain extends Subsystem {
      */
     public double getRoll() {
         return Robot.navx.getRoll();
+    }
+
+    public double getYaw() {
+        return Robot.navx.getYaw();
+    }
+
+    public void resetLocation(){
+        currentLocation.setX(0);
+        currentLocation.setY(0);
     }
 
 }
