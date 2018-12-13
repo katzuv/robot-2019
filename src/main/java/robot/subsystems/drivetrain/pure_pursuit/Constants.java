@@ -16,7 +16,7 @@ public class Constants {
     //VELOCITY CONSTANTS
     public static final double MAX_PATH_VELOCITY = 1.5;
     public static final double MAX_ACCEL = 0.25;
-    static final double K_CURVE = 3; //number from 1 to 5
+    private static final double K_CURVE = 3; //number from 1 to 5
 
     //DRIVING CONSTANTS (pure numbers)
     public final static double kV = 1/MAX_VELOCITY;
