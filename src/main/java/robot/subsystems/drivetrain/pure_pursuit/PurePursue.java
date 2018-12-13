@@ -2,7 +2,6 @@ package robot.subsystems.drivetrain.pure_pursuit;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import static robot.Robot.drivetrain;
 
 /**
@@ -161,8 +160,8 @@ public class PurePursue extends Command {
     private void updateLookaheadInPath(Path path) {
         for (int i = 0; i < path.length() - 1; i++) {
             Waypoint wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
-            if (wp != null) {
-                if (Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
+            if (wp != null && Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
+                {
                     lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
                     currentLookahead = wp;
                     return;
