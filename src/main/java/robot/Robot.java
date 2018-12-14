@@ -8,6 +8,9 @@
 package robot;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -117,6 +120,13 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString("last waypoint", path.getWaypoint(path.length()-1).toString());
 
         pursue.start(); //Run the command.
+
+        // Sending match type and number to the Vision table for recording information.
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        NetworkTable visionTable = inst.getTable("vision");
+        NetworkTableEntry matchType = visionTable.getEntry("match type");
+        NetworkTableEntry matchNumber = visionTable.getEntry("match number");
+        NetworkTableEntry isDisabled = visionTable.getEntry("is disabled");
     }
 
     /**
