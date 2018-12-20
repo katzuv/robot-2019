@@ -1,7 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import static robot.Robot.drivetrain;
 
 /**
@@ -170,17 +170,17 @@ public class PurePursue extends Command {
     }
 
     /**
-     * Runs through a specified path and finds the closest waypoint to the robot.
+     * Runs through a the default path and finds the closest waypoint to the robot.
      *
-     * @param path the path that this method work on
+     *
      * @return the closest point to the robots position
      * @author orel
      */
-    private Waypoint closestPoint(Path path) {
-        Waypoint closest = path.getWaypoint(0).copy();
-        for (int i = 1; i < path.length(); i++) {
-            if (Point.distance(this.currentPoint, path.getWaypoint(i)) < Point.distance(this.currentPoint, closest)) {
-                closest = path.getWaypoint(i);
+    private Waypoint closestPoint() {
+        Waypoint closest = this.path.getWaypoint(0).copy();
+        for (int i = 1; i < this.path.length(); i++) {
+            if (Point.distance(this.currentPoint, this.path.getWaypoint(i)) < Point.distance(this.currentPoint, closest)) {
+                closest = this.path.getWaypoint(i);
             }
         }
         return closest;
@@ -236,9 +236,9 @@ public class PurePursue extends Command {
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
         lastRightSpeed = drivetrain.getRightSpeed();
-        return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
+        return kV * (closestPoint().getSpeed() * (2 - curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
-                kP * (closestPoint(path).getSpeed() - drivetrain.getRightSpeed());
+                kP * (closestPoint().getSpeed() - drivetrain.getRightSpeed());
 
     }
 
@@ -252,9 +252,9 @@ public class PurePursue extends Command {
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / 0.02;
         lastLeftSpeed = drivetrain.getLeftSpeed();
-        return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
+        return kV * (closestPoint().getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
-                kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());
+                kP * (closestPoint().getSpeed() - drivetrain.getLeftSpeed());
     }
 
 }
