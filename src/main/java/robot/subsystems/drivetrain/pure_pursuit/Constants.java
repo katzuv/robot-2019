@@ -2,18 +2,12 @@ package robot.subsystems.drivetrain.pure_pursuit;
 
 public class Constants {
     //DRIVING CONSTANTS
-<<<<<<< HEAD
-    public final static double LOOKAHEAD_DISTANCE = 0.3; //in meters
 
-    //PATH GENERATION CONSTANTS
-    static final double SPACING_BETWEEN_WAYPOINTS = 0.1524; //meters
-=======
     public final static double LOOKAHEAD_DISTANCE = 0.45; //in meters
     public static final double MAX_VELOCITY = 3.762;
 
     //PATH GENERATION CONSTANTS
     public static final double SPACING_BETWEEN_WAYPOINTS = 0.1524; //meters
->>>>>>> new-test-backtrack
 
     //SMOOTHING CONSTANTS (pure numbers)
     public final static double WEIGHT_SMOOTH = 0.85;
@@ -23,12 +17,7 @@ public class Constants {
     //VELOCITY CONSTANTS
     public static final double MAX_PATH_VELOCITY = 1.5;
     public static final double MAX_ACCEL = 0.25;
-    private static final double K_CURVE = 3; //number from 1 to 5
-
-    //VELOCITY CONSTANTS
-    static final double MAX_ACCEL= 2;
-    static final double MAX_PATH_VELOCITY = 1.5;
-    static final double K_CURVE = 2; //number from 1 to 5
+    public static final double K_CURVE = 3; //number from 1 to 5
 
     //DRIVING CONSTANTS (pure numbers)
     public final static double kV = 1/MAX_VELOCITY;
@@ -39,11 +28,5 @@ public class Constants {
 
     public final static double CYCLE_TIME = 0.02; //cycle time of the roborio
 
-<<<<<<< HEAD
-    public final static double STOP_SPEED_THRESH = 0.1; //the speed the robot could stop at the end of the path.
-
-    public final static double CYCLE_TIME = 0.02; //cycle time of the roborio
-=======
     public final static double ROBOT_WIDTH = 0.6; //width of the robot
->>>>>>> new-test-backtrack
 }
