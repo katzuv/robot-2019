@@ -57,7 +57,7 @@ public class PurePursue extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         updatePoint();
-        updateLookaheadInPath(path);
+        updateLookaheadInPath();
         drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
 
     }
@@ -156,12 +156,12 @@ public class PurePursue extends Command {
      * @path the path the robot is driving on.
      * @author paulo
      */
-    private void updateLookaheadInPath(Path path) {
-        for (int i = 0; i < path.length() - 1; i++) {
-            Waypoint wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
-            if (wp != null && Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
+    private void updateLookaheadInPath() {
+        for (int i = 0; i < this.path.length() - 1; i++) {
+            Waypoint wp = findNearPath(currentPoint, lookaheadRadius, this.path.getWaypoint(i), this.path.getWaypoint(i + 1));
+            if (wp != null && Point.distance(wp, this.path.getWaypoint(i)) + this.path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                 {
-                    lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
+                    lastLookaheadDistance = Point.distance(wp, this.path.getWaypoint(i)) + this.path.getWaypoint(i).getDistance();
                     currentLookahead = wp;
                     return;
                 }
