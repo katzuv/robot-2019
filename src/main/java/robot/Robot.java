@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -78,7 +79,36 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
+
+        // Sending match type and number to the Vision table for recording information.
+        final DriverStation.MatchType matchType = DriverStation.getInstance().getMatchType();
+        if (DriverStation.getInstance().isFMSAttached() && matchType != DriverStation.MatchType.None) {
+            final int matchNumber = DriverStation.getInstance().getMatchNumber();
+            NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
+            NetworkTableEntry matchData = visionTable.getEntry("match data");
+            if (matchType == DriverStation.MatchType.Qualification) {
+                matchData.setString("Q" + matchNumber);
+            } else if (matchType == DriverStation.MatchType.Elimination) {
+                if (matchNumber <= 8) {
+                    matchData.setString("QF" + matchNumber);
+                } else if (matchNumber <= 12) {
+                    matchData.setString("TB-QF" + (matchNumber - 8));
+                } else if (matchNumber <= 16) {
+                    matchData.setString("SF" + matchNumber);
+                } else if (matchNumber <= 18) {
+                    matchData.setString("TB-SF" + (matchNumber - 4));
+                } else if (matchNumber <= 20) {
+                    matchData.setString("F" + matchNumber);
+                } else {
+                    matchData.setString("TB-F");
+
+                }
+            } else {
+                matchData.setString("P" + matchNumber);
+            }
+        }
     }
+
 
     /**
      * This autonomous (along with the chooser code above) shows how to select
@@ -120,13 +150,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString("last waypoint", path.getWaypoint(path.length()-1).toString());
 
         pursue.start(); //Run the command.
-
-        // Sending match type and number to the Vision table for recording information.
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        NetworkTable visionTable = inst.getTable("vision");
-        NetworkTableEntry matchType = visionTable.getEntry("match type");
-        NetworkTableEntry matchNumber = visionTable.getEntry("match number");
-        NetworkTableEntry isDisabled = visionTable.getEntry("is disabled");
     }
 
     /**
