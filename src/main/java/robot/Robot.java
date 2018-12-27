@@ -8,6 +8,10 @@
 package robot;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -31,7 +35,7 @@ public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
-    
+
     public static OI m_oi;
 
     Command m_autonomousCommand;
@@ -72,9 +76,42 @@ public class Robot extends TimedRobot {
     public void disabledInit() {
     }
 
+    /**
+     * Send the match type and number to the "vision" table.
+     */
+    private static void sendMatchInformation() {
+        final DriverStation.MatchType matchType = DriverStation.getInstance().getMatchType();
+        if (DriverStation.getInstance().isFMSAttached() && matchType != DriverStation.MatchType.None) {
+            final int matchNumber = DriverStation.getInstance().getMatchNumber();
+            NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
+            NetworkTableEntry matchData = visionTable.getEntry("match data");
+            if (matchType == DriverStation.MatchType.Qualification) {
+                matchData.setString("Q" + matchNumber);
+            } else if (matchType == DriverStation.MatchType.Elimination) {
+                if (matchNumber <= 8) {
+                    matchData.setString("QF" + matchNumber);
+                } else if (matchNumber <= 12) {
+                    matchData.setString("TB-QF" + (matchNumber - 8));
+                } else if (matchNumber <= 16) {
+                    matchData.setString("SF" + matchNumber);
+                } else if (matchNumber <= 18) {
+                    matchData.setString("TB-SF" + (matchNumber - 4));
+                } else if (matchNumber <= 20) {
+                    matchData.setString("F" + matchNumber);
+                } else {
+                    matchData.setString("TB-F");
+
+                }
+            } else {
+                matchData.setString("P" + matchNumber);
+            }
+        }
+    }
+
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
+        sendMatchInformation();
     }
 
     /**
@@ -114,7 +151,7 @@ public class Robot extends TimedRobot {
         //Print the variables for testing.
         System.out.println(path);
         SmartDashboard.putString("pursue command", "start");
-        SmartDashboard.putString("last waypoint", path.getWaypoint(path.length()-1).toString());
+        SmartDashboard.putString("last waypoint", path.getWaypoint(path.length() - 1).toString());
 
         pursue.start(); //Run the command.
     }
@@ -129,7 +166,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
         SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
         SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
-        SmartDashboard.putNumber("current Angle" , navx.getAngle());
+        SmartDashboard.putNumber("current Angle", navx.getAngle());
 
     }
 
@@ -153,9 +190,9 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
 
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("current Angle teleop" , navx.getAngle());
+        SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
-        SmartDashboard.putNumber("current right encoder" , drivetrain.getRightDistance());
+        SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
 
     }
 
