@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
-    
+
     public static OI m_oi;
 
     Command m_autonomousCommand;
@@ -76,11 +76,10 @@ public class Robot extends TimedRobot {
     public void disabledInit() {
     }
 
-    @Override
-    public void disabledPeriodic() {
-        Scheduler.getInstance().run();
-
-        // Sending match type and number to the Vision table for recording information.
+    /**
+     * Send the match type and number to the "vision" table.
+     */
+    private static void sendMatchInformation() {
         final DriverStation.MatchType matchType = DriverStation.getInstance().getMatchType();
         if (DriverStation.getInstance().isFMSAttached() && matchType != DriverStation.MatchType.None) {
             final int matchNumber = DriverStation.getInstance().getMatchNumber();
@@ -109,6 +108,11 @@ public class Robot extends TimedRobot {
         }
     }
 
+    @Override
+    public void disabledPeriodic() {
+        Scheduler.getInstance().run();
+        sendMatchInformation();
+    }
 
     /**
      * This autonomous (along with the chooser code above) shows how to select
@@ -147,7 +151,7 @@ public class Robot extends TimedRobot {
         //Print the variables for testing.
         System.out.println(path);
         SmartDashboard.putString("pursue command", "start");
-        SmartDashboard.putString("last waypoint", path.getWaypoint(path.length()-1).toString());
+        SmartDashboard.putString("last waypoint", path.getWaypoint(path.length() - 1).toString());
 
         pursue.start(); //Run the command.
     }
@@ -162,7 +166,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
         SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
         SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
-        SmartDashboard.putNumber("current Angle" , navx.getAngle());
+        SmartDashboard.putNumber("current Angle", navx.getAngle());
 
     }
 
@@ -186,9 +190,9 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
 
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("current Angle teleop" , navx.getAngle());
+        SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
-        SmartDashboard.putNumber("current right encoder" , drivetrain.getRightDistance());
+        SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
 
     }
 
