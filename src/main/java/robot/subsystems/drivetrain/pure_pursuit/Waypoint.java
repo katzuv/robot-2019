@@ -9,13 +9,14 @@ public class Waypoint extends Point {
         this.distance = distance;
         this.curvature = curvature;
     }
-    public Waypoint(double x, double y){
+
+    public Waypoint(double x, double y) {
         super(x, y);
     }
 
 
-    public Waypoint(Waypoint p){
-        super(p.getX(),p.getY());
+    public Waypoint(Waypoint p) {
+        super(p.getX(), p.getY());
         this.speed = p.getSpeed();
         this.distance = p.getDistance();
         this.curvature = p.getCurvature();
@@ -41,4 +42,13 @@ public class Waypoint extends Point {
 
     public void setCurvature(double curvature) { this.curvature = curvature;}
 
+    @Override
+    public String toString() {
+        return "" + "distance=" + distance + ", \t speed=" + speed + ", \t curvature=" + curvature + ",\t x=" + x + ",\t  y=" + y + "\n";
+    }
+
+
+    public Waypoint copy() {
+        return new Waypoint(this);
+    }
 }
