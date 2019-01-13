@@ -257,4 +257,24 @@ public class PurePursue extends Command {
                 kP * (closestPoint().getSpeed() - drivetrain.getLeftSpeed());
     }
 
+    /**
+     * Calculate the change in speed for the robot
+     *
+     * @param currentAcceleration the current acceleration of the robot
+     * @param massCenter          the position of the center of mass
+     * @param rollAxis            the position of the roll axis
+     * @author Orel
+     */
+    public double fallControl(double currentAcceleration, Point massCenter, Point rollAxis) {
+        double xDiffrence = massCenter.x - rollAxis.x;
+        double yDiffrence = massCenter.y - rollAxis.y;
+        double accelerationMax = (xDiffrence * Constants.g) / yDiffrence;
+        double accelerationTarget = accelerationMax - Constants.Kam;// take down the tolerance
+        double Target = (accelerationTarget - currentAcceleration) * Constants.Kj;
+        double change = Target - currentAcceleration;// the change for the speed
+        if (xDiffrence <= Constants.kXdiffrence) {
+            change -= Constants.Kmistake;
+        }
+        return change;
+    }
 }
