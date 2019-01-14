@@ -25,10 +25,10 @@ public class Constants {
     public final static double kP = 0.01;
 
     // fall control
-    public final static double Kj = 0;
-    public final static double Kam = 0;
-    public final static double kXdiffrence = 0;// the constant for the mistake in the x distance between roll axis to Center mass
-    public final static double Kmistake = 0;
+    public final static double Kjerk = 0;
+    public final static double ACCELERATION_MISTAKE = 0;
+    public final static double MIN_Xdiffrence = 0;
+    public final static double ACCELERATION_FIX = 0;
 
     public final static double STOP_SPEED_THRESH = 0.1; //the speed the robot could stop at the end of the path.
 
@@ -36,5 +36,11 @@ public class Constants {
 
     public final static double ROBOT_WIDTH = 0.6; //width of the robot
 
-    public final static double g = 10;// gravity
+    public final static Point ROLL_AXIS = new Point(0, 0);
+
+    public final static Point MASS_CENTER = new Point(0, 0);
+
+    public final static double CENTER_MASS_TO_AXIS_DISTANCE = Math.sqrt(Math.pow((ROLL_AXIS.y - MASS_CENTER.y), 2) + Math.pow((ROLL_AXIS.x - MASS_CENTER.x), 2));
+
+    public final static double G = 9.81;// gravity
 }

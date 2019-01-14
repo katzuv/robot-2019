@@ -9,10 +9,13 @@ package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
+import robot.subsystems.drivetrain.pure_pursuit.Constants;
+import robot.subsystems.drivetrain.pure_pursuit.Point;
 
 import static robot.Robot.drivetrain;
 
 public class JoystickDrive extends Command {
+
     public JoystickDrive() {
         requires(drivetrain);
         // Use requires() here to declare subsystem dependencies
@@ -66,11 +69,33 @@ public class JoystickDrive extends Command {
             default:
                 throw new IllegalArgumentException("Number must be 1-4");
         }
-        drivetrain.setSpeed(leftOutput, rightOutput);
+        drivetrain.setSpeed(leftOutput + fallControl(Robot.navx.getWorldLinearAccelY(),
+                Constants.ROLL_AXIS),
+                rightOutput + fallControl(Robot.navx.getWorldLinearAccelY(), Constants.ROLL_AXIS));
     }
 
     private double bell(double x, double c) {
         return 2 / (1 + Math.pow(Math.E, -c * x)) - 1;
+    }
+
+    /**
+     * Calculate the change in speed for the robot
+     *
+     * @param currentAcceleration the current acceleration of the robot
+     * @param rollAxis            the position of the roll axis
+     * @author Orel
+     */
+    public double fallControl(double currentAcceleration, Point rollAxis) {
+        double xDifference = rollAxis.getX() + Constants.CENTER_MASS_TO_AXIS_DISTANCE * Math.cos(Robot.navx.getAngle());
+        double yDifference = rollAxis.getY() + Constants.CENTER_MASS_TO_AXIS_DISTANCE * Math.sin(Robot.navx.getAngle());
+        double maxAcceleration = (xDifference * Constants.G) / yDifference;
+        double accelerationTarget = maxAcceleration - Constants.ACCELERATION_MISTAKE;// take down the tolerance
+        double target = (accelerationTarget - currentAcceleration) * Constants.Kjerk;
+        double change = target - currentAcceleration;//the acceleration
+        if (xDifference <= Constants.MIN_Xdiffrence) {
+            change -= Constants.ACCELERATION_FIX;
+        }
+        return change;
     }
 
     // Make this return true when this Command no longer needs to run execute()
