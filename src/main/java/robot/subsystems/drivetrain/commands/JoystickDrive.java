@@ -37,12 +37,10 @@ public class JoystickDrive extends Command {
         double leftInput = -Robot.m_oi.leftStick.getY();
         double rightInput = -Robot.m_oi.rightStick.getY();
 
-        if (leftInput - rightInput < Constants.Km) {
-            if (leftInput > rightInput) {
-                rightInput = leftInput;
-            } else {
-                leftInput = rightInput;
-            }
+        if (leftInput - rightInput < Constants.Kdifference) {
+            double bigest = Math.max(leftInput, rightInput);
+            leftInput = bigest;
+            rightInput = bigest;
         }
 
         double leftOutput, rightOutput;

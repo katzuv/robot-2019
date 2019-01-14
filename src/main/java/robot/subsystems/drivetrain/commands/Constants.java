@@ -1,5 +1,5 @@
 package robot.subsystems.drivetrain.commands;
 
 public class Constants {
-    public static final double Km = 0.05; // mistake constant
+    public static final double Kdifference = 0.05; // difference between joysticks constants constant
 }
