@@ -193,7 +193,7 @@ public class Path {
      * @return returns a Waypoint[] array.
      */
     public Waypoint[] toArray() {
-        return path.toArray(new Waypoint[] {});
+        return path.toArray(new Waypoint[]{});
     }
 
     /**
@@ -206,7 +206,7 @@ public class Path {
      */
     public void generateAll(double weight_data, double weight_smooth, double tolerance, double const_acceleration, double max_path_velocity) {
         this.generateFillPoint();
-        this.generateSmoothing(weight_data,weight_smooth,tolerance);
+        this.generateSmoothing(weight_data, weight_smooth, tolerance);
         this.generateCurvature();
         this.generateDistance();
         this.generateVelocity(const_acceleration, max_path_velocity);
@@ -344,7 +344,7 @@ public class Path {
             r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
             double curv = 0;
             if (r == 0) { //if the radius is zero, we would get a zero division error.
-                curv = Math.pow(10,6);
+                curv = Math.pow(10, 6);
             } else {
                 curv = 1 / r;
             }
@@ -367,8 +367,8 @@ public class Path {
      */
     public void generateVelocity(double maxAcceleration, double pathMaximumVelocity) {
         //Each point is given a speed based on its curvature, and the maximum velocity allowed.
-        for (int i = 0; i < this.length(); i++){
-            if(this.getWaypoint(i).getCurvature() != 0) //prevent zero division error
+        for (int i = 0; i < this.length(); i++) {
+            if (this.getWaypoint(i).getCurvature() != 0) //prevent zero division error
                 this.getWaypoint(i).setSpeed(Math.min(pathMaximumVelocity, Constants.K_CURVE / this.getWaypoint(i).getCurvature()));
             else
                 this.getWaypoint(i).setSpeed(pathMaximumVelocity);
@@ -378,12 +378,79 @@ public class Path {
         //Goes in reverse from the end to the beggining, lowering the speeds so that the robot doesn't de accelerate as fast.
         for (int i = this.length() - 2; i >= 0; i--) {
             getWaypoint(i).setSpeed(
-                    Math.min( getWaypoint(i).getSpeed(), Math.sqrt(
-                            Math.pow(getWaypoint(i+1).getSpeed(),2) + 2 * maxAcceleration * Waypoint.distance(getWaypoint(i), getWaypoint(i+1))
+                    Math.min(getWaypoint(i).getSpeed(), Math.sqrt(
+                            Math.pow(getWaypoint(i + 1).getSpeed(), 2) + 2 * maxAcceleration * Waypoint.distance(getWaypoint(i), getWaypoint(i + 1))
                             )
                     )
             );
         }
+    }
+
+
+    // ----== Functions for Dubin's path generation: ==----
+
+
+    public void generateDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double minimum_radius) {
+
+    }
+
+    /**
+     * Find the tangent points
+     * @param c1
+     * @param c2
+     * @param min_radius
+     * @return
+     */
+    private Point[][] generateDubinKeyPoints(Point c1, Point c2, double min_radius) {
+        if (2 * min_radius > Point.distance(c1, c2)) return null;
+        if (2 * min_radius == Point.distance(c1,c2)) return new Point[][] {{Point.average(c1,c2)}};
+        /* The goal of this method is to return the tangent points between both circles.
+        To find crossing tangent lines (In LSR and RLS cases) we do this calculation:
+        Create a circle where the diameter is the distance between both circles.
+        Create a circle around one circles center with a radius twice the size of the radius.
+        Find the intersection between both circles. (there are two)
+        Calculate the vector between the intersection and the other circle.
+        Create a point at the center between the circle and the intersection. (first point)
+        Add the vector to the first point to get the second. (second point)
+         */
+
+        /*
+        d=sqr((x1-x0)^2 + (y1-y0)^2)
+        a=(r0^2-r1^2+d^2)/(2*d)
+        h=sqr(r0^2-a^2)
+        x2=x0+a*(x1-x0)/d
+        y2=y0+a*(y1-y0)/d
+        x3=x2+h*(y1-y0)/d       // also x3=x2-h*(y1-y0)/d
+        y3=y2-h*(x1-x0)/d       // also y3=y2+h*(x1-x0)/d
+         */
+        Point circleDistance = Point.average(c1, c2);
+
+        double d = Point.distance(c1, circleDistance); //distance between both intersecting circles
+        double a = (4 * min_radius * min_radius - Math.pow(Point.distance(c1, c2) / 2, 2) + d * d) / (2 * d); //distance of c1 from the intersection line
+        double h = Math.sqrt(4*min_radius * min_radius - a * a); //distance of the line connecting both circles from the intersection.
+        Vector v1 = new Vector(c1, c2); //create a vector from the first center to the second (which is the same as from the first one to the larger circle.
+        Point p2 = v1.normalize().multiply(a).add(c1); //p2 is the point on the intersection between the centerline and the intersection line.
+        v1.rotate(90); // minus 90 for other point
+        Point intersect1 = v1.normalize().multiply(h).add(p2);
+        Point intersect2 = v1.normalize().multiply(-h).add(p2);
+        System.out.println(" " + a + " " + h);
+        Vector v2 = new Vector(intersect1, c2);
+        Point tan1 = Point.average(c1, intersect1);
+        Point tan2 = v2.add(tan1);
+
+        Vector v3 = new Vector(intersect2,c2);
+        Point tan3 = Point.average(c1, intersect2);
+        Point tan4 = v3.add(tan3);
+
+        v1 = new Vector(c1, c2);
+        Vector v4 = new Vector(c1, c2);
+        v4.rotate(90);
+        Point tan5 = v4.normalize().multiply(min_radius).add(c1);
+        Point tan6 = v4.normalize().multiply(min_radius).add(c2);
+        Point tan7 = v4.normalize().multiply(-min_radius).add(c1);
+        Point tan8 = v4.normalize().multiply(-min_radius).add(c2);
+
+        return new Point[][] {{tan1, tan2}, {tan3, tan4}, {tan5, tan6}, {tan7, tan8}};
     }
 
     @Override
