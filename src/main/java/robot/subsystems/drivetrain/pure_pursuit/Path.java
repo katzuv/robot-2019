@@ -397,7 +397,16 @@ public class Path {
         2. find the correct tangent points
         3. create points on the circles
          */
+        Point c_start;
+        if (distanceXLookahead(start_position, start_angle, end_position) >= 0) {
+            c_start = new Point(start_position.getX() + Math.cos(Math.toRadians(start_angle - 90)),
+                    start_position.getY() + Math.sin(Math.toRadians(start_angle - 90)));
 
+        }
+        else {
+            c_start = new Point(start_position.getX() + Math.cos(Math.toRadians(start_angle + 90)),
+                    start_position.getY() + Math.sin(Math.toRadians(start_angle + 90)));
+        }
 
     }
 
@@ -460,6 +469,18 @@ public class Path {
 
         // counterclock cross, clockwise cross, counter clockwise from c1, clockwise from c1
         return new Point[][]{{tan1, tan2}, {tan3, tan4}, {tan5, tan6}, {tan7, tan8}};
+    }
+
+
+    private double distanceXLookahead(Point current, double angle, Point target) {
+        //Calculates the robot's line of view  as a line formula (a*x + b*y + c)/sqrt(a*a + b*b)
+        angle = Math.toRadians(angle);
+        double a = -Math.tan(angle);
+        double c = Math.tan(angle) * current.getX() - current.getY();
+        double x = Math.abs(target.getX() * a + target.getY() + c) / Math.sqrt(a*a + 1);
+        double sign = Math.sin(angle) * (target.getX() - current.getX()) - Math.cos(angle) * (target.getY() - current.getY());
+        double side = Math.signum(sign);
+        return x * side;
     }
 
     @Override
