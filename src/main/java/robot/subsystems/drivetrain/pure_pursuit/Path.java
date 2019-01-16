@@ -390,20 +390,29 @@ public class Path {
     // ----== Functions for Dubin's path generation: ==----
 
 
-    public void generateDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double minimum_radius) {
+    public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double minimum_radius) {
+        /*
+        There are three stages to this algorithm.
+        1. we create two pairs of circles tangent to each of the two points, and we choose which is the correct one
+        2. find the correct tangent points
+        3. create points on the circles
+         */
+
 
     }
 
     /**
      * Find the tangent points
+     *
      * @param c1
      * @param c2
      * @param min_radius
      * @return
      */
     private Point[][] generateDubinKeyPoints(Point c1, Point c2, double min_radius) {
-        if (2 * min_radius > Point.distance(c1, c2)) return null;
-        if (2 * min_radius == Point.distance(c1,c2)) return new Point[][] {{Point.average(c1,c2)}};
+        if (2 * min_radius > Point.distance(c1, c2)) return null; //return null if both circles intersect
+        if (2 * min_radius == Point.distance(c1, c2))
+            return new Point[][]{{Point.average(c1, c2)}}; //if both circles are tangent
         /* The goal of this method is to return the tangent points between both circles.
         To find crossing tangent lines (In LSR and RLS cases) we do this calculation:
         Create a circle where the diameter is the distance between both circles.
@@ -427,30 +436,30 @@ public class Path {
 
         double d = Point.distance(c1, circleDistance); //distance between both intersecting circles
         double a = (4 * min_radius * min_radius - Math.pow(Point.distance(c1, c2) / 2, 2) + d * d) / (2 * d); //distance of c1 from the intersection line
-        double h = Math.sqrt(4*min_radius * min_radius - a * a); //distance of the line connecting both circles from the intersection.
+        double h = Math.sqrt(4 * min_radius * min_radius - a * a); //distance of the line connecting both circles from the intersection.
         Vector v1 = new Vector(c1, c2); //create a vector from the first center to the second (which is the same as from the first one to the larger circle.
         Point p2 = v1.normalize().multiply(a).add(c1); //p2 is the point on the intersection between the centerline and the intersection line.
-        v1.rotate(90); // minus 90 for other point
+        v1.rotate(90); // rotates 90 counter clockwise
         Point intersect1 = v1.normalize().multiply(h).add(p2);
         Point intersect2 = v1.normalize().multiply(-h).add(p2);
         System.out.println(" " + a + " " + h);
         Vector v2 = new Vector(intersect1, c2);
-        Point tan1 = Point.average(c1, intersect1);
-        Point tan2 = v2.add(tan1);
+        Point tan1 = Point.average(c1, intersect1); //the tangent counter clockwise of the center line
+        Point tan2 = v2.add(tan1); //the tangent counter clockwise of the center line
 
-        Vector v3 = new Vector(intersect2,c2);
-        Point tan3 = Point.average(c1, intersect2);
+        Vector v3 = new Vector(intersect2, c2);
+        Point tan3 = Point.average(c1, intersect2); //the tangent clockwise of the center line
         Point tan4 = v3.add(tan3);
 
-        v1 = new Vector(c1, c2);
         Vector v4 = new Vector(c1, c2);
-        v4.rotate(90);
+        v4.rotate(90); //rotate 90 counter clockwise
         Point tan5 = v4.normalize().multiply(min_radius).add(c1);
         Point tan6 = v4.normalize().multiply(min_radius).add(c2);
         Point tan7 = v4.normalize().multiply(-min_radius).add(c1);
         Point tan8 = v4.normalize().multiply(-min_radius).add(c2);
 
-        return new Point[][] {{tan1, tan2}, {tan3, tan4}, {tan5, tan6}, {tan7, tan8}};
+        // counterclock cross, clockwise cross, counter clockwise from c1, clockwise from c1
+        return new Point[][]{{tan1, tan2}, {tan3, tan4}, {tan5, tan6}, {tan7, tan8}};
     }
 
     @Override
