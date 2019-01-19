@@ -419,9 +419,17 @@ public class Path {
      * @return
      */
     private Point[][] generateDubinKeyPoints(Point c1, Point c2, double min_radius) {
-        if (2 * min_radius > Point.distance(c1, c2)) return null; //return null if both circles intersect
+        Vector v4 = new Vector(c1, c2);
+        v4.rotate(90); //rotate 90 counter clockwise
+        Point tan5 = v4.normalize().multiply(min_radius).add(c1);
+        Point tan6 = v4.normalize().multiply(min_radius).add(c2);
+        Point tan7 = v4.normalize().multiply(-min_radius).add(c1);
+        Point tan8 = v4.normalize().multiply(-min_radius).add(c2);
+
+        if (2 * min_radius > Point.distance(c1, c2))
+            return new Point[][]{{tan5, tan6}, {tan7, tan8}}; //return null if both circles intersect
         if (2 * min_radius == Point.distance(c1, c2))
-            return new Point[][]{{Point.average(c1, c2)}}; //if both circles are tangent
+            return new Point[][]{{tan5, tan6}, {tan7, tan8}, {Point.average(c1, c2), Point.average(c1, c2)}}; //if both circles are tangent
         /* The goal of this method is to return the tangent points between both circles.
         To find crossing tangent lines (In LSR and RLS cases) we do this calculation:
         Create a circle where the diameter is the distance between both circles.
@@ -459,13 +467,6 @@ public class Path {
         Vector v3 = new Vector(intersect2, c2);
         Point tan3 = Point.average(c1, intersect2); //the tangent clockwise of the center line
         Point tan4 = v3.add(tan3);
-
-        Vector v4 = new Vector(c1, c2);
-        v4.rotate(90); //rotate 90 counter clockwise
-        Point tan5 = v4.normalize().multiply(min_radius).add(c1);
-        Point tan6 = v4.normalize().multiply(min_radius).add(c2);
-        Point tan7 = v4.normalize().multiply(-min_radius).add(c1);
-        Point tan8 = v4.normalize().multiply(-min_radius).add(c2);
 
         // counterclock cross, clockwise cross, counter clockwise from c1, clockwise from c1
         return new Point[][]{{tan1, tan2}, {tan3, tan4}, {tan5, tan6}, {tan7, tan8}};
