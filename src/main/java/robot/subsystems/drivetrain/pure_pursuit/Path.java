@@ -20,7 +20,29 @@ public class Path {
      * Create an empty Path instance
      */
     public Path() {
+    }
 
+    /**
+     * Create a Smoothed Point based Path instance, based on the DAWGMA 1712 article.
+     */
+    public Path(double smooth_weight_data, double smooth_weight_smooth, double smooth_tolerance, double path_acceleration, double max_path_velocity, Waypoint... waypoints) {
+        for (Waypoint p : waypoints) {
+            this.appendWaypoint(p);
+        }
+        this.generateAll(smooth_weight_data, smooth_weight_smooth, smooth_tolerance, path_acceleration, max_path_velocity);
+    }
+
+    /**
+     * Create a Dubin's Path instance
+     *
+     * @param start_position starting position of the robot
+     * @param start_angle    starting angle of the robot, in degrees
+     * @param end_position   ending position of the robot
+     * @param end_angle      ending angle of the robot, in degrees
+     * @param radius         radius of the turns
+     */
+    public Path(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
+        createDubinCurve(start_position, start_angle, end_position, end_angle, radius);
     }
 
     /**
@@ -36,6 +58,12 @@ public class Path {
         path.addAll(w);
     }
 
+    /**
+     * double matrix copier
+     *
+     * @param arr original matrix
+     * @return a new instance of a double matrix, holding all of the same values as the first
+     */
     private static double[][] doubleArrayCopy(double[][] arr) {
         //size first dimension of array
         double[][] temp = new double[arr.length][arr[0].length];
@@ -217,7 +245,7 @@ public class Path {
      * The first of the five methods used in the path generation, needed for the pure pursuit.
      * (Pure pursuit article, 'Path Generation' > 'Injecting points' , Page 5)
      */
-    public void generateFillPoint() {
+    public void generateFillPoint() { //TODO: rename to generate fill points
         Vector[] pathVectors = new Vector[path.size()]; //create an array of vectors per point.
         Path newPathClass = new Path(); //create a new path class
         int AmountOfPoints;
@@ -361,7 +389,7 @@ public class Path {
      * The last of the five methods used in the path generation, needed for the pure pursuit.
      * (see the Pure pursuit article, 'Path Generation' > 'Velocities' , Page 8)
      *
-     * @param maxAcceleration rhe acceleration constant
+     * @param maxAcceleration the acceleration constant
      * @author paulo
      */
     public void generateVelocity(double maxAcceleration, double pathMaximumVelocity) {
@@ -388,7 +416,13 @@ public class Path {
 
     // ----== Functions for Dubin's path generation: ==----
 
-
+    /**
+     * @param start_position
+     * @param start_angle
+     * @param end_position
+     * @param end_angle
+     * @param radius
+     */
     public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
         /*
         There are three stages to this algorithm.
@@ -421,25 +455,25 @@ public class Path {
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
             }
         }
-
+        System.out.println(path_type);
         Point[] tangent_points;
         switch (path_type) {
             case "LSL":
                 tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1];
                 break;
             case "RSL":
-                if(generateDubinKeyPoints(c_start, c_end, radius).length == 2) {
+                if (generateDubinKeyPoints(c_start, c_end, radius).length == 2) {
                     tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
                     break;
                 }
                 tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2];
                 break;
             case "LSR":
-                if(generateDubinKeyPoints(c_start, c_end, radius).length == 2) {
+                if (generateDubinKeyPoints(c_start, c_end, radius).length == 2) {
                     tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1];
                     break;
                 }
-                if(generateDubinKeyPoints(c_start, c_end, radius).length == 3){
+                if (generateDubinKeyPoints(c_start, c_end, radius).length == 3) {
                     tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2];
                     break;
                 }
@@ -450,7 +484,11 @@ public class Path {
                 tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
                 break;
         }
+        for (Point[] pcouple : generateDubinKeyPoints(c_start, c_end, radius)) {
 
+            for (Point p : pcouple) {
+                System.out.println(p);
+            }
         }
 
         //TODO: Place 'generateDubinFillPoints' to here after testing.
@@ -505,7 +543,6 @@ public class Path {
         v1.rotate(90); // rotates 90 counter clockwise
         Point intersect1 = v1.normalize().multiply(h).add(p2);
         Point intersect2 = v1.normalize().multiply(-h).add(p2);
-        System.out.println(" " + a + " " + h);
         Vector v2 = new Vector(intersect1, c2);
         Point tan1 = Point.average(c1, intersect1); //the tangent counter clockwise of the center line
         Point tan2 = v2.add(tan1); //the tangent counter clockwise of the center line
@@ -555,11 +592,13 @@ public class Path {
         addAll(newPathClass);
     }
 
-    private void generateCircleFillPoints(Point start, Point end, Point circle_center, double spacing_between_points_arc, Path path) {
+    public void generateCircleFillPoints(Point start, Point end, Point circle_center, double spacing_between_points_arc, Path path) {
         Vector start_vector = new Vector(circle_center, start);
         Vector end_vector = new Vector(circle_center, end);
         double delta_angle = spacing_between_points_arc / start_vector.magnitude();
         int amount_of_points = (int) Math.ceil(start_vector.magnitude() * Math.toRadians( (360 + Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle())) % 360) / Math.abs(spacing_between_points_arc));
+        System.out.println(amount_of_points);
+        System.out.println(Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle()));
         for (int j = 0; j < amount_of_points; j++) {
             Vector fill_point_vector = new Vector(start_vector.x, start_vector.y);
             fill_point_vector.rotate(-j * Math.toDegrees(delta_angle));

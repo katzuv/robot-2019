@@ -4,15 +4,9 @@ public class MainTest {
 
 
     public static void main(String[] args) {
-        Path path = new Path();
-        path.appendWaypoint(new Waypoint(0, 0));
-        path.appendWaypoint(new Waypoint(0.9, 0));
-        path.appendWaypoint(new Waypoint(1.3, -0.5));
-        path.appendWaypoint(new Waypoint(5, 3));
-        System.out.println("BASIC PATH:");
-        System.out.println(path);
-        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-        System.out.println("AFTER ALL GENERATION:");
+        Path path = new Path(new Point(0,1), 90, new Point(3,4), -20, 0.5);
+        //Path path = new Path();
+        //path.generateCircleFillPoints(new Point(-2,0), new Point(0,2), new Point(0, 0),-0.1, path);
         System.out.println(path);
 
     }
