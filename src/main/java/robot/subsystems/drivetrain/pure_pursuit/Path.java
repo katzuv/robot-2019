@@ -412,7 +412,7 @@ public class Path {
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
             }
         } else {
-            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
+            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle + 90)), radius * Math.cos(Math.toRadians(start_angle + 90))).add(start_position);
             if (distanceXLookahead(end_position, end_angle, c_start) <= -radius) {
                 path_type = "LSL";
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
@@ -423,11 +423,7 @@ public class Path {
         }
 
         Point[] tangent_points;
-        switch (path_type){
-            default:
-            case "RSR":
-                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
-                break;
+        switch (path_type) {
             case "LSL":
                 tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1];
                 break;
@@ -447,9 +443,13 @@ public class Path {
                     tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2];
                     break;
                 }
-
                 tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[3];
                 break;
+            default:
+            case "RSR":
+                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
+                break;
+        }
 
         }
 
@@ -533,7 +533,7 @@ public class Path {
     private void generateDubinFillPoints(Point start_position, double start_angle, Point end_position, double end_angle, Point c1, Point c2, Point tan1, Point tan2, double radius, String path_type) {
         Path newPathClass = new Path(); //create a new path class
 
-        double fill_delta_angle = Constants.SPACING_BETWEEN_WAYPOINTS / radius;// maybe make this number smaller, divide it by a constant or have a separate constant for turns
+        double fill_delta_angle = Constants.SPACING_BETWEEN_WAYPOINTS;// maybe make this number smaller, divide it by a constant or have a separate constant for turns
         if (path_type.charAt(0) == 'R')
             generateCircleFillPoints(start_position, tan1, c1, fill_delta_angle, newPathClass);
         else
@@ -543,7 +543,7 @@ public class Path {
         int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
         tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
         for (int j = 0; j < AmountOfPoints; j++) {
-            newPathClass.appendWaypoint(tangentVector.multiply(j).add(this.getWaypoint(-1)));
+            newPathClass.appendWaypoint(tangentVector.add(newPathClass.getWaypoint(-1)));
         }
 
         if (path_type.charAt(2) == 'R')
@@ -559,11 +559,11 @@ public class Path {
         Vector start_vector = new Vector(circle_center, start);
         Vector end_vector = new Vector(circle_center, end);
         double delta_angle = spacing_between_points_arc / start_vector.magnitude();
-        int amount_of_points = (int) Math.ceil(start_vector.magnitude() * Math.signum(delta_angle) * Math.toRadians(start_vector.angle() - end_vector.angle()) / spacing_between_points_arc);
+        int amount_of_points = (int) Math.ceil(start_vector.magnitude() * Math.toRadians( (360 + Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle())) % 360) / Math.abs(spacing_between_points_arc));
         for (int j = 0; j < amount_of_points; j++) {
             Vector fill_point_vector = new Vector(start_vector.x, start_vector.y);
-            fill_point_vector.rotate(-j * delta_angle);
-            path.appendWaypoint((Waypoint) fill_point_vector.add(circle_center)); //TODO: check if you can cast a Waypoint to a point
+            fill_point_vector.rotate(-j * Math.toDegrees(delta_angle));
+            path.appendWaypoint(new Waypoint(fill_point_vector.add(circle_center).getX(), fill_point_vector.add(circle_center).getY())); //TODO: check if you can cast a Waypoint to a point
         }
     }
 
