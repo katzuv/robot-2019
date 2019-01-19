@@ -389,7 +389,7 @@ public class Path {
     // ----== Functions for Dubin's path generation: ==----
 
 
-    public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double minimum_radius) {
+    public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
         /*
         There are three stages to this algorithm.
         1. we create two pairs of circles tangent to each of the two points, and we choose which is the correct one
@@ -397,14 +397,28 @@ public class Path {
         3. create points on the circles
          */
         Point c_start;
-        if (distanceXLookahead(start_position, start_angle, end_position) >= 0) {
-            c_start = new Point(start_position.getX() + Math.cos(Math.toRadians(start_angle - 90)),
-                    start_position.getY() + Math.sin(Math.toRadians(start_angle - 90)));
-
+        Point c_end;
+        if (distanceXLookahead(start_position, start_angle, end_position) >=
+                Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
+                        radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle)))) {
+            //the right circle was chosen
+            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
+            if (distanceXLookahead(end_position, end_angle, c_start) >= radius) {
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
+            } else {
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
+            }
+        } else {
+            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
+            if (distanceXLookahead(end_position, end_angle, c_start) <= -radius) {
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
+            } else {
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
         }
-        else {
-            c_start = new Point(start_position.getX() + Math.cos(Math.toRadians(start_angle + 90)),
-                    start_position.getY() + Math.sin(Math.toRadians(start_angle + 90)));
+        }
+        
+        Point[] tangent_points;
+        
         }
 
     }
