@@ -525,57 +525,38 @@ public class Path {
     private void generateDubinFillPoints(Point start_position, double start_angle, Point end_position, double end_angle, Point c1, Point c2, Point tan1, Point tan2, double radius, String path_type) {
         Path newPathClass = new Path(); //create a new path class
 
-
-        Vector c1v1 = new Vector(c1, start_position);
-        Vector c1v2 = new Vector(c1, tan1);
-        Vector tanv1 = new Vector(tan1, tan2);
-        Vector c2v1 = new Vector(c2, tan2);
-        Vector c2v2 = new Vector(c2, end_position);
-
         double fill_delta_angle = Constants.SPACING_BETWEEN_WAYPOINTS / radius;// maybe make this number smaller, divide it by a constant or have a separate constant for turns
-        if (path_type.charAt(0) == 'R') { //TODO: Replace these four segments with a method to make code cleaner
-            double total_radians = 0; //TODO: Replace the while list with a for list, similarly to how it is done in the 'generateFillPoint' method
-            while (total_radians < Math.atan2(c1v1.y, c1v1.x) - Math.atan2(c1v2.y, c1v2.x)) {
-                Vector fill_point_vector = new Vector(c1v1.x, c1v1.y); //copy c1v1
-                fill_point_vector.rotate(-Math.toDegrees(total_radians));
-                newPathClass.appendWaypoint((Waypoint) fill_point_vector.add(c1)); //TODO: check if you can cast a Waypoint to a point
-                total_radians += fill_delta_angle;
-            }
-        } else {
-            double total_radians = 0;
-            while (total_radians < Math.atan2(c1v2.y, c1v2.x) - Math.atan2(c1v1.y, c1v1.x)) {
-                Vector fill_point_vector = new Vector(c1v1.x, c1v1.y); //copy c1v1
-                fill_point_vector.rotate(Math.toDegrees(total_radians));
-                newPathClass.appendWaypoint((Waypoint) fill_point_vector.add(c1)); //TODO: check if you can cast a Waypoint to a point
-                total_radians += fill_delta_angle;
-            }
-        }
+        if (path_type.charAt(0) == 'R')
+            generateCircleFillPoints(start_position, tan1, c1, fill_delta_angle, newPathClass);
+        else
+            generateCircleFillPoints(start_position, tan1, c1, -fill_delta_angle, newPathClass);
 
-        int AmountOfPoints = (int) Math.ceil(tanv1.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
-        tanv1 = tanv1.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
+        Vector tangentVector = new Vector(tan1, tan2);
+        int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
+        tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
         for (int j = 0; j < AmountOfPoints; j++) {
-            newPathClass.appendWaypoint(tanv1.multiply(j).add(this.getWaypoint(-1)));
+            newPathClass.appendWaypoint(tangentVector.multiply(j).add(this.getWaypoint(-1)));
         }
 
-        if (path_type.charAt(2) == 'R') {
-            double total_radians = 0; //TODO: Replace the while list with a for list, similarly to how it is done in the 'generateFillPoint' method
-            while (total_radians < Math.atan2(c2v1.y, c2v1.x) - Math.atan2(c2v2.y, c2v2.x)) {
-                Vector fill_point_vector = new Vector(c2v1.x, c2v1.y); //copy c1v1
-                fill_point_vector.rotate(-Math.toDegrees(total_radians));
-                newPathClass.appendWaypoint((Waypoint) fill_point_vector.add(c2)); //TODO: check if you can cast a Waypoint to a point
-                total_radians += fill_delta_angle;
-            }
-        } else {
-            double total_radians = 0;
-            while (total_radians < Math.atan2(c2v2.y, c1v2.x) - Math.atan2(c2v1.y, c2v1.x)) {
-                Vector fill_point_vector = new Vector(c2v1.x, c2v1.y); //copy c1v1
-                fill_point_vector.rotate(Math.toDegrees(total_radians));
-                newPathClass.appendWaypoint((Waypoint) fill_point_vector.add(c2)); //TODO: check if you can cast a Waypoint to a point
-                total_radians += fill_delta_angle;
-            }
-        }
+        if (path_type.charAt(2) == 'R')
+            generateCircleFillPoints(tan2, end_position, c2, fill_delta_angle, newPathClass);
+        else
+            generateCircleFillPoints(tan2, end_position, c2, -fill_delta_angle, newPathClass);
+
         clear();
         addAll(newPathClass);
+    }
+
+    private void generateCircleFillPoints(Point start, Point end, Point circle_center, double spacing_between_points_arc, Path path) {
+        Vector start_vector = new Vector(circle_center, start);
+        Vector end_vector = new Vector(circle_center, end);
+        double delta_angle = spacing_between_points_arc / start_vector.magnitude();
+        int amount_of_points = (int) Math.ceil(start_vector.magnitude() * Math.signum(delta_angle) * Math.toRadians(start_vector.angle() - end_vector.angle()) / spacing_between_points_arc);
+        for (int j = 0; j < amount_of_points; j++) {
+            Vector fill_point_vector = new Vector(start_vector.x, start_vector.y);
+            fill_point_vector.rotate(-j * delta_angle);
+            path.appendWaypoint((Waypoint) fill_point_vector.add(circle_center)); //TODO: check if you can cast a Waypoint to a point
+        }
     }
 
     @Override
