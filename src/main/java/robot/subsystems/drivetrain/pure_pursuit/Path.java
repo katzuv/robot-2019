@@ -423,28 +423,36 @@ public class Path {
         }
 
         Point[] tangent_points;
-
-        if (generateDubinKeyPoints(c_start, c_end, radius).length == 4)
-            switch (path_type) {
-                case "RSR":
-                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2];
-                    break;
-                case "LSL":
-                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[3];
-                    break;
-                case "LSR":
-                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1];
-                    break;
-                default:
-                case "RSL":
+        switch (path_type){
+            default:
+            case "RSR":
+                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
+                break;
+            case "LSL":
+                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1];
+                break;
+            case "RSL":
+                if(generateDubinKeyPoints(c_start, c_end, radius).length == 2) {
                     tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
                     break;
-            }
-        else if (generateDubinKeyPoints(c_start, c_end, radius).length == 3) {
-            tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2 - 0];
-        } else {
-            tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1 - 0];
+                }
+                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2];
+                break;
+            case "LSR":
+                if(generateDubinKeyPoints(c_start, c_end, radius).length == 2) {
+                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1];
+                    break;
+                }
+                if(generateDubinKeyPoints(c_start, c_end, radius).length == 3){
+                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2];
+                    break;
+                }
+
+                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[3];
+                break;
+
         }
+
         //TODO: Place 'generateDubinFillPoints' to here after testing.
         generateDubinFillPoints(start_position, start_angle, end_position, end_angle, c_start, c_end, tangent_points[0], tangent_points[1], radius, path_type);
     }
@@ -506,8 +514,8 @@ public class Path {
         Point tan3 = Point.average(c1, intersect2); //the tangent clockwise of the center line
         Point tan4 = v3.add(tan3);
 
-        // counterclock cross, clockwise cross, counter clockwise from c1, clockwise from c1
-        return new Point[][]{{tan1, tan2}, {tan3, tan4}, {tan5, tan6}, {tan7, tan8}};
+        // counter clockwise from c1, clockwise from c1, counterclock cross, clockwise cross,
+        return new Point[][]{{tan5, tan6}, {tan7, tan8}, {tan1, tan2}, {tan3, tan4}};
     }
 
 
