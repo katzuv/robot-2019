@@ -396,6 +396,7 @@ public class Path {
         2. find the correct tangent points
         3. create points on the circles
          */
+        String path_type;
         Point c_start;
         Point c_end;
         if (distanceXLookahead(start_position, start_angle, end_position) >=
@@ -404,23 +405,48 @@ public class Path {
             //the right circle was chosen
             c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
             if (distanceXLookahead(end_position, end_angle, c_start) >= radius) {
+                path_type = "RSR";
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
             } else {
+                path_type = "RSL";
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
             }
         } else {
             c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
             if (distanceXLookahead(end_position, end_angle, c_start) <= -radius) {
+                path_type = "LSL";
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
             } else {
+                path_type = "LSR";
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
-        }
-        }
-        
-        Point[] tangent_points;
-        
+            }
         }
 
+        Point[] tangent_points;
+
+        if (generateDubinKeyPoints(c_start, c_end, radius).length == 4)
+            switch (path_type) {
+                case "RSR":
+                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2];
+                    break;
+                case "LSL":
+                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[3];
+                    break;
+                case "LSR":
+                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1];
+                    break;
+                default:
+                case "RSL":
+                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
+                    break;
+            }
+        else if (generateDubinKeyPoints(c_start, c_end, radius).length == 3) {
+            tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2 - 0];
+        } else {
+            tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1 - 0];
+        }
+        //TODO: Place 'generateDubinFillPoints' to here after testing.
+        generateDubinFillPoints(start_position, start_angle, end_position, end_angle, c_start, c_end, tangent_points[0], tangent_points[1], radius, path_type);
     }
 
     /**
