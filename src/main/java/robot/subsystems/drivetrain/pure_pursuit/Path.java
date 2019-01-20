@@ -424,6 +424,8 @@ public class Path {
      * @param radius
      */
     public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
+        start_angle = 180 - (start_angle % 360);
+        end_angle = 180 - (end_angle % 360);
         /*
         There are three stages to this algorithm.
         1. we create two pairs of circles tangent to each of the two points, and we choose which is the correct one
@@ -575,14 +577,17 @@ public class Path {
             generateCircleFillPoints(start_position, tan1, c1, fill_delta_angle, newPathClass);
         else
             generateCircleFillPoints(start_position, tan1, c1, -fill_delta_angle, newPathClass);
-        if (this.length() <= 1) {
+        if (this.length() <= 1)
             newPathClass.appendWaypoint(new Waypoint(tan1.getX(), tan1.getY()));
-        }
         Vector tangentVector = new Vector(tan1, tan2);
         int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
         tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
         for (int j = 0; j < AmountOfPoints; j++) {
-            newPathClass.appendWaypoint(tangentVector.add(newPathClass.getWaypoint(-1)));
+            if(newPathClass.length() == 1)
+                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tan1)));
+            else
+                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tan1)));
+
         }
 
         if (path_type.charAt(2) == 'R')
