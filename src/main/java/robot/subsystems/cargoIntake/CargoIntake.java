@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class cargoIntake extends Subsystem {
+public class CargoIntake extends Subsystem {
+    private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
