@@ -492,7 +492,7 @@ public class Path {
         }
 
         //TODO: Place 'generateDubinFillPoints' to here after testing.
-        generateDubinFillPoints(start_position, start_angle, end_position, end_angle, c_start, c_end, tangent_points[0], tangent_points[1], radius, path_type);
+        generateDubinFillPoints(start_position, end_position, c_start, c_end, tangent_points[0], tangent_points[1], radius, path_type);
     }
 
     /**
@@ -567,7 +567,7 @@ public class Path {
         return x * side;
     }
 
-    private void generateDubinFillPoints(Point start_position, double start_angle, Point end_position, double end_angle, Point c1, Point c2, Point tan1, Point tan2, double radius, String path_type) {
+    private void generateDubinFillPoints(Point start_position, Point end_position, Point c1, Point c2, Point tan1, Point tan2, double radius, String path_type) {
         Path newPathClass = new Path(); //create a new path class
 
         double fill_delta_angle = Constants.SPACING_BETWEEN_WAYPOINTS;// maybe make this number smaller, divide it by a constant or have a separate constant for turns
@@ -575,7 +575,9 @@ public class Path {
             generateCircleFillPoints(start_position, tan1, c1, fill_delta_angle, newPathClass);
         else
             generateCircleFillPoints(start_position, tan1, c1, -fill_delta_angle, newPathClass);
-
+        if (this.length() <= 1) {
+            newPathClass.appendWaypoint(new Waypoint(tan1.getX(), tan1.getY()));
+        }
         Vector tangentVector = new Vector(tan1, tan2);
         int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
         tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
@@ -587,7 +589,7 @@ public class Path {
             generateCircleFillPoints(tan2, end_position, c2, fill_delta_angle, newPathClass);
         else
             generateCircleFillPoints(tan2, end_position, c2, -fill_delta_angle, newPathClass);
-
+        newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
         clear();
         addAll(newPathClass);
     }
@@ -596,13 +598,13 @@ public class Path {
         Vector start_vector = new Vector(circle_center, start);
         Vector end_vector = new Vector(circle_center, end);
         double delta_angle = spacing_between_points_arc / start_vector.magnitude();
-        int amount_of_points = (int) Math.ceil(start_vector.magnitude() * Math.toRadians( (360 + Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle())) % 360) / Math.abs(spacing_between_points_arc));
+        int amount_of_points = (int) Math.ceil(start_vector.magnitude() * Math.toRadians((360 + Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle())) % 360) / Math.abs(spacing_between_points_arc));
         System.out.println(amount_of_points);
         System.out.println(Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle()));
         for (int j = 0; j < amount_of_points; j++) {
             Vector fill_point_vector = new Vector(start_vector.x, start_vector.y);
             fill_point_vector.rotate(-j * Math.toDegrees(delta_angle));
-            path.appendWaypoint(new Waypoint(fill_point_vector.add(circle_center).getX(), fill_point_vector.add(circle_center).getY())); //TODO: check if you can cast a Waypoint to a point
+            path.appendWaypoint(new Waypoint(fill_point_vector.add(circle_center).getX(), fill_point_vector.add(circle_center).getY())); //TODO: make it easier to add a point
         }
     }
 
