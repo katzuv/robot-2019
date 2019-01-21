@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class groundIntakeCG extends CommandGroup {
 
     public groundIntakeCG() {
-        addSequential(new foldCommand());
-        addSequential(new flowerCommand(false));
+        addSequential(new FoldCommand());
+        addSequential(new GrabCommand(false));
     }
 }
