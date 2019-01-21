@@ -16,7 +16,11 @@ public class foldCommand extends Command {
 
     @Override
     public void execute() {
-
+        if (Robot.groundintake.isInside()) {
+            Robot.groundintake.setClose();
+        } else {
+            Robot.groundintake.setOpen();
+        }
     }
 
     @Override
