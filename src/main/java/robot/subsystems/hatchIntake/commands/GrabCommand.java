@@ -19,9 +19,9 @@ public class GrabCommand extends Command {
     @Override
     public void execute() {
         if (open) {
-            Robot.groundintake.setFlowerOpen();
+            Robot.groundintake.setFlowerOpen();//grab hatch
         } else {
-            Robot.groundintake.setFlowerClose();
+            Robot.groundintake.setFlowerClose();//release hatch
         }
     }
 

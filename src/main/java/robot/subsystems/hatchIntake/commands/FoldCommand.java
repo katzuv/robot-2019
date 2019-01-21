@@ -16,6 +16,7 @@ public class FoldCommand extends Command {
 
     @Override
     public void execute() {
+        //if hatch inside transport it to the flower
         if (Robot.groundintake.isInside()) {
             Robot.groundintake.setClose();
         } else {
