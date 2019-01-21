@@ -7,6 +7,9 @@
 
 package robot.subsystems.cargoIntake;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -14,8 +17,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class CargoIntake extends Subsystem {
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
+    private final TalonSRX WristControlMotor = new TalonSRX(Ports.WristMotor);
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+
+    public CargoIntake(){
+        WristControlMotor.config_kP(0, Constants.kP, Constants.TimeOutMS);
+        WristControlMotor.config_kP(0, Constants.kI, Constants.TimeOutMS);
+        WristControlMotor.config_kP(0, Constants.kD, Constants.TimeOutMS);
+        WristControlMotor.config_kP(0, Constants.kF, Constants.TimeOutMS);
+    }
 
     @Override
     public void initDefaultCommand() {
