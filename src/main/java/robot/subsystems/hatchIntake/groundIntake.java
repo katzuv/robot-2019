@@ -22,7 +22,6 @@ public class groundIntake extends Subsystem {
     private final DoubleSolenoid flowerExtension = new DoubleSolenoid(Ports.flowerExtensionForward, Ports.flowerExtensionReverse);
     private final DoubleSolenoid flower = new DoubleSolenoid(Ports.flowerForward, Ports.flowerReverse);
 
-
     public groundIntake() {
         proxSensor.resetAccumulator();
     }
