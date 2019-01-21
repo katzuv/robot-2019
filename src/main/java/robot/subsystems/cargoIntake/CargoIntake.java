@@ -23,9 +23,9 @@ public class CargoIntake extends Subsystem {
 
     public CargoIntake(){
         WristControlMotor.config_kP(0, Constants.kP, Constants.TimeOutMS);
-        WristControlMotor.config_kP(0, Constants.kI, Constants.TimeOutMS);
-        WristControlMotor.config_kP(0, Constants.kD, Constants.TimeOutMS);
-        WristControlMotor.config_kP(0, Constants.kF, Constants.TimeOutMS);
+        WristControlMotor.config_kI(0, Constants.kI, Constants.TimeOutMS);
+        WristControlMotor.config_kD(0, Constants.kD, Constants.TimeOutMS);
+        WristControlMotor.config_kF(0, Constants.kF, Constants.TimeOutMS);
     }
 
     @Override
