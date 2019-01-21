@@ -33,4 +33,13 @@ public class CargoIntake extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
+
+    public void setIntakeSpeed(double speed){
+        IntakeMotor.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void setWristPos(double pos){
+        WristControlMotor.set(ControlMode.MotionMagic, pos);
+    }
+
 }
