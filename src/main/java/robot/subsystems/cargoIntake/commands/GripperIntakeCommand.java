@@ -1,13 +1,16 @@
 package robot.subsystems.cargoIntake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.subsystems.cargoIntake.CargoIntake;
 
 /**
  *
  */
-public class GripperIntake extends Command {
-
-    public GripperIntake() {
+public class GripperIntakeCommand extends Command {
+    private double speed;
+    private static CargoIntake cargoIntake = new CargoIntake();
+    public GripperIntakeCommand(double speed) {
+        this.speed = speed;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 
@@ -20,6 +23,7 @@ public class GripperIntake extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        cargoIntake.setIntakeSpeed(speed);
 
     }
 
