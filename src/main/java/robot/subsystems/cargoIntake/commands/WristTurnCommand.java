@@ -1,13 +1,16 @@
 package robot.subsystems.cargoIntake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.subsystems.cargoIntake.CargoIntake;
 
 /**
  *
  */
 public class WristTurnCommand extends Command {
-
-    public WristTurnCommand() {
+    private double pos;
+    private CargoIntake cargoIntake = new CargoIntake();
+    public WristTurnCommand(double pos) {
+        this.pos = pos;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -18,6 +21,7 @@ public class WristTurnCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        cargoIntake.setWristPos(pos);
     }
 
     // Make this return true when this Command no longer needs to run execute()
