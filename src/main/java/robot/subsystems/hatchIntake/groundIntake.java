@@ -19,6 +19,9 @@ public class groundIntake extends Subsystem {
     // here. Call these from Commands.
     private final DoubleSolenoid grountIntake = new DoubleSolenoid(Ports.groundForward, Ports.groundReverse);
     private final AnalogInput proxSensor = new AnalogInput(Ports.prox);
+    private final DoubleSolenoid flowerExtension = new DoubleSolenoid(Ports.flowerExtensionForward, Ports.flowerExtensionReverse);
+    private final DoubleSolenoid flower = new DoubleSolenoid(Ports.flowerForward, Ports.flowerReverse);
+
 
     public groundIntake() {
         proxSensor.resetAccumulator();
@@ -32,12 +35,28 @@ public class groundIntake extends Subsystem {
         grountIntake.set(DoubleSolenoid.Value.kReverse);
     }
 
-    public void setOpen() {
+    public void setFlowerOpen() {
         grountIntake.set(DoubleSolenoid.Value.kForward);
     }
 
     public boolean isInside() {
         return voltage() <= Constants.MIN_PROXIMITY;
+    }
+
+    public void setFlowerClose() {
+        flower.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    public void setExtensionClose() {
+        flowerExtension.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    public void setExtensionOpen() {
+        flowerExtension.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void setOpen() {
+        flower.set(DoubleSolenoid.Value.kForward);
     }
 
     @Override

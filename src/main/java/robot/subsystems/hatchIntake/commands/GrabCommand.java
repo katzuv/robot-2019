@@ -3,12 +3,12 @@ package robot.subsystems.hatchIntake.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 
-public class extensionCommand extends Command {
-    private boolean exetend;
+public class GrabCommand extends Command {
+    private boolean open;
 
-    public extensionCommand(boolean extend) {
-        requires(Robot.flowerExtension);
-        this.exetend = exetend;
+    public GrabCommand(boolean open) {
+        requires(Robot.groundintake);
+        this.open = open;
     }
 
     @Override
@@ -18,10 +18,10 @@ public class extensionCommand extends Command {
 
     @Override
     public void execute() {
-        if (exetend) {
-            Robot.flowerExtension.setOpen();
+        if (open) {
+            Robot.groundintake.setFlowerOpen();
         } else {
-            Robot.flowerExtension.setClose();
+            Robot.groundintake.setFlowerClose();
         }
     }
 

@@ -3,9 +3,9 @@ package robot.subsystems.hatchIntake.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 
-public class foldCommand extends Command {
+public class FoldCommand extends Command {
 
-    public foldCommand() {
+    public FoldCommand() {
         requires(Robot.groundintake);
     }
 
