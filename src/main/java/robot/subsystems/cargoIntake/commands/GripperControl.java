@@ -6,10 +6,10 @@ import robot.subsystems.cargoIntake.CargoIntake;
 /**
  *
  */
-public class GripperIntake extends Command {
+public class GripperControl extends Command {
     private double speed;
     private static CargoIntake cargoIntake = new CargoIntake();
-    public GripperIntake(double speed) {
+    public GripperControl(double speed) {
         this.speed = speed;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
