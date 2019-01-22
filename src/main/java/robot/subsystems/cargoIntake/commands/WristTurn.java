@@ -2,26 +2,29 @@ package robot.subsystems.cargoIntake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.cargoIntake.CargoIntake;
+import robot.subsystems.cargoIntake.Constants;
 
 /**
  *
  */
 public class WristTurn extends Command {
-    private double pos;
+    private double arcLength;
+    private double angle;
     private CargoIntake cargoIntake = new CargoIntake();
-    public WristTurn(double pos) {
-        this.pos = pos;
+    public WristTurn(double angle) {
+        this.angle = angle;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        this.arcLength = 2*Math.PI* Constants.WristRadius*(this.angle/180);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        cargoIntake.setWristPos(pos);
+        cargoIntake.setWristPos(arcLength);
     }
 
     // Make this return true when this Command no longer needs to run execute()
