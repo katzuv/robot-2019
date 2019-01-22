@@ -3,10 +3,10 @@ package robot.subsystems.hatchIntake.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
-public class FlowerTransportation extends InstantCommand {
+public class GripperTransportation extends InstantCommand {
     private boolean extend;
 
-    public FlowerTransportation(boolean extend) {
+    public GripperTransportation(boolean extend) {
         requires(Robot.GROUNDINTAKE);
         this.extend = extend;
     }
@@ -18,6 +18,7 @@ public class FlowerTransportation extends InstantCommand {
 
     @Override
     public void execute() {
+        //if extend is true it extend the gripper else it bring it back
         if (extend) {
             Robot.GROUNDINTAKE.ExtensionOpen();
         } else {
