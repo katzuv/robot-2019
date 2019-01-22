@@ -6,10 +6,10 @@ import robot.subsystems.cargoIntake.CargoIntake;
 /**
  *
  */
-public class WristTurnCommand extends Command {
+public class WristTurn extends Command {
     private double pos;
     private CargoIntake cargoIntake = new CargoIntake();
-    public WristTurnCommand(double pos) {
+    public WristTurn(double pos) {
         this.pos = pos;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
