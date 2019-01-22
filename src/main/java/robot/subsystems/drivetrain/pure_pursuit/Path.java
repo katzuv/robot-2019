@@ -433,12 +433,13 @@ public class Path {
          */
         System.out.println("Distance right: " + distanceXLookahead(start_position, start_angle, end_position));
         System.out.println("Sinus: " + Math.sin(Math.toRadians(end_angle - start_angle)));
-
+        System.out.println("Calc: " + Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
+                radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle))));
         String path_type;
         Point c_start;
         Point c_end;
         if (-distanceXLookahead(start_position, start_angle, end_position) >=
-                Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
+                -Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
                         radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle)))) {
             //the right circle was chosen
             c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
