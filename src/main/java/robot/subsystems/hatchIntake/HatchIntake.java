@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class groundIntake extends Subsystem {
+public class HatchIntake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private final DoubleSolenoid grountIntake = new DoubleSolenoid(Ports.groundForward, Ports.groundReverse);
@@ -22,7 +22,7 @@ public class groundIntake extends Subsystem {
     private final DoubleSolenoid flowerExtension = new DoubleSolenoid(Ports.flowerExtensionForward, Ports.flowerExtensionReverse);
     private final DoubleSolenoid flower = new DoubleSolenoid(Ports.flowerForward, Ports.flowerReverse);
 
-    public groundIntake() {
+    public HatchIntake() {
         proxSensor.resetAccumulator();
     }
 
@@ -30,31 +30,31 @@ public class groundIntake extends Subsystem {
         return proxSensor.getVoltage();
     }
 
-    public void setClose() {
+    public void Close() {
         grountIntake.set(DoubleSolenoid.Value.kReverse);
     }
 
-    public void setFlowerOpen() {
+    public void FlowerOpen() {
         grountIntake.set(DoubleSolenoid.Value.kForward);
     }
 
     public boolean isInside() {
-        return voltage() <= Constants.MIN_PROXIMITY;
+        return voltage() <= Constants.MIN_VOLTAGE;
     }
 
-    public void setFlowerClose() {
+    public void FlowerClose() {
         flower.set(DoubleSolenoid.Value.kReverse);
     }
 
-    public void setExtensionClose() {
+    public void ExtensionClose() {
         flowerExtension.set(DoubleSolenoid.Value.kReverse);
     }
 
-    public void setExtensionOpen() {
+    public void ExtensionOpen() {
         flowerExtension.set(DoubleSolenoid.Value.kForward);
     }
 
-    public void setOpen() {
+    public void Open() {
         flower.set(DoubleSolenoid.Value.kForward);
     }
 

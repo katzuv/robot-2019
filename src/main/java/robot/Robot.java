@@ -23,7 +23,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
-import robot.subsystems.hatchIntake.groundIntake;
+import robot.subsystems.hatchIntake.HatchIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,7 +34,7 @@ import robot.subsystems.hatchIntake.groundIntake;
  */
 public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
-    public static final groundIntake groundintake = new groundIntake();
+    public static final HatchIntake GROUNDINTAKE = new HatchIntake();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
 

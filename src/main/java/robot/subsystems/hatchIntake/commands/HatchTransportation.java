@@ -3,12 +3,10 @@ package robot.subsystems.hatchIntake.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 
-public class GrabCommand extends Command {
-    private boolean open;
+public class HatchTransportation extends Command {
 
-    public GrabCommand(boolean open) {
-        requires(Robot.groundintake);
-        this.open = open;
+    public HatchTransportation() {
+        requires(Robot.GROUNDINTAKE);
     }
 
     @Override
@@ -18,10 +16,11 @@ public class GrabCommand extends Command {
 
     @Override
     public void execute() {
-        if (open) {
-            Robot.groundintake.setFlowerOpen();//grab hatch
+        //if hatch inside transport it to the flower
+        if (Robot.GROUNDINTAKE.isInside()) {
+            Robot.GROUNDINTAKE.Close();
         } else {
-            Robot.groundintake.setFlowerClose();//release hatch
+            Robot.GROUNDINTAKE.Open();
         }
     }
 

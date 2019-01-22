@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class GroundIntake extends CommandGroup {
 
     public GroundIntake() {
-        addSequential(new FoldCommand());//lift hatch if inside
-        addSequential(new GrabCommand(false));//put it on the flower
+        addSequential(new HatchTransportation());//lift hatch if inside
+        addSequential(new Grab(false));//put it on the flower
     }
 }

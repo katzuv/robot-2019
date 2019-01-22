@@ -2,5 +2,6 @@ package robot.subsystems.hatchIntake;
 
 public class Constants {
 
-    public final static double MIN_PROXIMITY = 0;
+    public final static double MIN_VOLTAGE = 0;
 }
+
