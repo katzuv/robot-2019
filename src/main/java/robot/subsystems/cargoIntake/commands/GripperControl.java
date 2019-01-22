@@ -23,7 +23,7 @@ public class GripperControl extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        cargoIntake.setIntakeSpeed(speed);
+        cargoIntake.setGripperSpeed(speed);
 
     }
 
