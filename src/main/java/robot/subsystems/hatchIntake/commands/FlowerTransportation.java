@@ -1,14 +1,14 @@
 package robot.subsystems.hatchIntake.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
-public class FlowerTransportation extends Command {
-    private boolean exetend;
+public class FlowerTransportation extends InstantCommand {
+    private boolean extend;
 
     public FlowerTransportation(boolean extend) {
         requires(Robot.GROUNDINTAKE);
-        this.exetend = extend;
+        this.extend = extend;
     }
 
     @Override
@@ -18,17 +18,13 @@ public class FlowerTransportation extends Command {
 
     @Override
     public void execute() {
-        if (exetend) {
+        if (extend) {
             Robot.GROUNDINTAKE.ExtensionOpen();
         } else {
             Robot.GROUNDINTAKE.ExtensionClose();
         }
     }
 
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
 
     @Override
     protected void end() {

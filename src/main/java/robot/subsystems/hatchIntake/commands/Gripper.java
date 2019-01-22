@@ -3,10 +3,10 @@ package robot.subsystems.hatchIntake.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 
-public class Grab extends Command {
+public class Gripper extends Command {
     private boolean open;
 
-    public Grab(boolean open) {
+    public Gripper(boolean open) {
         requires(Robot.GROUNDINTAKE);
         this.open = open;
     }
@@ -19,9 +19,9 @@ public class Grab extends Command {
     @Override
     public void execute() {
         if (open) {
-            Robot.GROUNDINTAKE.FlowerOpen();//grab hatch
+            Robot.GROUNDINTAKE.GripperOpen();//grab hatch
         } else {
-            Robot.GROUNDINTAKE.FlowerClose();//release hatch
+            Robot.GROUNDINTAKE.GripperClose();//release hatch
         }
     }
 

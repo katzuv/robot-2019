@@ -18,44 +18,44 @@ public class HatchIntake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private final DoubleSolenoid grountIntake = new DoubleSolenoid(Ports.groundForward, Ports.groundReverse);
-    private final AnalogInput proxSensor = new AnalogInput(Ports.prox);
-    private final DoubleSolenoid flowerExtension = new DoubleSolenoid(Ports.flowerExtensionForward, Ports.flowerExtensionReverse);
-    private final DoubleSolenoid flower = new DoubleSolenoid(Ports.flowerForward, Ports.flowerReverse);
+    private final AnalogInput hatchSensor = new AnalogInput(Ports.prox);
+    private final DoubleSolenoid gripperExtension = new DoubleSolenoid(Ports.flowerExtensionForward, Ports.flowerExtensionReverse);
+    private final DoubleSolenoid gripper = new DoubleSolenoid(Ports.flowerForward, Ports.flowerReverse);
 
     public HatchIntake() {
-        proxSensor.resetAccumulator();
+        hatchSensor.resetAccumulator();
     }
 
     public double voltage() {
-        return proxSensor.getVoltage();
+        return hatchSensor.getVoltage();
     }
 
-    public void Close() {
+    public void closeIntake() {
         grountIntake.set(DoubleSolenoid.Value.kReverse);
     }
 
-    public void FlowerOpen() {
+    public void GripperOpen() {
         grountIntake.set(DoubleSolenoid.Value.kForward);
     }
 
-    public boolean isInside() {
+    public boolean isHatchInside() {
         return voltage() <= Constants.MIN_VOLTAGE;
     }
 
-    public void FlowerClose() {
-        flower.set(DoubleSolenoid.Value.kReverse);
+    public void GripperClose() {
+        gripper.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void ExtensionClose() {
-        flowerExtension.set(DoubleSolenoid.Value.kReverse);
+        gripperExtension.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void ExtensionOpen() {
-        flowerExtension.set(DoubleSolenoid.Value.kForward);
+        gripperExtension.set(DoubleSolenoid.Value.kForward);
     }
 
-    public void Open() {
-        flower.set(DoubleSolenoid.Value.kForward);
+    public void openIntake() {
+        gripper.set(DoubleSolenoid.Value.kForward);
     }
 
     @Override
