@@ -9,4 +9,5 @@ public class Constants {
     public final static int  kSlotIdx = 0;
     public final static int kPIDLoopIdx = 0;
     public final static double WristRadius = 0;
+    public final static double CargoInVolage = 2.5;//felt cute might delete later
 }

@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * first the gripper
  */
 public class CargoIntake extends Subsystem {
+    AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
     private final TalonSRX WristControlMotor = new TalonSRX(Ports.WristMotor);
     // Put methods for controlling this subsystem
@@ -68,6 +70,11 @@ public class CargoIntake extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
+    }
+    public double proximityVoltage(){ return proximitySensor.getVoltage(); }//returns the current voltage in the proximity sensor
+
+    public boolean isCargoInside(){
+        return proximityVoltage() > Constants.CargoInVolage;//felt cute might delete later
     }
 
     public void setGripperSpeed(double speed){
