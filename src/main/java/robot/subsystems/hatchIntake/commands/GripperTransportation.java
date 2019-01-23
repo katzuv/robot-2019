@@ -2,13 +2,15 @@ package robot.subsystems.hatchIntake.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
-
+/*
+this command is used to extend and bring back the gripper
+ */
 public class GripperTransportation extends InstantCommand {
-    private boolean extend;
+    private boolean extended;
 
     public GripperTransportation(boolean extend) {
         requires(Robot.GROUNDINTAKE);
-        this.extend = extend;
+        this.extended = extend;
     }
 
     @Override
@@ -18,11 +20,11 @@ public class GripperTransportation extends InstantCommand {
 
     @Override
     public void execute() {
-        //if extend is true it extend the gripper else it bring it back
-        if (extend) {
-            Robot.GROUNDINTAKE.ExtensionOpen();
-        } else {
+        //if extended it brings the gripper back and extends it otherwise
+        if (extended) {
             Robot.GROUNDINTAKE.ExtensionClose();
+        } else {
+            Robot.GROUNDINTAKE.ExtensionOpen();
         }
     }
 

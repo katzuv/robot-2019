@@ -3,8 +3,12 @@ package robot.subsystems.hatchIntake.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 
+/*
+this command controls the flower on the robot
+ */
 public class Gripper extends Command {
-    private boolean open;
+
+    private boolean open;//indicates whether the flower is open or not
 
     public Gripper(boolean open) {
         requires(Robot.GROUNDINTAKE);
