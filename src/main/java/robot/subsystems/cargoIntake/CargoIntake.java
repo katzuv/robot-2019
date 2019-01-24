@@ -24,7 +24,7 @@ public class CargoIntake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public CargoIntake(){
+    public CargoIntake() {
         /*
         config for the feedback sensor
          */
@@ -70,11 +70,11 @@ public class CargoIntake extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    public void setGripperSpeed(double speed){
+    public void setGripperSpeed(double speed) {
         IntakeMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public void setWristPos(double pos){
+    public void setWristPosition(double pos) {
         WristControlMotor.set(ControlMode.MotionMagic, pos);
     }
 
