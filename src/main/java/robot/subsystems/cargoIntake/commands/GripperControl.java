@@ -7,10 +7,12 @@ import robot.subsystems.cargoIntake.CargoIntake;
  *
  */
 public class GripperControl extends Command {
-    private double speed;
+    private double speed;//speed of the gripper
+    private boolean continuousWhileHeld;//indicator for if it should stop when the button isn't pressed or when the cargo is inside
     private static CargoIntake cargoIntake = new CargoIntake();
-    public GripperControl(double speed) {
+    public GripperControl(double speed, boolean continuousWhileHeld) {
         this.speed = speed;
+        this.continuousWhileHeld = continuousWhileHeld;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 
@@ -29,7 +31,10 @@ public class GripperControl extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        if (continuousWhileHeld)
+            return false;
+        else
+            return cargoIntake.isCargoInside();
     }
 
     // Called once after isFinished returns true
