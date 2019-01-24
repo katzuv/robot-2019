@@ -1,6 +1,6 @@
 package robot.subsystems.cargoIntake;
 
-class Constants {
+public class Constants {
     public final static double kP = 0;
     public final static double kI = 0;
     public final static double kD = 0;
@@ -9,5 +9,8 @@ class Constants {
     public final static int SLOT_IDX = 0;
     public final static int PID_LOOP_IDX = 0;
     public final static double WRIST_RADIUS = 0;
-    public final static double CargoInVolage = 2.5;//felt cute might delete later
+    public final static double CARGO_IN_VOLTAGE = 2.5;//felt cute might delete later
+    public final static double GRIPPER_SPEED = 0.75;
+    public final static double INTAKE_ANGLE = 0;
+    public final static double FOLDED_ANGLE = 165;//felt cute might delete later
 }
