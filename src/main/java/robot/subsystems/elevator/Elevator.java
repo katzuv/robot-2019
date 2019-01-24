@@ -7,6 +7,10 @@
 
 package robot.subsystems.elevator;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -15,6 +19,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Elevator extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+    private final VictorSPX victorMotor = new VictorSPX(Ports.victorMotor);
+    private final TalonSRX talonMotor = new TalonSRX(Ports.talonMotor);
+    private final Encoder encoder = new Encoder(Ports.encoderChannelA, Ports.encoderChannelB);
+
+    public Elevator() {
+        encoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+
+        //what the motor does when not given voltage (Brake - decelerate the motor, Coast - not stop the motor)
+        victorMotor.setNeutralMode(NeutralMode.Coast);
+        talonMotor.setNeutralMode(NeutralMode.Coast);
+
+        /* set closed loop gains in slot0 */
+        talonMotor.config_kP(0, Constants.LIFT_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kI(0, Constants.LIFT_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kD(0, Constants.LIFT_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kF(0, Constants.LIFT_PIDF[3], Constants.TALON_TIMEOUT_MS);
+
+        victorMotor.follow(talonMotor);
+    }
+
 
     @Override
     public void initDefaultCommand() {
