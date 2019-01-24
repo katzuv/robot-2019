@@ -15,7 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * A CargoIntake subsystem, controls the intake and the outtake of the cargo balls
+ * The Cargo Intake subsystem, including the Intake and Wrist.
  * first the gripper
  */
 public class CargoIntake extends Subsystem {
