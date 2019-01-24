@@ -3,16 +3,16 @@ package robot.subsystems.cargoIntake.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
+ *This cargo intake command group follows three basic steps, put the wrist up against the cargo,
+ *  pull the cargo in the system and lift the wrist back up
  *
  */
-public class CargoIntake extends CommandGroup {
+public class IntakeCargoAndFoldWrist extends CommandGroup {
 
-    public CargoIntake() {
-        WristTurn wristTurn = new WristTurn(0);
-        GripperControl gripper = new GripperControl(0.75, false);
-        WristTurn wristTurn = new WristTurn(90);
-        addSequential(gripper);
-        addSequential(wristTurn);
+    public IntakeCargoAndFoldWrist() {
+        addSequential(new WristTurn(0));
+        addSequential(new GripperControl(0.75, false));
+        addSequential(new WristTurn(90));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
