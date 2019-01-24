@@ -83,6 +83,13 @@ public class HatchIntake extends Subsystem {
         gripper.set(DoubleSolenoid.Value.kForward);
     }
 
+    /**
+     * @return if there is any Game piece in the robot (now fictive function)
+     */
+    public boolean HaveGamePiece() {
+        return false;
+    }
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
