@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * A CargoIntake subsystem, controls the intake and the outtake of the cargo balls
+ * The Cargo Intake subsystem, including the Intake and Wrist.
  * first the gripper
  */
 public class CargoIntake extends Subsystem {
@@ -26,7 +26,7 @@ public class CargoIntake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public CargoIntake(){
+    public CargoIntake() {
         /*
         config for the feedback sensor
          */
@@ -77,11 +77,11 @@ public class CargoIntake extends Subsystem {
         return proximityVoltage() > Constants.CargoInVolage;//felt cute might delete later
     }
 
-    public void setGripperSpeed(double speed){
+    public void setGripperSpeed(double speed) {
         IntakeMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public void setWristPos(double pos){
+    public void setWristPosition(double pos) {
         WristControlMotor.set(ControlMode.MotionMagic, pos);
     }
 
