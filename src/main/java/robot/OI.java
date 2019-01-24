@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
+    /*
+    driver's preference: a button for intake until sensor senses the cargo or with another button press, rb and lb for continous intake and outtake
+     */
 
 
     //// CREATING BUTTONS
