@@ -31,6 +31,10 @@ public class GripperTransportation extends InstantCommand {
     protected void end() {
     }
 
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override

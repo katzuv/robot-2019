@@ -27,7 +27,7 @@ public class Gripper extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.GROUNDINTAKE.HaveGamePiece();
     }
 
     @Override
