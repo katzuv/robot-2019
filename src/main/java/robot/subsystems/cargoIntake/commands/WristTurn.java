@@ -19,7 +19,9 @@ public class WristTurn extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        this.arcLength = 2*Math.PI* Constants.WristRadius*(this.angle/180);
+        double relativeAngle = this.angle/180;
+        double circumference = 2*Math.PI*Constants.WristRadius;
+        this.arcLength = relativeAngle*circumference;
     }
 
     // Called repeatedly when this Command is scheduled to run
