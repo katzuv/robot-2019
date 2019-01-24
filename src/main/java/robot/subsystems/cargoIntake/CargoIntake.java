@@ -33,35 +33,35 @@ public class CargoIntake extends Subsystem {
         WristControlMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0,0);
         WristControlMotor.setSensorPhase(true);
         WristControlMotor.setInverted(false);
-        WristControlMotor.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.TimeOutMS);
+        WristControlMotor.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TALON_TIME_OUT);
         /*
         PID config
          */
-        WristControlMotor.config_kP(0, Constants.kP, Constants.TimeOutMS);
-        WristControlMotor.config_kI(0, Constants.kI, Constants.TimeOutMS);
-        WristControlMotor.config_kD(0, Constants.kD, Constants.TimeOutMS);
-        WristControlMotor.config_kF(0, Constants.kF, Constants.TimeOutMS);
+        WristControlMotor.config_kP(0, Constants.kP, Constants.TALON_TIME_OUT);
+        WristControlMotor.config_kI(0, Constants.kI, Constants.TALON_TIME_OUT);
+        WristControlMotor.config_kD(0, Constants.kD, Constants.TALON_TIME_OUT);
+        WristControlMotor.config_kF(0, Constants.kF, Constants.TALON_TIME_OUT);
         /*
         status frame period config
          */
-        WristControlMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.TimeOutMS);
-        WristControlMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.TimeOutMS);
+        WristControlMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.TALON_TIME_OUT);
+        WristControlMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.TALON_TIME_OUT);
         /*
         nominal and peak output config
          */
-        WristControlMotor.configNominalOutputForward(0, Constants.TimeOutMS);
-        WristControlMotor.configNominalOutputReverse(0, Constants.TimeOutMS);
-        WristControlMotor.configPeakOutputForward(1, Constants.TimeOutMS);
-        WristControlMotor.configPeakOutputReverse(-1, Constants.TimeOutMS);
+        WristControlMotor.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
+        WristControlMotor.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
+        WristControlMotor.configPeakOutputForward(1, Constants.TALON_TIME_OUT);
+        WristControlMotor.configPeakOutputReverse(-1, Constants.TALON_TIME_OUT);
         /*
         profile config
          */
-        WristControlMotor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+        WristControlMotor.selectProfileSlot(Constants.SLOT_IDX, Constants.PID_LOOP_IDX);
         /*
         motion magic speed config
          */
-        WristControlMotor.configMotionCruiseVelocity(15000, Constants.TimeOutMS);
-        WristControlMotor.configMotionAcceleration(6000, Constants.TimeOutMS);
+        WristControlMotor.configMotionCruiseVelocity(15000, Constants.TALON_TIME_OUT);
+        WristControlMotor.configMotionAcceleration(6000, Constants.TALON_TIME_OUT);
 
 
     }
@@ -74,7 +74,7 @@ public class CargoIntake extends Subsystem {
     public double proximityVoltage(){ return proximitySensor.getVoltage(); }//returns the current voltage in the proximity sensor
 
     public boolean isCargoInside(){
-        return proximityVoltage() > Constants.CargoInVolage;//felt cute might delete later
+        return proximityVoltage() > Constants.CARGO_IN_VOLTAGE;//felt cute might delete later
     }
 
     public void setGripperSpeed(double speed) {
