@@ -17,8 +17,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 public class Elevator extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+
     private final VictorSPX victorMotor = new VictorSPX(Ports.victorMotor);
     private final TalonSRX talonMotor = new TalonSRX(Ports.talonMotor);
     private final Encoder encoder = new Encoder(Ports.encoderChannelA, Ports.encoderChannelB);
@@ -39,7 +38,53 @@ public class Elevator extends Subsystem {
         victorMotor.follow(talonMotor);
     }
 
+    /**
+     *
+     */
+    public void setHeight(double height) {
 
+    }
+
+    /**
+     * @return
+     */
+    public double getHeight() {
+        return 0;
+    }
+
+    /**
+     * update pid slot, disable robot?
+     */
+    public void update(){
+
+    }
+
+    /**
+     *
+     */
+    private void updatePIDSlot(){
+
+    }
+
+    public void setSpeed(){
+
+    }
+
+    public double getSpeed(){
+        return 0;
+    }
+
+    public boolean atTop(){
+        return false;
+    }
+
+    public boolean atBottom(){
+        return false;
+    }
+
+    public double getOutputPrecent(){
+        return 0;
+    }
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
