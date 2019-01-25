@@ -18,6 +18,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Elevator extends Subsystem {
 
+    /* pid slots for the four states: up and down on the first level and up and down on the second level of the cascade*/
+    private final int TALON_BOTTOM_UP_PID_SLOT = 0;
+    private final int TALON_BOTTOM_DOWN_PID_SLOT = 1;
+    private final int TALON_TOP_UP_PID_SLOT = 2;
+    private final int TALON_TOP_DOWN_PID_SLOT = 3;
+
     private final VictorSPX victorMotor = new VictorSPX(Ports.victorMotor);
     private final TalonSRX talonMotor = new TalonSRX(Ports.talonMotor);
     private final Encoder encoder = new Encoder(Ports.encoderChannelA, Ports.encoderChannelB);
@@ -30,11 +36,25 @@ public class Elevator extends Subsystem {
         talonMotor.setNeutralMode(NeutralMode.Coast);
 
         /* set closed loop gains in slot0 */
-        talonMotor.config_kP(0, Constants.LIFT_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kI(0, Constants.LIFT_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kD(0, Constants.LIFT_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kF(0, Constants.LIFT_PIDF[3], Constants.TALON_TIMEOUT_MS);
-
+        talonMotor.config_kP(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kI(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kD(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kF(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        /* set closed loop gains in slot1 */
+        talonMotor.config_kP(TALON_BOTTOM_DOWN_PID_SLOT, Constants.LIFT_BOTTOM_DOWN_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kI(TALON_BOTTOM_DOWN_PID_SLOT, Constants.LIFT_BOTTOM_DOWN_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kD(TALON_BOTTOM_DOWN_PID_SLOT, Constants.LIFT_BOTTOM_DOWN_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kF(TALON_BOTTOM_DOWN_PID_SLOT, Constants.LIFT_BOTTOM_DOWN_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        /* set closed loop gains in slot2 */
+        talonMotor.config_kP(TALON_TOP_UP_PID_SLOT, Constants.LIFT_TOP_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kI(TALON_TOP_UP_PID_SLOT, Constants.LIFT_TOP_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kD(TALON_TOP_UP_PID_SLOT, Constants.LIFT_TOP_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kF(TALON_TOP_UP_PID_SLOT, Constants.LIFT_TOP_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        /* set closed loop gains in slot3 */
+        talonMotor.config_kP(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kI(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kD(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kF(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[3], Constants.TALON_TIMEOUT_MS);
         victorMotor.follow(talonMotor);
     }
 
@@ -55,36 +75,37 @@ public class Elevator extends Subsystem {
     /**
      * update pid slot, disable robot?
      */
-    public void update(){
+    public void update() {
 
     }
 
     /**
      *
      */
-    private void updatePIDSlot(){
+    private void updatePIDSlot() {
 
     }
 
-    public void setSpeed(){
+    public void setSpeed() {
 
     }
 
-    public double getSpeed(){
+    public double getSpeed() {
         return 0;
     }
 
-    public boolean atTop(){
+    public boolean atTop() {
         return false;
     }
 
-    public boolean atBottom(){
+    public boolean atBottom() {
         return false;
     }
 
-    public double getOutputPrecent(){
+    public double getOutputPrecent() {
         return 0;
     }
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
