@@ -30,11 +30,15 @@ public class Elevator extends Subsystem {
     private final Encoder encoder = new Encoder(Ports.encoderChannelA, Ports.encoderChannelB);
 
     public Elevator() {
-        encoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+        talonMotor.setInverted(Constants.TALON_REVERSE);
+        victorMotor.setInverted(Constants.VICTOR_REVERSE);
 
         //what the motor does when not given voltage (Brake - decelerate the motor, Coast - not stop the motor)
-        victorMotor.setNeutralMode(NeutralMode.Coast);
-        talonMotor.setNeutralMode(NeutralMode.Coast);
+        victorMotor.setNeutralMode(NeutralMode.Brake);
+        talonMotor.setNeutralMode(NeutralMode.Brake);
+
+        encoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+
 
         /* set closed loop gains in slot0 */
         talonMotor.config_kP(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
@@ -58,7 +62,7 @@ public class Elevator extends Subsystem {
         talonMotor.config_kF(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[3], Constants.TALON_TIMEOUT_MS);
         victorMotor.follow(talonMotor);
 
-        talonMotor.setInverted(Constants.TALON_REVERSE);
+        /* Nominal Output- The “minimal” or “weakest” motor output allowed if the output is nonzero
 
         talonMotor.configNominalOutputForward(Constants.NOMINAL_OUT_FWD, Constants.TALON_TIMEOUT_MS);
         talonMotor.configPeakOutputForward(Constants.PEAK_OUT_FWD, Constants.TALON_TIMEOUT_MS);

@@ -3,6 +3,7 @@ package robot.subsystems.elevator;
 public class Constants {
 
     public static final double TICKS_PER_METER = 0.0;
+    public static final boolean VICTOR_REVERSE = false;
     static final double NOMINAL_OUT_FWD = 0;
     static final int TALON_TIMEOUT_MS = 0;
     static final double DISTANCE_PER_PULSE = 0.0;
