@@ -7,10 +7,7 @@
 
 package robot.subsystems.elevator;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
@@ -21,7 +18,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Elevator extends Subsystem {
 
-    private double height;
+    private double setpoint;
     /* pid slots for the four states: up and down on the first level and up and down on the second level of the cascade*/
     private final int TALON_BOTTOM_UP_PID_SLOT = 0;
     private final int TALON_BOTTOM_DOWN_PID_SLOT = 1;
@@ -91,32 +88,46 @@ public class Elevator extends Subsystem {
      *
      */
     public void setHeight(double height) {
-
+        this.setpoint = Math.max(Constants.ELEVATOR_TOP_HEIGHT, Math.min(0 ,height)) * Constants.TICKS_PER_METER;
+        updatePIDSlot();
+        talonMotor.set(ControlMode.Position, setpoint);
     }
 
     /**
      * @return
      */
     public double getHeight() {
-        return 0;
+        return talonMotor.getSelectedSensorPosition(0) / Constants.TICKS_PER_METER;
     }
 
     /**
      * update pid slot, disable robot?
      */
     public void update() {
-
+        updatePIDSlot();
     }
 
     /**
      *
      */
     private void updatePIDSlot() {
-
+        if(setpoint > getHeight() * Constants.TICKS_PER_METER){
+            if(Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER)
+                talonMotor.selectProfileSlot(TALON_TOP_UP_PID_SLOT, 0);
+            else
+                talonMotor.selectProfileSlot(TALON_BOTTOM_UP_PID_SLOT, 0);
+        }
+        else{
+            if(Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER)
+                talonMotor.selectProfileSlot(TALON_TOP_DOWN_PID_SLOT, 0);
+            else
+                talonMotor.selectProfileSlot(TALON_BOTTOM_DOWN_PID_SLOT, 0);
+        }
     }
 
-    public void setSpeed() {
 
+    public void setSpeed(double speed) {
+        talonMotor.set(ControlMode.PercentOutput, speed);
     }
 
     public double getSpeed() {
@@ -134,7 +145,7 @@ public class Elevator extends Subsystem {
     }
 
     public double getOutputPrecent() {
-        return 0;
+        return talonMotor.getMotorOutputPercent();
     }
 
     @Override

@@ -18,4 +18,6 @@ public class Constants {
     static final double NOMINAL_OUT_REV = 0;
     static final double PEAK_OUT_FWD = 0;
     static final double ELEVATOR_TOP_HEIGHT = 2.4;
+    static final double ELEVATOR_MID_HEIGHT = 1.2;
+
 }
