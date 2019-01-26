@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Elevator extends Subsystem {
 
+    private double height;
     /* pid slots for the four states: up and down on the first level and up and down on the second level of the cascade*/
     private final int TALON_BOTTOM_UP_PID_SLOT = 0;
     private final int TALON_BOTTOM_DOWN_PID_SLOT = 1;
@@ -119,15 +120,17 @@ public class Elevator extends Subsystem {
     }
 
     public double getSpeed() {
-        return 0;
+        return talonMotor.getSelectedSensorVelocity(0) / Constants.TICKS_PER_METER;
     }
 
-    public boolean atTop() {
-        return false;
+    public boolean atTop(){
+        //return Math.abs(getHeight()) > Constants.ELEVATOR_MAX_HEIGHT;
+        return talonMotor.getSensorCollection().isFwdLimitSwitchClosed();
     }
 
     public boolean atBottom() {
-        return false;
+        //return Math.abs(getHeight()) < 0.05;
+        return talonMotor.getSensorCollection().isRevLimitSwitchClosed();
     }
 
     public double getOutputPrecent() {

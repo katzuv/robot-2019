@@ -2,6 +2,7 @@ package robot.subsystems.elevator;
 
 public class Constants {
 
+    public static final double TICKS_PER_METER = 0.0;
     static final double NOMINAL_OUT_FWD = 0;
     static final int TALON_TIMEOUT_MS = 0;
     static final double DISTANCE_PER_PULSE = 0.0;
@@ -16,4 +17,5 @@ public class Constants {
     static final double PEAK_OUT_REV = 0;
     static final double NOMINAL_OUT_REV = 0;
     static final double PEAK_OUT_FWD = 0;
+    static final double ELEVATOR_TOP_HEIGHT = 2.4;
 }
