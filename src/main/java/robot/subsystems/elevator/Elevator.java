@@ -7,6 +7,9 @@
 
 package robot.subsystems.elevator;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -56,6 +59,31 @@ public class Elevator extends Subsystem {
         talonMotor.config_kD(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[2], Constants.TALON_TIMEOUT_MS);
         talonMotor.config_kF(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[3], Constants.TALON_TIMEOUT_MS);
         victorMotor.follow(talonMotor);
+
+        talonMotor.setInverted(Constants.TALON_REVERSE);
+
+        talonMotor.configNominalOutputForward(Constants.NOMINAL_OUT_FWD, Constants.TALON_TIMEOUT_MS);
+        talonMotor.configPeakOutputForward(Constants.PEAK_OUT_FWD, Constants.TALON_TIMEOUT_MS);
+        talonMotor.configNominalOutputReverse(Constants.NOMINAL_OUT_REV, Constants.TALON_TIMEOUT_MS);
+        talonMotor.configPeakOutputReverse(Constants.PEAK_OUT_REV, Constants.TALON_TIMEOUT_MS);
+
+        talonMotor.setSensorPhase(Constants.ENCODER_REVERSED);
+        /* Configure the encoder */
+        talonMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
+
+        /* Configure the hall effect sensors */
+        // TOP hall effect
+        talonMotor.configForwardLimitSwitchSource(
+                LimitSwitchSource.FeedbackConnector,
+                Constants.TOP_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIMEOUT_MS
+        );
+        // BOTTOM hall effect
+        talonMotor.configReverseLimitSwitchSource(
+                LimitSwitchSource.FeedbackConnector,
+                Constants.BOTTOM_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIMEOUT_MS
+        );
     }
 
     /**
