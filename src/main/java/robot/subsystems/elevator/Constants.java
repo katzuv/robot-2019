@@ -8,4 +8,11 @@ public class Constants {
     public static final double[] LIFT_BOTTOM_UP_PIDF = {0,0,0,0};
     public static final double[] LIFT_TOP_DOWN_PIDF = {0,0,0,0};
     public static final double[] LIFT_TOP_UP_PIDF = {0,0,0,0};
+    static final boolean TALON_REVERSE = false;
+    static final boolean ENCODER_REVERSED = false;
+    static final boolean TOP_HALL_REVERSED = false;
+    static final boolean BOTTOM_HALL_REVERSED = false;
+    static final double PEAK_OUT_REV = 0;
+    static final double NOMINAL_OUT_REV = 0;
+    static final double PEAK_OUT_FWD = 0;
 }
