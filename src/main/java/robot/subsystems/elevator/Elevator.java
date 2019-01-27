@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * An example subsystem.  You can replace me with your own Subsystem.
+ * Subsystem of the continuous Elevator
  */
 public class Elevator extends Subsystem {
 
@@ -24,7 +24,6 @@ public class Elevator extends Subsystem {
     private final int TALON_BOTTOM_DOWN_PID_SLOT = 1;
     private final int TALON_TOP_UP_PID_SLOT = 2;
     private final int TALON_TOP_DOWN_PID_SLOT = 3;
-
     private final VictorSPX victorMotor = new VictorSPX(Ports.victorMotor);
     private final TalonSRX talonMotor = new TalonSRX(Ports.talonMotor);
     private final Encoder encoder = new Encoder(Ports.encoderChannelA, Ports.encoderChannelB);
@@ -60,10 +59,14 @@ public class Elevator extends Subsystem {
         talonMotor.config_kI(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[1], Constants.TALON_TIMEOUT_MS);
         talonMotor.config_kD(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[2], Constants.TALON_TIMEOUT_MS);
         talonMotor.config_kF(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[3], Constants.TALON_TIMEOUT_MS);
+
+        //the victor follows all the inputs the talon has
         victorMotor.follow(talonMotor);
 
         /* Nominal Output- The “minimal” or “weakest” motor output allowed if the output is nonzero
-
+         * Peak Output- The “maximal” or “strongest” motor output allowed.
+         * These settings are useful to reduce the maximum velocity of the mechanism,
+         * and can make tuning the closed-loop simpler.  */
         talonMotor.configNominalOutputForward(Constants.NOMINAL_OUT_FWD, Constants.TALON_TIMEOUT_MS);
         talonMotor.configPeakOutputForward(Constants.PEAK_OUT_FWD, Constants.TALON_TIMEOUT_MS);
         talonMotor.configNominalOutputReverse(Constants.NOMINAL_OUT_REV, Constants.TALON_TIMEOUT_MS);
@@ -89,65 +92,93 @@ public class Elevator extends Subsystem {
     }
 
     /**
+     * Set a target height and tell the motors to move to that position.
      *
+     * @param height Target height of the elevator in meters
      */
     public void setHeight(double height) {
-        this.setpoint = Math.max(Constants.ELEVATOR_TOP_HEIGHT, Math.min(0 ,height)) * Constants.TICKS_PER_METER;
+        this.setpoint = Math.max(Constants.ELEVATOR_TOP_HEIGHT, Math.min(0, height)) * Constants.TICKS_PER_METER;
         updatePIDSlot();
         talonMotor.set(ControlMode.Position, setpoint);
     }
 
     /**
-     * @return
+     * Get the target height from the encoders.
+     *
+     * @return Current height of the elevator in meters
      */
     public double getHeight() {
         return talonMotor.getSelectedSensorPosition(0) / Constants.TICKS_PER_METER;
     }
 
     /**
-     * update pid slot, disable robot?
+     * Needs to be run in a loop, Updates PID slot
      */
     public void update() {
         updatePIDSlot();
+
     }
 
     /**
-     *
+     * Update PID slot based on the current state of the motor
      */
     private void updatePIDSlot() {
-        if(setpoint > getHeight() * Constants.TICKS_PER_METER){
-            if(Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER)
+        if (setpoint > getHeight() * Constants.TICKS_PER_METER) {
+            if (Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER)
                 talonMotor.selectProfileSlot(TALON_TOP_UP_PID_SLOT, 0);
             else
                 talonMotor.selectProfileSlot(TALON_BOTTOM_UP_PID_SLOT, 0);
-        }
-        else{
-            if(Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER)
+        } else {
+            if (Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER)
                 talonMotor.selectProfileSlot(TALON_TOP_DOWN_PID_SLOT, 0);
             else
                 talonMotor.selectProfileSlot(TALON_BOTTOM_DOWN_PID_SLOT, 0);
         }
     }
 
-
+    /**
+     * Set the motor to a certain speed, on a scale of -1 to 1.
+     *
+     * @param speed speed of the motor from -1 to 1
+     */
     public void setSpeed(double speed) {
         talonMotor.set(ControlMode.PercentOutput, speed);
     }
 
+    /**
+     * Get the velocity from the encoders
+     *
+     * @return velocity of the motor, in m/s
+     */
     public double getSpeed() {
         return talonMotor.getSelectedSensorVelocity(0) / Constants.TICKS_PER_METER;
     }
 
-    public boolean atTop(){
+    /**
+     * Check if the limit switch at the top of the elevator is pressed
+     *
+     * @return boolean of the sensor true or false
+     */
+    public boolean atTop() {
         //return Math.abs(getHeight()) > Constants.ELEVATOR_MAX_HEIGHT;
         return talonMotor.getSensorCollection().isFwdLimitSwitchClosed();
     }
 
+    /**
+     * Check if the limit switch at the bottom of the elevator is pressed
+     *
+     * @return boolean of the sensor true or false
+     */
     public boolean atBottom() {
         //return Math.abs(getHeight()) < 0.05;
         return talonMotor.getSensorCollection().isRevLimitSwitchClosed();
     }
 
+    /**
+     * Get the speed of the motor in percentages
+     *
+     * @return return motor value, from -1 to 1
+     */
     public double getOutputPrecent() {
         return talonMotor.getMotorOutputPercent();
     }
