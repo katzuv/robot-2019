@@ -24,9 +24,9 @@ public class Elevator extends Subsystem {
     private final int TALON_BOTTOM_DOWN_PID_SLOT = 1;
     private final int TALON_TOP_UP_PID_SLOT = 2;
     private final int TALON_TOP_DOWN_PID_SLOT = 3;
+    
     private final VictorSPX victorMotor = new VictorSPX(Ports.victorMotor);
     private final TalonSRX talonMotor = new TalonSRX(Ports.talonMotor);
-    private final Encoder encoder = new Encoder(Ports.encoderChannelA, Ports.encoderChannelB);
 
     public Elevator() {
         talonMotor.setInverted(Constants.TALON_REVERSE);
@@ -35,9 +35,6 @@ public class Elevator extends Subsystem {
         //what the motor does when not given voltage (Brake - decelerate the motor, Coast - not stop the motor)
         victorMotor.setNeutralMode(NeutralMode.Brake);
         talonMotor.setNeutralMode(NeutralMode.Brake);
-
-        encoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
-
 
         /* set closed loop gains in slot0 */
         talonMotor.config_kP(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
