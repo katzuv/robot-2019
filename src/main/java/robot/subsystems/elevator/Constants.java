@@ -20,5 +20,21 @@ public class Constants {
     static final double PEAK_OUT_FWD = 0;
     static final double ELEVATOR_TOP_HEIGHT = 2.4;
     static final double ELEVATOR_MID_HEIGHT = 1.2;
+    public enum ELEVATOR_STATES { //TODO: organize Constants
+        HIGH (2.2),
+        MID (1.6),
+        CARGO (0.7),
+        LOW (0.1),
+        BOTTOM(0);
 
+        private final double level_height;
+
+        ELEVATOR_STATES(double height){
+            this.level_height = height;
+        }
+
+        public double getLevelHeight(){
+            return level_height;
+        }
+    }
 }

@@ -2,6 +2,7 @@ package robot.subsystems.elevator.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
+import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
 
 /**
@@ -22,6 +23,9 @@ public class ElevatorCommand extends Command {
         this.height = height;
     }
 
+    public ElevatorCommand(Constants.ELEVATOR_STATES state) {
+        super(state.getLevelHeight());
+    }
     // Called just before this Command runs the first time
     protected void initialize() {
         elevator.setHeight(height);
