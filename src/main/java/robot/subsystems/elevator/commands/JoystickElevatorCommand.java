@@ -8,15 +8,23 @@ import robot.subsystems.elevator.Elevator;
  *
  */
 public class JoystickElevatorCommand extends Command {
+    /**
+     * The Y value area in which the xbox joystick won't make the lift move.
+     */
     private static final double XBOX_JOYSTICK_DEAD_BAND = 0;
+    /**
+     * The rate at which the lift will goes down with the xbox joystick.
+     */
     private static final double DOWN_SPEED_RATE = 0.02;
+    /**
+     * The rate at which the lift will goes up with the xbox joystick.
+     */
     private static final double UP_SPEED_RATE = 0.08;
     private Elevator elevator = Robot.elevator;
 
 
     public JoystickElevatorCommand() {
         requires(elevator);
-        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
