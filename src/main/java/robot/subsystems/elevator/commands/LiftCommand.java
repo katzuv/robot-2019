@@ -12,6 +12,11 @@ public class LiftCommand extends Command {
     private Elevator elevator = Robot.elevator;
     private double height;
 
+    /**
+     * Make the elevator move to a specific height.
+     *
+     * @param height height in meters of the elevator
+     */
     public LiftCommand(double height) {
         this.height = height;
     }
