@@ -20,6 +20,11 @@ public class Constants {
     static final double PEAK_OUT_FWD = 0;
     static final double ELEVATOR_TOP_HEIGHT = 2.4;
     static final double ELEVATOR_MID_HEIGHT = 1.2;
+
+    /**
+     * enum storing all height values assigned to their respective height.
+     * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
+     */
     public enum ELEVATOR_STATES { //TODO: organize Constants
         HIGH (2.2),
         MID (1.6),

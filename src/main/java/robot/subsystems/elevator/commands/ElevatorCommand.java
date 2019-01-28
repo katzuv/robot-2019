@@ -23,6 +23,11 @@ public class ElevatorCommand extends Command {
         this.height = height;
     }
 
+    /**
+     * Make the elevator move to one of the predefined heights.
+     *
+     * @param state an enum of heights, defined in the elevator constants class.
+     */
     public ElevatorCommand(Constants.ELEVATOR_STATES state) {
         super(state.getLevelHeight());
     }
