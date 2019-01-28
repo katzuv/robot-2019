@@ -25,6 +25,13 @@ public class JoystickElevatorCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        double y = -Robot.m_oi.xbox.getY(); // invert the input to make up positive and down negative
+        double change;
+        if(y > 0)
+            change = y * UP_SPEED_RATE;
+        else
+            change = y * DOWN_SPEED_RATE;
+        elevator.setHeight(elevator.getHeight() + change);
     }
 
     // Make this return true when this Command no longer needs to run execute()
