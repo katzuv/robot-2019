@@ -7,7 +7,7 @@ import robot.subsystems.elevator.Elevator;
 /**
  *  Move the elevator to a certain height
  */
-public class LiftCommand extends Command {
+public class ElevatorCommand extends Command {
     private double delta = 0.1;
     private Elevator elevator = Robot.elevator;
     private double height;
@@ -17,7 +17,7 @@ public class LiftCommand extends Command {
      *
      * @param height height in meters of the elevator
      */
-    public LiftCommand(double height) {
+    public ElevatorCommand(double height) {
         requires(elevator);
         this.height = height;
     }
