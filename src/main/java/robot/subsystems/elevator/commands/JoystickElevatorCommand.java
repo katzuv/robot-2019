@@ -1,6 +1,8 @@
 package robot.subsystems.elevator.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.Robot;
+import robot.subsystems.elevator.Elevator;
 
 /**
  *
@@ -11,8 +13,9 @@ public class JoystickElevatorCommand extends Command {
     private static final double UP_SPEED_RATE = 0.08;
     private Elevator elevator = Robot.elevator;
 
+
     public JoystickElevatorCommand() {
-        // Use requires() here to declare subsystem dependencies
+        requires(elevator);
         // eg. requires(chassis);
     }
 
