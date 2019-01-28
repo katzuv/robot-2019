@@ -6,6 +6,10 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class JoystickElevatorCommand extends Command {
+    private static final double XBOX_JOYSTICK_DEAD_BAND = 0;
+    private static final double DOWN_SPEED_RATE = 0.02;
+    private static final double UP_SPEED_RATE = 0.08;
+    private Elevator elevator = Robot.elevator;
 
     public JoystickElevatorCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -32,5 +36,7 @@ public class JoystickElevatorCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        end();
+        cancel();
     }
 }
