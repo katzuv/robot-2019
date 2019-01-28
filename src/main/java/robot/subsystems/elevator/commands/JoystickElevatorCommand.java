@@ -26,6 +26,9 @@ public class JoystickElevatorCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         double y = -Robot.m_oi.xbox.getY(); // invert the input to make up positive and down negative
+        // MAPPING (|dead-band to 1| -> |0 to 1|) AND shit (shit's on fire yo)
+        y -= y > 0 ? XBOX_JOYSTICK_DEAD_BAND : -XBOX_JOYSTICK_DEAD_BAND;
+        y *= 1 / (1 - XBOX_JOYSTICK_DEAD_BAND);
         double change;
         if(y > 0)
             change = y * UP_SPEED_RATE;
