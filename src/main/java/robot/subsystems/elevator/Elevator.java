@@ -133,6 +133,12 @@ public class Elevator extends Subsystem {
         }
     }
 
+    private void preventOverShoot(){
+        if(atTop())
+            setHeight(Math.min(getHeight(), setpoint / Constants.TICKS_PER_METER));
+        if(atBottom())
+            setHeight(Math.max(getHeight(), setpoint / Constants.TICKS_PER_METER));
+    }
     /**
      * Set the motor to a certain speed, on a scale of -1 to 1.
      *
