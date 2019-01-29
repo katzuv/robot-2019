@@ -11,7 +11,7 @@ public class Constants {
     static final boolean BOTTOM_HALL_REVERSED = false;
 
     //Encoder constants:
-    static final double TICKS_PER_METER = 0.0;
+    static final double TICKS_PER_METER = 0.5;
     static final boolean ENCODER_REVERSED = false;
 
     /* Talon constants */
