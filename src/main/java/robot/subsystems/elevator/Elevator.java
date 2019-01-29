@@ -113,7 +113,7 @@ public class Elevator extends Subsystem {
      */
     public void update() {
         updatePIDSlot();
-
+        preventOverShoot();
     }
 
     /**
