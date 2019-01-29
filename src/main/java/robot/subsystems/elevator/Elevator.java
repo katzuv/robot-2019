@@ -133,7 +133,11 @@ public class Elevator extends Subsystem {
         }
     }
 
-    private void preventOverShoot(){
+    /**
+     * Beyond preventing the motors from going above a certain height, this method prevents them from moving higher or
+     * lower once one of the limit switches/hall effects is pressed.
+     */
+    private void preventOverShoot(){ //TODO: add manual override?
         if(atTop())
             setHeight(Math.min(getHeight(), setpoint / Constants.TICKS_PER_METER));
         if(atBottom())
