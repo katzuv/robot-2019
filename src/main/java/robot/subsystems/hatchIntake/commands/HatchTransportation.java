@@ -29,6 +29,11 @@ public class HatchTransportation extends InstantCommand {
     protected void end() {
     }
 
+    @Override
+    public boolean isFinished() {
+        return Robot.GROUNDINTAKE.HaveGamePiece();
+    }
+
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
