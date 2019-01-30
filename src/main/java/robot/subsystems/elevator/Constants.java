@@ -1,6 +1,6 @@
 package robot.subsystems.elevator;
 
-public class Constants {
+class Constants {
 
     //Motor reverse constants:
     static final boolean VICTOR_REVERSE = false;
