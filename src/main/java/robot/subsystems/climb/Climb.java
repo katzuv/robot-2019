@@ -18,10 +18,10 @@ public class Climb extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    TalonSRX talonUL = new TalonSRX(Ports.upLeftMotor);
-    TalonSRX talonUR = new TalonSRX(Ports.upRightMotor);
-    TalonSRX talonDL = new TalonSRX(Ports.downLeftMotor);
-    TalonSRX talonDR = new TalonSRX(Ports.downRightMotor);
+    private TalonSRX talonUL = new TalonSRX(Ports.upLeftMotor);
+    private TalonSRX talonUR = new TalonSRX(Ports.upRightMotor);
+    private TalonSRX talonDL = new TalonSRX(Ports.downLeftMotor);
+    private TalonSRX talonDR = new TalonSRX(Ports.downRightMotor);
 
     public Climb(){
         talonUL.setInverted(Constants.UP_LEFT_TALON_REVERSE);
