@@ -3,7 +3,8 @@ package robot.subsystems.drivetrain.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *this command is called when the pickupgamepiece commandgroup is called, when the robot wants to pick up the nearest game piece
+ * this command is called after the robot is next to the piece and decides weather to activate the hatch intake or the cargo intake
  */
 public class HatchOrCargo extends Command {
 
