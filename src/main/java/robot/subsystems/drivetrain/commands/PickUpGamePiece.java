@@ -14,6 +14,16 @@ import static robot.Robot.navx;
 public class PickUpGamePiece extends CommandGroup {
 
     public PickUpGamePiece() {
+        double targetDistance = 0, targetAngle = 0;
+        Waypoint target = new Waypoint(Math.sin(targetAngle)*targetDistance, Math.cos(targetAngle)*targetDistance);
+        Waypoint middleWP = new Waypoint(Math.tan(navx.getAngle())*target.getY(),target.getY());
+        Path path = new Path();
+        path.appendWaypoint(middleWP);
+        path.appendWaypoint(target);
+        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+        //addSequential(purepursue) need new version of code
+        addSequential(new HatchOrCargo());
+
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
