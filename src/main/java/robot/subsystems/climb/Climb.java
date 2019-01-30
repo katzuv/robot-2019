@@ -23,7 +23,7 @@ public class Climb extends Subsystem {
     private TalonSRX talonDL = new TalonSRX(Ports.downLeftMotor);
     private TalonSRX talonDR = new TalonSRX(Ports.downRightMotor);
 
-    public Climb(){
+    public Climb(){ //TODO: add four encoders to each of the motors just as in the elevator code.
         talonUL.setInverted(Constants.UP_LEFT_TALON_REVERSE);
         talonUR.setInverted(Constants.UP_RIGHT_TALON_REVERSE);
         talonDL.setInverted(Constants.DOWN_LEFT_TALON_REVERSE);
@@ -41,6 +41,38 @@ public class Climb extends Subsystem {
         talonUL.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
         talonUL.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
 
+    }
+
+    /**
+     *
+     */
+    public void raiseForwardLegs(){
+        //talonUL.set
+        //talonUR.follow/talonUR.set
+    }
+
+    /**
+     *
+     */
+    public void lowerForwardLegs(){
+        //talonUL.set
+        //talonUR.follow/talonUR.set
+    }
+
+    /**
+     *
+     */
+    public void raiseBackLegs(){
+        //talonUL.set
+        //talonUR.follow/talonUR.set
+    }
+
+    /**
+     *
+     */
+    public void lowerBackLegs(){
+        //talonDL.set
+        //talonDR.follow/talonUR.set
     }
     @Override
     public void initDefaultCommand() {
