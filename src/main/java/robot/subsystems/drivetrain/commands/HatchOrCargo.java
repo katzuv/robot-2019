@@ -13,7 +13,12 @@ public class HatchOrCargo extends Command {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {   
+    protected void initialize() {
+        boolean pickHatch = true;//will later be smartdashboard input from image detection
+        if (pickHatch)
+            new HatchIntake().start();
+        else
+            new CargoIntake().start();
     }
 
     // Called repeatedly when this Command is scheduled to run
