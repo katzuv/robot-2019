@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain.pure_pursuit;
+package robot.subsystems.drivetrain.pure_pursuit;
 
 import edu.wpi.first.wpilibj.drive.Vector2d;
 
