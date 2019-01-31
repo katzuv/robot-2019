@@ -1,8 +1,8 @@
-package robot.subsystems.drivetrain.pure_pursuit;
+package frc.robot.subsystems.drivetrain.pure_pursuit;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static robot.Robot.drivetrain;
+import static frc.robot.Robot.drivetrain;
 
 /**
  * The methods written here are all part of the Pure pursuit algorithm
