@@ -183,7 +183,13 @@ public class Elevator extends Subsystem {
     }
 
     /**
-     * @return
+     * Check if the elevator is above its first stage.
+     * Using this method we can see how much weight is being put on the elevator
+     * (because of the way continuous elevators are built)
+     * This method estimates what stage the elevator is at based on the encoder.
+     * Not to be confused with the spaceship or HAB zone stages.
+     *
+     * @return stage of the robot. true being on its high part.
      */
     public boolean atSecondStage() {
         return Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER;
