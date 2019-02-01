@@ -94,7 +94,7 @@ public class Elevator extends Subsystem {
      * @param height Target height of the elevator in meters
      */
     public void setHeight(double height) {
-        this.setpoint = Math.max(Constants.ELEVATOR_TOP_HEIGHT, Math.min(0, height)) * Constants.TICKS_PER_METER;
+        this.setpoint = Math.min(Constants.ELEVATOR_TOP_HEIGHT, Math.max(0, height)) * Constants.TICKS_PER_METER;
         updatePIDSlot();
         talonMotor.set(ControlMode.Position, setpoint);
     }
