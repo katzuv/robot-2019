@@ -121,12 +121,12 @@ public class Elevator extends Subsystem {
      */
     private void updatePIDSlot() {
         if (setpoint > getHeight() * Constants.TICKS_PER_METER) {
-            if (Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER)
+            if (atSecondStage())
                 talonMotor.selectProfileSlot(TALON_TOP_UP_PID_SLOT, 0);
             else
                 talonMotor.selectProfileSlot(TALON_BOTTOM_UP_PID_SLOT, 0);
         } else {
-            if (Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER)
+            if (atSecondStage())
                 talonMotor.selectProfileSlot(TALON_TOP_DOWN_PID_SLOT, 0);
             else
                 talonMotor.selectProfileSlot(TALON_BOTTOM_DOWN_PID_SLOT, 0);
@@ -180,6 +180,13 @@ public class Elevator extends Subsystem {
     public boolean atBottom() {
         //return Math.abs(getHeight()) < 0.05;
         return talonMotor.getSensorCollection().isRevLimitSwitchClosed();
+    }
+
+    /**
+     * @return
+     */
+    public boolean atSecondStage() {
+        return Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER;
     }
 
     /**
