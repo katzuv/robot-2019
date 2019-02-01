@@ -37,8 +37,8 @@ class Constants {
     static final double PEAK_OUT_FWD = 0;
 
     //Mechanical heights of the elevator
-    static final double ELEVATOR_TOP_HEIGHT = 2.4;
-    static final double ELEVATOR_MID_HEIGHT = 1.2;
+    static final double ELEVATOR_TOP_HEIGHT = 2.4; //TODO: get actual heights from mechanics
+    static final double ELEVATOR_MID_HEIGHT = 1.2; //TODO: get actual heights from mechanics
 
     //PIDF values of the elevator
     static final double[] LIFT_BOTTOM_DOWN_PIDF = {0, 0, 0, 0};
@@ -50,7 +50,7 @@ class Constants {
      * enum storing all height values assigned to their respective height.
      * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
      */
-    public enum ELEVATOR_STATES { //TODO: organize Constants
+    public enum ELEVATOR_STATES { //TODO: Find actual heights from mechanics
         HIGH(2.2),
         MID(1.6),
         CARGO(0.7),
