@@ -9,7 +9,7 @@ import robot.subsystems.elevator.Elevator;
  *  Move the elevator to a certain height
  */
 public class ElevatorCommand extends Command {
-    private double delta = 0.1;
+    private double tolerance = 0.1;
     private Elevator elevator = Robot.elevator;
     private double height;
 
@@ -44,7 +44,7 @@ public class ElevatorCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(elevator.getHeight() - height) < delta;
+        return Math.abs(elevator.getHeight() - height) < tolerance;
     }
 
     // Called once after isFinished returns true
