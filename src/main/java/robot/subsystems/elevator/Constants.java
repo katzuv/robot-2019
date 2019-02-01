@@ -45,7 +45,8 @@ public class Constants {
     static final double[] LIFT_BOTTOM_UP_PIDF = {0, 0, 0, 0};
     static final double[] LIFT_TOP_DOWN_PIDF = {0, 0, 0, 0};
     static final double[] LIFT_TOP_UP_PIDF = {0, 0, 0, 0};
-    public static double elevator_tolerance = 0.001; //The tolerance in which the elevator will stop when trying to get to a height.
+    
+    public static double ELEVATOR_TOLERANCE = 0.001; //The tolerance in which the elevator will stop when trying to get to a height.
 
     /**
      * enum storing all height values assigned to their respective height.

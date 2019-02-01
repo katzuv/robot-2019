@@ -9,7 +9,7 @@ import static robot.Robot.elevator; //elevator subsystem
  * Move the elevator to a certain height
  */
 public class ElevatorCommand extends Command {
-    private double tolerance = Constants.elevator_tolerance;
+    private double tolerance = Constants.ELEVATOR_TOLERANCE;
     private double height;
 
     /**
