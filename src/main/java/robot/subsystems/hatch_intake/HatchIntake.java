@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package robot.subsystems.hatchIntake;
+package robot.subsystems.hatch_intake;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -43,7 +43,7 @@ public class HatchIntake extends Subsystem {
     /**
      * open the gripper
      */
-    public void GripperOpen() {
+    public void gripperOpen() {
         groundIntake.set(DoubleSolenoid.Value.kForward);
     }
 
@@ -58,21 +58,21 @@ public class HatchIntake extends Subsystem {
     /**
      * close the gripper
      */
-    public void GripperClose() {
+    public void gripperClose() {
         gripper.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
      * close the extension for the gripper
      */
-    public void ExtensionClose() {
+    public void extensionClose() {
         gripperExtension.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
      * open the extension for the gripper
      */
-    public void ExtensionOpen() {
+    public void extensionOpen() {
         gripperExtension.set(DoubleSolenoid.Value.kForward);
     }
 
@@ -86,7 +86,7 @@ public class HatchIntake extends Subsystem {
     /**
      * @return if there is any Game piece in the robot (now fictive function)
      */
-    public boolean HaveGamePiece() {
+    public boolean haveGamePiece() {
         return false;
     }
 

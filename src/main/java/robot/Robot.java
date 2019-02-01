@@ -23,7 +23,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
-import robot.subsystems.hatchIntake.HatchIntake;
+import robot.subsystems.hatch_intake.HatchIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the

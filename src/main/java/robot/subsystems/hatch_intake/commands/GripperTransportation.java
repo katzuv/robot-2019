@@ -1,4 +1,4 @@
-package robot.subsystems.hatchIntake.commands;
+package robot.subsystems.hatch_intake.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
@@ -20,9 +20,9 @@ public class GripperTransportation extends InstantCommand {
     public void execute() {
         //if extend is true it extend the gripper else it bring it back
         if (extend) {
-            Robot.GROUNDINTAKE.ExtensionOpen();
+            Robot.GROUNDINTAKE.extensionOpen();
         } else {
-            Robot.GROUNDINTAKE.ExtensionClose();
+            Robot.GROUNDINTAKE.extensionClose();
         }
     }
 

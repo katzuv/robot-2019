@@ -1,4 +1,4 @@
-package robot.subsystems.hatchIntake.commands;
+package robot.subsystems.hatch_intake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
@@ -19,15 +19,15 @@ public class Gripper extends Command {
     @Override
     public void execute() {
         if (open) {
-            Robot.GROUNDINTAKE.GripperOpen();//grab hatch
+            Robot.GROUNDINTAKE.gripperOpen();//grab hatch
         } else {
-            Robot.GROUNDINTAKE.GripperClose();//release hatch
+            Robot.GROUNDINTAKE.gripperClose();//release hatch
         }
     }
 
     @Override
     protected boolean isFinished() {
-        return Robot.GROUNDINTAKE.HaveGamePiece();
+        return Robot.GROUNDINTAKE.haveGamePiece();
     }
 
     @Override

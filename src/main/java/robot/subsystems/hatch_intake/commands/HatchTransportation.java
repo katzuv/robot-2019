@@ -1,4 +1,4 @@
-package robot.subsystems.hatchIntake.commands;
+package robot.subsystems.hatch_intake.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
@@ -31,7 +31,7 @@ public class HatchTransportation extends InstantCommand {
 
     @Override
     public boolean isFinished() {
-        return Robot.GROUNDINTAKE.HaveGamePiece();
+        return Robot.GROUNDINTAKE.haveGamePiece();
     }
 
     // Called when another command which requires one or more of the same

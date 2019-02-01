@@ -1,4 +1,4 @@
-package robot.subsystems.hatchIntake;
+package robot.subsystems.hatch_intake;
 
 public class Constants {
 
