@@ -1,7 +1,7 @@
 package robot.subsystems.elevator;
 
 class Ports {
-    final static int talonMotor = -1;
-    final static int victorMotor = -1;
+    final static int talonPort = -1;
+    final static int victorPort = -1;
 
 }

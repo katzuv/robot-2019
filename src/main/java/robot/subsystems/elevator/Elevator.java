@@ -25,8 +25,8 @@ public class Elevator extends Subsystem {
     private final int TALON_TOP_UP_PID_SLOT = 2;
     private final int TALON_TOP_DOWN_PID_SLOT = 3;
 
-    private final VictorSPX victorMotor = new VictorSPX(Ports.victorMotor);
-    private final TalonSRX talonMotor = new TalonSRX(Ports.talonMotor);
+    private final VictorSPX victorMotor = new VictorSPX(Ports.victorPort);
+    private final TalonSRX talonMotor = new TalonSRX(Ports.talonPort);
 
     public Elevator() {
         talonMotor.setInverted(Constants.TALON_REVERSE);
