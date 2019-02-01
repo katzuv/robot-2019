@@ -15,6 +15,19 @@ import edu.wpi.first.wpilibj.XboxController;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+    /**
+     * The Y value area in which the xbox joystick won't make the lift move.
+     */
+    public static double XBOX_JOYSTICK_DEAD_BAND = 0;
+    /**
+     * The rate at which the lift will goes down with the xbox joystick.
+     */
+    public static final double DOWN_SPEED_RATE = 0.02;
+    /**
+     * The rate at which the lift will goes up with the xbox joystick.
+     */
+    public static final double UP_SPEED_RATE = 0.08;
+
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
     public XboxController xbox = new XboxController(2);

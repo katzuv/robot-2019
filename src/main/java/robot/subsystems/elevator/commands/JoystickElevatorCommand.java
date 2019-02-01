@@ -1,6 +1,7 @@
 package robot.subsystems.elevator.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.OI;
 import robot.Robot;
 import robot.subsystems.elevator.Elevator;
 
@@ -8,18 +9,7 @@ import robot.subsystems.elevator.Elevator;
  *
  */
 public class JoystickElevatorCommand extends Command {
-    /**
-     * The Y value area in which the xbox joystick won't make the lift move.
-     */
-    private static final double XBOX_JOYSTICK_DEAD_BAND = 0;
-    /**
-     * The rate at which the lift will goes down with the xbox joystick.
-     */
-    private static final double DOWN_SPEED_RATE = 0.02;
-    /**
-     * The rate at which the lift will goes up with the xbox joystick.
-     */
-    private static final double UP_SPEED_RATE = 0.08;
+
     private Elevator elevator = Robot.elevator;
 
 
@@ -37,13 +27,13 @@ public class JoystickElevatorCommand extends Command {
         if (!Robot.m_oi.xbox.getRawButton(10))
             return;
         // MAPPING (|dead-band to 1| -> |0 to 1|)
-        y -= y > 0 ? XBOX_JOYSTICK_DEAD_BAND : -XBOX_JOYSTICK_DEAD_BAND;
-        y *= 1 / (1 - XBOX_JOYSTICK_DEAD_BAND);
+        y -= y > 0 ? OI.XBOX_JOYSTICK_DEAD_BAND : -OI.XBOX_JOYSTICK_DEAD_BAND;
+        y *= 1 / (1 - OI.XBOX_JOYSTICK_DEAD_BAND);
         double change;
         if (y > 0)
-            change = y * UP_SPEED_RATE;
+            change = y * OI.UP_SPEED_RATE;
         else
-            change = y * DOWN_SPEED_RATE;
+            change = y * OI.DOWN_SPEED_RATE;
         elevator.setHeight(elevator.getHeight() + change);
     }
 
