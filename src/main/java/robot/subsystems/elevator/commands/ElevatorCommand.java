@@ -6,7 +6,7 @@ import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
 
 /**
- *  Move the elevator to a certain height
+ * Move the elevator to a certain height
  */
 public class ElevatorCommand extends Command {
     private double tolerance = Constants.elevator_tolerance;
@@ -31,6 +31,7 @@ public class ElevatorCommand extends Command {
     public ElevatorCommand(Constants.ELEVATOR_STATES state) {
         super(state.getLevelHeight());
     }
+
     // Called just before this Command runs the first time
     protected void initialize() {
         elevator.setHeight(height);
