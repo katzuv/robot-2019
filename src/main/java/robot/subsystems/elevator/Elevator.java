@@ -10,7 +10,6 @@ package robot.subsystems.elevator;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
@@ -25,7 +24,7 @@ public class Elevator extends Subsystem {
     private final int TALON_BOTTOM_DOWN_PID_SLOT = 1;
     private final int TALON_TOP_UP_PID_SLOT = 2;
     private final int TALON_TOP_DOWN_PID_SLOT = 3;
-    
+
     private final VictorSPX victorMotor = new VictorSPX(Ports.victorMotor);
     private final TalonSRX talonMotor = new TalonSRX(Ports.talonMotor);
 
@@ -138,12 +137,13 @@ public class Elevator extends Subsystem {
      * Beyond preventing the motors from going above a certain height, this method prevents them from moving higher or
      * lower once one of the limit switches/hall effects is pressed.
      */
-    private void preventOverShoot(){ //TODO: add manual override?
-        if(atTop())
+    private void preventOverShoot() { //TODO: add manual override?
+        if (atTop())
             setHeight(Math.min(getHeight(), setpoint / Constants.TICKS_PER_METER));
-        if(atBottom())
+        if (atBottom())
             setHeight(Math.max(getHeight(), setpoint / Constants.TICKS_PER_METER));
     }
+
     /**
      * Set the motor to a certain speed, on a scale of -1 to 1.
      *
