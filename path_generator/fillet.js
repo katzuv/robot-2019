@@ -1,3 +1,8 @@
+function rotatePoint(point, angle) {
+    var x = point.x * Math.cos(angle) + point.y * Math.sin(angle);
+    var y = -point.x * Math.sin(angle) + point.y * Math.cos(angle);
+    return {x: x, y: y};
+}
 
 function getXYAngle(p0, p1) {
     var dx = p1.x - p0.x;
@@ -20,6 +25,9 @@ function getXYAngle(p0, p1) {
     }
     return angle;
 }
+
+
+
 
 function getAngleBetween(angle1, angle2) {
     var angle = (angle2 - angle1) / 2;
@@ -71,4 +79,6 @@ function getRotationPoints(startPt, middlePt, endPt, r, step) {
     }
     rotationPoints.push(getPointByAngle(endAngle, middlePt, isRight, r, a, b));
     return rotationPoints;}
+
+
 

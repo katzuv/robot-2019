@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package robot;
+package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
@@ -18,11 +18,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.pure_pursuit.Constants;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.drivetrain.pure_pursuit.Constants;
+import frc.robot.subsystems.drivetrain.pure_pursuit.Path;
+import frc.robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import frc.robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -184,7 +184,7 @@ public class Robot extends TimedRobot {
     }
 
     /**
-     * This function is called periodically during operator control.
+     * This function is called periodically during oper"ator control.
      */
     @Override
     public void teleopPeriodic() {
