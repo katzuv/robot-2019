@@ -1,16 +1,15 @@
 package robot.subsystems.elevator.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import robot.Robot;
 import robot.subsystems.elevator.Constants;
-import robot.subsystems.elevator.Elevator;
+
+import static robot.Robot.elevator; //elevator subsystem
 
 /**
  * Move the elevator to a certain height
  */
 public class ElevatorCommand extends Command {
     private double tolerance = Constants.elevator_tolerance;
-    private Elevator elevator = Robot.elevator;
     private double height;
 
     /**
