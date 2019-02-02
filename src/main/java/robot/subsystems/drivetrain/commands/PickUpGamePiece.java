@@ -3,7 +3,6 @@ package robot.subsystems.drivetrain.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 import static robot.Robot.navx;
@@ -16,14 +15,12 @@ public class PickUpGamePiece extends CommandGroup {
     public PickUpGamePiece() {
         double targetDistance = 0;//will later be changed to the dashboard input
         double targetAngle = 0;//will later be changed to the dashboard input
-        Waypoint target = new Waypoint(Math.sin(targetAngle)*targetDistance, Math.cos(targetAngle)*targetDistance);
-        Waypoint middleWP = new Waypoint(Math.tan(navx.getAngle())*target.getY(),target.getY());
-        Path path = new Path();
-        path.appendWaypoint(middleWP);
-        path.appendWaypoint(target);
+        Waypoint target = new Waypoint(Math.sin(targetAngle) * targetDistance, Math.cos(targetAngle) * targetDistance);
+        Waypoint middleWP = new Waypoint(Math.tan(navx.getAngle()) * target.getY(), target.getY());
+        Path path = new Path(new Waypoint[]{middleWP, target});
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         //addSequential(purepursue) need new version of code
-        addSequential(new HatchOrCargo());
+        addSequential(new HatchOrCargo(new HatchIntake(), new CargoIntake()));
 
         // Add Commands here:
         // e.g. addSequential(new Command1());
