@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * first the gripper
  */
 public class CargoIntake extends Subsystem {
-    AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
+    private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
     private final TalonSRX WristControlMotor = new TalonSRX(Ports.WristMotor);
     // Put methods for controlling this subsystem
