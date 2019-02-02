@@ -49,8 +49,8 @@ public class Drivetrain extends Subsystem {
      * @param rightSpeed Speed for the right side
      */
     public void setSpeed(double leftSpeed, double rightSpeed) {
-        setLeftSpeed(-1*leftSpeed);
-        setRightSpeed(-1*rightSpeed);
+        setLeftSpeed(leftSpeed);
+        setRightSpeed(rightSpeed);
     }
 
     public double getLeftSpeed() {

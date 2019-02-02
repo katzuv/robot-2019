@@ -37,10 +37,10 @@ public class JoystickDrive extends Command {
         double leftInput = -Robot.m_oi.leftStick.getY();
         double rightInput = -Robot.m_oi.rightStick.getY();
 
-        if (Math.abs(leftInput - rightInput) < Constants.Kdifference) {
-            double biggest = Math.max(leftInput, rightInput);
-            leftInput = biggest;
-            rightInput = biggest;
+        if (Math.abs(leftInput - rightInput) < Constants.DIFFERENCE) {
+            double highestInput = Math.max(leftInput, rightInput);
+            leftInput = highestInput;
+            rightInput = highestInput;
         }
 
         double leftOutput, rightOutput;
