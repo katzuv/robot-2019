@@ -137,7 +137,11 @@ public class Drivetrain extends Subsystem {
         return Robot.navx.getYaw();
     }
 
-    public void resetLocation(){
+    public boolean getDirection() {
+        return getLeftSpeed() >= 0 || getRightSpeed() >= 0;
+    }
+
+    public void resetLocation() {
         currentLocation.setX(0);
         currentLocation.setY(0);
     }
