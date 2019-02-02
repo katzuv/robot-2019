@@ -7,9 +7,10 @@ import robot.subsystems.cargoIntake.CargoIntake;
  *
  */
 public class GripperControl extends Command {
+    private static CargoIntake cargoIntake = new CargoIntake();
     private double speed;//speed of the gripper
     private boolean continuousWhileHeld;//indicator for if it should stop when the button isn't pressed or when the cargo is inside
-    private static CargoIntake cargoIntake = new CargoIntake();
+
     public GripperControl(double speed, boolean continuousWhileHeld) {
         this.speed = speed;
         this.continuousWhileHeld = continuousWhileHeld;

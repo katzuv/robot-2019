@@ -4,9 +4,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import robot.subsystems.cargoIntake.Constants;
 
 /**
- *This cargo intake command group follows three basic steps, put the wrist up against the cargo,
- *  pull the cargo in the system and lift the wrist back up
- *
+ * This cargo intake command group follows three basic steps, put the wrist up against the cargo,
+ * pull the cargo in the system and lift the wrist back up
  */
 public class IntakeCargoAndFoldWrist extends CommandGroup {
 

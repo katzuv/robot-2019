@@ -28,7 +28,7 @@ public class CargoIntake extends Subsystem {
         /*
         config for the feedback sensor
          */
-        WristControlMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0,0);
+        WristControlMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
         WristControlMotor.setSensorPhase(true);
         WristControlMotor.setInverted(false);
         WristControlMotor.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TALON_TIME_OUT);
@@ -78,9 +78,12 @@ public class CargoIntake extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
-    public double proximityVoltage(){ return proximitySensor.getVoltage(); }//returns the current voltage in the proximity sensor
 
-    public boolean isCargoInside(){
+    public double proximityVoltage() {
+        return proximitySensor.getVoltage();
+    }//returns the current voltage in the proximity sensor
+
+    public boolean isCargoInside() {
         return proximityVoltage() > Constants.CARGO_IN_VOLTAGE;//felt cute might delete later
     }
 
