@@ -28,7 +28,8 @@ public class Constants {
      *
      * config* - all the configurations functions starting with the prefix 'config*' and a trailing parameter called timeoutMS.
      */
-    static final int TALON_TIMEOUT_MS = 20; //timeout when configuring the robot, if takes longer an error is raised (1)
+    static final int TALON_TIMEOUT_MS = 10; //timeout when configuring the robot, if takes longer an error is raised (1)
+    static final int TALON_RUNNING_TIMEOUT_MS = 0; //as seen in the excerpt above, there should be no timeout on the talon in the robot loop.
 
     /* Nominal Output- The “minimal” or “weakest” motor output allowed if the output is nonzero
      * Peak Output- The “maximal” or “strongest” motor output allowed.
