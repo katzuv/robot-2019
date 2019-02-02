@@ -13,4 +13,5 @@ public class Constants {
     public final static double GRIPPER_SPEED = 0.75;
     public final static double INTAKE_ANGLE = 0;
     public final static double FOLDED_ANGLE = 165;//felt cute might delete later
+    public final static boolean WRIST_LIMIT_REVESED = true;//might need to be changed
 }
