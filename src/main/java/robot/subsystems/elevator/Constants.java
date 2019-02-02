@@ -17,13 +17,16 @@ public class Constants {
     /* Talon constants */
 
     /*
-     * (1) Since most config* calls occur during the robot boot sequence, the recommended value for timeoutMs is 10 (ms).
+     * Since most config* calls occur during the robot boot sequence, the recommended value for timeoutMs is 10 (ms).
      * This ensures that each config will wait up to 10ms to ensure the configuration was applied correctly,
      * otherwise an error message will appear on the Driver station.
      * This is also the case for setting/homing sensor values.
      *
      * For configuration calls that are done during the robot loop, the recommended value for timeoutMs is zero,
      * which ensures no blocking or checking is performed (identical to the implementation in previous seasons).
+     *
+     *
+     * config* - all the configurations functions starting with the prefix 'config*' and a trailing parameter called timeoutMS.
      */
     static final int TALON_TIMEOUT_MS = 20; //timeout when configuring the robot, if takes longer an error is raised (1)
 
