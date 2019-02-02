@@ -94,7 +94,7 @@ public class Elevator extends Subsystem {
      * @param height Target height of the elevator in meters
      */
     public void setHeight(double height) {
-        this.setpoint = Math.min(Constants.ELEVATOR_TOP_HEIGHT, Math.max(0, height)) * Constants.TICKS_PER_METER;
+        this.setpoint = convertHeightToTicks(Math.min(Constants.ELEVATOR_TOP_HEIGHT, Math.max(0, height)));
         updatePIDSlot();
         talonMotor.set(ControlMode.Position, setpoint);
     }
@@ -105,7 +105,7 @@ public class Elevator extends Subsystem {
      * @return Current height of the elevator in meters
      */
     public double getHeight() {
-        return talonMotor.getSelectedSensorPosition(0) / Constants.TICKS_PER_METER;
+        return convertTicksToHeight(talonMotor.getSelectedSensorPosition(0));
     }
 
     /**
@@ -120,7 +120,7 @@ public class Elevator extends Subsystem {
      * Update PID slot based on the current state of the motor
      */
     private void updatePIDSlot() {
-        if (setpoint > getHeight() * Constants.TICKS_PER_METER) {
+        if (setpoint > convertHeightToTicks(getHeight())) {
             if (atSecondStage())
                 talonMotor.selectProfileSlot(TALON_TOP_UP_PID_SLOT, 0);
             else
@@ -139,11 +139,11 @@ public class Elevator extends Subsystem {
      */
     private void preventOverShoot() { //TODO: add manual override?
         if (atTop()) {
-            //setHeight(Math.min(getHeight(), setpoint / Constants.TICKS_PER_METER));
+            //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
             talonMotor.setSelectedSensorPosition((int) (Constants.ELEVATOR_TOP_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
         }
         if (atBottom()) {
-            //setHeight(Math.max(getHeight(), setpoint / Constants.TICKS_PER_METER));
+            //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
             talonMotor.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the encoder position to the bottom
         } //TODO: raise exception when both limit switches are pressed
     }
@@ -163,7 +163,7 @@ public class Elevator extends Subsystem {
      * @return velocity of the motor, in m/s
      */
     public double getSpeed() {
-        return talonMotor.getSelectedSensorVelocity(0) / Constants.TICKS_PER_METER;
+        return convertTicksToHeight(talonMotor.getSelectedSensorVelocity(0));
     }
 
     /**
@@ -196,7 +196,7 @@ public class Elevator extends Subsystem {
      * @return stage of the robot. true being on its high part.
      */
     public boolean atSecondStage() {
-        return Constants.ELEVATOR_MID_HEIGHT < getHeight() * Constants.TICKS_PER_METER;
+        return Constants.ELEVATOR_MID_HEIGHT < getHeight();
     }
 
     /**
@@ -206,6 +206,26 @@ public class Elevator extends Subsystem {
      */
     public double getOutputPrecent() {
         return talonMotor.getMotorOutputPercent();
+    }
+
+    /**
+     * Convert height in meters to ticks of the encoder.
+     *
+     * @param height height in meters
+     * @return ticks of the encoder
+     */
+    private int convertHeightToTicks(double height) {
+        return (int) (height * Constants.TICKS_PER_METER);
+    }
+
+    /**
+     * Convert ticks of the encoder to height in meters.
+     *
+     * @param ticks ticks of the encoder
+     * @return height in meters
+     */
+    private double convertTicksToHeight(int ticks) {
+        return ticks / Constants.TICKS_PER_METER;
     }
 
     @Override
