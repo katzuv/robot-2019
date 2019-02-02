@@ -138,10 +138,14 @@ public class Elevator extends Subsystem {
      * lower once one of the limit switches/hall effects is pressed.
      */
     private void preventOverShoot() { //TODO: add manual override?
-        if (atTop())
-            setHeight(Math.min(getHeight(), setpoint / Constants.TICKS_PER_METER));
-        if (atBottom())
-            setHeight(Math.max(getHeight(), setpoint / Constants.TICKS_PER_METER));
+        if (atTop()) {
+            //setHeight(Math.min(getHeight(), setpoint / Constants.TICKS_PER_METER));
+            talonMotor.setSelectedSensorPosition((int)(Constants.ELEVATOR_TOP_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
+        }
+        if (atBottom()) {
+            //setHeight(Math.max(getHeight(), setpoint / Constants.TICKS_PER_METER));
+            talonMotor.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the encoder position to the bottom
+        }
     }
 
     /**
