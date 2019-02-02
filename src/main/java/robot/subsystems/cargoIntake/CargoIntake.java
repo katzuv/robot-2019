@@ -7,9 +7,7 @@
 
 package robot.subsystems.cargoIntake;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -62,6 +60,15 @@ public class CargoIntake extends Subsystem {
          */
         WristControlMotor.configMotionCruiseVelocity(15000, Constants.TALON_TIME_OUT);
         WristControlMotor.configMotionAcceleration(6000, Constants.TALON_TIME_OUT);
+        /*
+        limit switch config
+         */
+        WristControlMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIME_OUT);
+        WristControlMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIME_OUT);
 
 
     }
