@@ -14,7 +14,8 @@ import static robot.Robot.navx;
 public class PickUpGamePiece extends CommandGroup {
 
     public PickUpGamePiece() {
-        double targetDistance = 0, targetAngle = 0;
+        double targetDistance = 0;//will later be changed to the dashboard input
+        double targetAngle = 0;//will later be changed to the dashboard input
         Waypoint target = new Waypoint(Math.sin(targetAngle)*targetDistance, Math.cos(targetAngle)*targetDistance);
         Waypoint middleWP = new Waypoint(Math.tan(navx.getAngle())*target.getY(),target.getY());
         Path path = new Path();
