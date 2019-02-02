@@ -19,12 +19,15 @@ public class HatchIntake extends Subsystem {
     // here. Call these from Commands.
     private final DoubleSolenoid groundIntake = new DoubleSolenoid(Ports.groundForward, Ports.groundReverse);
     private final AnalogInput hatchSensor = new AnalogInput(Ports.prox);
-    private final DoubleSolenoid gripperExtension = new DoubleSolenoid(Ports.flowerExtensionForward, Ports.flowerExtensionReverse);
+    private final DoubleSolenoid gripperExtension1 = new DoubleSolenoid(Ports.gripperExtensionForward1, Ports.gripperExtensionReverse1);
+    private final DoubleSolenoid gripperExtension2 = new DoubleSolenoid(Ports.gripperExtensionForward2, Ports.gripperExtensionReverse2);
+
     private final DoubleSolenoid gripper = new DoubleSolenoid(Ports.flowerForward, Ports.flowerReverse);
 
     public HatchIntake() {
         hatchSensor.resetAccumulator();
     }
+
 
     /**
      * @return the voltage from the sensor
@@ -66,14 +69,16 @@ public class HatchIntake extends Subsystem {
      * close the extension for the gripper
      */
     public void extensionClose() {
-        gripperExtension.set(DoubleSolenoid.Value.kReverse);
+        gripperExtension1.set(DoubleSolenoid.Value.kReverse);
+        gripperExtension2.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
      * open the extension for the gripper
      */
     public void extensionOpen() {
-        gripperExtension.set(DoubleSolenoid.Value.kForward);
+        gripperExtension1.set(DoubleSolenoid.Value.kForward);
+        gripperExtension2.set(DoubleSolenoid.Value.kForward);
     }
 
     /**
