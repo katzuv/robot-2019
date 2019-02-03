@@ -7,7 +7,7 @@ public class Gripper extends Command {
     private boolean open;
 
     public Gripper(boolean open) {
-        requires(Robot.GROUNDINTAKE);
+        requires(Robot.hatchIntake);
         this.open = open;
     }
 
@@ -19,15 +19,15 @@ public class Gripper extends Command {
     @Override
     public void execute() {
         if (open) {
-            Robot.GROUNDINTAKE.gripperOpen();//grab hatch
+            Robot.hatchIntake.gripperOpen();//grab hatch
         } else {
-            Robot.GROUNDINTAKE.gripperClose();//release hatch
+            Robot.hatchIntake.gripperClose();//release hatch
         }
     }
 
     @Override
     protected boolean isFinished() {
-        return Robot.GROUNDINTAKE.haveGamePiece();
+        return Robot.hatchIntake.haveGamePiece();
     }
 
     @Override

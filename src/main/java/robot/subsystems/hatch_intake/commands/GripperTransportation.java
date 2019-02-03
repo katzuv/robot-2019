@@ -7,7 +7,7 @@ public class GripperTransportation extends InstantCommand {
     private boolean extend;
 
     public GripperTransportation(boolean extend) {
-        requires(Robot.GROUNDINTAKE);
+        requires(Robot.hatchIntake);
         this.extend = extend;
     }
 
@@ -20,9 +20,9 @@ public class GripperTransportation extends InstantCommand {
     public void execute() {
         //if extend is true it extend the gripper else it bring it back
         if (extend) {
-            Robot.GROUNDINTAKE.extensionOpen();
+            Robot.hatchIntake.extensionOpen();
         } else {
-            Robot.GROUNDINTAKE.extensionClose();
+            Robot.hatchIntake.extensionClose();
         }
     }
 

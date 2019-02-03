@@ -34,7 +34,7 @@ import robot.subsystems.hatch_intake.HatchIntake;
  */
 public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
-    public static final HatchIntake GROUNDINTAKE = new HatchIntake();
+    public static final HatchIntake hatchIntake = new HatchIntake();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
 

@@ -18,11 +18,10 @@ public class HatchIntake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private final DoubleSolenoid groundIntake = new DoubleSolenoid(Ports.groundForward, Ports.groundReverse);
-    private final AnalogInput hatchSensor = new AnalogInput(Ports.prox);
-    private final DoubleSolenoid gripperExtension1 = new DoubleSolenoid(Ports.gripperExtensionForward1, Ports.gripperExtensionReverse1);
-    private final DoubleSolenoid gripperExtension2 = new DoubleSolenoid(Ports.gripperExtensionForward2, Ports.gripperExtensionReverse2);
+    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);
+    private final DoubleSolenoid gripperExtension1 = new DoubleSolenoid(Ports.gripperPlateForward, Ports.gripperPlateReverse);
 
-    private final DoubleSolenoid gripper = new DoubleSolenoid(Ports.flowerForward, Ports.flowerReverse);
+    private final DoubleSolenoid gripper = new DoubleSolenoid(Ports.gripperForward, Ports.gripperReverse);
 
     public HatchIntake() {
         hatchSensor.resetAccumulator();
@@ -70,7 +69,6 @@ public class HatchIntake extends Subsystem {
      */
     public void extensionClose() {
         gripperExtension1.set(DoubleSolenoid.Value.kReverse);
-        gripperExtension2.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
@@ -78,7 +76,6 @@ public class HatchIntake extends Subsystem {
      */
     public void extensionOpen() {
         gripperExtension1.set(DoubleSolenoid.Value.kForward);
-        gripperExtension2.set(DoubleSolenoid.Value.kForward);
     }
 
     /**
