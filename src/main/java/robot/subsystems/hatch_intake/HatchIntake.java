@@ -54,7 +54,7 @@ public class HatchIntake extends Subsystem {
      * @return if the hatch is inside
      */
     public boolean isHatchInside() {
-        return voltage() <= Constants.MIN_VOLTAGE;
+        return voltage() <= Constants.MIN_HATCH_VOLTAGE;
     }
 
     /**
