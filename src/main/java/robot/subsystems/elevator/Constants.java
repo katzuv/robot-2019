@@ -57,11 +57,15 @@ public class Constants {
      * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
      */
     public enum ELEVATOR_STATES { //TODO: Find actual heights from mechanics
-        HIGH(2.2),
-        MID(1.6),
-        CARGO(0.7),
-        LOW(0.1),
-        BOTTOM(0);
+        SHIP_HATCH(0.6),
+        SHIP_CARGO(0.7),
+        LEVEL1_HATCH(0.6),
+        LEVEL1_CARGO(0.4),
+        LEVEL2_HATCH(1.4),
+        LEVEL2_CARGO(1.7),
+        LEVEL3_HATCH(2.4),
+        LEVEL3_CARGO(2.3),
+        LOADING_STATION(0.6); //TODO: Minimize the amount of states, SHIP_HATCH / LOADING_STATION / LEVEL1_HATCH might all be one height.
 
         private final double levelHeight;
 
