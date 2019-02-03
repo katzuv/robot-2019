@@ -40,15 +40,15 @@ public class Constants {
     static final double NOMINAL_OUT_REV = 0;
     static final double PEAK_OUT_FWD = 0;
 
-    //Mechanical heights of the elevator
-    static final double ELEVATOR_TOP_HEIGHT = 2.4; //TODO: get actual heights from mechanics
+    //Mechanical heights of the elevator, at its maximum position and semi position(where the elevator splits from one segment to two)
+    static final double ELEVATOR_MAX_HEIGHT = 2.4; //TODO: get actual heights from mechanics
     static final double ELEVATOR_MID_HEIGHT = 1.2; //TODO: get actual heights from mechanics
 
     //PIDF values of the elevator
-    static final double[] LIFT_BOTTOM_DOWN_PIDF = {0, 0, 0, 0};
-    static final double[] LIFT_BOTTOM_UP_PIDF = {0, 0, 0, 0};
-    static final double[] LIFT_TOP_DOWN_PIDF = {0, 0, 0, 0};
-    static final double[] LIFT_TOP_UP_PIDF = {0, 0, 0, 0};
+    static final double[] LIFT_LOW_DOWN_PIDF = {0, 0, 0, 0};
+    static final double[] LIFT_LOW_UP_PIDF = {0, 0, 0, 0};
+    static final double[] LIFT_HIGH_DOWN_PIDF = {0, 0, 0, 0};
+    static final double[] LIFT_HIGH_UP_PIDF = {0, 0, 0, 0};
 
     public static double ELEVATOR_TOLERANCE = 0.001; //The tolerance in which the elevator will stop when trying to get to a certain height.
 

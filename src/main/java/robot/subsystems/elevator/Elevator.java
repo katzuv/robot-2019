@@ -20,10 +20,10 @@ public class Elevator extends Subsystem {
 
     private double setpoint;
     /* pid slots for the four states: up and down on the first level and up and down on the second level of the cascade*/
-    private final int TALON_BOTTOM_UP_PID_SLOT = 0;
-    private final int TALON_BOTTOM_DOWN_PID_SLOT = 1;
-    private final int TALON_TOP_UP_PID_SLOT = 2;
-    private final int TALON_TOP_DOWN_PID_SLOT = 3;
+    private final int TALON_LOW_UP_PID_SLOT = 0;
+    private final int TALON_LOW_DOWN_PID_SLOT = 1;
+    private final int TALON_HIGH_UP_PID_SLOT = 2;
+    private final int TALON_HIGH_DOWN_PID_SLOT = 3;
 
     private final VictorSPX victorMotor = new VictorSPX(Ports.victorPort);
     private final TalonSRX talonMotor = new TalonSRX(Ports.talonPort);
@@ -37,25 +37,25 @@ public class Elevator extends Subsystem {
         talonMotor.setNeutralMode(NeutralMode.Brake);
 
         /* set closed loop gains in slot0 */
-        talonMotor.config_kP(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kI(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kD(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kF(TALON_BOTTOM_UP_PID_SLOT, Constants.LIFT_BOTTOM_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kP(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kI(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kD(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kF(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
         /* set closed loop gains in slot1 */
-        talonMotor.config_kP(TALON_BOTTOM_DOWN_PID_SLOT, Constants.LIFT_BOTTOM_DOWN_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kI(TALON_BOTTOM_DOWN_PID_SLOT, Constants.LIFT_BOTTOM_DOWN_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kD(TALON_BOTTOM_DOWN_PID_SLOT, Constants.LIFT_BOTTOM_DOWN_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kF(TALON_BOTTOM_DOWN_PID_SLOT, Constants.LIFT_BOTTOM_DOWN_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kP(TALON_LOW_DOWN_PID_SLOT, Constants.LIFT_LOW_DOWN_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kI(TALON_LOW_DOWN_PID_SLOT, Constants.LIFT_LOW_DOWN_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kD(TALON_LOW_DOWN_PID_SLOT, Constants.LIFT_LOW_DOWN_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kF(TALON_LOW_DOWN_PID_SLOT, Constants.LIFT_LOW_DOWN_PIDF[3], Constants.TALON_TIMEOUT_MS);
         /* set closed loop gains in slot2 */
-        talonMotor.config_kP(TALON_TOP_UP_PID_SLOT, Constants.LIFT_TOP_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kI(TALON_TOP_UP_PID_SLOT, Constants.LIFT_TOP_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kD(TALON_TOP_UP_PID_SLOT, Constants.LIFT_TOP_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kF(TALON_TOP_UP_PID_SLOT, Constants.LIFT_TOP_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kP(TALON_HIGH_UP_PID_SLOT, Constants.LIFT_HIGH_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kI(TALON_HIGH_UP_PID_SLOT, Constants.LIFT_HIGH_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kD(TALON_HIGH_UP_PID_SLOT, Constants.LIFT_HIGH_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kF(TALON_HIGH_UP_PID_SLOT, Constants.LIFT_HIGH_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
         /* set closed loop gains in slot3 */
-        talonMotor.config_kP(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kI(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kD(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kF(TALON_TOP_DOWN_PID_SLOT, Constants.LIFT_TOP_DOWN_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kP(TALON_HIGH_DOWN_PID_SLOT, Constants.LIFT_HIGH_DOWN_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kI(TALON_HIGH_DOWN_PID_SLOT, Constants.LIFT_HIGH_DOWN_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kD(TALON_HIGH_DOWN_PID_SLOT, Constants.LIFT_HIGH_DOWN_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonMotor.config_kF(TALON_HIGH_DOWN_PID_SLOT, Constants.LIFT_HIGH_DOWN_PIDF[3], Constants.TALON_TIMEOUT_MS);
 
         //the victor follows all the inputs the talon has
         victorMotor.follow(talonMotor);
@@ -94,7 +94,7 @@ public class Elevator extends Subsystem {
      * @param height Target height of the elevator in meters
      */
     public void setHeight(double height) {
-        this.setpoint = convertHeightToTicks(Math.min(Constants.ELEVATOR_TOP_HEIGHT, Math.max(0, height)));
+        this.setpoint = convertHeightToTicks(Math.min(Constants.ELEVATOR_MAX_HEIGHT, Math.max(0, height)));
         updatePIDSlot();
         talonMotor.set(ControlMode.Position, setpoint);
     }
@@ -122,14 +122,14 @@ public class Elevator extends Subsystem {
     private void updatePIDSlot() {
         if (setpoint > convertHeightToTicks(getHeight())) {
             if (atSecondStage())
-                talonMotor.selectProfileSlot(TALON_TOP_UP_PID_SLOT, 0);
+                talonMotor.selectProfileSlot(TALON_HIGH_UP_PID_SLOT, 0);
             else
-                talonMotor.selectProfileSlot(TALON_BOTTOM_UP_PID_SLOT, 0);
+                talonMotor.selectProfileSlot(TALON_LOW_UP_PID_SLOT, 0);
         } else {
             if (atSecondStage())
-                talonMotor.selectProfileSlot(TALON_TOP_DOWN_PID_SLOT, 0);
+                talonMotor.selectProfileSlot(TALON_HIGH_DOWN_PID_SLOT, 0);
             else
-                talonMotor.selectProfileSlot(TALON_BOTTOM_DOWN_PID_SLOT, 0);
+                talonMotor.selectProfileSlot(TALON_LOW_DOWN_PID_SLOT, 0);
         }
     }
 
@@ -140,7 +140,7 @@ public class Elevator extends Subsystem {
     private void preventOverShoot() { //TODO: add manual override?
         if (atTop()) {
             //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
-            talonMotor.setSelectedSensorPosition((int) (Constants.ELEVATOR_TOP_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
+            talonMotor.setSelectedSensorPosition((int) (Constants.ELEVATOR_MAX_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
         }
         if (atBottom()) {
             //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
