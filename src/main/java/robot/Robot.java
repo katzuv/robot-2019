@@ -44,6 +44,38 @@ public class Robot extends TimedRobot {
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     /**
+     * Send the match type and number to the "vision" table.
+     */
+    private static void sendMatchInformation() {
+        final DriverStation.MatchType matchType = DriverStation.getInstance().getMatchType();
+        if (DriverStation.getInstance().isFMSAttached() && matchType != DriverStation.MatchType.None) {
+            final int matchNumber = DriverStation.getInstance().getMatchNumber();
+            NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
+            NetworkTableEntry matchData = visionTable.getEntry("match data");
+            if (matchType == DriverStation.MatchType.Qualification) {
+                matchData.setString("Q" + matchNumber);
+            } else if (matchType == DriverStation.MatchType.Elimination) {
+                if (matchNumber <= 8) {
+                    matchData.setString("QF" + matchNumber);
+                } else if (matchNumber <= 12) {
+                    matchData.setString("TB-QF" + (matchNumber - 8));
+                } else if (matchNumber <= 16) {
+                    matchData.setString("SF" + matchNumber);
+                } else if (matchNumber <= 18) {
+                    matchData.setString("TB-SF" + (matchNumber - 4));
+                } else if (matchNumber <= 20) {
+                    matchData.setString("F" + matchNumber);
+                } else {
+                    matchData.setString("TB-F");
+
+                }
+            } else {
+                matchData.setString("P" + matchNumber);
+            }
+        }
+    }
+
+    /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
@@ -76,38 +108,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-    }
-
-    /**
-     * Send the match type and number to the "vision" table.
-     */
-    private static void sendMatchInformation() {
-        final DriverStation.MatchType matchType = DriverStation.getInstance().getMatchType();
-        if (DriverStation.getInstance().isFMSAttached() && matchType != DriverStation.MatchType.None) {
-            final int matchNumber = DriverStation.getInstance().getMatchNumber();
-            NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
-            NetworkTableEntry matchData = visionTable.getEntry("match data");
-            if (matchType == DriverStation.MatchType.Qualification) {
-                matchData.setString("Q" + matchNumber);
-            } else if (matchType == DriverStation.MatchType.Elimination) {
-                if (matchNumber <= 8) {
-                    matchData.setString("QF" + matchNumber);
-                } else if (matchNumber <= 12) {
-                    matchData.setString("TB-QF" + (matchNumber - 8));
-                } else if (matchNumber <= 16) {
-                    matchData.setString("SF" + matchNumber);
-                } else if (matchNumber <= 18) {
-                    matchData.setString("TB-SF" + (matchNumber - 4));
-                } else if (matchNumber <= 20) {
-                    matchData.setString("F" + matchNumber);
-                } else {
-                    matchData.setString("TB-F");
-
-                }
-            } else {
-                matchData.setString("P" + matchNumber);
-            }
-        }
     }
 
     @Override
