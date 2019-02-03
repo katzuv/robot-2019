@@ -86,12 +86,6 @@ public class HatchIntake extends Subsystem {
 
     }
 
-    /**
-     * @return if there is any Game piece in the robot (now fictive function)
-     */
-    public boolean haveGamePiece() {
-        return false;
-    }
 
     @Override
     public void initDefaultCommand() {
