@@ -27,7 +27,7 @@ public class Constants {
     // fall control
     public final static double K_JERK = 0;
     public final static double ACCELERATION_MISTAKE = 0;
-    public final static double MIN_X_diffrence = 0;
+    public final static double MIN_X_DIFFERENCE = 0;
     public final static double ACCELERATION_FIX = 0;
 
     public final static double STOP_SPEED_THRESH = 0.1; //the speed the robot could stop at the end of the path.
