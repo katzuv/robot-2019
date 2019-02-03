@@ -46,7 +46,7 @@ public class HatchIntake extends Subsystem {
      * open the gripper
      */
     public void gripperOpen() {
-        groundIntake.set(DoubleSolenoid.Value.kForward);
+        gripper.set(DoubleSolenoid.Value.kForward);
     }
 
     /**
@@ -67,14 +67,14 @@ public class HatchIntake extends Subsystem {
     /**
      * close the extension for the gripper
      */
-    public void extensionClose() {
+    public void gripperPlateClose() {
         gripperExtension1.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
      * open the extension for the gripper
      */
-    public void extensionOpen() {
+    public void gripperPlateOpen() {
         gripperExtension1.set(DoubleSolenoid.Value.kForward);
     }
 
@@ -82,7 +82,8 @@ public class HatchIntake extends Subsystem {
      * open the ground intake
      */
     public void openIntake() {
-        gripper.set(DoubleSolenoid.Value.kForward);
+        groundIntake.set(DoubleSolenoid.Value.kForward);
+
     }
 
     /**

@@ -20,9 +20,9 @@ public class GripperTransportation extends InstantCommand {
     public void execute() {
         //if extend is true it extend the gripper else it bring it back
         if (extend) {
-            Robot.hatchIntake.extensionOpen();
+            Robot.hatchIntake.gripperPlateOpen();
         } else {
-            Robot.hatchIntake.extensionClose();
+            Robot.hatchIntake.gripperPlateClose();
         }
     }
 
