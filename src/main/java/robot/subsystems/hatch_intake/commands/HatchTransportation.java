@@ -31,7 +31,7 @@ public class HatchTransportation extends InstantCommand {
 
     @Override
     public boolean isFinished() {
-        return Robot.hatchIntake.haveGamePiece();
+        return false;
     }
 
     // Called when another command which requires one or more of the same
