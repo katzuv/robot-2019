@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain.pure_pursuit;
+package robot.subsystems.drivetrain.pure_pursuit;
 
 public class Waypoint extends Point {
     private double distance, speed, curvature;
@@ -38,9 +38,13 @@ public class Waypoint extends Point {
         this.speed = speed;
     }
 
-    public double getCurvature() { return curvature;}
+    public double getCurvature() {
+        return curvature;
+    }
 
-    public void setCurvature(double curvature) { this.curvature = curvature;}
+    public void setCurvature(double curvature) {
+        this.curvature = curvature;
+    }
 
     @Override
     public String toString() {

@@ -1,11 +1,11 @@
 /*----------------------------------------------------------------------------*/
-        /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-        /* Open Source Software - may be modified and shared by FRC teams. The code   */
-        /* must be accompanied by the FIRST BSD license file in the root directory of */
-        /* the project.                                                               */
-        /*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
-        package frc.robot;
+package robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
@@ -18,11 +18,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.drivetrain.Drivetrain;
-import frc.robot.subsystems.drivetrain.pure_pursuit.Constants;
-import frc.robot.subsystems.drivetrain.pure_pursuit.Path;
-import frc.robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import frc.robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import robot.subsystems.drivetrain.Drivetrain;
+import robot.subsystems.drivetrain.pure_pursuit.Constants;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,6 +40,38 @@ public class Robot extends TimedRobot {
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+    /**
+     * Send the match type and number to the "vision" table.
+     */
+    private static void sendMatchInformation() {
+        final DriverStation.MatchType matchType = DriverStation.getInstance().getMatchType();
+        if (DriverStation.getInstance().isFMSAttached() && matchType != DriverStation.MatchType.None) {
+            final int matchNumber = DriverStation.getInstance().getMatchNumber();
+            NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
+            NetworkTableEntry matchData = visionTable.getEntry("match data");
+            if (matchType == DriverStation.MatchType.Qualification) {
+                matchData.setString("Q" + matchNumber);
+            } else if (matchType == DriverStation.MatchType.Elimination) {
+                if (matchNumber <= 8) {
+                    matchData.setString("QF" + matchNumber);
+                } else if (matchNumber <= 12) {
+                    matchData.setString("TB-QF" + (matchNumber - 8));
+                } else if (matchNumber <= 16) {
+                    matchData.setString("SF" + matchNumber);
+                } else if (matchNumber <= 18) {
+                    matchData.setString("TB-SF" + (matchNumber - 4));
+                } else if (matchNumber <= 20) {
+                    matchData.setString("F" + matchNumber);
+                } else {
+                    matchData.setString("TB-F");
+
+                }
+            } else {
+                matchData.setString("P" + matchNumber);
+            }
+        }
+    }
 
     /**
      * This function is run when the robot is first started up and should be
@@ -74,38 +106,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-    }
-
-    /**
-     * Send the match type and number to the "vision" table.
-     */
-    private static void sendMatchInformation() {
-        final DriverStation.MatchType matchType = DriverStation.getInstance().getMatchType();
-        if (DriverStation.getInstance().isFMSAttached() && matchType != DriverStation.MatchType.None) {
-            final int matchNumber = DriverStation.getInstance().getMatchNumber();
-            NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
-            NetworkTableEntry matchData = visionTable.getEntry("match data");
-            if (matchType == DriverStation.MatchType.Qualification) {
-                matchData.setString("Q" + matchNumber);
-            } else if (matchType == DriverStation.MatchType.Elimination) {
-                if (matchNumber <= 8) {
-                    matchData.setString("QF" + matchNumber);
-                } else if (matchNumber <= 12) {
-                    matchData.setString("TB-QF" + (matchNumber - 8));
-                } else if (matchNumber <= 16) {
-                    matchData.setString("SF" + matchNumber);
-                } else if (matchNumber <= 18) {
-                    matchData.setString("TB-SF" + (matchNumber - 4));
-                } else if (matchNumber <= 20) {
-                    matchData.setString("F" + matchNumber);
-                } else {
-                    matchData.setString("TB-F");
-
-                }
-            } else {
-                matchData.setString("P" + matchNumber);
-            }
-        }
     }
 
     @Override

@@ -5,14 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.drivetrain;
+package robot.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
-import frc.robot.subsystems.drivetrain.commands.JoystickDrive;
-import frc.robot.subsystems.drivetrain.pure_pursuit.Point;
+import robot.Robot;
+import robot.subsystems.drivetrain.commands.JoystickDrive;
+import robot.subsystems.drivetrain.pure_pursuit.Point;
 
 /**
  * Add your docs here.
@@ -137,7 +137,7 @@ public class Drivetrain extends Subsystem {
         return Robot.navx.getYaw();
     }
 
-    public void resetLocation(){
+    public void resetLocation() {
         currentLocation.setX(0);
         currentLocation.setY(0);
     }

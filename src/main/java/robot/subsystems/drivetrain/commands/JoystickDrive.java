@@ -5,12 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.drivetrain.commands;
+package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import robot.Robot;
 
-import static frc.robot.Robot.drivetrain;
+import static robot.Robot.drivetrain;
 
 public class JoystickDrive extends Command {
     public JoystickDrive() {
