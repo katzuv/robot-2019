@@ -89,10 +89,10 @@ public class JoystickDrive extends Command {
         double xDifference = rollAxis.getX() + Constants.CENTER_MASS_TO_AXIS_DISTANCE * Math.cos(Robot.navx.getAngle());
         double yDifference = rollAxis.getY() + Constants.CENTER_MASS_TO_AXIS_DISTANCE * Math.sin(Robot.navx.getAngle());
         double criticAcceleration = (xDifference * Constants.G) / yDifference;
-        double accelerationTarget = criticAcceleration - Constants.ACCELERATION_MISTAKE;// take down the tolerance
-        double CurrentTarget = (accelerationTarget - currentAcceleration) * Constants.K_JERK;
-        double change = CurrentTarget - currentAcceleration;//the acceleration
-        if (xDifference <= Constants.MIN_X_diffrence) {
+        double deltaAcceleration = criticAcceleration - Constants.ACCELERATION_MISTAKE;// take down the tolerance
+        double currentTarget = (deltaAcceleration - currentAcceleration) * Constants.K_JERK;
+        double change = currentTarget - currentAcceleration;//the acceleration
+        if (xDifference <= Constants.MIN_X_DIFFERENCE) {
             change -= Constants.ACCELERATION_FIX;
         }
         return change;
