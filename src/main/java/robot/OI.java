@@ -17,7 +17,6 @@ public class OI {
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
 
-
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.
