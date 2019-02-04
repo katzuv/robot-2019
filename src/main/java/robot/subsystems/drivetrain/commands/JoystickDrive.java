@@ -37,10 +37,10 @@ public class JoystickDrive extends Command {
         double leftInput = -Robot.m_oi.leftStick.getY();
         double rightInput = -Robot.m_oi.rightStick.getY();
 
-        //if the different between the inputs is higher than a constant , both inputs will be equal to the highest one of them
         if (Math.abs(leftInput - rightInput) < Robot.m_oi.JOYSTICK_ROUNDOFF_DELTA) {
-            leftInput = highest(leftInput, rightInput);
-            rightInput = highest(leftInput, rightInput);
+            double highestInput = Math.max(leftInput, rightInput);
+            leftInput = highestInput;
+            rightInput = highestInput;
         }
 
         double leftOutput, rightOutput;
@@ -77,15 +77,6 @@ public class JoystickDrive extends Command {
 
     private double bell(double x, double c) {
         return 2 / (1 + Math.pow(Math.E, -c * x)) - 1;
-    }
-
-    /**
-     * @param x first double
-     * @param c second double
-     * @return the highest one from x and c
-     */
-    private double highest(double x, double c) {
-        return Math.max(x, c);
     }
 
     // Make this return true when this Command no longer needs to run execute()
