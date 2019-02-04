@@ -1,5 +1,6 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -192,7 +193,7 @@ public class Path {
      * @return returns a Waypoint[] array.
      */
     public Waypoint[] toArray() {
-        return path.toArray(new Waypoint[]{});
+        return path.toArray(new Waypoint[] {});
     }
 
     /**
@@ -205,7 +206,7 @@ public class Path {
      */
     public void generateAll(double weight_data, double weight_smooth, double tolerance, double const_acceleration, double max_path_velocity) {
         this.generateFillPoint();
-        this.generateSmoothing(weight_data, weight_smooth, tolerance);
+        this.generateSmoothing(weight_data,weight_smooth,tolerance);
         this.generateCurvature();
         this.generateDistance();
         this.generateVelocity(const_acceleration, max_path_velocity);
@@ -343,7 +344,7 @@ public class Path {
             r = Math.sqrt(Math.pow(x1 - a, 2) + Math.pow(path.get(i).getY() - b, 2));
             double curv = 0;
             if (r == 0) { //if the radius is zero, we would get a zero division error.
-                curv = Math.pow(10, 6);
+                curv = Math.pow(10,6);
             } else {
                 curv = 1 / r;
             }
@@ -366,8 +367,8 @@ public class Path {
      */
     public void generateVelocity(double maxAcceleration, double pathMaximumVelocity) {
         //Each point is given a speed based on its curvature, and the maximum velocity allowed.
-        for (int i = 0; i < this.length(); i++) {
-            if (this.getWaypoint(i).getCurvature() != 0) //prevent zero division error
+        for (int i = 0; i < this.length(); i++){
+            if(this.getWaypoint(i).getCurvature() != 0) //prevent zero division error
                 this.getWaypoint(i).setSpeed(Math.min(pathMaximumVelocity, Constants.K_CURVE / this.getWaypoint(i).getCurvature()));
             else
                 this.getWaypoint(i).setSpeed(pathMaximumVelocity);
@@ -377,8 +378,8 @@ public class Path {
         //Goes in reverse from the end to the beggining, lowering the speeds so that the robot doesn't de accelerate as fast.
         for (int i = this.length() - 2; i >= 0; i--) {
             getWaypoint(i).setSpeed(
-                    Math.min(getWaypoint(i).getSpeed(), Math.sqrt(
-                            Math.pow(getWaypoint(i + 1).getSpeed(), 2) + 2 * maxAcceleration * Waypoint.distance(getWaypoint(i), getWaypoint(i + 1))
+                    Math.min( getWaypoint(i).getSpeed(), Math.sqrt(
+                            Math.pow(getWaypoint(i+1).getSpeed(),2) + 2 * maxAcceleration * Waypoint.distance(getWaypoint(i), getWaypoint(i+1))
                             )
                     )
             );
