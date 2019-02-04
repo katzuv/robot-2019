@@ -23,8 +23,8 @@ public class PickUpGamePiece extends CommandGroup {
         NetworkTable table = inst.getTable("target info");
         targetAngleEntry = table.getEntry("Angle from target");
         targetDistanceEntry = table.getEntry("Distance from target");
-        double targetDistance = targetDistanceEntry.getDouble(0);//will later be changed to the dashboard input
-        double targetAngle = targetAngleEntry.getDouble(0);//will later be changed to the dashboard input
+        double targetDistance = targetDistanceEntry.getDouble(0);
+        double targetAngle = targetAngleEntry.getDouble(0);
         Waypoint target = new Waypoint(Math.sin(targetAngle) * targetDistance, Math.cos(targetAngle) * targetDistance);
         Waypoint middleWP = new Waypoint(Math.tan(navx.getAngle()) * target.getY(), target.getY());
         Path path = new Path(new Waypoint[]{middleWP, target});
