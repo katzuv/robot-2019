@@ -20,7 +20,7 @@ public class PickUpGamePiece extends CommandGroup {
 
     public PickUpGamePiece() {
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        NetworkTable table = inst.getTable("target info");
+        NetworkTable table = inst.getTable("vision");
         targetAngleEntry = table.getEntry("Angle from target");
         targetDistanceEntry = table.getEntry("Distance from target");
         double targetDistance = targetDistanceEntry.getDouble(0);
