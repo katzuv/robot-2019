@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 import static robot.Robot.navx;
@@ -29,7 +30,7 @@ public class PickUpGamePiece extends CommandGroup {
         Waypoint middleWP = new Waypoint(Math.tan(navx.getAngle()) * target.getY(), target.getY());
         Path path = new Path(new Waypoint[]{middleWP, target});
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-        //addSequential(purepursue) need new version of code
+        addSequential(new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false));
         addSequential(new HatchOrCargo(new HatchIntake(), new CargoIntake()));
 
         // Add Commands here:
