@@ -172,6 +172,7 @@ public class PurePursue extends Command {
     /**
      * Runs through a the default path and finds the closest waypoint to the robot.
      *
+     *
      * @return the closest point to the robots position
      * @author orel
      */
@@ -218,7 +219,7 @@ public class PurePursue extends Command {
         angle = Math.toRadians(angle);
         double a = -Math.tan(angle);
         double c = Math.tan(angle) * currentPoint.getX() - currentPoint.getY();
-        double x = Math.abs(currentLookahead.getX() * a + currentLookahead.getY() + c) / Math.sqrt(a * a + 1);
+        double x = Math.abs(currentLookahead.getX() * a + currentLookahead.getY() + c) / Math.sqrt(a*a + 1);
         double sign = Math.sin(angle) * (currentLookahead.getX() - currentPoint.getX()) - Math.cos(angle) * (currentLookahead.getY() - currentPoint.getY());
         double side = Math.signum(sign);
         return x * side;
