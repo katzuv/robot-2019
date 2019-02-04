@@ -14,6 +14,10 @@ import edu.wpi.first.wpilibj.Joystick;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+
+    public static double JOYSTICK_ROUNDOFF_DELTA = 0.2; // the difference between joysticks which will be omitted
+
+
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
 
