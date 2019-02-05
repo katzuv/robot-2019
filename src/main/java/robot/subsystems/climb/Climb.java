@@ -7,12 +7,12 @@
 
 package robot.subsystems.climb;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * An example subsystem.  You can replace me with your own Subsystem.
+ * Climbing subsystem
  */
 public class Climb extends Subsystem {
     // Put methods for controlling this subsystem
@@ -41,14 +41,25 @@ public class Climb extends Subsystem {
         talonUL.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
         talonUL.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
 
+        /* set closed loop gains in slot0 */
+        //I chose opposite arms because its mostly arbitrary and it might be more accurate, we want to have the monitoring on opposite sides
+        talonDR.config_kP(0, Constants.CLIMB_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonDR.config_kI(0, Constants.CLIMB_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonDR.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonDR.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
+
+        //set the pairs to follow their adjacent arms
+        talonUR.follow(talonUL);
+        talonDL.follow(talonDR);
+
+        configMotorEncoder(talonUL, Constants.UP_LEFT_FORWARD_HALL_REVERSED, Constants.UP_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
+        configMotorEncoder(talonDR, Constants.DOWN_RIGHT_FORWARD_HALL_REVERSED, Constants.DOWN_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
     }
 
     /**
      *
      */
     public void raiseForwardLegs(){
-        //talonUL.set
-        //talonUR.follow/talonUR.set
     }
 
     /**
@@ -65,6 +76,7 @@ public class Climb extends Subsystem {
     public void raiseBackLegs(){
         //talonUL.set
         //talonUR.follow/talonUR.set
+        
     }
 
     /**
@@ -73,6 +85,24 @@ public class Climb extends Subsystem {
     public void lowerBackLegs(){
         //talonDL.set
         //talonDR.follow/talonUR.set
+    }
+
+    private void configMotorEncoder(TalonSRX motorController, boolean forwardLSReversed, boolean backwardLSReversed, FeedbackDevice feedbackDevice){
+        motorController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
+
+        /* Configure the hall effect sensors */
+        // TOP hall effect
+        motorController.configForwardLimitSwitchSource(
+                LimitSwitchSource.FeedbackConnector,
+                forwardLSReversed ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIMEOUT_MS
+        );
+        // BOTTOM hall effect
+        motorController.configReverseLimitSwitchSource(
+                LimitSwitchSource.FeedbackConnector,
+                backwardLSReversed ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIMEOUT_MS
+        );
     }
     @Override
     public void initDefaultCommand() {
