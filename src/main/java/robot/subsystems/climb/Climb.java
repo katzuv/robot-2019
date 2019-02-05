@@ -60,12 +60,14 @@ public class Climb extends Subsystem {
      *
      */
     public void raiseForwardLegs(){
+        talonUL.set(ControlMode.MotionMagic, metersToTicks(Constants.LEVEL_THREE_LEG_LENGTH));
     }
 
     /**
      *
      */
     public void lowerForwardLegs(){
+        talonDR.set(ControlMode.MotionMagic, 0);
         //talonUL.set
         //talonUR.follow/talonUR.set
     }
@@ -74,36 +76,39 @@ public class Climb extends Subsystem {
      *
      */
     public void raiseBackLegs(){
+        talonUL.set(ControlMode.MotionMagic, metersToTicks(Constants.LEVEL_THREE_LEG_LENGTH));
         //talonUL.set
         //talonUR.follow/talonUR.set
-        
+
     }
 
     /**
      *
      */
     public void lowerBackLegs(){
+        talonDR.set(ControlMode.MotionMagic, metersToTicks(Constants.LEVEL_THREE_LEG_LENGTH));
         //talonDL.set
         //talonDR.follow/talonUR.set
     }
 
     private void configMotorEncoder(TalonSRX motorController, boolean forwardLSReversed, boolean backwardLSReversed, FeedbackDevice feedbackDevice){
         motorController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
-
-        /* Configure the hall effect sensors */
-        // TOP hall effect
         motorController.configForwardLimitSwitchSource(
                 LimitSwitchSource.FeedbackConnector,
                 forwardLSReversed ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIMEOUT_MS
         );
-        // BOTTOM hall effect
         motorController.configReverseLimitSwitchSource(
                 LimitSwitchSource.FeedbackConnector,
                 backwardLSReversed ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIMEOUT_MS
         );
     }
+
+    private int metersToTicks(double meters){
+        return (int)(meters * Constants.TICKS_PER_METER);
+    }
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
