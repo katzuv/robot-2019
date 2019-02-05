@@ -9,7 +9,7 @@ public class Gripper extends Command {
 
     private boolean open;//indicates whether the flower is open or not
     private HatchIntake hatchIntake = new HatchIntake();
-    private opMode current;//enum variable that indicates the current mode of the gripper
+    private gripperState current;//enum variable that indicates the current mode of the gripper
 
 
     /**
@@ -18,7 +18,7 @@ public class Gripper extends Command {
      */
     public Gripper() {
         requires(Robot.hatchIntake);
-        current = opMode.TOGGLE;
+        current = gripperState.TOGGLE_GRIPPER;
 
     }
 
@@ -30,22 +30,22 @@ public class Gripper extends Command {
     public Gripper(boolean open) {
         requires(Robot.hatchIntake);
         if (open)
-            current = opMode.OPEN;
+            current = gripperState.GRIPPER_OPEN;
         else
-            current = opMode.CLOSE;
+            current = gripperState.GRIPPER_CLOSE;
     }
 
     @Override
     public void initialize() {
         switch (current) {
-            case TOGGLE: // Change to the second state
+            case TOGGLE_GRIPPER: // Change to the second state
                 hatchIntake.setGripper();
                 break;
-            case OPEN: // Open the gripper if closed and not do anything otherwise
+            case GRIPPER_OPEN: // Open the gripper if closed and not do anything otherwise
                 if (!hatchIntake.isGripperOpen())
                     hatchIntake.setGripper();
                 break;
-            case CLOSE:// Close the gripper if opened and not do anything otherwise
+            case GRIPPER_CLOSE:// Close the gripper if opened and not do anything otherwise
                 if (hatchIntake.isGripperOpen())
                     hatchIntake.setGripper();
                 break;
@@ -75,9 +75,9 @@ public class Gripper extends Command {
     /**
      * enum to indicate the state of the gripper
      */
-    public enum opMode {
-        TOGGLE,
-        OPEN,
-        CLOSE
+    public enum gripperState {
+        TOGGLE_GRIPPER,
+        GRIPPER_OPEN,
+        GRIPPER_CLOSE
     }
 }
