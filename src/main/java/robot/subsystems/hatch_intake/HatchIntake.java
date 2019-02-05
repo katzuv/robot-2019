@@ -67,19 +67,22 @@ public class HatchIntake extends Subsystem {
     }
 
     /**
-     * close the extension for the gripper
+     *
      */
-    public void gripperPlateClose() {
-        gripperPlate.set(DoubleSolenoid.Value.kReverse);
+    public void setGripperPlate() {
+        if (isGripperPlateExtended())
+            gripperPlate.set(DoubleSolenoid.Value.kForward);
+        else
+            gripperPlate.set(DoubleSolenoid.Value.kReverse);
     }
-
+    
     /**
-     * open the extension for the gripper
+     *
+     * @return true if the gripper is extended and false otherwise
      */
-    public void gripperPlateOpen() {
-        gripperPlate.set(DoubleSolenoid.Value.kForward);
+    public boolean isGripperPlateExtended() {
+        return gripperPlate.get() == DoubleSolenoid.Value.kForward;
     }
-
     /**
      *
      * @return if the hatch is inside
