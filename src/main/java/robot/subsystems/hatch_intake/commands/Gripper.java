@@ -1,4 +1,4 @@
-package robot.subsystems.hatchIntake.commands;
+package robot.subsystems.hatch_intake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
@@ -11,7 +11,7 @@ public class Gripper extends Command {
     private boolean open;//indicates whether the flower is open or not
 
     public Gripper(boolean open) {
-        requires(Robot.GROUNDINTAKE);
+        requires(Robot.hatchIntake);
         this.open = open;
     }
 
@@ -23,15 +23,15 @@ public class Gripper extends Command {
     @Override
     public void execute() {
         if (open) {
-            Robot.GROUNDINTAKE.GripperOpen();//grab hatch
+            Robot.hatchIntake.gripperOpen();//grab hatch
         } else {
-            Robot.GROUNDINTAKE.GripperClose();//release hatch
+            Robot.hatchIntake.gripperClose();//release hatch
         }
     }
 
     @Override
     protected boolean isFinished() {
-        return Robot.GROUNDINTAKE.HaveGamePiece();
+        return false;
     }
 
     @Override

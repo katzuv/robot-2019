@@ -1,4 +1,4 @@
-package robot.subsystems.hatchIntake.commands;
+package robot.subsystems.hatch_intake.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

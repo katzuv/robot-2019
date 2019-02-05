@@ -1,4 +1,4 @@
-package robot.subsystems.hatchIntake.commands;
+package robot.subsystems.hatch_intake.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
@@ -6,7 +6,7 @@ import robot.Robot;
 public class HatchTransportation extends InstantCommand {
 
     public HatchTransportation() {
-        requires(Robot.GROUNDINTAKE);
+        requires(Robot.hatchIntake);
     }
 
     @Override
@@ -17,10 +17,10 @@ public class HatchTransportation extends InstantCommand {
     @Override
     public void execute() {
         //if hatch inside transport it to the flower
-        if (Robot.GROUNDINTAKE.isHatchInside()) {
-            Robot.GROUNDINTAKE.closeIntake();
+        if (Robot.hatchIntake.isHatchInside()) {
+            Robot.hatchIntake.closeIntake();
         } else {
-            Robot.GROUNDINTAKE.openIntake();
+            Robot.hatchIntake.openIntake();
         }
     }
 
@@ -31,7 +31,7 @@ public class HatchTransportation extends InstantCommand {
 
     @Override
     public boolean isFinished() {
-        return Robot.GROUNDINTAKE.HaveGamePiece();
+        return false;
     }
 
     // Called when another command which requires one or more of the same
