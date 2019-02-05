@@ -2,18 +2,23 @@ package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import static robot.Robot.climb;
+
 /**
- *
+ * 
  */
 public class Climb extends Command {
 
     public Climb() {
+        requires(climb);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        climb.raiseForwardLegs();
+        climb.raiseBackLegs();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -22,7 +27,7 @@ public class Climb extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
