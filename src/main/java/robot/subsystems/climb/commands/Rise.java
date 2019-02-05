@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import static robot.Robot.climb;
 
 /**
- * 
+ *
  */
-public class Climb extends Command {
-
-    public Climb() {
+public class Rise extends Command {
+    //gamers, lose yourself and rise up
+    public Rise() {
         requires(climb);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
