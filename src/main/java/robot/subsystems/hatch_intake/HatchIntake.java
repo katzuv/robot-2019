@@ -35,20 +35,12 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
         return hatchSensor.getVoltage();
     }
 
-    /**
-     * close the ground intake
-     */
-    public void closeIntake() {
-        groundIntake.set(DoubleSolenoid.Value.kReverse);
+    public void setGroundIntake(boolean down){
+        if(down)
+            groundIntake.set(DoubleSolenoid.Value.kForward);
+        else
+            groundIntake.set(DoubleSolenoid.Value.kReverse);
     }
-
-    /**
-     * open the ground intake
-     */
-    public void openIntake() {
-        groundIntake.set(DoubleSolenoid.Value.kForward);
-    }
-
     /**
      * a command to set the gripper, close it if it is already open and open it if it is already closed
      */
