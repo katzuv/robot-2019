@@ -35,12 +35,13 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
         return hatchSensor.getVoltage();
     }
 
-    public void setGroundIntake(boolean down){
-        if(down)
+    public void setGroundIntake(boolean down) {
+        if (down)
             groundIntake.set(DoubleSolenoid.Value.kForward);
         else
             groundIntake.set(DoubleSolenoid.Value.kReverse);
     }
+
     /**
      * a command to set the gripper, close it if it is already open and open it if it is already closed
      */
@@ -50,8 +51,8 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
         else
             gripper.set(DoubleSolenoid.Value.kReverse);
     }
+
     /**
-     *
      * @return returns true if the gripper is open and false otherwise
      */
     public boolean isGripperOpen() {
@@ -67,16 +68,15 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
         else
             gripperPlate.set(DoubleSolenoid.Value.kReverse);
     }
-    
+
     /**
-     *
      * @return true if the gripper is extended and false otherwise
      */
     public boolean isGripperPlateExtended() {
         return gripperPlate.get() == DoubleSolenoid.Value.kForward;
     }
+
     /**
-     *
      * @return if the hatch is inside
      */
     public boolean isHatchInside() {

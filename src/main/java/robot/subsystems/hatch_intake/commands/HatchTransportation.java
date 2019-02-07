@@ -6,12 +6,6 @@ import robot.Robot;
 public class HatchTransportation extends InstantCommand { //TODO: Refactor transportation to a better name
     private hatchPickupState current;
 
-    public enum hatchPickupState {
-        TOGGLE_HATCH_PICKUP_STATE,
-        HATCH_UP,
-        HATCH_DOWN
-    }
-
     public HatchTransportation(boolean down) {
         requires(Robot.hatchIntake);
         if (down)
@@ -44,7 +38,6 @@ public class HatchTransportation extends InstantCommand { //TODO: Refactor trans
     public void execute() {
     }
 
-
     @Override
     protected void end() {
     }
@@ -58,5 +51,11 @@ public class HatchTransportation extends InstantCommand { //TODO: Refactor trans
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+    }
+
+    public enum hatchPickupState {
+        TOGGLE_HATCH_PICKUP_STATE,
+        HATCH_UP,
+        HATCH_DOWN
     }
 }

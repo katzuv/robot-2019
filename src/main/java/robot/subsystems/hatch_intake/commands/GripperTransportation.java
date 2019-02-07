@@ -6,12 +6,6 @@ import robot.Robot;
 public class GripperTransportation extends InstantCommand { //TODO: Refactor transportation to a better name
     private gripperPlateState current;//enum variable that indicates the current mode of the gripperPlate
 
-    public enum gripperPlateState {
-        TOGGLE_GRIPPER_PLATE,
-        GRIPPER_PLATE_EXTEND,
-        GRIPPER_PLATE_PULL
-    }
-
     public GripperTransportation(boolean extend) {
         requires(Robot.hatchIntake);
         if (extend)
@@ -46,7 +40,6 @@ public class GripperTransportation extends InstantCommand { //TODO: Refactor tra
 
     }
 
-
     @Override
     protected void end() {
     }
@@ -60,6 +53,12 @@ public class GripperTransportation extends InstantCommand { //TODO: Refactor tra
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+    }
+
+    public enum gripperPlateState {
+        TOGGLE_GRIPPER_PLATE,
+        GRIPPER_PLATE_EXTEND,
+        GRIPPER_PLATE_PULL
     }
 
 }
