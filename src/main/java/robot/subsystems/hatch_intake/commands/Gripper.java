@@ -11,7 +11,7 @@ public class Gripper extends Command {
 
     private boolean open;//indicates whether the flower is open or not
 
-    private boolean open;//indicates whether the flower is open or not
+    
     private HatchIntake hatchIntake = new HatchIntake();
     private gripperState current;//enum variable that indicates the current mode of the gripper
 
