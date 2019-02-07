@@ -12,11 +12,11 @@ public class HatchTransportation extends InstantCommand {
 
     @Override
     public void initialize() {
+        Robot.hatchIntake.setGroundIntake(down);
     }
 
     @Override
     public void execute() {
-        Robot.hatchIntake.setGroundIntake(down);
     }
 
 
@@ -26,7 +26,7 @@ public class HatchTransportation extends InstantCommand {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called when another command which requires one or more of the same
