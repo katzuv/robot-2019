@@ -6,8 +6,13 @@ import robot.Robot;
 import static robot.Robot.hatchIntake;
 
 public class GripperTransportation extends InstantCommand {
-    private boolean extend;
     private gripperPlateState current;//enum variable that indicates the current mode of the gripperPlate
+
+    public enum gripperPlateState {
+        TOGGLE_GRIPPER_PLATE,
+        GRIPPER_PLATE_EXTEND,
+        GRIPPER_PLATE_PULL
+    }
 
     public GripperTransportation(boolean extend) {
         requires(Robot.hatchIntake);
@@ -16,10 +21,10 @@ public class GripperTransportation extends InstantCommand {
         else
             current = gripperPlateState.GRIPPER_PLATE_PULL;
     }
+
     public GripperTransportation() {
         requires(hatchIntake);
         current = gripperPlateState.TOGGLE_GRIPPER_PLATE;
-
     }
 
     @Override
@@ -52,15 +57,11 @@ public class GripperTransportation extends InstantCommand {
     public boolean isFinished() {
         return true;
     }
+
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
     }
 
-    public enum gripperPlateState {
-        TOGGLE_GRIPPER_PLATE,
-        GRIPPER_PLATE_EXTEND,
-        GRIPPER_PLATE_PULL
-    }
 }
