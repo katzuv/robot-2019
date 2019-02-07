@@ -70,7 +70,7 @@ public class Gripper extends Command {
     /**
      * enum to indicate the state of the gripper
      */
-    public enum gripperState {
+    public enum gripperState { //TODO: refactor Gripper open - close, to grab - release
         TOGGLE_GRIPPER,
         GRIPPER_OPEN,
         GRIPPER_CLOSE

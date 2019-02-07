@@ -3,7 +3,7 @@ package robot.subsystems.hatch_intake.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
-public class HatchTransportation extends InstantCommand {
+public class HatchTransportation extends InstantCommand { //TODO: Refactor transportation to a better name
     private hatchPickupState current;
 
     public enum hatchPickupState {
