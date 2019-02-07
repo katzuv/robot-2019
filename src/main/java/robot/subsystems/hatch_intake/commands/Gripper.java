@@ -36,15 +36,13 @@ public class Gripper extends Command {
     public void initialize() {
         switch (current) {
             case TOGGLE_GRIPPER: // Change to the second state
-                hatchIntake.setGripper();
+                hatchIntake.setGripper(!hatchIntake.isGripperOpen());
                 break;
             case GRIPPER_OPEN: // Open the gripper if closed and not do anything otherwise
-                if (!hatchIntake.isGripperOpen())
-                    hatchIntake.setGripper();
+                hatchIntake.setGripper(true);
                 break;
             case GRIPPER_CLOSE:// Close the gripper if opened and not do anything otherwise
-                if (hatchIntake.isGripperOpen())
-                    hatchIntake.setGripper();
+                hatchIntake.setGripper(false);
                 break;
         }
     }

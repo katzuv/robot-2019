@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class HatchIntake extends Subsystem {
+public class HatchIntake extends Subsystem { //TODO: needs java-doc
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private final DoubleSolenoid groundIntake = new DoubleSolenoid(Ports.groundForward, Ports.groundReverse);
@@ -52,8 +52,8 @@ public class HatchIntake extends Subsystem {
     /**
      * a command to set the gripper, close it if it is already open and open it if it is already closed
      */
-    public void setGripper() {
-        if (isGripperOpen())
+    public void setGripper(boolean open) {
+        if (open)
             gripper.set(DoubleSolenoid.Value.kForward);
         else
             gripper.set(DoubleSolenoid.Value.kReverse);
@@ -69,8 +69,8 @@ public class HatchIntake extends Subsystem {
     /**
      *
      */
-    public void setGripperPlate() {
-        if (isGripperPlateExtended())
+    public void setGripperPlate(boolean extend) {
+        if (extend)
             gripperPlate.set(DoubleSolenoid.Value.kForward);
         else
             gripperPlate.set(DoubleSolenoid.Value.kReverse);

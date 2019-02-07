@@ -26,15 +26,13 @@ public class GripperTransportation extends InstantCommand {
     public void initialize() {
         switch (current) {
             case TOGGLE_GRIPPER_PLATE: // Change to the second state
-                hatchIntake.setGripperPlate();
+                hatchIntake.setGripperPlate(!hatchIntake.isGripperPlateExtended());
                 break;
             case GRIPPER_PLATE_EXTEND: // extend the gripperPlate if closed and not do anything otherwise
-                if (!hatchIntake.isGripperPlateExtended())
-                    hatchIntake.setGripperPlate();
+                hatchIntake.setGripperPlate(true);
                 break;
             case GRIPPER_PLATE_PULL:// pull the gripperplate back if extended and not do anything otherwise
-                if (hatchIntake.isGripperPlateExtended())
-                    hatchIntake.setGripperPlate();
+                hatchIntake.setGripperPlate(false);
                 break;
         }
 
