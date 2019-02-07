@@ -3,8 +3,6 @@ package robot.subsystems.hatch_intake.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
-import static robot.Robot.hatchIntake;
-
 public class GripperTransportation extends InstantCommand {
     private gripperPlateState current;//enum variable that indicates the current mode of the gripperPlate
 
@@ -23,7 +21,7 @@ public class GripperTransportation extends InstantCommand {
     }
 
     public GripperTransportation() {
-        requires(hatchIntake);
+        requires(Robot.hatchIntake);
         current = gripperPlateState.TOGGLE_GRIPPER_PLATE;
     }
 
@@ -31,13 +29,13 @@ public class GripperTransportation extends InstantCommand {
     public void initialize() {
         switch (current) {
             case TOGGLE_GRIPPER_PLATE: // Change to the second state
-                hatchIntake.setGripperPlate(!hatchIntake.isGripperPlateExtended());
+                Robot.hatchIntake.setGripperPlate(!Robot.hatchIntake.isGripperPlateExtended());
                 break;
             case GRIPPER_PLATE_EXTEND: // extend the gripperPlate if closed and not do anything otherwise
-                hatchIntake.setGripperPlate(true);
+                Robot.hatchIntake.setGripperPlate(true);
                 break;
             case GRIPPER_PLATE_PULL:// pull the gripperplate back if extended and not do anything otherwise
-                hatchIntake.setGripperPlate(false);
+                Robot.hatchIntake.setGripperPlate(false);
                 break;
         }
 
