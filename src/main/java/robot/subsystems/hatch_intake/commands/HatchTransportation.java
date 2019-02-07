@@ -4,24 +4,19 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
 public class HatchTransportation extends InstantCommand {
-
-    public HatchTransportation() {
+    private boolean down;
+    public HatchTransportation(boolean down) {
+        this.down=down;
         requires(Robot.hatchIntake);
     }
 
     @Override
     public void initialize() {
-
     }
 
     @Override
     public void execute() {
-        //if hatch inside transport it to the flower
-        if (Robot.hatchIntake.isHatchInside()) {
-            Robot.hatchIntake.closeIntake();
-        } else {
-            Robot.hatchIntake.openIntake();
-        }
+        Robot.hatchIntake.setGroundIntake(down);
     }
 
 
