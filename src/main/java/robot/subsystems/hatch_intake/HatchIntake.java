@@ -89,4 +89,8 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
+
+    public boolean isHatchDown() {
+        return groundIntake.get() == DoubleSolenoid.Value.kForward;
+    }
 }
