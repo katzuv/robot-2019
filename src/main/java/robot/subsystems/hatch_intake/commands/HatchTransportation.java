@@ -23,7 +23,7 @@ public class HatchTransportation extends InstantCommand { //TODO: Refactor trans
     public void initialize() {
         switch (current) {
             case TOGGLE_HATCH_PICKUP_STATE:
-                Robot.hatchIntake.setGroundIntake(!Robot.hatchIntake.isHatchDown());
+
                 break;
             case HATCH_DOWN:
                 Robot.hatchIntake.setGripperPlate(true);
