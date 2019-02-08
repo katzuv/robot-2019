@@ -29,4 +29,6 @@ public class Constants {
     public final static double CYCLE_TIME = 0.02; //cycle time of the roborio
 
     public final static double ROBOT_WIDTH = 0.9; //width of the robot
+
+    public final static double TURN_RADIUS = 0.2;//turn radius for dubins path
 }

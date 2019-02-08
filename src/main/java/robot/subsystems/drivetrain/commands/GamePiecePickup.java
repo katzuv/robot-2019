@@ -5,10 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.drivetrain.pure_pursuit.Constants;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import robot.subsystems.drivetrain.pure_pursuit.*;
 
 import static robot.Robot.drivetrain;
 import static robot.Robot.navx;
@@ -25,15 +22,18 @@ public class GamePiecePickup extends Command {
 
     NetworkTableEntry targetAngleEntry;
     NetworkTableEntry targetDistanceEntry;
-
+    NetworkTableEntry reflectorAngleEntry;
     // Called just before this Command runs the first time
     protected void initialize() {
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        navx.reset();
         NetworkTable table = inst.getTable("vision");
         targetAngleEntry = table.getEntry("angle");
         targetDistanceEntry = table.getEntry("distance");
+        reflectorAngleEntry = table.getEntry( "field_angle");
         double targetDistance = targetDistanceEntry.getDouble(0)/100;
         double targetAngle = targetAngleEntry.getDouble(0);
+        double targetFieldAngle = reflectorAngleEntry.getDouble(0);
         Waypoint target = new Waypoint(Math.sin(Math.toRadians(targetAngle)) * targetDistance +0.15, Math.cos(Math.toRadians(targetAngle)) * targetDistance   );
         Waypoint middleWP = new Waypoint(-targetAngle/Math.abs(targetAngle)*0.4, target.getY()-target.getY()/2);
         Path path1 = new Path(new Waypoint[]{new Waypoint(0,0), middleWP ,  target});
@@ -41,6 +41,8 @@ public class GamePiecePickup extends Command {
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         SmartDashboard.putNumber("target distance", targetDistance);
         SmartDashboard.putNumber("target angle ", targetAngle);
+        path1 = new Path(new Point(0,0),navx.getAngle(), target, navx.getAngle()/Math.abs(navx.getAngle())*targetFieldAngle,  Constants.TURN_RADIUS);
+        path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         PurePursue pursue = new PurePursue(path1, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
         pursue.start();
         System.out.println(path1);
