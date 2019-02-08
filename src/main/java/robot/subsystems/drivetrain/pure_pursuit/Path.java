@@ -232,8 +232,8 @@ public class Path {
      * @param const_acceleration generateVelocities parameter. See documentation of the generateVelocities method for more information.
      */
     public void generateAll(double weight_data, double weight_smooth, double tolerance, double const_acceleration, double max_path_velocity) {
-        this.generateFillPoint();
-        this.generateSmoothing(weight_data, weight_smooth, tolerance);
+//        this.generateFillPoint();
+//        this.generateSmoothing(weight_data, weight_smooth, tolerance);
         this.generateCurvature();
         this.generateDistance();
         this.generateVelocity(const_acceleration, max_path_velocity);
