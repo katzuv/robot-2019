@@ -35,7 +35,7 @@ public class GamePiecePickup extends Command {
         double targetDistance = targetDistanceEntry.getDouble(0)/100;
         double targetAngle = targetAngleEntry.getDouble(0);
         Waypoint target = new Waypoint(Math.sin(Math.toRadians(targetAngle)) * targetDistance +0.15, Math.cos(Math.toRadians(targetAngle)) * targetDistance   );
-        Waypoint middleWP = new Waypoint(0, target.getY()-target.getY()/2);
+        Waypoint middleWP = new Waypoint(-targetAngle/Math.abs(targetAngle)*0.4, target.getY()-target.getY()/2);
         Path path1 = new Path(new Waypoint[]{new Waypoint(0,0), middleWP ,  target});
         System.out.println(path1);
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
