@@ -27,9 +27,9 @@ public class Gripper extends Command {
     public Gripper(boolean open) {
         requires(Robot.hatchIntake);
         if (open)
-            current = gripperState.GRIPPER_OPEN;
+            current = gripperState.GRIPPER_GRAB;
         else
-            current = gripperState.GRIPPER_CLOSE;
+            current = gripperState.GRIPPER_RELEASE;
     }
 
     @Override
@@ -38,10 +38,10 @@ public class Gripper extends Command {
             case TOGGLE_GRIPPER: // Change to the second state
                 hatchIntake.setGripper(!hatchIntake.isGripperOpen());
                 break;
-            case GRIPPER_OPEN: // Open the gripper if closed and not do anything otherwise
+            case GRIPPER_GRAB: // Open the gripper if closed and not do anything otherwise
                 hatchIntake.setGripper(true);
                 break;
-            case GRIPPER_CLOSE:// Close the gripper if opened and not do anything otherwise
+            case GRIPPER_RELEASE:// Close the gripper if opened and not do anything otherwise
                 hatchIntake.setGripper(false);
                 break;
         }
@@ -70,9 +70,9 @@ public class Gripper extends Command {
     /**
      * enum to indicate the state of the gripper
      */
-    public enum gripperState { //TODO: refactor Gripper open - close, to grab - release
+    public enum gripperState {
         TOGGLE_GRIPPER,
-        GRIPPER_OPEN,
-        GRIPPER_CLOSE
+        GRIPPER_GRAB,
+        GRIPPER_RELEASE
     }
 }
