@@ -28,6 +28,7 @@ public class Drivetrain extends Subsystem {
     private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
     public Point currentLocation = new Point(0, 0);
 
+
     public Drivetrain() {
         leftEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
         rightEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
@@ -99,6 +100,7 @@ public class Drivetrain extends Subsystem {
      */
     public double getLeftDistance() {
         return -leftEncoder.getDistance();
+
     }
 
     public void resetEncoders() {
