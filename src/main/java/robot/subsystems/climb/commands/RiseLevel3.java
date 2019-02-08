@@ -1,23 +1,21 @@
 package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.subsystems.climb.Constants;
 
 import static robot.Robot.climb;
 
 /**
  *
  */
-public class Rise extends Command {
+public class RiseLevel3 extends Command {
     //gamers, lose yourself and rise up
-    public Rise() {
+    public RiseLevel3() {
         requires(climb);
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-
     }
 
     // Called repeatedly when this Command is scheduled to run
