@@ -20,7 +20,29 @@ public class Path {
      * Create an empty Path instance
      */
     public Path() {
+    }
 
+    /**
+     * Create a Smoothed Point based Path instance, based on the DAWGMA 1712 article.
+     */
+    public Path(double smooth_weight_data, double smooth_weight_smooth, double smooth_tolerance, double path_acceleration, double max_path_velocity, Waypoint... waypoints) {
+        for (Waypoint p : waypoints) {
+            this.appendWaypoint(p);
+        }
+        this.generateAll(smooth_weight_data, smooth_weight_smooth, smooth_tolerance, path_acceleration, max_path_velocity);
+    }
+
+    /**
+     * Create a Dubin's Path instance
+     *
+     * @param start_position starting position of the robot
+     * @param start_angle    starting angle of the robot, in degrees
+     * @param end_position   ending position of the robot
+     * @param end_angle      ending angle of the robot, in degrees
+     * @param radius         radius of the turns
+     */
+    public Path(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
+        createDubinCurve(start_position, start_angle, end_position, end_angle, radius);
     }
 
     /**
@@ -36,6 +58,12 @@ public class Path {
         path.addAll(w);
     }
 
+    /**
+     * double matrix copier
+     *
+     * @param arr original matrix
+     * @return a new instance of a double matrix, holding all of the same values as the first
+     */
     private static double[][] doubleArrayCopy(double[][] arr) {
         //size first dimension of array
         double[][] temp = new double[arr.length][arr[0].length];
@@ -217,7 +245,7 @@ public class Path {
      * The first of the five methods used in the path generation, needed for the pure pursuit.
      * (Pure pursuit article, 'Path Generation' > 'Injecting points' , Page 5)
      */
-    public void generateFillPoint() {
+    public void generateFillPoint() { //TODO: rename to generate fill points
         Vector[] pathVectors = new Vector[path.size()]; //create an array of vectors per point.
         Path newPathClass = new Path(); //create a new path class
         int AmountOfPoints;
@@ -361,7 +389,7 @@ public class Path {
      * The last of the five methods used in the path generation, needed for the pure pursuit.
      * (see the Pure pursuit article, 'Path Generation' > 'Velocities' , Page 8)
      *
-     * @param maxAcceleration rhe acceleration constant
+     * @param maxAcceleration the acceleration constant
      * @author paulo
      */
     public void generateVelocity(double maxAcceleration, double pathMaximumVelocity) {
@@ -382,6 +410,206 @@ public class Path {
                             )
                     )
             );
+        }
+    }
+
+
+    // ----== Functions for Dubin's path generation: ==----
+
+    /**
+     * @param start_position
+     * @param start_angle
+     * @param end_position
+     * @param end_angle
+     * @param radius
+     */
+    public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
+        start_angle = 180 - (start_angle % 360);
+        end_angle = 180 - (end_angle % 360);
+        /*
+        There are three stages to this algorithm.
+        1. we create two pairs of circles tangent to each of the two points, and we choose which is the correct one
+        2. find the correct tangent points
+        3. create points on the circles
+         */
+        String path_type;
+        Point c_start;
+        Point c_end;
+        if (distanceXLookahead(start_position, start_angle, end_position) >=
+                Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
+                        radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle)))) {
+            //the right circle was chosen
+            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
+            if (distanceXLookahead(end_position, end_angle, c_start) >= radius) {
+                path_type = "RSR";
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
+            } else {
+                path_type = "RSL";
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
+            }
+        } else {
+            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle + 90)), radius * Math.cos(Math.toRadians(start_angle + 90))).add(start_position);
+            if (distanceXLookahead(end_position, end_angle, c_start) <= -radius) {
+                path_type = "LSL";
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
+            } else {
+                path_type = "LSR";
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
+            }
+        }
+        System.out.println(path_type);
+        Point[] tangent_points;
+        switch (path_type) {
+            case "LSL":
+                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1];
+                break;
+            case "RSL":
+                if (generateDubinKeyPoints(c_start, c_end, radius).length == 2) {
+                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
+                    break;
+                }
+                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2];
+                break;
+            case "LSR":
+                if (generateDubinKeyPoints(c_start, c_end, radius).length == 2) {
+                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[1];
+                    break;
+                }
+                if (generateDubinKeyPoints(c_start, c_end, radius).length == 3) {
+                    tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[2];
+                    break;
+                }
+                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[3];
+                break;
+            default:
+            case "RSR":
+                tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
+                break;
+        }
+        for (Point[] pcouple : generateDubinKeyPoints(c_start, c_end, radius)) {
+
+            for (Point p : pcouple) {
+                System.out.println(p);
+            }
+        }
+
+        //TODO: Place 'generateDubinFillPoints' to here after testing.
+        generateDubinFillPoints(start_position, end_position, c_start, c_end, tangent_points[0], tangent_points[1], radius, path_type);
+    }
+
+    /**
+     * Find the tangent points
+     *
+     * @param c1
+     * @param c2
+     * @param min_radius
+     * @return
+     */
+    private Point[][] generateDubinKeyPoints(Point c1, Point c2, double min_radius) {
+        Vector v4 = new Vector(c1, c2);
+        v4.rotate(90); //rotate 90 counter clockwise
+        Point tan5 = v4.normalize().multiply(min_radius).add(c1);
+        Point tan6 = v4.normalize().multiply(min_radius).add(c2);
+        Point tan7 = v4.normalize().multiply(-min_radius).add(c1);
+        Point tan8 = v4.normalize().multiply(-min_radius).add(c2);
+
+        if (2 * min_radius > Point.distance(c1, c2))
+            return new Point[][]{{tan5, tan6}, {tan7, tan8}}; //return null if both circles intersect
+        if (2 * min_radius == Point.distance(c1, c2))
+            return new Point[][]{{tan5, tan6}, {tan7, tan8}, {Point.average(c1, c2), Point.average(c1, c2)}}; //if both circles are tangent
+        /* The goal of this method is to return the tangent points between both circles.
+        To find crossing tangent lines (In LSR and RLS cases) we do this calculation:
+        Create a circle where the diameter is the distance between both circles.
+        Create a circle around one circles center with a radius twice the size of the radius.
+        Find the intersection between both circles. (there are two)
+        Calculate the vector between the intersection and the other circle.
+        Create a point at the center between the circle and the intersection. (first point)
+        Add the vector to the first point to get the second. (second point)
+         */
+        /*
+        d=sqr((x1-x0)^2 + (y1-y0)^2)
+        a=(r0^2-r1^2+d^2)/(2*d)
+        h=sqr(r0^2-a^2)
+        x2=x0+a*(x1-x0)/d
+        y2=y0+a*(y1-y0)/d
+        x3=x2+h*(y1-y0)/d       // also x3=x2-h*(y1-y0)/d
+        y3=y2-h*(x1-x0)/d       // also y3=y2+h*(x1-x0)/d
+         */
+        Point circleDistance = Point.average(c1, c2);
+
+        double d = Point.distance(c1, circleDistance); //distance between both intersecting circles
+        double a = (4 * min_radius * min_radius - Math.pow(Point.distance(c1, c2) / 2, 2) + d * d) / (2 * d); //distance of c1 from the intersection line
+        double h = Math.sqrt(4 * min_radius * min_radius - a * a); //distance of the line connecting both circles from the intersection.
+        Vector v1 = new Vector(c1, c2); //create a vector from the first center to the second (which is the same as from the first one to the larger circle.
+        Point p2 = v1.normalize().multiply(a).add(c1); //p2 is the point on the intersection between the centerline and the intersection line.
+        v1.rotate(90); // rotates 90 counter clockwise
+        Point intersect1 = v1.normalize().multiply(h).add(p2);
+        Point intersect2 = v1.normalize().multiply(-h).add(p2);
+        Vector v2 = new Vector(intersect1, c2);
+        Point tan1 = Point.average(c1, intersect1); //the tangent counter clockwise of the center line
+        Point tan2 = v2.add(tan1); //the tangent counter clockwise of the center line
+
+        Vector v3 = new Vector(intersect2, c2);
+        Point tan3 = Point.average(c1, intersect2); //the tangent clockwise of the center line
+        Point tan4 = v3.add(tan3);
+
+        // counter clockwise from c1, clockwise from c1, counterclock cross, clockwise cross,
+        return new Point[][]{{tan5, tan6}, {tan7, tan8}, {tan1, tan2}, {tan3, tan4}};
+    }
+
+
+    private double distanceXLookahead(Point current, double angle, Point target) {
+        //Calculates the robot's line of view  as a line formula (a*x + b*y + c)/sqrt(a*a + b*b)
+        angle = Math.toRadians(angle);
+        double a = -Math.tan(angle);
+        double c = Math.tan(angle) * current.getX() - current.getY();
+        double x = Math.abs(target.getX() * a + target.getY() + c) / Math.sqrt(a * a + 1);
+        double sign = Math.sin(angle) * (target.getX() - current.getX()) - Math.cos(angle) * (target.getY() - current.getY());
+        double side = Math.signum(sign);
+        return x * side;
+    }
+
+    private void generateDubinFillPoints(Point start_position, Point end_position, Point c1, Point c2, Point tan1, Point tan2, double radius, String path_type) {
+        Path newPathClass = new Path(); //create a new path class
+
+        double fill_delta_angle = Constants.SPACING_BETWEEN_WAYPOINTS;// maybe make this number smaller, divide it by a constant or have a separate constant for turns
+        if (path_type.charAt(0) == 'R')
+            generateCircleFillPoints(start_position, tan1, c1, fill_delta_angle, newPathClass);
+        else
+            generateCircleFillPoints(start_position, tan1, c1, -fill_delta_angle, newPathClass);
+        if (this.length() <= 1)
+            newPathClass.appendWaypoint(new Waypoint(tan1.getX(), tan1.getY()));
+        Vector tangentVector = new Vector(tan1, tan2);
+        int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
+        tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
+        for (int j = 0; j < AmountOfPoints; j++) {
+            if(newPathClass.length() == 1)
+                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tan1)));
+            else
+                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tan1)));
+
+        }
+
+        if (path_type.charAt(2) == 'R')
+            generateCircleFillPoints(tan2, end_position, c2, fill_delta_angle, newPathClass);
+        else
+            generateCircleFillPoints(tan2, end_position, c2, -fill_delta_angle, newPathClass);
+        newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
+        clear();
+        addAll(newPathClass);
+    }
+
+    public void generateCircleFillPoints(Point start, Point end, Point circle_center, double spacing_between_points_arc, Path path) {
+        Vector start_vector = new Vector(circle_center, start);
+        Vector end_vector = new Vector(circle_center, end);
+        double delta_angle = spacing_between_points_arc / start_vector.magnitude();
+        int amount_of_points = (int) Math.ceil(start_vector.magnitude() * Math.toRadians((360 + Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle())) % 360) / Math.abs(spacing_between_points_arc));
+        System.out.println(amount_of_points);
+        System.out.println(Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle()));
+        for (int j = 0; j < amount_of_points; j++) {
+            Vector fill_point_vector = new Vector(start_vector.x, start_vector.y);
+            fill_point_vector.rotate(-j * Math.toDegrees(delta_angle));
+            path.appendWaypoint(new Waypoint(fill_point_vector.add(circle_center).getX(), fill_point_vector.add(circle_center).getY())); //TODO: make it easier to add a point
         }
     }
 

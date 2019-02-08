@@ -39,6 +39,9 @@ public class Vector extends Vector2d {
         return new Vector(x * d, y * d);
     }
 
+    public double angle(){
+        return Math.toDegrees(Math.atan2(y, x));
+    }
 
     public Vector normalize() {
         return this.multiply(1 / this.magnitude());
