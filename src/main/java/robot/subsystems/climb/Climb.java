@@ -18,7 +18,7 @@ public class Climb extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    private TalonSRX talonUL = new TalonSRX(Ports.upLeftMotor);
+    private TalonSRX talonUL = new TalonSRX(Ports.upLeftMotor); //TODO: change to forward left forwrard right
     private TalonSRX talonUR = new TalonSRX(Ports.upRightMotor);
     private TalonSRX talonDL = new TalonSRX(Ports.downLeftMotor);
     private TalonSRX talonDR = new TalonSRX(Ports.downRightMotor);
@@ -48,12 +48,27 @@ public class Climb extends Subsystem {
         talonDR.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
         talonDR.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
 
+        /* set closed loop gains in slot0 */
+        talonUR.config_kP(0, Constants.CLIMB_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonUR.config_kI(0, Constants.CLIMB_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonUR.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonUR.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
+
+        /* set closed loop gains in slot0 */
+        //I chose opposite arms because its mostly arbitrary and it might be more accurate, we want to have the monitoring on opposite sides
+        talonDL.config_kP(0, Constants.CLIMB_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        talonDL.config_kI(0, Constants.CLIMB_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        talonDL.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        talonDL.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
+
         //set the pairs to follow their adjacent arms
         talonUR.follow(talonUL);
         talonDL.follow(talonDR);
 
         configMotorEncoder(talonUL, Constants.UP_LEFT_FORWARD_HALL_REVERSED, Constants.UP_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
         configMotorEncoder(talonDR, Constants.DOWN_RIGHT_FORWARD_HALL_REVERSED, Constants.DOWN_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
+        configMotorEncoder(talonUR, Constants.UP_RIGHT_FORWARD_HALL_REVERSED, Constants.UP_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
+        configMotorEncoder(talonDL, Constants.DOWN_LEFT_FORWARD_HALL_REVERSED, Constants.DOWN_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
     }
 
     /**

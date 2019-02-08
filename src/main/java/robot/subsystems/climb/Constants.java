@@ -1,6 +1,10 @@
 package robot.subsystems.climb;
 
 class Constants {
+    static final boolean DOWN_LEFT_REVERSE_HALL_REVERSED = false;
+    static final boolean UP_RIGHT_REVERSE_HALL_REVERSED = false;
+    static final boolean DOWN_LEFT_FORWARD_HALL_REVERSED = false;
+    static final boolean UP_RIGHT_FORWARD_HALL_REVERSED = false;
     static final boolean UP_LEFT_TALON_REVERSE = false;
     static final boolean UP_RIGHT_TALON_REVERSE = false;
     static final boolean DOWN_LEFT_TALON_REVERSE = false;
