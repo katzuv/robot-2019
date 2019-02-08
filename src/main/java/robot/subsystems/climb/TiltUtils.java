@@ -23,4 +23,10 @@ public class TiltUtils {
     public Point3D getRotatedPoint(Point2D point, double pitch, double roll){
         return getRotatedPoint(point.getX(), point.getY(), pitch, roll);
     }
+
+    public double getlegLength(Point3D displacedArm, Point2D armDimension){
+        Point3D floor = new Point3D(armDimension.getX(), armDimension.getY(), 0); //assert that a 3d point wont be inputted by accident
+        double cosangle = displacedArm.dotProduct(floor) / (displacedArm.magnitude() * floor.magnitude());
+        return sqrt(1 - pow(cosangle,2)) * pow(displacedArm.magnitude(),2) * floor.magnitude() / displacedArm.dotProduct(floor);
+    }
 }
