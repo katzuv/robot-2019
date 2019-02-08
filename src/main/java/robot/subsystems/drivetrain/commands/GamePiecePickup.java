@@ -39,6 +39,15 @@ public class GamePiecePickup extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        if (Point.distance(Robot.drivetrain.currentLocation,
+                middleWP(target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))) <= 0 ||
+                Point.distance(Robot.drivetrain.currentLocation, target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))
+                        >= Constants.MIN_DISTANCE) {
+            Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
+            path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+            PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
+            pursue.start();
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
