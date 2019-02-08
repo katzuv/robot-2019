@@ -18,9 +18,9 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private final DoubleSolenoid groundIntake = new DoubleSolenoid(Ports.groundForward, Ports.groundReverse);
-    private final DoubleSolenoid gripperPlate = new DoubleSolenoid(Ports.gripperPlateForward, Ports.gripperPlateReverse);
-    private final DoubleSolenoid gripper = new DoubleSolenoid(Ports.gripperForward, Ports.gripperReverse);
-    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);
+    private final DoubleSolenoid gripperPlate = new DoubleSolenoid(Ports.gripperPlateForward, Ports.gripperPlateReverse); //The solenoid which moves the hatch grabber or the 'flower' forwards
+    private final DoubleSolenoid gripper = new DoubleSolenoid(Ports.gripperForward, Ports.gripperReverse); //The solenoid in charge of grabbing and dropping the hatches
+    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);//Hatch proximity sensor
 
 
     public HatchIntake() {
@@ -31,7 +31,7 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
     /**
      * @return the voltage from the sensor
      */
-    public double voltage() {
+    public double getVoltage() {
         return hatchSensor.getVoltage();
     }
 
@@ -80,7 +80,7 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
      * @return if the hatch is inside
      */
     public boolean isHatchInside() {
-        return voltage() <= Constants.HATCH_IN_VOLTAGE;
+        return getVoltage() <= Constants.HATCH_IN_VOLTAGE;
     }
 
 
