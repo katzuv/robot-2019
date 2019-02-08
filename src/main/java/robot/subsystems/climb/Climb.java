@@ -85,6 +85,18 @@ public class Climb extends Subsystem {
         talonBR.set(ControlMode.MotionMagic, metersToTicks(height));
     }
 
+    public double getLegFLHeight(){
+        return talonFL.getSelectedSensorPosition(0);
+    }
+    public double getLegFRHeight(){
+        return talonFR.getSelectedSensorPosition(0);
+    }
+    public double getLegBLHeight(){
+        return talonBL.getSelectedSensorPosition(0);
+    }
+    public double getLegBRHeight(){
+        return talonBR.getSelectedSensorPosition(0);
+    }
 
     private void configMotorEncoder(TalonSRX motorController, boolean forwardLSReversed, boolean backwardLSReversed, FeedbackDevice feedbackDevice){
         motorController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
