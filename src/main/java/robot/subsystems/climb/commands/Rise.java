@@ -17,8 +17,7 @@ public class Rise extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        climb.raiseForwardLegs();
-        climb.raiseBackLegs();
+
     }
 
     // Called repeatedly when this Command is scheduled to run

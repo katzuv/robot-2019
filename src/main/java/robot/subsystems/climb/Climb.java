@@ -71,40 +71,21 @@ public class Climb extends Subsystem {
         configMotorEncoder(talonDL, Constants.DOWN_LEFT_FORWARD_HALL_REVERSED, Constants.DOWN_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
     }
 
-    /**
-     *
-     */
-    public void raiseForwardLegs(){
-        talonUL.set(ControlMode.MotionMagic, metersToTicks(Constants.LEVEL_THREE_LEG_LENGTH));
+    public void setTalonULHeight(double height){
+        talonUL.set(ControlMode.MotionMagic, metersToTicks(height));
+    }
+
+    public void setTalonURHeight(double height){
+        talonUR.set(ControlMode.MotionMagic, metersToTicks(height));
+    }
+    public void setTalonDLHeight(double height){
+        talonDL.set(ControlMode.MotionMagic, metersToTicks(height));
+    }
+    public void setTalonDRHeight(double height){
+        talonDR.set(ControlMode.MotionMagic, metersToTicks(height));
     }
 
     /**
-     *
-     */
-    public void lowerForwardLegs(){
-        talonDR.set(ControlMode.MotionMagic, 0);
-        //talonUL.set
-        //talonUR.follow/talonUR.set
-    }
-
-    /**
-     *
-     */
-    public void raiseBackLegs(){
-        talonUL.set(ControlMode.MotionMagic, metersToTicks(Constants.LEVEL_THREE_LEG_LENGTH));
-        //talonUL.set
-        //talonUR.follow/talonUR.set
-
-    }
-
-    /**
-     *
-     */
-    public void lowerBackLegs(){
-        talonDR.set(ControlMode.MotionMagic, metersToTicks(Constants.LEVEL_THREE_LEG_LENGTH));
-        //talonDL.set
-        //talonDR.follow/talonUR.set
-    }
 
     private void configMotorEncoder(TalonSRX motorController, boolean forwardLSReversed, boolean backwardLSReversed, FeedbackDevice feedbackDevice){
         motorController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
