@@ -31,7 +31,7 @@ def xs_and_ys(waypoints: List[str]) -> Tuple[List[float], List[float]]:
 
 
 if __name__ == '__main__':
-    first_waypoint = input('Insert the outputted string from the Java program, press Ctrl+D to stop input:\n')
+    first_waypoint = input('Insert the outputted string from the Java program, press Ctrl+D on Linux or Ctrl+Z on Windows to stop input, then hit press Enter:\n')
     points = [first_waypoint] + sys.stdin.readlines()
     plt.scatter(*xs_and_ys(points))
     plt.show()
