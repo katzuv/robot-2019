@@ -20,7 +20,7 @@ public class Constants {
     public static final double K_CURVE = 3; //number from 1 to 5
 
     //DRIVING CONSTANTS (pure numbers)
-    public final static double kV = 1/MAX_VELOCITY;
+    public final static double kV = 1 / MAX_VELOCITY;
     public final static double kA = 0.002;
     public final static double kP = 0.01;
 
