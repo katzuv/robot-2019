@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,7 +35,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
-
+    public static Timer currentTime = new Timer();
 
     public static OI m_oi;
 
@@ -80,6 +81,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
+        currentTime.reset();
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
@@ -188,12 +190,15 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-
         Scheduler.getInstance().run();
+
         SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
         SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
 
+        if (150 - currentTime.get() <= 3) {
+
+        }
     }
 
     /**
