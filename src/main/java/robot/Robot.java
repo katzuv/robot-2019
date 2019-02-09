@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.commands.JoystickDrive;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
@@ -201,7 +200,8 @@ public class Robot extends TimedRobot {
             hatchIntake.setGripper(false);//Close gripper
             WristTurn wristTurn = new WristTurn(165);
             wristTurn.start();//Close cargo intake
-            
+            ElevatorCommand elevatorCommand = new ElevatorCommand(0);
+            elevatorCommand.start();
         }
     }
 
