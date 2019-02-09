@@ -18,9 +18,9 @@ public class TiltUtils {
         the final dot is rotated around the y axis (pitch angle) and then around the x axis (roll angle).
         the multiplication of both rotation matrices looks something like this:
 
-        | cos phi, sin theta * sin phi, sin phi * cos theta| | w |
-        |   0    ,      cos theta     ,  - sin theta       | | h |
-        | sin phi, cos phi * sin theta, cos phi * cos theta| | 0 |
+        |      cos phi        ,     0     , ... | | w |
+        | sin theta * sin phi , cos theta , ... | | h |
+        | sin phi * cos theta , sin theta , ... | | 0 |
 
         theta - pitch
         phi - roll
@@ -29,9 +29,9 @@ public class TiltUtils {
 
         for a full explanation about rotational matrices see: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
          */
-        return new Point3D(distanceForward * cos(pitch) + distanceRight * sin(pitch) * sin(roll),
-                distanceRight * cos(roll),
-                distanceForward * sin(pitch) + distanceRight * cos(pitch)); //todo: im 90% percent sure i fricked something up when moving from right hand math to left hand programming.
+        return new Point3D(distanceRight * cos(roll),
+                distanceRight * sin(pitch) * sin(roll) + distanceForward * cos(pitch),
+                distanceRight * sin(roll) * cos(pitch) + distanceForward * sin(pitch)); //todo: im 25% percent sure i fricked something up when moving from right hand math to left hand programming.
 
     }//TODO: assert length similarity for testing
 
