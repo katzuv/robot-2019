@@ -66,9 +66,9 @@ public class GamePiecePickup extends Command {
 
     private Path generateFromVision(double angle, double distance) {
         double targetDistance = distance / 100;
-        Waypoint target = target(angle, targetDistance);
-        Waypoint middleWP = getMiddleWP(target);
-        Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});
+        Waypoint targetWP = target(angle, targetDistance);
+        Waypoint middleWP = getMiddleWP(targetWP);
+        Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, targetWP});
         System.out.println(path1);
         return path1;
     }
