@@ -37,10 +37,13 @@ public class GamePiecePickup extends Command {
         System.out.println(path1);
     }
 
+    /**
+     * when the robot reach the middleWP the robot regenerate the purePursuit unless the distance is minimal
+     */
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if (Point.distance(Robot.drivetrain.currentLocation,
-                getMiddleWP(target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))) <= 0 ||
+                getMiddleWP(target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))) <= 0 &&
                 Point.distance(Robot.drivetrain.currentLocation, target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))
                         >= Constants.MIN_DISTANCE) {
             Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
@@ -50,9 +53,13 @@ public class GamePiecePickup extends Command {
         }
     }
 
+    /**
+     * @return if the robot arrived to the target
+     */
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return Point.distance(Robot.drivetrain.currentLocation, target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))
+                <= 0;
     }
 
     // Called once after isFinished returns true
