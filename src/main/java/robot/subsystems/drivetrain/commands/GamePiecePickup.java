@@ -21,6 +21,9 @@ public class GamePiecePickup extends Command {
     NetworkTableEntry targetAngleEntry;
     NetworkTableEntry targetDistanceEntry;
 
+    /**
+     * take distance and angle from the network tables than generate th pure pursue by that parameters
+     */
     // Called just before this Command runs the first time
     protected void initialize() {
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -71,6 +74,11 @@ public class GamePiecePickup extends Command {
     protected void interrupted() {
     }
 
+    /**
+     * @param angle    from target
+     * @param distance from target
+     * @return path with middle waypoint to the target
+     */
     private Path generateFromVision(double angle, double distance) {
         double targetDistance = distance / 100;
         Waypoint targetWP = target(angle, targetDistance);
@@ -80,10 +88,20 @@ public class GamePiecePickup extends Command {
         return path1;
     }
 
+    /**
+     * @param target Way Point
+     * @return the middle Way point
+     */
     private Waypoint getMiddleWP(Waypoint target) {
         return new Waypoint(0, target.getY() - target.getY() / 2);
     }
 
+    /**
+     *
+     * @param angle from target
+     * @param distance from target
+     * @return the target Way point
+     */
     private Waypoint target(double angle, double distance) {
         return new Waypoint(Math.sin(Math.toRadians(angle)) * distance + 0.15, Math.cos(Math.toRadians(angle)) * distance);
     }
