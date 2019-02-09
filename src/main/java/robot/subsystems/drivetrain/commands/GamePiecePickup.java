@@ -40,7 +40,7 @@ public class GamePiecePickup extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if (Point.distance(Robot.drivetrain.currentLocation,
-                middleWP(target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))) <= 0 ||
+                getMiddleWP(target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))) <= 0 ||
                 Point.distance(Robot.drivetrain.currentLocation, target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))
                         >= Constants.MIN_DISTANCE) {
             Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
@@ -66,23 +66,18 @@ public class GamePiecePickup extends Command {
 
     private Path generateFromVision(double angle, double distance) {
         double targetDistance = distance / 100;
-        double targetAngle = angle;
-        Waypoint target = target(targetAngle, targetDistance);
-        Waypoint middleWP = middleWP(target);
+        Waypoint target = target(angle, targetDistance);
+        Waypoint middleWP = getMiddleWP(target);
         Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});
         System.out.println(path1);
         return path1;
     }
 
-    private Waypoint middleWP(Waypoint target) {
-        Waypoint middleWP = new Waypoint(0, target.getY() - target.getY() / 2);
-        return middleWP;
+    private Waypoint getMiddleWP(Waypoint target) {
+        return new Waypoint(0, target.getY() - target.getY() / 2);
     }
 
     private Waypoint target(double angle, double distance) {
-        double targetDistance = distance / 100;
-        double targetAngle = angle;
-        Waypoint target = new Waypoint(Math.sin(Math.toRadians(targetAngle)) * targetDistance + 0.15, Math.cos(Math.toRadians(targetAngle)) * targetDistance);
-        return target;
+        return new Waypoint(Math.sin(Math.toRadians(angle)) * distance + 0.15, Math.cos(Math.toRadians(angle)) * distance);
     }
 }
