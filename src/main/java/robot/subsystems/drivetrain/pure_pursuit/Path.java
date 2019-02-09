@@ -41,8 +41,11 @@ public class Path {
      * @param end_angle      ending angle of the robot, in degrees
      * @param radius         radius of the turns
      */
-    public Path(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
+    public Path(Point start_position, double start_angle, Point end_position, double end_angle, double radius, double path_acceleration, double max_path_velocity) {
         createDubinCurve(start_position, start_angle, end_position, end_angle, radius);
+        generateDistance();
+        generateCurvature();
+        generateVelocity(path_acceleration, max_path_velocity);
     }
 
     /**
