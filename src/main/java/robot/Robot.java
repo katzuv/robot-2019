@@ -199,7 +199,9 @@ public class Robot extends TimedRobot {
 
         if (150 - currentTime.get() <= 3) {
             hatchIntake.setGripper(false);//Close gripper
-
+            WristTurn wristTurn = new WristTurn(165);
+            wristTurn.start();//Close cargo intake
+            
         }
     }
 
