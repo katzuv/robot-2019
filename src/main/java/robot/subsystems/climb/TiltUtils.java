@@ -48,6 +48,6 @@ public class TiltUtils {
          */
         Point3D floor = new Point3D(armDimension.getX(), armDimension.getY(), 0); //assert that a 3d point wont be inputted by accident
         double cosangle = displacedArm.dotProduct(floor) / (displacedArm.magnitude() * floor.magnitude());
-        return sqrt(1 - pow(cosangle,2)) * pow(displacedArm.magnitude(),2) * floor.magnitude() / displacedArm.dotProduct(floor);
+        return sqrt(1 - pow(cosangle,2)) * displacedArm.magnitude() / cosangle;
     }
 }
