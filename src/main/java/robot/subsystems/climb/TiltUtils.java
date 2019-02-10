@@ -41,14 +41,11 @@ public class TiltUtils {
 
     private static double getLegDisplacement(Point3D displacedArm, Point2D armDimension){
         /*
-        in this method we get the current robot leg and where it should be,
-        then we calculate the angle between them and the center of the robot,
-        and then we use that angle and trigonometry to get the distance the leg would need to shorten up,
-        so that it would make the robot be flat.
+        in this method, we use basic trigonometry to get the length of the arm, using its height off the ground
          */
-        Point3D floor = new Point3D(armDimension.getX(), armDimension.getY(), 0); //assert that a 3d point wont be inputted by accident
-        double cosangle = displacedArm.dotProduct(floor) / (displacedArm.magnitude() * floor.magnitude());
-        return sqrt(1 - pow(cosangle,2)) * displacedArm.magnitude() / cosangle;
+        double h = getLegHeightOffGround(displacedArm,armDimension);
+        return h / sqrt(1 - pow(h/displacedArm.magnitude(), 2));
+        
     }
 
     private static double getLegHeightOffGround(Point3D displacedArm, Point2D armDimension){
