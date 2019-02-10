@@ -20,6 +20,8 @@ public class GamePiecePickup extends Command {
 
     NetworkTableEntry targetAngleEntry;
     NetworkTableEntry targetDistanceEntry;
+    private double currentDistanceUsed;
+
 
     /**
      * take distance and angle from the network tables than generate th pure pursue by that parameters
@@ -30,7 +32,7 @@ public class GamePiecePickup extends Command {
         NetworkTable table = inst.getTable("vision");
         targetAngleEntry = table.getEntry("angle");
         targetDistanceEntry = table.getEntry("distance");
-
+        currentDistanceUsed = targetDistanceEntry.getDouble(0);
         Path path1 = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         SmartDashboard.putNumber("target distance", targetDistanceEntry.getDouble(0) / 100);
@@ -45,14 +47,14 @@ public class GamePiecePickup extends Command {
      */
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (Point.distance(Robot.drivetrain.currentLocation,
-                target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0))) <= 
-                Point.distance( getMiddleWP(target(targetAngleEntry.getDouble(0), 
-                targetDistanceEntry.getDouble(0),target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0))))) &&
-                Point.distance(Robot.drivetrain.currentLocation, target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))
-                        >= Constants.MIN_DISTANCE) {
+        Waypoint targetWP =target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
+        Waypoint middle =getMiddleWP(targetWP);
+        if (Point.distance(Robot.drivetrain.currentLocation, targetWP) <= Point.distance( middle, targetWP) &&
+                Point.distance(Robot.drivetrain.currentLocation, targetWP) >= Constants.MIN_DISTANCE) {
+
             Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
             path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+            System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
             PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
             pursue.start();
         }
@@ -82,10 +84,11 @@ public class GamePiecePickup extends Command {
      * @return path with middle waypoint to the target
      */
     private Path generateFromVision(double angle, double distance) {
-        double targetDistance = distance / 100;
+        double targetDistance = distance;
         Waypoint targetWP = target(angle, targetDistance);
         Waypoint middleWP = getMiddleWP(targetWP);
         Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, targetWP});
+        path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         System.out.println(path1);
         return path1;
     }
@@ -105,6 +108,6 @@ public class GamePiecePickup extends Command {
      * @return the target Way point
      */
     private Waypoint target(double angle, double distance) {
-        return new Waypoint(Math.sin(Math.toRadians(angle)) * distance + 0.15, Math.cos(Math.toRadians(angle)) * distance);
+        return new Waypoint(Math.sin(Math.toRadians(angle)) * distance, Math.cos(Math.toRadians(angle)) * distance);
     }
 }
