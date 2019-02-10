@@ -31,7 +31,7 @@ public class TiltUtils {
          */
         return new Point3D(distanceRight * cos(roll),
                 distanceRight * sin(pitch) * sin(roll) + distanceForward * cos(pitch),
-                distanceRight * sin(roll) * cos(pitch) + distanceForward * sin(pitch)); //todo: im 25% percent sure i fricked something up when moving from right hand math to left hand programming.
+                - distanceRight * sin(roll) * cos(pitch) + distanceForward * sin(pitch)); //todo: im 25% percent sure i fricked something up when moving from right hand math to left hand programming.
 
     }//TODO: assert length similarity for testing
 
