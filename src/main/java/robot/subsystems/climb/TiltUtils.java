@@ -51,6 +51,10 @@ public class TiltUtils {
         return sqrt(1 - pow(cosangle,2)) * displacedArm.magnitude() / cosangle;
     }
 
+    private static double getLegHeightOffGround(Point3D displacedArm, Point2D armDimension){
+        return displacedArm.getZ();
+    }
+
     public static double getLegLength(Point2D armDimension, double pitch, double roll){
         return getLegDisplacement(getRotatedPoint(armDimension, pitch, roll), armDimension);
     }
