@@ -23,7 +23,7 @@ public class Climb extends Subsystem {
     private TalonSRX talonBL = new TalonSRX(Ports.backLeftMotor);
     private TalonSRX talonBR = new TalonSRX(Ports.backRightMotor);
 
-    public Climb(){ //TODO: add four encoders to each of the motors just as in the elevator code.
+    public Climb() { //TODO: add four encoders to each of the motors just as in the elevator code.
         talonFL.setInverted(Constants.FORWARD_LEFT_TALON_REVERSE);
         talonFR.setInverted(Constants.FORWARD_RIGHT_TALON_REVERSE);
         talonBL.setInverted(Constants.BACK_LEFT_TALON_REVERSE);
@@ -71,33 +71,39 @@ public class Climb extends Subsystem {
         configMotorEncoder(talonBL, Constants.BACK_LEFT_FORWARD_HALL_REVERSED, Constants.BACK_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
     }
 
-    public void setLegFLHeight(double height, double legOffset){
-        talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4]*legOffset);
-    }
-    public void setLegFRHeight(double height, double legOffset){
-        talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4]*legOffset);
-    }
-    public void setLegBLHeight(double height, double legOffset){
-        talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4]*legOffset);
-    }
-    public void setLegBRHeight(double height, double legOffset){
-        talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4]*legOffset);
+    public void setLegFLHeight(double height, double legOffset) {
+        talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
-    public double getLegFLHeight(){
+    public void setLegFRHeight(double height, double legOffset) {
+        talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    }
+
+    public void setLegBLHeight(double height, double legOffset) {
+        talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    }
+
+    public void setLegBRHeight(double height, double legOffset) {
+        talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    }
+
+    public double getLegFLHeight() {
         return talonFL.getSelectedSensorPosition(0);
     }
-    public double getLegFRHeight(){
+
+    public double getLegFRHeight() {
         return talonFR.getSelectedSensorPosition(0);
     }
-    public double getLegBLHeight(){
+
+    public double getLegBLHeight() {
         return talonBL.getSelectedSensorPosition(0);
     }
-    public double getLegBRHeight(){
+
+    public double getLegBRHeight() {
         return talonBR.getSelectedSensorPosition(0);
     }
 
-    private void configMotorEncoder(TalonSRX motorController, boolean forwardLSReversed, boolean backwardLSReversed, FeedbackDevice feedbackDevice){
+    private void configMotorEncoder(TalonSRX motorController, boolean forwardLSReversed, boolean backwardLSReversed, FeedbackDevice feedbackDevice) {
         motorController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
         motorController.configForwardLimitSwitchSource(
                 LimitSwitchSource.FeedbackConnector,
@@ -111,8 +117,8 @@ public class Climb extends Subsystem {
         );
     }
 
-    private int metersToTicks(double meters){
-        return (int)(meters * Constants.TICKS_PER_METER);
+    private int metersToTicks(double meters) {
+        return (int) (meters * Constants.TICKS_PER_METER);
     }
 
     @Override
