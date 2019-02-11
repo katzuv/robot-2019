@@ -15,7 +15,7 @@ public class Constants {
     public final static double TOLERANCE = 0.001;
 
     //VELOCITY CONSTANTS
-    public static final double MAX_PATH_VELOCITY = 2;
+    public static final double MAX_PATH_VELOCITY = 2.3;
     public static final double MAX_ACCEL = 0.5;
     public static final double K_CURVE = 3; //number from 1 to 5
 
