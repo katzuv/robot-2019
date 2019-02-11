@@ -36,30 +36,30 @@ public class Climb extends Subsystem {
         talonBR.setNeutralMode(NeutralMode.Brake);
 
         /* set closed loop gains in slot0 */
-        talonFL.config_kP(0, Constants.CLIMB_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonFL.config_kI(0, Constants.CLIMB_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonFL.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonFL.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        talonFL.config_kP(0, Constants.CLIMB_PIDFE[0], Constants.TALON_TIMEOUT_MS);
+        talonFL.config_kI(0, Constants.CLIMB_PIDFE[1], Constants.TALON_TIMEOUT_MS);
+        talonFL.config_kD(0, Constants.CLIMB_PIDFE[2], Constants.TALON_TIMEOUT_MS);
+        talonFL.config_kF(0, Constants.CLIMB_PIDFE[3], Constants.TALON_TIMEOUT_MS);
 
         /* set closed loop gains in slot0 */
         //I chose opposite arms because its mostly arbitrary and it might be more accurate, we want to have the monitoring on opposite sides
-        talonBR.config_kP(0, Constants.CLIMB_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonBR.config_kI(0, Constants.CLIMB_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonBR.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonBR.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        talonBR.config_kP(0, Constants.CLIMB_PIDFE[0], Constants.TALON_TIMEOUT_MS);
+        talonBR.config_kI(0, Constants.CLIMB_PIDFE[1], Constants.TALON_TIMEOUT_MS);
+        talonBR.config_kD(0, Constants.CLIMB_PIDFE[2], Constants.TALON_TIMEOUT_MS);
+        talonBR.config_kF(0, Constants.CLIMB_PIDFE[3], Constants.TALON_TIMEOUT_MS);
 
         /* set closed loop gains in slot0 */
-        talonFR.config_kP(0, Constants.CLIMB_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonFR.config_kI(0, Constants.CLIMB_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonFR.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonFR.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        talonFR.config_kP(0, Constants.CLIMB_PIDFE[0], Constants.TALON_TIMEOUT_MS);
+        talonFR.config_kI(0, Constants.CLIMB_PIDFE[1], Constants.TALON_TIMEOUT_MS);
+        talonFR.config_kD(0, Constants.CLIMB_PIDFE[2], Constants.TALON_TIMEOUT_MS);
+        talonFR.config_kF(0, Constants.CLIMB_PIDFE[3], Constants.TALON_TIMEOUT_MS);
 
         /* set closed loop gains in slot0 */
         //I chose opposite arms because its mostly arbitrary and it might be more accurate, we want to have the monitoring on opposite sides
-        talonBL.config_kP(0, Constants.CLIMB_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonBL.config_kI(0, Constants.CLIMB_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonBL.config_kD(0, Constants.CLIMB_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonBL.config_kF(0, Constants.CLIMB_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        talonBL.config_kP(0, Constants.CLIMB_PIDFE[0], Constants.TALON_TIMEOUT_MS);
+        talonBL.config_kI(0, Constants.CLIMB_PIDFE[1], Constants.TALON_TIMEOUT_MS);
+        talonBL.config_kD(0, Constants.CLIMB_PIDFE[2], Constants.TALON_TIMEOUT_MS);
+        talonBL.config_kF(0, Constants.CLIMB_PIDFE[3], Constants.TALON_TIMEOUT_MS);
 
         //set the pairs to follow their adjacent arms
         talonFR.follow(talonFL);
@@ -72,16 +72,16 @@ public class Climb extends Subsystem {
     }
 
     public void setLegFLHeight(double height, double legOffset){
-        talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, legOffset);
+        talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4]*legOffset);
     }
     public void setLegFRHeight(double height, double legOffset){
-        talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, legOffset);
+        talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4]*legOffset);
     }
     public void setLegBLHeight(double height, double legOffset){
-        talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, legOffset);
+        talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4]*legOffset);
     }
     public void setLegBRHeight(double height, double legOffset){
-        talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, legOffset);
+        talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4]*legOffset);
     }
 
     public double getLegFLHeight(){
