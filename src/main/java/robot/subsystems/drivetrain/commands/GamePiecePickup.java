@@ -61,7 +61,7 @@ public class GamePiecePickup extends Command {
      */
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return targetDistanceEntry.getDouble(0) < 0.3;
+        return (targetDistanceEntry.getDouble(0) < 0.3);
     }
 
     // Called once after isFinished returns true
