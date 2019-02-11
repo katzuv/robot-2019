@@ -49,20 +49,19 @@ public class GamePiecePickup extends Command {
     protected void execute() {
         Waypoint targetWP =target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
         Waypoint middle =getMiddleWP(targetWP);
-            Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
-            path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-            System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
-            PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
-            pursue.start();
-        }
+        Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
+        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+        System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
+        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
+        pursue.start();
+    }
 
     /**
      * @return if the robot arrived to the target
      */
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Point.distance(Robot.drivetrain.currentLocation, target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))
-                <= 0;
+        return targetDistanceEntry.getDouble(0) < 0.3;
     }
 
     // Called once after isFinished returns true
