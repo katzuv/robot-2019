@@ -45,7 +45,6 @@ public class TiltUtils {
          */
         double h = getLegHeightOffGround(displacedArm,armDimension);
         return h / sqrt(1 - pow(h/displacedArm.magnitude(), 2));
-        
     }
 
     private static double getLegHeightOffGround(Point3D displacedArm, Point2D armDimension){

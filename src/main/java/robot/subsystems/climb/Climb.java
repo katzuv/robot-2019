@@ -71,18 +71,17 @@ public class Climb extends Subsystem {
         configMotorEncoder(talonBL, Constants.BACK_LEFT_FORWARD_HALL_REVERSED, Constants.BACK_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
     }
 
-    public void setLegFLHeight(double height){
-        talonFL.set(ControlMode.MotionMagic, metersToTicks(height));
+    public void setLegFLHeight(double height, double legOffset){
+        talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, legOffset);
     }
-
-    public void setLegFRHeight(double height){
-        talonFR.set(ControlMode.MotionMagic, metersToTicks(height));
+    public void setLegFRHeight(double height, double legOffset){
+        talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, legOffset);
     }
-    public void setLegBLHeight(double height){
-        talonBL.set(ControlMode.MotionMagic, metersToTicks(height));
+    public void setLegBLHeight(double height, double legOffset){
+        talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, legOffset);
     }
-    public void setLegBRHeight(double height){
-        talonBR.set(ControlMode.MotionMagic, metersToTicks(height));
+    public void setLegBRHeight(double height, double legOffset){
+        talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, legOffset);
     }
 
     public double getLegFLHeight(){
