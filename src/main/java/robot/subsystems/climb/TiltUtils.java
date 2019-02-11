@@ -39,19 +39,19 @@ public class TiltUtils {
         return getRotatedPoint(point.getX(), point.getY(), pitch, roll);
     }
 
-    private static double getLegDisplacement(Point3D displacedArm, Point2D armDimension){
+    private static double getLegDisplacement(Point3D displacedArm){
         /*
         in this method, we use basic trigonometry to get the length of the arm, using its height off the ground
          */
-        double h = getLegHeightOffGround(displacedArm,armDimension);
+        double h = getLegHeightOffGround(displacedArm);
         return h / sqrt(1 - pow(h/displacedArm.magnitude(), 2));
     }
 
-    private static double getLegHeightOffGround(Point3D displacedArm, Point2D armDimension){
+    private static double getLegHeightOffGround(Point3D displacedArm){
         return displacedArm.getZ();
     }
 
-    public static double getLegLength(Point2D armDimension, double pitch, double roll){
-        return getLegDisplacement(getRotatedPoint(armDimension, pitch, roll), armDimension);
+    public static double getLegLength(double legXDimension, double legYDimension, double pitch, double roll){
+        return getLegDisplacement(getRotatedPoint(new Point2D(legXDimension,legYDimension), pitch, roll));
     }
 }

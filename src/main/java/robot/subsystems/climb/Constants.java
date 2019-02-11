@@ -1,7 +1,11 @@
 package robot.subsystems.climb;
 
+import javafx.geometry.Point2D;
+
 public class Constants {
     public static final double CLIMB_TOLERANCE = 0.025;
+    public static final double LEG_X_DIMENSION = 0;
+    public static final double LEG_Y_DIMENSION = 0;
     static final boolean BACK_LEFT_REVERSE_HALL_REVERSED = false;
     static final boolean FORWARD_RIGHT_REVERSE_HALL_REVERSED = false;
     static final boolean BACK_LEFT_FORWARD_HALL_REVERSED = false;
