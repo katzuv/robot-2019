@@ -24,8 +24,8 @@ public class Drivetrain extends Subsystem {
     private final VictorSP leftBack = new VictorSP(Ports.leftBackMotor);
     private final VictorSP rightForward = new VictorSP(Ports.rightForwardMotor);
     private final VictorSP rightBack = new VictorSP(Ports.rightBackMotor);
-    private final Encoder leftEncoder = new Encoder(Ports.leftEncoderChannelA, Ports.leftEncoderChannelB);
-    private final Encoder rightEncoder = new Encoder(Ports.rightEncoderChannelA, Ports.rightEncoderChannelB);
+    private final VictorSPX rightSlave1 = new VictorSPX(Ports.rightSlave1);
+    private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
     public Point currentLocation = new Point(0, 0);
 
     public Drivetrain() {
