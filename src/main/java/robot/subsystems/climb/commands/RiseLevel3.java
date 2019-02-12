@@ -8,12 +8,16 @@ import robot.subsystems.climb.TiltUtils;
 import static robot.Robot.climb;
 
 /**
+ * An FRC command, climbs to the third level of the HAB zone.
+ * The motors are run at the execute, and using arbitrary feedforward, tipping is prevented.
+ * This class only move upwards, the rest is done in separate commands.
  *
+ * @author paulo
  */
 public class RiseLevel3 extends Command {
     private double targetHeight = Constants.LEVEL_THREE_LEG_LENGTH;
 
-    //gamers, lose yourself and rise up
+    //gamers, (lose yourself and) rise up
     public RiseLevel3() {
         requires(climb);
     }
