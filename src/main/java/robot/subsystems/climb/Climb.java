@@ -156,10 +156,11 @@ public class Climb extends Subsystem {
                 Constants.TALON_TIMEOUT_MS
         );
         motorController.configReverseLimitSwitchSource(
-                LimitSwitchSource.FeedbackConnector,
-                backwardLSReversed ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                LimitSwitchSource.FeedbackConnector, backwardLSReversed
+                        ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIMEOUT_MS
         );
+        motorController.configSelectedFeedbackSensor(feedbackDevice, 0, Constants.TALON_TIMEOUT_MS);
     }
 
     /**
