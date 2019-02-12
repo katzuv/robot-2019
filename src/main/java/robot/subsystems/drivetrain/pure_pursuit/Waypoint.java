@@ -38,9 +38,13 @@ public class Waypoint extends Point {
         this.speed = speed;
     }
 
-    public double getCurvature() { return curvature;}
+    public double getCurvature() {
+        return curvature;
+    }
 
-    public void setCurvature(double curvature) { this.curvature = curvature;}
+    public void setCurvature(double curvature) {
+        this.curvature = curvature;
+    }
 
     @Override
     public String toString() {
