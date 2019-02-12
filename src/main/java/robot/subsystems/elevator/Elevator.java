@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
 /**
- * Subsystem of the continuous Elevator
+ * Elevator subsystem for the 2019 robot 'GENESIS'
+ *
+ * @author paulo
  */
 public class Elevator extends Subsystem {
 
