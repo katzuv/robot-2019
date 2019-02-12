@@ -17,14 +17,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class HatchIntake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private final DoubleSolenoid groundIntake = new DoubleSolenoid(Ports.groundForward, Ports.groundReverse);
-    private final DoubleSolenoid gripperPlate = new DoubleSolenoid(Ports.gripperPlateForward, Ports.gripperPlateReverse);
-    private final DoubleSolenoid gripper = new DoubleSolenoid(Ports.gripperForward, Ports.gripperReverse);
-    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);
+    private final DoubleSolenoid gripper;
+    private final DoubleSolenoid gripperPlate;
+//    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);
 
 
     public HatchIntake() {
-        hatchSensor.resetAccumulator();
+        gripper = new DoubleSolenoid(Ports.gripperForward, Ports.gripperReverse);
+        gripperPlate  = new DoubleSolenoid(Ports.gripperPlateForward, Ports.gripperPlateReverse);
+//        hatchSensor.resetAccumulator();
     }
 
 
@@ -32,21 +33,8 @@ public class HatchIntake extends Subsystem {
      * @return the voltage from the sensor
      */
     public double voltage() {
-        return hatchSensor.getVoltage();
-    }
-
-    /**
-     * close the ground intake
-     */
-    public void closeIntake() {
-        groundIntake.set(DoubleSolenoid.Value.kReverse);
-    }
-
-    /**
-     * open the ground intake
-     */
-    public void openIntake() {
-        groundIntake.set(DoubleSolenoid.Value.kForward);
+//        return hatchSensor.getVoltage();
+        return 2;
     }
 
     /**
