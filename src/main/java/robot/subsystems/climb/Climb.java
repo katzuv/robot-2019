@@ -9,6 +9,7 @@ package robot.subsystems.climb;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -186,6 +187,14 @@ public class Climb extends Subsystem {
         public double getHABHHeight() {
             return habHeight;
         }
+    }
+
+    public void setHatchIntake(boolean down){
+
+    }
+
+    public boolean isHatchInside() {
+        return getVoltage() <= Constants.HATCH_IN_VOLTAGE;
     }
 
     public double getVoltage(){
