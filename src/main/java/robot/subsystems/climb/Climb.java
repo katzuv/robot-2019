@@ -20,14 +20,14 @@ public class Climb extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    private TalonSRX talonFL = new TalonSRX(Ports.forwardLeftMotor);
-    private TalonSRX talonFR = new TalonSRX(Ports.forwardRightMotor);
+    private TalonSRX talonFL = new TalonSRX(Ports.frontLeftMotor);
+    private TalonSRX talonFR = new TalonSRX(Ports.frontRightMotor);
     private TalonSRX talonBL = new TalonSRX(Ports.backLeftMotor);
     private TalonSRX talonBR = new TalonSRX(Ports.backRightMotor);
 
     public Climb() { //TODO: add four encoders to each of the motors just as in the elevator code.
-        talonFL.setInverted(Constants.FORWARD_LEFT_TALON_REVERSE);
-        talonFR.setInverted(Constants.FORWARD_RIGHT_TALON_REVERSE);
+        talonFL.setInverted(Constants.FRONT_LEFT_TALON_REVERSE);
+        talonFR.setInverted(Constants.FRONT_RIGHT_TALON_REVERSE);
         talonBL.setInverted(Constants.BACK_LEFT_TALON_REVERSE);
         talonBR.setInverted(Constants.BACK_RIGHT_TALON_REVERSE);
 
@@ -67,9 +67,9 @@ public class Climb extends Subsystem {
         talonFR.follow(talonFL);
         talonBL.follow(talonBR);
 
-        configMotorEncoder(talonFL, Constants.FORWARD_LEFT_FORWARD_HALL_REVERSED, Constants.FORWARD_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
+        configMotorEncoder(talonFL, Constants.FRONT_LEFT_FORWARD_HALL_REVERSED, Constants.FRONT_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
         configMotorEncoder(talonBR, Constants.BACK_RIGHT_FORWARD_HALL_REVERSED, Constants.BACK_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
-        configMotorEncoder(talonFR, Constants.FORWARD_RIGHT_FORWARD_HALL_REVERSED, Constants.FORWARD_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
+        configMotorEncoder(talonFR, Constants.FRONT_RIGHT_FORWARD_HALL_REVERSED, Constants.FRONT_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
         configMotorEncoder(talonBL, Constants.BACK_LEFT_FORWARD_HALL_REVERSED, Constants.BACK_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
     }
 
