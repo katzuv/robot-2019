@@ -190,7 +190,14 @@ public class Climb extends Subsystem {
     }
 
     public void setHatchIntake(boolean down){
-
+        if(down) {
+            setLegBRHeight(Constants.HATCH_UP_LEG_HEIGHT,0);
+            setLegBRHeight(Constants.HATCH_UP_LEG_HEIGHT,0);
+        }
+        else{
+            setLegBLHeight(0,0);
+            setLegBRHeight(0,0);
+        }
     }
 
     public boolean isHatchInside() {
