@@ -114,21 +114,21 @@ public class Climb extends Subsystem {
      * @return height of the front left leg in meters
      */
     public double getLegFLHeight() {
-        return talonFL.getSelectedSensorPosition(0);
+        return ticksToMeters(talonFL.getSelectedSensorPosition(0));
     }
 
     /**
      * @return height of the front right leg in meters
      */
     public double getLegFRHeight() {
-        return talonFR.getSelectedSensorPosition(0);
+        return ticksToMeters(talonFR.getSelectedSensorPosition(0));
     }
 
     /**
      * @return height of the back left leg in meters
      */
     public double getLegBLHeight() {
-        return talonBL.getSelectedSensorPosition(0);
+        return ticksToMeters(talonBL.getSelectedSensorPosition(0));
     }
 
     /**
@@ -137,7 +137,7 @@ public class Climb extends Subsystem {
      * @return height of the leg in meters
      */
     public double getLegBRHeight() {
-        return talonBR.getSelectedSensorPosition(0);
+        return ticksToMeters(talonBR.getSelectedSensorPosition(0));
     }
 
     /**
@@ -171,6 +171,16 @@ public class Climb extends Subsystem {
      */
     private int metersToTicks(double meters) {
         return (int) (meters * Constants.TICKS_PER_METER);
+    }
+
+    /**
+     * auxiliary method used to make the code more understandable.
+     *
+     * @param ticks amount of encoder ticks.
+     * @return the respective height in meters.
+     */
+    private double ticksToMeters(int ticks) {
+        return ticks / Constants.TICKS_PER_METER;
     }
 
     @Override
