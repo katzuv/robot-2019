@@ -63,10 +63,6 @@ public class Climb extends Subsystem {
         talonBL.config_kD(0, Constants.CLIMB_PIDFE[2], Constants.TALON_TIMEOUT_MS);
         talonBL.config_kF(0, Constants.CLIMB_PIDFE[3], Constants.TALON_TIMEOUT_MS);
 
-        //set the pairs to follow their adjacent arms
-        talonFR.follow(talonFL);
-        talonBL.follow(talonBR);
-
         configMotorEncoder(talonFL, Constants.FRONT_LEFT_FORWARD_HALL_REVERSED, Constants.FRONT_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
         configMotorEncoder(talonBR, Constants.BACK_RIGHT_FORWARD_HALL_REVERSED, Constants.BACK_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
         configMotorEncoder(talonFR, Constants.FRONT_RIGHT_FORWARD_HALL_REVERSED, Constants.FRONT_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
