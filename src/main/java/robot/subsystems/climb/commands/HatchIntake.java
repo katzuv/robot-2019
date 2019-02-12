@@ -4,7 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 
 /**
+ * An FRC command, used to lift or lower the hatches.
+ * as of 10.2.2019, the Hatch-Intake system is connected directly to the climbing mechanism's back legs.
+ * a rope, attached to the top, pulls the flap up.
  *
+ * @author paulo
  */
 public class HatchIntake extends Command {
     private HATCH_INTAKE_STATES state;
@@ -19,7 +23,7 @@ public class HatchIntake extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        switch(state){
+        switch (state) {
             case MOVE_DOWN:
                 Robot.climb.setHatchIntake(true);
                 break;
