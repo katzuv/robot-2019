@@ -5,6 +5,11 @@ import javafx.geometry.Point3D;
 
 import static java.lang.Math.*;
 
+/**
+ * A class used for the mathematical calculations the robot needs to do when climbing.
+ *
+ * @author paulo
+ */
 public class TiltUtils {
     /**
      * Rotates a point around the origin(0,0) around the x(pitch) and y(roll) axes.
@@ -77,7 +82,7 @@ public class TiltUtils {
        C ----D---------- B
        C is the robots center point, CL being the line between the center point and the leg motor.
        B is the error the leg has from where it should be. note that CLB create a right angle.
-       LB / LD = CL / CD  |  CD^2 + LD^2 = CL^2  |   LB = CL * LD / sqrt(CL^2 - LD^2)   |   LB = LD / sqrt(1 - (LD/CL)^2)
+       LB / LD = CL / CD  |  CD^2 + LD^2 = CL^2  |   LB = CL * LD / sqrt(CL^2 - LD^2)   |   LB = LD / sqrt(1 - (LD/CL)^2) (by taking out the common CL.
          */
         double h = getLegHeightOffGround(displacedArm);
         return h / sqrt(1 - pow(h / displacedArm.magnitude(), 2));
