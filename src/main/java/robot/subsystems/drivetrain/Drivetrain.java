@@ -92,9 +92,7 @@ public class Drivetrain extends Subsystem {
     private void setLeftSpeed(double speed) {
         if (speed <= 1 && speed >= -1) {
             leftMaster.set(ControlMode.PercentOutput, speed);
-            leftSlave1.set(ControlMode.PercentOutput, speed);
         }
-
     }
 
     /**
@@ -105,9 +103,7 @@ public class Drivetrain extends Subsystem {
     private void setRightSpeed(double speed) {
         if (speed <= 1 && speed >= -1) {
             rightMaster.set(ControlMode.PercentOutput, speed);
-            rightSlave1.set(ControlMode.PercentOutput, speed);
         }
-
     }
 
     /**
