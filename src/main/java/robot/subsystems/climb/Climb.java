@@ -127,7 +127,16 @@ public class Climb extends Subsystem {
         motorController.configSelectedFeedbackSensor(feedbackDevice, 0, Constants.TALON_TIMEOUT_MS);
     }
 
-    private void configMotorMovement(TalonSRX motorController, boolean motorInverted, NeutralMode neutralMode, double[] pidfConstants, int timeout){
+    /**
+     * auxiliary method used to shorten the code when configuring the motor controllers (the talons).
+     *
+     * @param motorController the motor controller being configured.
+     * @param motorInverted   whether the motor should be inverted or not.
+     * @param neutralMode     neutral mode of the motor. can be either COAST or BREAK.
+     * @param pidfConstants   PIDF movement constants.
+     * @param timeout         Timeout when configuring the controller
+     */
+    private void configMotorMovement(TalonSRX motorController, boolean motorInverted, NeutralMode neutralMode, double[] pidfConstants, int timeout) {
         motorController.setInverted(motorInverted);
         motorController.setNeutralMode(neutralMode); //what the motor does when not given voltage (Brake - decelerate the motor, Coast - not stop the motor)
         motorController.config_kP(0, pidfConstants[0], timeout);
