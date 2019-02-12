@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
@@ -32,6 +33,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
  * project.
  */
 public class Robot extends TimedRobot {
+    public static final Climb climb = new Climb();
     public static final Drivetrain drivetrain = new Drivetrain();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
