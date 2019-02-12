@@ -8,6 +8,9 @@
 package robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.hatch_intake.commands.Gripper;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -16,7 +19,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
-
+    Button button = new JoystickButton(rightStick, 2);
 
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
@@ -41,7 +44,9 @@ public class OI {
     // Run the command while the button is being held down and interrupt it once
     // the button is released.
     // button.whileHeld(new ExampleCommand());
-
+    public OI() {
+        button.whenPressed(new Gripper());
+    }
     // Start the command when the button is released and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
