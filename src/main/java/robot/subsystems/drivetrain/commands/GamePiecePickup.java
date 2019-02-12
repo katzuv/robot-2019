@@ -49,11 +49,13 @@ public class GamePiecePickup extends Command {
     protected void execute() {
         Waypoint targetWP =target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
         Waypoint middle =getMiddleWP(targetWP);
-        Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
-        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-        System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
-        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
-        pursue.start();
+        if (targetDistanceEntry.getDouble(0) > 0.3) {
+            Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
+            path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+            System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
+            PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
+            pursue.start();
+        }
     }
 
     /**
@@ -66,6 +68,7 @@ public class GamePiecePickup extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+        System.out.println("paulo shahor");
     }
 
     // Called when another command which requires one or more of the same
