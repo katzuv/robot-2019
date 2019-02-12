@@ -24,6 +24,7 @@ public class Climb extends Subsystem {
     private TalonSRX talonFR = new TalonSRX(Ports.frontRightMotor);
     private TalonSRX talonBL = new TalonSRX(Ports.backLeftMotor);
     private TalonSRX talonBR = new TalonSRX(Ports.backRightMotor);
+    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);//Hatch proximity sensor
 
     public Climb() { //TODO: add four encoders to each of the motors just as in the elevator code.
         configMotorMovement(talonFL, Constants.FRONT_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.TALON_TIMEOUT_MS);
@@ -185,6 +186,9 @@ public class Climb extends Subsystem {
         public double getHABHHeight() {
             return habHeight;
         }
+    }
 
+    public double getVoltage(){
+        return hatchSensor.getVoltage();
     }
 }

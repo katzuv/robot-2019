@@ -7,6 +7,7 @@ public class Constants {
     public static final double LEVEL_THREE_LEG_LENGTH = 0.5; //Length of leg in meters when climbing. todo:change
     public static final double LEVEL_TWO_LEG_LENGTH = 0.2; //Length of leg in meters when climbing to hab 2. todo:change
     public static final double CLIMB_TOLERANCE = 0.025; //tolerance in meters from the target position, to allow when stopping the code.
+    public static final double HATCH_IN_VOLTAGE = 0.0; //TODO:get this number from testing.
     static final double TICKS_PER_METER = 1000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
     static final double[] CLIMB_PIDFE = {0, 0, 0, 0, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
