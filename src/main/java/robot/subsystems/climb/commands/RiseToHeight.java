@@ -14,11 +14,11 @@ import static robot.Robot.climb;
  *
  * @author paulo
  */
-public class RiseLevel3 extends Command {
+public class RiseToHeight extends Command {
     private double targetHeight = Constants.LEVEL_THREE_LEG_LENGTH;
 
     //gamers, (lose yourself and) rise up
-    public RiseLevel3() {
+    public RiseToHeight() {
         requires(climb);
     }
 
