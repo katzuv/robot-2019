@@ -2,6 +2,7 @@ package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
+import robot.subsystems.climb.Climb;
 import robot.subsystems.climb.Constants;
 import robot.subsystems.climb.TiltUtils;
 
@@ -18,7 +19,13 @@ public class RiseToHeight extends Command {
     private double targetHeight = Constants.LEVEL_THREE_LEG_LENGTH;
 
     //gamers, (lose yourself and) rise up
-    public RiseToHeight() {
+    public RiseToHeight(double targetHeight) {
+        this.targetHeight = targetHeight;
+        requires(climb);
+    }
+
+    public RiseToHeight(Climb.HAB_LEG_HEIGHTS height_state) {
+        this.targetHeight = height_state.getHABHHeight();
         requires(climb);
     }
 

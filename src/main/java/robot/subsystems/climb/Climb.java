@@ -170,4 +170,21 @@ public class Climb extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
+
+    public enum HAB_LEG_HEIGHTS { //TODO:refactor all these values.
+        GROUND(0.05),
+        LEVEL2(Constants.LEVEL_TWO_LEG_LENGTH),
+        LEVEL3(Constants.LEVEL_THREE_LEG_LENGTH);
+
+        private double habHeight;
+
+        HAB_LEG_HEIGHTS(double height) {
+            habHeight = height;
+        }
+
+        public double getHABHHeight() {
+            return habHeight;
+        }
+
+    }
 }
