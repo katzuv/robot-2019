@@ -12,7 +12,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * Climbing subsystem
+ * Climbing subsystem for the 2019 robot 'GENESIS'
+ *
+ * @author paulo
  */
 public class Climb extends Subsystem {
     // Put methods for controlling this subsystem
@@ -71,38 +73,81 @@ public class Climb extends Subsystem {
         configMotorEncoder(talonBL, Constants.BACK_LEFT_FORWARD_HALL_REVERSED, Constants.BACK_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative);
     }
 
-    public void setLegFLHeight(double height, double legOffset) {
+    /**
+     * Set the target height of the front left leg in meters.
+     *
+     * @param height    target height in meters.
+     * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
+     */
+    public void setLegFLHeight(double height, double legOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
+    /**
+     * Set the target height of the front right leg in meters.
+     *
+     * @param height    target height in meters.
+     * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
+     */
     public void setLegFRHeight(double height, double legOffset) {
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
+    /**
+     * Set the target height of the back left leg in meters.
+     *
+     * @param height    target height in meters.
+     * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
+     */
     public void setLegBLHeight(double height, double legOffset) {
         talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
+    /**
+     * @return height of the back right leg in meters
+     */
     public void setLegBRHeight(double height, double legOffset) {
         talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
+    /**
+     * @return height of the front left leg in meters
+     */
     public double getLegFLHeight() {
         return talonFL.getSelectedSensorPosition(0);
     }
 
+    /**
+     * @return height of the front right leg in meters
+     */
     public double getLegFRHeight() {
         return talonFR.getSelectedSensorPosition(0);
     }
 
+    /**
+     * @return height of the back left leg in meters
+     */
     public double getLegBLHeight() {
         return talonBL.getSelectedSensorPosition(0);
     }
 
+    /**
+     * get the height of the leg in meters from the encoders.
+     *
+     * @return height of the leg in meters
+     */
     public double getLegBRHeight() {
         return talonBR.getSelectedSensorPosition(0);
     }
 
+    /**
+     * auxiliary method used to shorten the code when configuring the motor controllers (the talons).
+     *
+     * @param motorController    the motor controller being configured
+     * @param forwardLSReversed  is the forward limit switch reversed.
+     * @param backwardLSReversed is the forward limit switch reversed.
+     * @param feedbackDevice     the encoder type connected to the motor controller
+     */
     private void configMotorEncoder(TalonSRX motorController, boolean forwardLSReversed, boolean backwardLSReversed, FeedbackDevice feedbackDevice) {
         motorController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
         motorController.configForwardLimitSwitchSource(
@@ -117,6 +162,12 @@ public class Climb extends Subsystem {
         );
     }
 
+    /**
+     * auxiliary method used to make the code more understandable.
+     *
+     * @param meters size or length in meters
+     * @return the ticks the motor needs to do.
+     */
     private int metersToTicks(double meters) {
         return (int) (meters * Constants.TICKS_PER_METER);
     }
