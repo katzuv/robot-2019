@@ -6,5 +6,17 @@ public class Constants {
     public static final double DISTANCE_PER_PULSE = (0.2032 * Math.PI) / 231;//diameter of the wheel is 0.2032 meters (8 inches), the encoder sends 226 pulses every 360 degree turn
     static final boolean LEFT_REVERSED = false;
     static final boolean RIGHT_REVERSED = true;
+    static final boolean LEFT_MASTER_REVERSED = false;
+    static final boolean LEFT_SLAVE1_REVERSED = false;
+    static final boolean LEFT_SLAVE2_REVERSED = false;
+    static final boolean RIGHT_MASTER_REVERSED = true;
+    static final boolean RIGHT_SLAVE1_REVERSED = true;
+    static final boolean RIGHT_SLAVE2_REVERSED = true;
 
+    public static final boolean LEFT_ENCODER_REVERSED = false;
+    public static final boolean RIGHT_ENCODER_REVERSED = false;
+    public static final double TICKS_PER_METER = 0;
+    public static final int TALON_RUNNING_TIMEOUT_MS = 0;
+    public static final int TALON_TIMEOUT_MS = 10;
+    public static final double[] PIDF = { 0, 0, 0, 0 };
 }
