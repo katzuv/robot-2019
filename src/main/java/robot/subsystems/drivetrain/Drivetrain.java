@@ -7,6 +7,8 @@
 
 package robot.subsystems.drivetrain;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,12 +20,11 @@ import robot.subsystems.drivetrain.pure_pursuit.Point;
  * Add your docs here.
  */
 
-
 public class Drivetrain extends Subsystem {
-    private final VictorSP leftForward = new VictorSP(Ports.leftForwardMotor);
-    private final VictorSP leftBack = new VictorSP(Ports.leftBackMotor);
-    private final VictorSP rightForward = new VictorSP(Ports.rightForwardMotor);
-    private final VictorSP rightBack = new VictorSP(Ports.rightBackMotor);
+    private final TalonSRX leftMaster = new TalonSRX(Ports.leftMaster);
+    private final VictorSPX leftSlave1 = new VictorSPX(Ports.leftSlave1);
+    private final VictorSPX leftSlave2 = new VictorSPX(Ports.leftSlave2);
+    private final TalonSRX rightMaster = new TalonSRX(Ports.rightMaster);
     private final VictorSPX rightSlave1 = new VictorSPX(Ports.rightSlave1);
     private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
     public Point currentLocation = new Point(0, 0);
@@ -35,6 +36,10 @@ public class Drivetrain extends Subsystem {
         leftBack.setInverted(Constants.LEFT_REVERSED);
         rightForward.setInverted(Constants.RIGHT_REVERSED);
         rightBack.setInverted(Constants.RIGHT_REVERSED);
+        leftSlave2.follow(leftMaster);
+        rightSlave1.follow(rightMaster);
+        rightSlave2.follow(rightMaster);
+        leftMaster.setInverted(Constants.LEFT_MASTER_REVERSED);
     }
 
     @Override
