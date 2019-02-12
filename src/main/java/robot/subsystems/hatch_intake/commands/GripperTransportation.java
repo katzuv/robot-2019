@@ -3,10 +3,7 @@ package robot.subsystems.hatch_intake.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
-import static robot.Robot.hatchIntake;
-
-public class GripperTransportation extends InstantCommand {
-    private boolean extend;
+public class GripperTransportation extends InstantCommand { //TODO: Refactor transportation to a better name
     private gripperPlateState current;//enum variable that indicates the current mode of the gripperPlate
 
     public GripperTransportation(boolean extend) {
@@ -16,25 +13,23 @@ public class GripperTransportation extends InstantCommand {
         else
             current = gripperPlateState.GRIPPER_PLATE_PULL;
     }
-    public GripperTransportation() {
-        requires(hatchIntake);
-        current = gripperPlateState.TOGGLE_GRIPPER_PLATE;
 
+    public GripperTransportation() {
+        requires(Robot.hatchIntake);
+        current = gripperPlateState.TOGGLE_GRIPPER_PLATE;
     }
 
     @Override
     public void initialize() {
         switch (current) {
             case TOGGLE_GRIPPER_PLATE: // Change to the second state
-                hatchIntake.setGripperPlate();
+                Robot.hatchIntake.setGripperPlate(!Robot.hatchIntake.isGripperPlateExtended());
                 break;
             case GRIPPER_PLATE_EXTEND: // extend the gripperPlate if closed and not do anything otherwise
-                if (!hatchIntake.isGripperPlateExtended())
-                    hatchIntake.setGripperPlate();
+                Robot.hatchIntake.setGripperPlate(true);
                 break;
             case GRIPPER_PLATE_PULL:// pull the gripperplate back if extended and not do anything otherwise
-                if (hatchIntake.isGripperPlateExtended())
-                    hatchIntake.setGripperPlate();
+                Robot.hatchIntake.setGripperPlate(false);
                 break;
         }
 
@@ -45,7 +40,6 @@ public class GripperTransportation extends InstantCommand {
 
     }
 
-
     @Override
     protected void end() {
     }
@@ -54,6 +48,7 @@ public class GripperTransportation extends InstantCommand {
     public boolean isFinished() {
         return true;
     }
+
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
@@ -65,4 +60,5 @@ public class GripperTransportation extends InstantCommand {
         GRIPPER_PLATE_EXTEND,
         GRIPPER_PLATE_PULL
     }
+
 }
