@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * first the gripper
  */
 public class CargoIntake extends Subsystem {
-    private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
+//    private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     // Put methods for controlling this subsystem
@@ -81,7 +81,7 @@ public class CargoIntake extends Subsystem {
     }
 
     public double getProximityVoltage() {
-        return proximitySensor.getVoltage();
+        return 2;//proximitySensor.getVoltage();
     }//returns the current voltage in the proximity sensor
 
     public boolean isCargoInside() {
