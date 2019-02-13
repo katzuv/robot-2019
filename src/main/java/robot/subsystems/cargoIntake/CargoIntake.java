@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class CargoIntake extends Subsystem {
     private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
-    private final TalonSRX WristControlMotor = new TalonSRX(Ports.WristMotor);
+    private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -28,46 +28,46 @@ public class CargoIntake extends Subsystem {
         /*
         config for the feedback sensor
          */
-        WristControlMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-        WristControlMotor.setSensorPhase(true);
-        WristControlMotor.setInverted(false);
-        WristControlMotor.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TALON_TIME_OUT);
+        wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+        wrist.setSensorPhase(Constants.SENSOR_PHASE);
+        wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
+        wrist.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TALON_TIME_OUT);
         /*
         PIDF config
          */
-        WristControlMotor.config_kP(0, Constants.kP, Constants.TALON_TIME_OUT);
-        WristControlMotor.config_kI(0, Constants.kI, Constants.TALON_TIME_OUT);
-        WristControlMotor.config_kD(0, Constants.kD, Constants.TALON_TIME_OUT);
-        WristControlMotor.config_kF(0, Constants.kF, Constants.TALON_TIME_OUT);
-        WristControlMotor.config_IntegralZone(0, Constants.IZone, Constants.TALON_TIME_OUT);
+        wrist.config_kP(0, Constants.kP, Constants.TALON_TIME_OUT);
+        wrist.config_kI(0, Constants.kI, Constants.TALON_TIME_OUT);
+        wrist.config_kD(0, Constants.kD, Constants.TALON_TIME_OUT);
+        wrist.config_kF(0, Constants.kF, Constants.TALON_TIME_OUT);
+        wrist.config_IntegralZone(0, Constants.IZone, Constants.TALON_TIME_OUT);
         /*
         status frame period config
          */
-        WristControlMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.TALON_TIME_OUT);
-        WristControlMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.TALON_TIME_OUT);
+        wrist.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.TALON_TIME_OUT);
+        wrist.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.TALON_TIME_OUT);
         /*
         nominal and peak output config
          */
-        WristControlMotor.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
-        WristControlMotor.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
-        WristControlMotor.configPeakOutputForward(0.5, Constants.TALON_TIME_OUT);
-        WristControlMotor.configPeakOutputReverse(0.5, Constants.TALON_TIME_OUT);
+        wrist.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
+        wrist.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputForward(0.5, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputReverse(0.5, Constants.TALON_TIME_OUT);
         /*
         profile config
          */
-        WristControlMotor.selectProfileSlot(Constants.SLOT_IDX, Constants.PID_LOOP_IDX);
+        wrist.selectProfileSlot(Constants.SLOT_IDX, Constants.PID_LOOP_IDX);
         /*
         motion magic speed config
          */
-        WristControlMotor.configMotionCruiseVelocity(15000, Constants.TALON_TIME_OUT);
-        WristControlMotor.configMotionAcceleration(6000, Constants.TALON_TIME_OUT);
+        wrist.configMotionCruiseVelocity(15000, Constants.TALON_TIME_OUT);
+        wrist.configMotionAcceleration(6000, Constants.TALON_TIME_OUT);
         /*
         limit switch config
          */
-        WristControlMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+        wrist.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
                 Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIME_OUT);
-        WristControlMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+        wrist.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
                 Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIME_OUT);
 
@@ -96,4 +96,4 @@ public class CargoIntake extends Subsystem {
         WristControlMotor.set(ControlMode.MotionMagic, pos);
     }
 
-}
+    }
