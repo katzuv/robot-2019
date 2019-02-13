@@ -50,8 +50,8 @@ public class CargoIntake extends Subsystem {
          */
         WristControlMotor.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
         WristControlMotor.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
-        WristControlMotor.configPeakOutputForward(1, Constants.TALON_TIME_OUT);
-        WristControlMotor.configPeakOutputReverse(-1, Constants.TALON_TIME_OUT);
+        WristControlMotor.configPeakOutputForward(0.5, Constants.TALON_TIME_OUT);
+        WristControlMotor.configPeakOutputReverse(0.5, Constants.TALON_TIME_OUT);
         /*
         profile config
          */
@@ -80,12 +80,12 @@ public class CargoIntake extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    public double proximityVoltage() {
+    public double getProximityVoltage() {
         return proximitySensor.getVoltage();
     }//returns the current voltage in the proximity sensor
 
     public boolean isCargoInside() {
-        return proximityVoltage() > Constants.CARGO_IN_VOLTAGE;//felt cute might delete later
+        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;//felt cute might delete later
     }
 
     public void setGripperSpeed(double speed) {
