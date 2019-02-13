@@ -93,7 +93,37 @@ public class CargoIntake extends Subsystem {
     }
 
     public void setWristPosition(double pos) {
-        WristControlMotor.set(ControlMode.MotionMagic, pos);
+        wrist.set(ControlMode.MotionMagic, pos);
     }
 
+    public void resetWristEncoder() {
+        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
     }
+
+    /**
+     * Convert angle in degrees to ticks of the encoder.
+     *
+     * @param angle height in meters
+     * @return ticks of the encoder
+     */
+    private int convertAngleToTicks(double angle) {
+        return (int) (angle * Constants.TICKS_PER_DEGREE);
+    }
+
+    /**
+     * Convert ticks of the encoder to angle in degrees.
+     *
+     * @param ticks ticks of the encoder
+     * @return height in meters
+     */
+    private double convertTicksToAngle(int ticks) {
+        return ticks / Constants.TICKS_PER_DEGREE;
+    }
+
+    /**
+     * @return
+     */
+    public double getWristAngle() {
+        return convertTicksToAngle(wrist.getSelectedSensorPosition());
+    }
+}
