@@ -1,6 +1,7 @@
 package robot.subsystems.cargoIntake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.cargoIntake.CargoIntake;
 import robot.subsystems.cargoIntake.Constants;
 
@@ -21,23 +22,27 @@ public class WristTurn extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        double relativeAngle = this.angle / 180;
+//        double relativeAngle = this.angle / 180;
         double circumference = 2 * Math.PI * Constants.WRIST_RADIUS;
-        this.arcLength = relativeAngle * circumference;
+        this.arcLength = this.angle * circumference;
+        SmartDashboard.putString("command state", "start");
+        cargoIntake.setWristPosition(angle);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        cargoIntake.setWristPosition(arcLength);
+        SmartDashboard.putString("command state", "executing");
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Math.abs(cargoIntake.getWristAngle() - angle) < 5;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        SmartDashboard.putString("command state", "end");
+        System.out.println("Wrist command ended, reached degrees " + angle + "talon " + cargoIntake.getWristAngle());
     }
 
     // Called when another command which requires one or more of the same
