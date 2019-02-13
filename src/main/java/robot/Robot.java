@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.subsystems.cargoIntake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
@@ -33,6 +34,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
  */
 public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
+    public static final CargoIntake cargoIntake = new CargoIntake();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
 
@@ -193,6 +195,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
         SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("current proximity sensor voltage " , cargoIntake.getProximityVoltage());
+//        cargoIntake.setWristPosition();
+
 
     }
 
