@@ -33,12 +33,13 @@ public class CargoIntake extends Subsystem {
         WristControlMotor.setInverted(false);
         WristControlMotor.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TALON_TIME_OUT);
         /*
-        PID config
+        PIDF config
          */
         WristControlMotor.config_kP(0, Constants.kP, Constants.TALON_TIME_OUT);
         WristControlMotor.config_kI(0, Constants.kI, Constants.TALON_TIME_OUT);
         WristControlMotor.config_kD(0, Constants.kD, Constants.TALON_TIME_OUT);
         WristControlMotor.config_kF(0, Constants.kF, Constants.TALON_TIME_OUT);
+        WristControlMotor.config_IntegralZone(0, Constants.IZone, Constants.TALON_TIME_OUT);
         /*
         status frame period config
          */
