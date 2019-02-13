@@ -8,6 +8,10 @@
 package robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.cargoIntake.commands.WristTurn;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -16,6 +20,12 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
+    public XboxController xbox = new XboxController(2);
+    public Button a = new JoystickButton(xbox, 1);
+
+    public OI() {
+        a.whenPressed(new WristTurn(100));
+    }
     /*
     driver's preference: a button for intake until sensor senses the cargo or with another button press, rb and lb for continous intake and outtake
      */
