@@ -27,6 +27,7 @@ public class WristTurn extends Command {
         this.arcLength = this.angle * circumference;
         SmartDashboard.putString("command state", "start");
         cargoIntake.setWristPosition(angle);
+        cargoIntake.wrist.set(ControlMode.MotionMagic, cargoIntake.convertAngleToTicks(angle));
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -48,5 +49,6 @@ public class WristTurn extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        this.cancel();
     }
 }
