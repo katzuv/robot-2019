@@ -15,6 +15,7 @@ public class WristTurn extends Command {
 
     public WristTurn(double angle) {
         this.angle = angle;
+        requires(cargoIntake);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 
