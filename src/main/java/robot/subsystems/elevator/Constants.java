@@ -3,8 +3,8 @@ package robot.subsystems.elevator;
 public class Constants {
 
     //Motor reverse constants:
-    static final boolean VICTOR_REVERSE = false;
-    static final boolean TALON_REVERSE = false;
+    static final boolean VICTOR_REVERSE = true;
+    static final boolean TALON_REVERSE = true;
 
     //Limit switch / Magnet hall constants:
     static final boolean TOP_HALL_REVERSED = false;
