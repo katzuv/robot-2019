@@ -133,6 +133,7 @@ public class Robot extends TimedRobot {
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
 
+
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
         // schedule the autonomous command (example)
         m_autonomousCommand = m_chooser.getSelected();
@@ -148,14 +149,10 @@ public class Robot extends TimedRobot {
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
 
-        PurePursue pursue = new PurePursue(path, false, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV);
-
         //Print the variables for testing.
         System.out.println(path);
         SmartDashboard.putString("pursue command", "start");
         SmartDashboard.putString("last waypoint", path.getWaypoint(path.length() - 1).toString());
-
-        pursue.start(); //Run the command.
     }
 
     /**
