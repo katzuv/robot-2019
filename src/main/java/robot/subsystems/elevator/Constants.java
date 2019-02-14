@@ -45,10 +45,7 @@ public class Constants {
     static final double ELEVATOR_MID_HEIGHT = 1.2; //TODO: get actual heights from mechanics
 
     //PIDF values of the elevator
-    static final double[] LIFT_LOW_DOWN_PIDF = {0, 0, 0, 0};
     static final double[] LIFT_LOW_UP_PIDF = {0, 0, 0, 0};
-    static final double[] LIFT_HIGH_DOWN_PIDF = {0, 0, 0, 0};
-    static final double[] LIFT_HIGH_UP_PIDF = {0, 0, 0, 0};
 
     public static double ELEVATOR_TOLERANCE = 0.001; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
