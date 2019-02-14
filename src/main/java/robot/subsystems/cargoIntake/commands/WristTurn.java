@@ -1,5 +1,6 @@
 package robot.subsystems.cargoIntake.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.cargoIntake.CargoIntake;
@@ -43,6 +44,8 @@ public class WristTurn extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+//        if (cargoIntake.getWristAngle() < 15)
+//            cargoIntake.wrist.set(ControlMode.MotionMagic, 0);
         SmartDashboard.putString("command state", "end");
         System.out.println("Wrist command ended, reached degrees " + angle + "talon " + cargoIntake.getWristAngle());
     }
