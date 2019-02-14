@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class CargoIntake extends Subsystem {
 //    private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
-    private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
+    public final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -28,7 +29,7 @@ public class CargoIntake extends Subsystem {
         /*
         config for the feedback sensor
          */
-        wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+        wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
         wrist.setSensorPhase(Constants.SENSOR_PHASE);
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
         wrist.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TALON_TIME_OUT);
