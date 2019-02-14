@@ -13,6 +13,25 @@ public class Constants {
     static final double TICKS_PER_METER = 0.5;
     static final boolean ENCODER_REVERSED = false;
 
+
+    //PIDF values of the elevator
+    static final double[] LIFT_LOW_UP_PIDF = {0, 0, 0, 0};
+
+    //Feedforward values for the top and bottom parts of the robot
+    static final double FIRST_STAGE_FEEDFORWARD = 0;
+    static final double SECOND_STAGE_FEEDFORWARD = 0;
+
+    public static double ELEVATOR_TOLERANCE = 0.001; //The tolerance in which the elevator will stop when trying to get to a certain height.
+
+    /* Nominal Output- The “minimal” or “weakest” motor output allowed if the output is nonzero
+     * Peak Output- The “maximal” or “strongest” motor output allowed.
+     * These settings are useful to reduce the maximum velocity of the mechanism,
+     * and can make tuning the closed-loop simpler.  */
+    static final double NOMINAL_OUT_FWD = 0;
+    static final double PEAK_OUT_REV = 0;
+    static final double NOMINAL_OUT_REV = 0;
+    static final double PEAK_OUT_FWD = 0;
+
     /* Talon constants */
 
     /*
@@ -30,27 +49,9 @@ public class Constants {
     static final int TALON_TIMEOUT_MS = 10; //timeout when configuring the robot, if takes longer an error is raised (1)
     static final int TALON_RUNNING_TIMEOUT_MS = 0; //as seen in the excerpt above, there should be no timeout on the talon in the robot loop.
 
-    /* Nominal Output- The “minimal” or “weakest” motor output allowed if the output is nonzero
-     * Peak Output- The “maximal” or “strongest” motor output allowed.
-     * These settings are useful to reduce the maximum velocity of the mechanism,
-     * and can make tuning the closed-loop simpler.  */
-    static final double NOMINAL_OUT_FWD = 0;
-    static final double PEAK_OUT_REV = 0;
-    static final double NOMINAL_OUT_REV = 0;
-    static final double PEAK_OUT_FWD = 0;
-
     //Mechanical heights of the elevator, at its maximum position and semi position(where the elevator splits from one segment to two)
     static final double ELEVATOR_MAX_HEIGHT = 2.4; //TODO: get actual heights from mechanics
     static final double ELEVATOR_MID_HEIGHT = 1.2; //TODO: get actual heights from mechanics
-
-    //PIDF values of the elevator
-    static final double[] LIFT_LOW_UP_PIDF = {0, 0, 0, 0};
-
-    //Feedforward values for the top and bottom parts of the robot
-    static final double FIRST_STAGE_FEEDFORWARD = 0;
-    static final double SECOND_STAGE_FEEDFORWARD = 0;
-
-    public static double ELEVATOR_TOLERANCE = 0.001; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
     /**
      * enum storing all height values assigned to their respective height.
