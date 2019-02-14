@@ -44,8 +44,8 @@ public class Elevator extends Subsystem {
         //the victor follows all the inputs the talon has
         victorMotor.follow(talonMotor);
 
-        /* Nominal Output- The “minimal” or “weakest” motor output allowed if the output is nonzero
-         * Peak Output- The “maximal” or “strongest” motor output allowed.
+        /* Nominal Output- The "minimal" or "weakest" motor output allowed if the output is nonzero
+         * Peak Output- The "maximal" or "strongest" motor output allowed.
          * These settings are useful to reduce the maximum velocity of the mechanism,
          * and can make tuning the closed-loop simpler.  */
         talonMotor.configNominalOutputForward(Constants.NOMINAL_OUT_FWD, Constants.TALON_TIMEOUT_MS);
