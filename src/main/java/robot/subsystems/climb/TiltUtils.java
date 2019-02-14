@@ -1,7 +1,7 @@
 package robot.subsystems.climb;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
+import robot.subsystems.drivetrain.pure_pursuit.Point;
+import robot.subsystems.drivetrain.pure_pursuit.Point3D;
 
 import static java.lang.Math.*;
 
@@ -60,7 +60,7 @@ public class TiltUtils {
      * @param roll  angle in degrees to rotate around the y axis.
      * @return the rotated point, on the 3D plane.
      */
-    private static Point3D getRotatedPoint(Point2D point, double pitch, double roll) {
+    private static Point3D getRotatedPoint(Point point, double pitch, double roll) {
         return getRotatedPoint(point.getX(), point.getY(), pitch, roll);
     }
 
@@ -108,6 +108,6 @@ public class TiltUtils {
      * @return the error of the leg in meters.
      */
     public static double getLegLength(double legXDimension, double legYDimension, double pitch, double roll) {
-        return getLegDisplacement(getRotatedPoint(new Point2D(legXDimension, legYDimension), pitch, roll));
+        return getLegDisplacement(getRotatedPoint(new Point(legXDimension, legYDimension), pitch, roll));
     }
 }
