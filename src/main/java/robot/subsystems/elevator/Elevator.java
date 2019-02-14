@@ -77,17 +77,19 @@ public class Elevator extends Subsystem {
 
         /* Configure the hall effect sensors */
         // TOP hall effect
-        talonMotor.configForwardLimitSwitchSource(
-                LimitSwitchSource.FeedbackConnector,
-                Constants.TOP_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-                Constants.TALON_TIMEOUT_MS
-        );
-        // BOTTOM hall effect
-        talonMotor.configReverseLimitSwitchSource(
-                LimitSwitchSource.FeedbackConnector,
-                Constants.BOTTOM_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-                Constants.TALON_TIMEOUT_MS
-        );
+//        talonMotor.configForwardLimitSwitchSource(
+//                LimitSwitchSource.FeedbackConnector,
+//                Constants.TOP_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+//                Constants.TALON_TIMEOUT_MS
+//        );
+//        // BOTTOM hall effect
+//        talonMotor.configReverseLimitSwitchSource(
+//                LimitSwitchSource.FeedbackConnector,
+//                Constants.BOTTOM_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+//                Constants.TALON_TIMEOUT_MS
+//        );
+        talonMotor.overrideLimitSwitchesEnable(true);
+        talonMotor.overrideSoftLimitsEnable(true);
     }
 
     /**
