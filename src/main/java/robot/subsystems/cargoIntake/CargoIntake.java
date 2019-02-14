@@ -32,6 +32,8 @@ public class CargoIntake extends Subsystem {
         wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
         wrist.setSensorPhase(Constants.SENSOR_PHASE);
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
+        wrist.overrideLimitSwitchesEnable(true);
+        wrist.overrideSoftLimitsEnable(true);
         wrist.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TALON_TIME_OUT);
         /*
         PIDF config
@@ -51,8 +53,8 @@ public class CargoIntake extends Subsystem {
          */
         wrist.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
         wrist.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputForward(0.5, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputReverse(0.5, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputForward(1, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputReverse(-0.5, Constants.TALON_TIME_OUT);
         /*
         profile config
          */
@@ -65,12 +67,12 @@ public class CargoIntake extends Subsystem {
         /*
         limit switch config
          */
-        wrist.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+        /**wrist.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
                 Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIME_OUT);
         wrist.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
                 Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-                Constants.TALON_TIME_OUT);
+                Constants.TALON_TIME_OUT);*/
 
 
     }
@@ -94,7 +96,7 @@ public class CargoIntake extends Subsystem {
     }
 
     public void setWristPosition(double pos) {
-        wrist.set(ControlMode.MotionMagic, pos);
+        wrist.set(ControlMode.Position, pos);
     }
 
     public void resetWristEncoder() {
@@ -107,7 +109,7 @@ public class CargoIntake extends Subsystem {
      * @param angle height in meters
      * @return ticks of the encoder
      */
-    private int convertAngleToTicks(double angle) {
+    public int convertAngleToTicks(double angle) {
         return (int) (angle * Constants.TICKS_PER_DEGREE);
     }
 
@@ -117,7 +119,7 @@ public class CargoIntake extends Subsystem {
      * @param ticks ticks of the encoder
      * @return height in meters
      */
-    private double convertTicksToAngle(int ticks) {
+    public double convertTicksToAngle(int ticks) {
         return ticks / Constants.TICKS_PER_DEGREE;
     }
 
@@ -126,5 +128,8 @@ public class CargoIntake extends Subsystem {
      */
     public double getWristAngle() {
         return convertTicksToAngle(wrist.getSelectedSensorPosition());
+    }
+    public int getVelocity() {
+        return wrist.getSelectedSensorVelocity();
     }
 }
