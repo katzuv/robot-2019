@@ -81,7 +81,6 @@ public class Elevator extends Subsystem {
      */
     public void setHeight(double height) {
         this.setpoint = convertHeightToTicks(Math.min(Constants.ELEVATOR_MAX_HEIGHT, Math.max(0, height)));
-        talonMotor.set(ControlMode.Position, setpoint);
     }
 
     /**
@@ -98,8 +97,18 @@ public class Elevator extends Subsystem {
      */
     public void update() {
         preventOverShoot();
+        moveElevator();
     }
-    
+
+    /**
+     * Moves the elevator to the current setpoint, assigned in setHeight()
+     */
+    public void moveElevator() {
+        if (atSecondStage())
+            talonMotor.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
+        else
+            talonMotor.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
+    }
 
     /**
      * Beyond preventing the motors from going above a certain height, this method prevents them from moving higher or
