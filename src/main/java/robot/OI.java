@@ -11,20 +11,29 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.cargoIntake.CargoIntake;
 import robot.subsystems.cargoIntake.commands.WristTurn;
+
+import static robot.Robot.cargoIntake;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
     public XboxController xbox = new XboxController(2);
     public Button a = new JoystickButton(xbox, 1);
+    public Button b = new JoystickButton(xbox, 2);
+    public Button y = new JoystickButton(xbox, 3);
+
 
     public OI() {
-        a.whenPressed(new WristTurn(100));
+        a.whenPressed(new WristTurn(120));
+        y.whenPressed(new WristTurn(cargoIntake.getWristAngle()));
+        b.whenPressed(new WristTurn(90));
     }
     /*
     driver's preference: a button for intake until sensor senses the cargo or with another button press, rb and lb for continous intake and outtake
