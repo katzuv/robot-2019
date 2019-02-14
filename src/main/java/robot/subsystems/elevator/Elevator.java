@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
+import robot.subsystems.elevator.commands.JoystickElevatorSpeed;
 
 /**
  * Elevator subsystem for the 2019 robot 'GENESIS'
@@ -70,8 +71,8 @@ public class Elevator extends Subsystem {
 //                Constants.BOTTOM_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
 //                Constants.TALON_TIMEOUT_MS
 //        );
-        talonMotor.overrideLimitSwitchesEnable(true);
-        talonMotor.overrideSoftLimitsEnable(true);
+        //talonMotor.overrideLimitSwitchesEnable(true);
+        //talonMotor.overrideSoftLimitsEnable(true);
     }
 
     /**
@@ -207,6 +208,6 @@ public class Elevator extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new JoystickElevatorCommand());
+        setDefaultCommand(new JoystickElevatorSpeed());
     }
 }
