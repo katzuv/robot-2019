@@ -3,7 +3,7 @@ package robot.subsystems.cargoIntake;
 public class Constants {
     public final static double kP = 3; //0.85
     public final static double kI = 0;//1.6
-    public final static double kD = 50;//cheesy did it so we should do it too
+    public final static double kD = 120;//cheesy did it so we should do it too
     public final static double kF = 0.3744509516837482;
     public static final int IZone = 50;
     public final static int TALON_TIME_OUT = 10;
