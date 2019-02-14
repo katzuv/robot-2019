@@ -190,7 +190,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-
+        SmartDashboard.putNumber("height in ticks", elevator.getTicks());
+        SmartDashboard.putNumber("height in meters", elevator.getHeight());
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
