@@ -93,6 +93,10 @@ public class Elevator extends Subsystem {
         return convertTicksToHeight(talonMotor.getSelectedSensorPosition(0));
     }
 
+    public double getTicks() {
+        return talonMotor.getSelectedSensorPosition(0);
+    }
+
     /**
      * Needs to be run in a loop, Moves the motors and prevents overshooting using the limit switches.
      */
