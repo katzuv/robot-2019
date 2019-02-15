@@ -29,4 +29,5 @@ public class Constants {
     public final static double CYCLE_TIME = 0.02; //cycle time of the roborio
 
     public final static double ROBOT_WIDTH = 0.6; //width of the robot
+    public static final double MIN_DISTANCE = 0.5;
 }
