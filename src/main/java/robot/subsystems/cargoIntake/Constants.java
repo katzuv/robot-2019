@@ -8,8 +8,6 @@ public class Constants {
     public static final int IZone = 50;
     public final static int TALON_TIME_OUT = 10;
     public final static double TICKS_PER_DEGREE = 11.73333333333333333333333*4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
-    public final static int SLOT_IDX = 0;
-    public final static int PID_LOOP_IDX = 0;
     public final static double WRIST_RADIUS = 0;
     public final static double CARGO_IN_VOLTAGE = 2.5;//felt cute might delete later
     public final static double GRIPPER_SPEED = 0.75;

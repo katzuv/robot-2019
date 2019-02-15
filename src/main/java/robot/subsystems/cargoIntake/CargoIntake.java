@@ -10,7 +10,6 @@ package robot.subsystems.cargoIntake;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -18,7 +17,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * first the gripper
  */
 public class CargoIntake extends Subsystem {
-//    private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
+    //private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
     public final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
 
@@ -34,7 +33,7 @@ public class CargoIntake extends Subsystem {
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
         wrist.overrideLimitSwitchesEnable(true);
         wrist.overrideSoftLimitsEnable(true);
-        wrist.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TALON_TIME_OUT);
+        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
         /*
         PIDF config
          */
@@ -58,7 +57,7 @@ public class CargoIntake extends Subsystem {
         /*
         profile config
          */
-        wrist.selectProfileSlot(Constants.SLOT_IDX, Constants.PID_LOOP_IDX);
+        wrist.selectProfileSlot(0,0);
         /*
         motion magic speed config
          */
