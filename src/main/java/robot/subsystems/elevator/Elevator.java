@@ -72,7 +72,7 @@ public class Elevator extends Subsystem {
                 Constants.TALON_TIMEOUT_MS
         );
         talonMotor.overrideLimitSwitchesEnable(false);
-        talonMotor.overrideSoftLimitsEnable(true);
+        talonMotor.overrideSoftLimitsEnable(false);
     }
 
     /**
