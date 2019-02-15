@@ -15,7 +15,7 @@ public class Constants {
     public final static double TOLERANCE = 0.001;
 
     //VELOCITY CONSTANTS
-    public static final double MAX_PATH_VELOCITY = 2;
+    public static final double MAX_PATH_VELOCITY = 1.2;
     public static final double MAX_ACCEL = 0.5;
     public static final double K_CURVE = 3; //number from 1 to 5
 
@@ -28,7 +28,7 @@ public class Constants {
 
     public final static double CYCLE_TIME = 0.02; //cycle time of the roborio
 
-    public final static double ROBOT_WIDTH = 0.9; //width of the robot
+    public final static double ROBOT_WIDTH = 0.8; //width of the robot
 
     public final static double TURN_RADIUS = 0.2;//turn radius for dubins path
 }
