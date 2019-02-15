@@ -109,6 +109,9 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         cargoIntake.resetWristEncoder();
+        /**TODO: make it so the motor of the wrist has precentoutput 0 or something alone those lines
+         * to cancel the motion magic that is currently taking place and will still run if you re enable
+         */
     }
 
     @Override
