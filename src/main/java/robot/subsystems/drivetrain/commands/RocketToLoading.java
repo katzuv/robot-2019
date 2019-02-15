@@ -16,9 +16,6 @@ public class RocketToLoading extends Command {
     NetworkTableEntry angleEntry;
 
     public RocketToLoading() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
 
     }
         // Called just before this Command runs the first time
@@ -39,6 +36,7 @@ public class RocketToLoading extends Command {
         protected void execute() {
                 }
 
+
         // Make this return true when this Command no longer needs to run execute()
         protected boolean isFinished() {
             return Point.distance(Robot.drivetrain.currentLocation, target(angleEntry.getDouble(0), distanceEntry.getDouble(0)))
@@ -52,5 +50,22 @@ public class RocketToLoading extends Command {
         // Called when another command which requires one or more of the same
         // subsystems is scheduled to run
         protected void interrupted() {
+        }
+
+        private Path generateFromVision(double angle, double distance) {
+            double targetDistance = distance / 100;
+            Waypoint target = target(angle, targetDistance);
+            Waypoint middleWP = getMiddleWP(target);
+            Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});
+            System.out.println(path1);
+            return path1;
+        }
+
+        private Waypoint getMiddleWP(Waypoint target) {
+            return new Waypoint(0, target.getY() - target.getY() / 2);
+        }
+
+        private Waypoint target(double angle, double distance) {
+            return new Waypoint(Math.sin(Math.toRadians(angle)) * distance + 0.15, Math.cos(Math.toRadians(angle)) * distance);
         }
 }
