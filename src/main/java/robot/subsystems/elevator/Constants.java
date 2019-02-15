@@ -33,8 +33,11 @@ public class Constants {
     static final double NOMINAL_OUT_REV = 0;
     static final double PEAK_OUT_REV = -0.8; //TODO: need to be changed
 
-    /* Talon constants */
+    /* Motion magic speed constants */
+    static final int MOTION_MAGIC_ACCELERATION = (int)(1 * TICKS_PER_METER/10);
+    static final int MOTION_MAGIC_CRUISE_SPEED = (int)(PEAK_OUT_FWD * TICKS_PER_METER/10);
 
+    /* Talon constants */
     /*
      * Since most config* calls occur during the robot boot sequence, the recommended value for timeoutMs is 10 (ms).
      * This ensures that each config will wait up to 10ms to ensure the configuration was applied correctly,
