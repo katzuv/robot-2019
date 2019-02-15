@@ -1,5 +1,8 @@
 package robot.subsystems.elevator.commands;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.elevator.Constants;
 
@@ -11,6 +14,7 @@ import static robot.Robot.elevator; //elevator subsystem
 public class ElevatorCommand extends Command {
     private double tolerance = Constants.ELEVATOR_TOLERANCE;
     private double height;
+    NetworkTableEntry targetDistanceEntry;
 
     /**
      * Make the elevator move to a specific height.
@@ -33,6 +37,10 @@ public class ElevatorCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        NetworkTable table = inst.getTable("vision");
+        targetDistanceEntry = table.getEntry("distance");
+        if (targetDistanceEntry.getDouble(0) <= 1 && !lifted){
         elevator.setHeight(height);
 
     }
