@@ -4,8 +4,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import robot.Robot;
+import robot.subsystems.drivetrain.pure_pursuit.*;
 
 /**
  *
@@ -28,16 +28,32 @@ public class DriveToRocket extends Command {
         distanceEntry = table.getEntry("distance");
 
         Path path = new Path();
-        path.appendWaypoint(new Waypoint(0, 2));
+        path.appendWaypoint(new Waypoint(0, 3.5));
+        path.appendWaypoint(new Waypoint(2,3.5));
+        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
+        pursue.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        if (angleEntry != null && distanceEntry != null){
+            Waypoint targetWP =target(angleEntry.getDouble(0), distanceEntry.getDouble(0));
+            Waypoint middle =getMiddleWP(targetWP);
+            if (Point.distance(Robot.drivetrain.currentLocation, targetWP) >= Constants.MIN_DISTANCE) {
+                Path path = generateFromVision(angleEntry.getDouble(0), distanceEntry.getDouble(0));
+                System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
+                PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
+                pursue.start();
+        }
+
+    }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Point.distance(Robot.drivetrain.currentLocation, target(angleEntry.getDouble(0), distanceEntry.getDouble(0)))
+                <= 0;
     }
 
     // Called once after isFinished returns true
@@ -50,6 +66,20 @@ public class DriveToRocket extends Command {
     }
 
 
-    private void generateFromVision() {
+    private Path generateFromVision(double angle, double distance) {
+        Waypoint target = target(angle, distance/100);
+        Waypoint middleWP = getMiddleWP(target);
+        Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});
+        System.out.println(path1);
+        path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+        return path1;
+    }
+
+    private Waypoint getMiddleWP(Waypoint target) {
+        return new Waypoint(0, target.getY() - target.getY() / 2);
+    }
+
+    private Waypoint target(double angle, double distance) {
+        return new Waypoint(Math.sin(Math.toRadians(angle)) * distance + 0.15, Math.cos(Math.toRadians(angle)) * distance);
     }
 }
