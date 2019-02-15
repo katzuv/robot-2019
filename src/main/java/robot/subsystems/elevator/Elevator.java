@@ -11,9 +11,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
-import robot.subsystems.elevator.commands.JoystickElevatorSpeed;
 
 /**
  * Elevator subsystem for the 2019 robot 'GENESIS'
@@ -22,12 +20,11 @@ import robot.subsystems.elevator.commands.JoystickElevatorSpeed;
  */
 public class Elevator extends Subsystem {
 
-    private double setpoint;
     /* pid slots for the four states: up and down on the first level and up and down on the second level of the cascade*/
     private final int TALON_LOW_UP_PID_SLOT = 0;
-
     private final VictorSPX victorMotor = new VictorSPX(Ports.victorPort);
     private final TalonSRX talonMotor = new TalonSRX(Ports.talonPort);
+    private double setpoint;
 
     public Elevator() {
         talonMotor.setInverted(Constants.TALON_REVERSE);
@@ -79,21 +76,21 @@ public class Elevator extends Subsystem {
     }
 
     /**
-     * Set a target height and tell the motors to move to that position.
-     *
-     * @param height Target height of the elevator in meters
-     */
-    public void setHeight(double height) {
-        this.setpoint = convertHeightToTicks(Math.min(Constants.ELEVATOR_MAX_HEIGHT, Math.max(0, height)));
-    }
-
-    /**
      * Get the target height from the encoders.
      *
      * @return Current height of the elevator in meters
      */
     public double getHeight() {
         return convertTicksToHeight(talonMotor.getSelectedSensorPosition(0));
+    }
+
+    /**
+     * Set a target height and tell the motors to move to that position.
+     *
+     * @param height Target height of the elevator in meters
+     */
+    public void setHeight(double height) {
+        this.setpoint = convertHeightToTicks(Math.min(Constants.ELEVATOR_MAX_HEIGHT, Math.max(0, height)));
     }
 
     public double getTicks() {
@@ -112,13 +109,12 @@ public class Elevator extends Subsystem {
      * Moves the elevator to the current setpoint, assigned in setHeight()
      */
     public void moveElevator() {
-        if(getHeight()<0.05)
+        if (getHeight() < 0.05)
             talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, 0);
+        else if (atSecondStage())
+            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
-            if (atSecondStage())
-                talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
-            else
-                talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
+            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
     }
 
     /**
@@ -137,21 +133,21 @@ public class Elevator extends Subsystem {
     }
 
     /**
-     * Set the motor to a certain speed, on a scale of -1 to 1.
-     *
-     * @param speed speed of the motor from -1 to 1
-     */
-    public void setSpeed(double speed) {
-        talonMotor.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
-    }
-
-    /**
      * Get the velocity from the encoders
      *
      * @return velocity of the motor, in m/s
      */
     public double getSpeed() {
         return convertTicksToHeight(10 * talonMotor.getSelectedSensorVelocity(0)); //sensorVelocity calculates for 100ms
+    }
+
+    /**
+     * Set the motor to a certain speed, on a scale of -1 to 1.
+     *
+     * @param speed speed of the motor from -1 to 1
+     */
+    public void setSpeed(double speed) {
+        talonMotor.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
     }
 
     /**
