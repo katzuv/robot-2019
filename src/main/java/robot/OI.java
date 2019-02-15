@@ -22,7 +22,7 @@ public class OI {
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
-    public static final double DOWN_SPEED_RATE = 0.02;
+    public static final double DOWN_SPEED_RATE = 0.08;
     /**
      * The rate at which the lift will goes up with the xbox joystick.
      */
