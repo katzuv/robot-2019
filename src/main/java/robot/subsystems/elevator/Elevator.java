@@ -147,7 +147,7 @@ public class Elevator extends Subsystem {
      * @return velocity of the motor, in m/s
      */
     public double getSpeed() {
-        return 10 * talonMotor.getSelectedSensorVelocity(0); //sensorVelocity calculates for 100ms
+        return convertTicksToHeight(10 * talonMotor.getSelectedSensorVelocity(0)); //sensorVelocity calculates for 100ms
     }
 
     /**
