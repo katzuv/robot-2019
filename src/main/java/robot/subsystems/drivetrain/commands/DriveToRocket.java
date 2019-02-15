@@ -42,7 +42,6 @@ public class DriveToRocket extends Command {
             Waypoint middle =getMiddleWP(targetWP);
             if (Point.distance(Robot.drivetrain.currentLocation, targetWP) >= Constants.MIN_DISTANCE) {
                 Path path = generateFromVision(angleEntry.getDouble(0), distanceEntry.getDouble(0));
-                System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
                 PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
                 pursue.start();
         }
