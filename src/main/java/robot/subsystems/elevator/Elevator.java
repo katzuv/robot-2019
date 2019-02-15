@@ -210,6 +210,10 @@ public class Elevator extends Subsystem {
         return ticks / Constants.TICKS_PER_METER;
     }
 
+    public void resetEncoders() {
+        talonMotor.setSelectedSensorPosition(-800, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
+    }
+
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new JoystickElevatorSpeed());
