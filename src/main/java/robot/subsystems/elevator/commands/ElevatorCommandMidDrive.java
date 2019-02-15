@@ -6,22 +6,23 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.elevator.Constants;
 
-import static robot.Robot.elevator; //elevator subsystem
+import static robot.Robot.elevator;
 
 /**
  * Move the elevator to a certain height
  */
-public class ElevatorCommand extends Command {
+public class ElevatorCommandMidDrive extends Command {
     private double tolerance = Constants.ELEVATOR_TOLERANCE;
     private double height;
     NetworkTableEntry targetDistanceEntry;
+    private boolean lifted = false;
 
     /**
      * Make the elevator move to a specific height.
      *
      * @param height height in meters of the elevator
      */
-    public ElevatorCommand(double height) {
+    public ElevatorCommandMidDrive(double height) {
         requires(elevator);
         this.height = height;
     }
@@ -31,7 +32,7 @@ public class ElevatorCommand extends Command {
      *
      * @param state an enum of heights, defined in the elevator constants class.
      */
-    public ElevatorCommand(Constants.ELEVATOR_STATES state) {
+    public ElevatorCommandMidDrive(Constants.ELEVATOR_STATES state) {
         this(state.getLevelHeight());
     }
 
@@ -41,7 +42,9 @@ public class ElevatorCommand extends Command {
         NetworkTable table = inst.getTable("vision");
         targetDistanceEntry = table.getEntry("distance");
         if (targetDistanceEntry.getDouble(0) <= 1 && !lifted){
-        elevator.setHeight(height);
+            elevator.setHeight(height);
+            lifted = true;
+        }
 
     }
 
