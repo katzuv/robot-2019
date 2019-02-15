@@ -218,6 +218,7 @@ public class Elevator extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new JoystickElevatorSpeed());
+        //setDefaultCommand(new ElevatorCommand(1.2));
+        setDefaultCommand(new JoystickElevatorCommand());
     }
 }
