@@ -65,14 +65,19 @@ public class RocketToLoading extends Command {
         }
 
 
-        private Path generateFromVision(double angle, double distance) {
-            double targetDistance = distance / 100;
-            Waypoint target = target(angle, targetDistance);
-            Waypoint middleWP = getMiddleWP(target);
-            Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});
-            System.out.println(path1);
-            return path1;
-        }
+    /**
+     * @param angle    from target
+     * @param distance from target
+     * @return the path
+     */
+    private Path generateFromVision(double angle, double distance) {
+        double targetDistance = distance / 100;
+        Waypoint target = target(angle, targetDistance);
+        Waypoint middleWP = getMiddleWP(target);
+        Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});
+        System.out.println(path1);
+        return path1;
+    }
 
         private Waypoint getMiddleWP(Waypoint target) {
             return new Waypoint(0, target.getY() - target.getY() / 2);

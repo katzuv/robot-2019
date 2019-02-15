@@ -66,6 +66,11 @@ public class DriveToRocket extends Command {
     }
 
 
+    /**
+     * @param angle    from target
+     * @param distance from target
+     * @return full path to target
+     */
     private Path generateFromVision(double angle, double distance) {
         Waypoint target = target(angle, distance/100);
         Waypoint middleWP = getMiddleWP(target);
@@ -75,10 +80,20 @@ public class DriveToRocket extends Command {
         return path1;
     }
 
+    /**
+     * @param target Waypoint
+     * @return the middle way point
+     */
     private Waypoint getMiddleWP(Waypoint target) {
         return new Waypoint(0, target.getY() - target.getY() / 2);
     }
 
+    /**
+     *
+     * @param angle from target
+     * @param distance from target
+     * @return the target way point
+     */
     private Waypoint target(double angle, double distance) {
         return new Waypoint(Math.sin(Math.toRadians(angle)) * distance + 0.15, Math.cos(Math.toRadians(angle)) * distance);
     }
