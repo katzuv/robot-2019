@@ -19,8 +19,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.commands.DriveToRocket;
-import robot.subsystems.drivetrain.commands.RocketToLoading;
+import robot.subsystems.drivetrain.commands.TwoHatchAuto;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
@@ -83,8 +82,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
-        m_chooser.addOption("drive to the rocket", new DriveToRocket());
-        m_chooser.addOption("drive to loading station", new RocketToLoading());
+        m_chooser.addOption("drive to the rocket", new TwoHatchAuto());
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
