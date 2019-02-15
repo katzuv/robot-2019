@@ -54,7 +54,7 @@ public class Constants {
     static final int TALON_RUNNING_TIMEOUT_MS = 0; //as seen in the excerpt above, there should be no timeout on the talon in the robot loop.
 
     //Mechanical heights of the elevator, at its maximum position and semi position(where the elevator splits from one segment to two)
-    static final double ELEVATOR_MAX_HEIGHT = 1.56;
+    static final double ELEVATOR_MAX_HEIGHT = 1.6;
     static final double ELEVATOR_MID_HEIGHT = 0.797;
 
     /**
@@ -62,15 +62,15 @@ public class Constants {
      * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
      */
     public enum ELEVATOR_STATES { //TODO: Find actual heights from mechanics
-        SHIP_HATCH(0.4),
+        SHIP_HATCH(0.278),
         SHIP_CARGO(0.3),
-        LEVEL1_HATCH(0.4),
+        LEVEL1_HATCH(0.278),
         LEVEL1_CARGO(0.3),
-        LEVEL2_HATCH(0.75),
+        LEVEL2_HATCH(0.987),
         LEVEL2_CARGO(0.85),
-        LEVEL3_HATCH(1.45),
+        LEVEL3_HATCH(1.579),
         LEVEL3_CARGO(1.48),
-        LOADING_STATION(0.6);
+        LOADING_STATION(0.278);
 
         private final double levelHeight;
 
