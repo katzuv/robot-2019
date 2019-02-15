@@ -18,8 +18,7 @@ public class FarRocketToHab extends InstantCommand {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Path path = new Path();
-        path.appendWaypoint(new Waypoint(-0.5, 0.5));
+        Path path = new Path(new Waypoint[]{(new Waypoint(-0.5, 0.5))});
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
         pursue.start();
