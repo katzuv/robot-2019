@@ -15,7 +15,7 @@ public class Constants {
     static final boolean BOTTOM_HALL_REVERSED = false;
 
     //PIDF values of the elevator
-    static final double[] LIFT_LOW_UP_PIDF = {0, 0, 0, (1023 * 1.0) / 4378.0}; //Units * cruise percent speed / max tested speed
+    static final double[] LIFT_LOW_UP_PIDF = {0.2, 0, 0.8, (1023 * 1.0) / 4378.0}; //Units * cruise percent speed / max tested speed
 
     //Feedforward values for the top and bottom parts of the robot
     static final double FIRST_STAGE_FEEDFORWARD = 0.13;
