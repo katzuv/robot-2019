@@ -37,7 +37,7 @@ public class DriveToRocket extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (angleEntry != null && distanceEntry != null){
+        if (angleEntry.getDouble(0) != 0 && distanceEntry.getDouble(0) != 0) {
             Waypoint targetWP =target(angleEntry.getDouble(0), distanceEntry.getDouble(0));
             Waypoint middle =getMiddleWP(targetWP);
             if (Point.distance(Robot.drivetrain.currentLocation, targetWP) >= Constants.MIN_DISTANCE) {

@@ -34,14 +34,13 @@ public class RocketToLoading extends Command {
 
         // Called repeatedly when this Command is scheduled to run
         protected void execute() {
-            if (distanceEntry != null && angleEntry != null){
+            if (distanceEntry.getDouble(0) != 0 && angleEntry.getDouble(0) != 0) {
                 Waypoint targetWP =target(angleEntry.getDouble(0), distanceEntry.getDouble(0));
 
                 if (Point.distance(Robot.drivetrain.currentLocation, targetWP) >= Constants.MIN_DISTANCE) {
 
                     Path path = generateFromVision(angleEntry.getDouble(0), distanceEntry.getDouble(0));
                     path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-                    System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
                     PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
                     pursue.start();
                 }
