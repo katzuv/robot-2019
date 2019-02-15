@@ -31,7 +31,7 @@ public class Constants {
     static final double NOMINAL_OUT_FWD = 0.0;
     static final double PEAK_OUT_FWD = 1;
     static final double NOMINAL_OUT_REV = 0;
-    static final double PEAK_OUT_REV = -1; //TODO: need to be changed
+    static final double PEAK_OUT_REV = -1;
 
     /* Motion magic speed constants */
     static final int MOTION_MAGIC_ACCELERATION = (int)(2 * TICKS_PER_METER/10);
@@ -54,8 +54,8 @@ public class Constants {
     static final int TALON_RUNNING_TIMEOUT_MS = 0; //as seen in the excerpt above, there should be no timeout on the talon in the robot loop.
 
     //Mechanical heights of the elevator, at its maximum position and semi position(where the elevator splits from one segment to two)
-    static final double ELEVATOR_MAX_HEIGHT = 1.56; //TODO: get actual heights from mechanics
-    static final double ELEVATOR_MID_HEIGHT = 0.797; //TODO: get actual heights from mechanics
+    static final double ELEVATOR_MAX_HEIGHT = 1.56;
+    static final double ELEVATOR_MID_HEIGHT = 0.797;
 
     /**
      * enum storing all height values assigned to their respective height.
@@ -70,7 +70,7 @@ public class Constants {
         LEVEL2_CARGO(0.85),
         LEVEL3_HATCH(1.45),
         LEVEL3_CARGO(1.48),
-        LOADING_STATION(0.6); //TODO: Minimize the amount of states, SHIP_HATCH / LOADING_STATION / LEVEL1_HATCH might all be one height.
+        LOADING_STATION(0.6);
 
         private final double levelHeight;
 
