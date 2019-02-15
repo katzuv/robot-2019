@@ -121,7 +121,7 @@ public class Elevator extends Subsystem {
      * Beyond preventing the motors from going above a certain height, this method prevents them from moving higher or
      * lower once one of the limit switches/hall effects is pressed.
      */
-    private void preventOverShoot() { //TODO: add manual override?
+    private void preventOverShoot() {
         if (atTop()) {
             //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
             talonMotor.setSelectedSensorPosition((int) (Constants.ELEVATOR_MAX_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
@@ -129,7 +129,7 @@ public class Elevator extends Subsystem {
         if (atBottom()) {
             //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
             talonMotor.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the encoder position to the bottom
-        } //TODO: raise exception when both limit switches are pressed
+        }
     }
 
     /**

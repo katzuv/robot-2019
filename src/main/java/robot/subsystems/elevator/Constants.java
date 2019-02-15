@@ -61,7 +61,7 @@ public class Constants {
      * enum storing all height values assigned to their respective height.
      * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
      */
-    public enum ELEVATOR_STATES { //TODO: Find actual heights from mechanics
+    public enum ELEVATOR_STATES {
         SHIP_HATCH(0.278),
         SHIP_CARGO(0.3),
         LEVEL1_HATCH(0.278),

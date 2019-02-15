@@ -132,7 +132,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         navx.reset();
         drivetrain.resetLocation();
-        drivetrain.resetEncoders();//TODO: shouldnt be here?
+        drivetrain.resetEncoders();
         elevator.resetEncoders();
 
 
