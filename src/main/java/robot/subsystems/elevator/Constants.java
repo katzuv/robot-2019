@@ -29,12 +29,12 @@ public class Constants {
      * These settings are useful to reduce the maximum velocity of the mechanism,
      * and can make tuning the closed-loop simpler.  */
     static final double NOMINAL_OUT_FWD = 0.0;
-    static final double PEAK_OUT_FWD = 0.85;
+    static final double PEAK_OUT_FWD = 1;
     static final double NOMINAL_OUT_REV = 0;
-    static final double PEAK_OUT_REV = -0.75; //TODO: need to be changed
+    static final double PEAK_OUT_REV = -1; //TODO: need to be changed
 
     /* Motion magic speed constants */
-    static final int MOTION_MAGIC_ACCELERATION = (int)(1 * TICKS_PER_METER/10);
+    static final int MOTION_MAGIC_ACCELERATION = (int)(2 * TICKS_PER_METER/10);
     static final int MOTION_MAGIC_CRUISE_SPEED = (int)(PEAK_OUT_FWD * TICKS_PER_METER/10);
 
     /* Talon constants */
