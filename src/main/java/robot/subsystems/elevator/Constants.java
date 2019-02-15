@@ -18,8 +18,8 @@ public class Constants {
     static final double[] LIFT_LOW_UP_PIDF = {0.0, 0, 0, 0};
 
     //Feedforward values for the top and bottom parts of the robot
-    static final double FIRST_STAGE_FEEDFORWARD = 0.14;
-    static final double SECOND_STAGE_FEEDFORWARD = 0.14;
+    static final double FIRST_STAGE_FEEDFORWARD = 0.13;
+    static final double SECOND_STAGE_FEEDFORWARD = 0.17;
 
     public static double ELEVATOR_TOLERANCE = 0.001; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
@@ -28,9 +28,9 @@ public class Constants {
      * These settings are useful to reduce the maximum velocity of the mechanism,
      * and can make tuning the closed-loop simpler.  */
     static final double NOMINAL_OUT_FWD = 0.0;
-    static final double PEAK_OUT_FWD = 0.6;
+    static final double PEAK_OUT_FWD = 0.8;
     static final double NOMINAL_OUT_REV = 0;
-    static final double PEAK_OUT_REV = -0.4; //TODO: need to be changed
+    static final double PEAK_OUT_REV = -0.8; //TODO: need to be changed
 
     /* Talon constants */
 
