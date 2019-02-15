@@ -71,6 +71,8 @@ public class Elevator extends Subsystem {
                 Constants.BOTTOM_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIMEOUT_MS
         );
+        talonMotor.overrideLimitSwitchesEnable(false);
+        talonMotor.overrideSoftLimitsEnable(true);
     }
 
     /**
