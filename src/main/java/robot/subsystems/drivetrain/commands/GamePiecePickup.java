@@ -31,7 +31,7 @@ public class GamePiecePickup extends Command {
         targetAngleEntry = table.getEntry("angle");
         targetDistanceEntry = table.getEntry("distance");
         reflectorAngleEntry = table.getEntry( "field_angle");
-        double targetDistance = targetDistanceEntry.getDouble(0);
+        double targetDistance = targetDistanceEntry.getDouble(0)-0.38;
         double targetAngle = targetAngleEntry.getDouble(0);
         double targetFieldAngle = reflectorAngleEntry.getDouble(0);
         Waypoint target = new Waypoint(Math.sin(Math.toRadians(targetAngle)) * targetDistance +0.15, Math.cos(Math.toRadians(targetAngle)) * targetDistance   );
