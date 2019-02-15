@@ -136,6 +136,7 @@ public class Robot extends TimedRobot {
         elevator.resetEncoders();
 
 
+
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
         // schedule the autonomous command (example)
         m_autonomousCommand = m_chooser.getSelected();
@@ -197,7 +198,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
         SmartDashboard.putNumber("elevator Speed", elevator.getSpeed());
 
-        SmartDashboard.putNumber("highest speed", Math.max(SmartDashboard.getNumber("highest speed", 0), elevator.getSpeed() * 10));
+        SmartDashboard.putNumber("highest height", Math.max(SmartDashboard.getNumber("highest height", 0), elevator.getHeight() ));
+        SmartDashboard.putNumber("highest speed", Math.max(SmartDashboard.getNumber("highest speed", 0), elevator.getSpeed()));
     }
 
     /**
