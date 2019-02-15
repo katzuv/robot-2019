@@ -1,6 +1,7 @@
 package robot.subsystems.cargoIntake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.OI;
 import robot.subsystems.cargoIntake.CargoIntake;
 
 /**
@@ -35,7 +36,7 @@ public class GripperControl extends Command {
         if (continuousWhileHeld)
             return false;
         else
-            return cargoIntake.isCargoInside();
+            return cargoIntake.isCargoInside() || OI.y.get();
     }
 
     // Called once after isFinished returns true
