@@ -112,10 +112,13 @@ public class Elevator extends Subsystem {
      * Moves the elevator to the current setpoint, assigned in setHeight()
      */
     public void moveElevator() {
-        if (atSecondStage())
-            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
+        if(getHeight()<0.05)
+            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, 0);
         else
-            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
+            if (atSecondStage())
+                talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
+            else
+                talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
     }
 
     /**
