@@ -15,11 +15,12 @@ public class Constants {
 
 
     //PIDF values of the elevator
-    static final double[] LIFT_LOW_UP_PIDF = {0.0, 0, 0, 0};
+    static final double[] LIFT_LOW_UP_PIDF = {0, 0, 0, (1023 * 1.0) / 4378.0}; //Units * cruise percent speed / max tested speed
 
     //Feedforward values for the top and bottom parts of the robot
     static final double FIRST_STAGE_FEEDFORWARD = 0.13;
     static final double SECOND_STAGE_FEEDFORWARD = 0.17;
+
 
     public static double ELEVATOR_TOLERANCE = 0.001; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
