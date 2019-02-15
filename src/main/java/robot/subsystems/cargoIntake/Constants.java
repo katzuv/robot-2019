@@ -9,21 +9,21 @@ public class Constants {
     public static final double MAX_VELOCITY = 2732;
     public static final double MAX_ACCEL = 1366;
 
-    public final static double kP = 3; //0.85
-    public final static double kI = 0;//1.6
-    public final static double kD = 120;//cheesy did it so we should do it too
-    public final static double kF = 0.3744509516837482;
-    public final static int IZone = 50;
+    final static double kP = 3; //0.85
+    final static double kI = 0;//1.6
+    final static double kD = 120;//cheesy did it so we should do it too
+    final static double kF = 0.3744509516837482;
+    final static int IZone = 50;
 
-    public final static double TICKS_PER_DEGREE = 11.73333333333333333333333*4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
+    final static double TICKS_PER_DEGREE = 11.73333333333333333333333*4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
-    public final static boolean WRIST_MOTOR_REVERSED = false;
-    public final static boolean WRIST_LIMIT_REVESED = true;//might need to be changed
+    final static boolean WRIST_MOTOR_REVERSED = false;
+    final static boolean WRIST_LIMIT_REVESED = true;//might need to be changed
 
-    public final static int TALON_TIME_OUT = 10;
+    final static int TALON_TIME_OUT = 10;
 
-    public final static double CARGO_IN_VOLTAGE = 2.5;//felt cute might delete later
-    public final static boolean SENSOR_PHASE = false;
+    final static double CARGO_IN_VOLTAGE = 2.5;//felt cute might delete later
+    final static boolean SENSOR_PHASE = false;
 
 
     public final static double WRIST_RADIUS = 0;
