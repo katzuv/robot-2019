@@ -11,14 +11,24 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
  */
 public class HabToFarRocket extends InstantCommand {
 
-    public HabToFarRocket() {
+    boolean isToRight;
+    int direction;// right positive left negative.
+
+    public HabToFarRocket(boolean isToRight) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+        this.isToRight = isToRight;
+        if (isToRight) {
+            direction = 1;
+        } else {
+            direction = -1;
+        }
+
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Path path = new Path(new Waypoint[]{new Waypoint(0.35, 5), (new Waypoint(0.75, 5.5))});
+        Path path = new Path(new Waypoint[]{new Waypoint(direction * 0.35, 5), (new Waypoint(direction * 0.75, 5.5))});
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
         pursue.start();

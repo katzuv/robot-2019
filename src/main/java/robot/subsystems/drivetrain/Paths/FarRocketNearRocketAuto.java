@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class FarRocketNearRocketAuto extends CommandGroup {
 
     public FarRocketNearRocketAuto() {
-        addSequential(new HabToFarRocket());
+        addSequential(new HabToFarRocket(true));
         addSequential(new DriveToRocket());
         addSequential(new FarRocketToHab());
         addSequential(new RocketToLoading(false));
