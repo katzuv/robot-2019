@@ -3,6 +3,8 @@ package robot.subsystems.drivetrain.pure_pursuit;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static robot.Robot.drivetrain;
+
 
 /**
  * @author Paulo Khayat
@@ -368,7 +370,7 @@ public class Path {
         //Each point is given a speed based on its curvature, and the maximum velocity allowed.
         for (int i = 0; i < this.length(); i++) {
             if (this.getWaypoint(i).getCurvature() != 0) //prevent zero division error
-                this.getWaypoint(i).setSpeed(Math.min(pathMaximumVelocity, Constants.K_CURVE / this.getWaypoint(i).getCurvature()));
+                this.getWaypoint(i).setSpeed(Math.max(Math.min(pathMaximumVelocity, Constants.K_CURVE / this.getWaypoint(i).getCurvature()),( drivetrain.getLeftSpeed()+drivetrain.getRightSpeed())/2));
             else
                 this.getWaypoint(i).setSpeed(pathMaximumVelocity);
         }
