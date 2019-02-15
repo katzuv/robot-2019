@@ -112,9 +112,9 @@ public class Elevator extends Subsystem {
      */
     public void moveElevator() {
         if (atSecondStage())
-            talonMotor.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
+            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
-            talonMotor.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
+            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
     }
 
     /**
