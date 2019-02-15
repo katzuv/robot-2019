@@ -27,10 +27,10 @@ public class Constants {
      * Peak Output- The "maximal" or "strongest" motor output allowed.
      * These settings are useful to reduce the maximum velocity of the mechanism,
      * and can make tuning the closed-loop simpler.  */
-    static final double NOMINAL_OUT_FWD = 0;
-    static final double PEAK_OUT_REV = 0;
+    static final double NOMINAL_OUT_FWD = 0.0;
+    static final double PEAK_OUT_FWD = 0.75;
     static final double NOMINAL_OUT_REV = 0;
-    static final double PEAK_OUT_FWD = 0;
+    static final double PEAK_OUT_REV = -0.75;
 
     /* Talon constants */
 
