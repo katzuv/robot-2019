@@ -22,7 +22,7 @@ public class Constants {
     static final double SECOND_STAGE_FEEDFORWARD = 0.17;
 
 
-    public static double ELEVATOR_TOLERANCE = 0.001; //The tolerance in which the elevator will stop when trying to get to a certain height.
+    public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
     /* Nominal Output- The "minimal" or "weakest" motor output allowed if the output is nonzero
      * Peak Output- The "maximal" or "strongest" motor output allowed.
