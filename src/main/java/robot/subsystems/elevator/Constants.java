@@ -10,8 +10,8 @@ public class Constants {
     static final boolean BOTTOM_HALL_REVERSED = false;
 
     //Encoder constants:
-    static final double TICKS_PER_METER = 2000;
-    static final boolean ENCODER_REVERSED = false;
+    static final double TICKS_PER_METER = 25993;
+    static final boolean ENCODER_REVERSED = true;
 
 
     //PIDF values of the elevator
