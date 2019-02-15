@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.cargoIntake.CargoIntake;
+import robot.subsystems.cargoIntake.commands.GripperControl;
 import robot.subsystems.cargoIntake.commands.WristTurn;
 
 import static robot.Robot.cargoIntake;
@@ -24,16 +25,18 @@ public class OI {
 
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
-    public XboxController xbox = new XboxController(2);
-    public Button a = new JoystickButton(xbox, 1);
-    public Button b = new JoystickButton(xbox, 2);
-    public Button x = new JoystickButton(xbox, 3);
+    public static XboxController xbox = new XboxController(2);
+    public static Button a = new JoystickButton(xbox, 1);
+    public static Button b = new JoystickButton(xbox, 2);
+    public static Button x = new JoystickButton(xbox, 3);
+    public static Button y = new JoystickButton(xbox, 4);
 
 
     public OI() {
         a.whenPressed(new WristTurn(120));
         x.whenPressed(new WristTurn(30));
         b.whenPressed(new WristTurn(90));
+        y.whenPressed(new GripperControl(0.75, false));
     }
     /*
     driver's preference: a button for intake until sensor senses the cargo or with another button press, rb and lb for continous intake and outtake
