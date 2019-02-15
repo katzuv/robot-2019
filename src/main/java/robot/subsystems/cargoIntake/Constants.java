@@ -6,12 +6,12 @@ public class Constants {
     public final static double INTAKE_ANGLE = 0;
     public final static double FOLDED_ANGLE = 165;//folded angle represents the angle in which the wrist is folded back inside the robot (number felt cute might delete later)
 
-    public static final double MAX_VELOCITY = 2732;
+    public static final double MAX_VELOCITY = 2732; //currently in encoder units.
     public static final double MAX_ACCEL = 1366;
 
-    final static double kP = 3; //0.85
-    final static double kI = 0;//1.6
-    final static double kD = 120;//cheesy did it so we should do it too
+    final static double kP = 3;
+    final static double kI = 0;
+    final static double kD = 120;
     final static double kF = 0.3744509516837482;
     final static int IZone = 50;
 
