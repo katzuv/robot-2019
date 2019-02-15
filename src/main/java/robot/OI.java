@@ -44,10 +44,11 @@ public class OI {
         a.whenPressed(new ElevatorCommand(0));
         b.whenPressed(new ElevatorCommand(0.5));
         c.whenPressed(new ElevatorCommand(1));
-        d.whenPressed(new ElevatorCommand(1.5));
+        d.whenPressed(new ElevatorCommand(1.56));
     }
     //// CREATING BUTTONS
-    // One type of button is a joystick button which is any button on a
+    // One type of butto][\
+    // n is a joystick button which is any button on a
     //// joystick.
     // You create one by telling it which joystick it's on and which button
     // number it is.
