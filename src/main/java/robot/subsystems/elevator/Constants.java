@@ -15,10 +15,10 @@ public class Constants {
     static final boolean BOTTOM_HALL_REVERSED = false;
 
     //PIDF values of the elevator
-    static final double[] LIFT_LOW_UP_PIDF = {0.2, 0, 0.8, (1023 * 1.0) / 4378.0}; //Units * cruise percent speed / max tested speed
+    static final double[] LIFT_LOW_UP_PIDF = {0.3, 0, 0.8, (1023 * 1.0) / 4378.0}; //Units * cruise percent speed / max tested speed
 
     //Feedforward values for the top and bottom parts of the robot
-    static final double FIRST_STAGE_FEEDFORWARD = 0.13;
+    static final double FIRST_STAGE_FEEDFORWARD = 0.17;
     static final double SECOND_STAGE_FEEDFORWARD = 0.17;
 
 
@@ -34,8 +34,8 @@ public class Constants {
     static final double PEAK_OUT_REV = -1;
 
     /* Motion magic speed constants */
-    static final int MOTION_MAGIC_ACCELERATION = (int)(2 * TICKS_PER_METER/10);
-    static final int MOTION_MAGIC_CRUISE_SPEED = (int)(PEAK_OUT_FWD * TICKS_PER_METER/10);
+    static final int MOTION_MAGIC_ACCELERATION = (int)(1.7 * TICKS_PER_METER/10);
+    static final int MOTION_MAGIC_CRUISE_SPEED = (int)(2 * TICKS_PER_METER/10);
 
     /* Talon constants */
     /*
