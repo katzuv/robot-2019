@@ -42,6 +42,8 @@ public class Elevator extends Subsystem {
         talonMotor.config_kD(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
         talonMotor.config_kF(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
 
+        talonMotor.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_SPEED);
+        talonMotor.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION);
         //the victor follows all the inputs the talon has
         victorMotor.follow(talonMotor);
 
