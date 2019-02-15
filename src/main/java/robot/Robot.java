@@ -23,6 +23,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import robot.subsystems.elevator.Elevator;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,6 +33,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
  * project.
  */
 public class Robot extends TimedRobot {
+    public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
@@ -84,6 +86,7 @@ public class Robot extends TimedRobot {
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
         navx.reset();
+        elevator.resetEncoders();
     }
 
     /**
@@ -130,6 +133,9 @@ public class Robot extends TimedRobot {
         navx.reset();
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
+        elevator.resetEncoders();
+
+
 
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
         // schedule the autonomous command (example)
@@ -146,8 +152,6 @@ public class Robot extends TimedRobot {
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
 
-        //Print the variables for testing.
-        System.out.println(path);
         SmartDashboard.putString("pursue command", "start");
         SmartDashboard.putString("last waypoint", path.getWaypoint(path.length() - 1).toString());
     }
@@ -184,12 +188,16 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-
+        SmartDashboard.putNumber("height in ticks", elevator.getTicks());
+        SmartDashboard.putNumber("height in meters", elevator.getHeight());
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
         SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("elevator Speed", elevator.getSpeed());
 
+        SmartDashboard.putNumber("highest height", Math.max(SmartDashboard.getNumber("highest height", 0), elevator.getHeight() ));
+        SmartDashboard.putNumber("highest speed", Math.max(SmartDashboard.getNumber("highest speed", 0), elevator.getSpeed()));
     }
 
     /**
