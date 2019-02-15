@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import robot.OI;
 import robot.Robot;
 import robot.subsystems.elevator.Elevator;
-
 /**
  *
  */
@@ -35,6 +34,7 @@ public class JoystickElevatorCommand extends Command {
         else
             change = yAxis * OI.DOWN_SPEED_RATE;
         elevator.setHeight(elevator.getHeight() + change);
+        elevator.moveElevator();
     }
 
     // Make this return true when this Command no longer needs to run execute()
