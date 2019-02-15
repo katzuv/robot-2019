@@ -1,6 +1,11 @@
 package robot.subsystems.elevator;
 
 public class Constants {
+
+    //Encoder constants:
+    static final double TICKS_PER_METER = 25993;
+    static final boolean ENCODER_REVERSED = true;
+
     //Motor reverse constants:
     static final boolean VICTOR_REVERSE = true;
     static final boolean TALON_REVERSE = true;
@@ -8,11 +13,6 @@ public class Constants {
     //Limit switch / Magnet hall constants:
     static final boolean TOP_HALL_REVERSED = false;
     static final boolean BOTTOM_HALL_REVERSED = false;
-
-    //Encoder constants:
-    static final double TICKS_PER_METER = 25993;
-    static final boolean ENCODER_REVERSED = true;
-
 
     //PIDF values of the elevator
     static final double[] LIFT_LOW_UP_PIDF = {0, 0, 0, (1023 * 1.0) / 4378.0}; //Units * cruise percent speed / max tested speed
