@@ -20,8 +20,7 @@ public class JoystickElevatorSpeed extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double speed = 0.5 * Robot.m_oi.leftStick.getY();
-        System.out.println("ElevatorSpeed: " + speed);
+        double speed = 1 * Robot.m_oi.leftStick.getY();
         Robot.elevator.setSpeed(speed);
     }
 

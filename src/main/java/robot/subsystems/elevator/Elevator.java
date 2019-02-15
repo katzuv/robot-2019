@@ -136,7 +136,7 @@ public class Elevator extends Subsystem {
      * @param speed speed of the motor from -1 to 1
      */
     public void setSpeed(double speed) {
-        talonMotor.set(ControlMode.PercentOutput, speed);
+        talonMotor.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
     }
 
     /**
