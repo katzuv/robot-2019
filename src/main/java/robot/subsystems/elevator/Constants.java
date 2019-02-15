@@ -50,8 +50,8 @@ public class Constants {
     static final int TALON_RUNNING_TIMEOUT_MS = 0; //as seen in the excerpt above, there should be no timeout on the talon in the robot loop.
 
     //Mechanical heights of the elevator, at its maximum position and semi position(where the elevator splits from one segment to two)
-    static final double ELEVATOR_MAX_HEIGHT = 2.4; //TODO: get actual heights from mechanics
-    static final double ELEVATOR_MID_HEIGHT = 1.2; //TODO: get actual heights from mechanics
+    static final double ELEVATOR_MAX_HEIGHT = 1.56; //TODO: get actual heights from mechanics
+    static final double ELEVATOR_MID_HEIGHT = 0.797; //TODO: get actual heights from mechanics
 
     /**
      * enum storing all height values assigned to their respective height.
