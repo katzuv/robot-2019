@@ -9,6 +9,9 @@ package robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.elevator.commands.ElevatorCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,6 +35,17 @@ public class OI {
     public Joystick rightStick = new Joystick(1);
     public XboxController xbox = new XboxController(2);
 
+
+    Button a = new JoystickButton(xbox, 1);
+    Button b = new JoystickButton(xbox, 2);
+    Button c = new JoystickButton(xbox, 3);
+    Button d = new JoystickButton(xbox, 4);
+    public OI (){
+        a.whenPressed(new ElevatorCommand(0));
+        b.whenPressed(new ElevatorCommand(0.5));
+        c.whenPressed(new ElevatorCommand(1));
+        d.whenPressed(new ElevatorCommand(1.5));
+    }
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.
