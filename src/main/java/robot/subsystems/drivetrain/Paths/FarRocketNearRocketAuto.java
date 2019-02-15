@@ -11,8 +11,8 @@ public class FarRocketNearRocketAuto extends CommandGroup {
         addSequential(new HabToFarRocket());
         addSequential(new DriveToRocket());
         addSequential(new FarRocketToHab());
-        addSequential(new RocketToLoading());
-        addSequential(new RocketToLoading());
+        addSequential(new RocketToLoading(false));
+        addSequential(new RocketToLoading(true));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

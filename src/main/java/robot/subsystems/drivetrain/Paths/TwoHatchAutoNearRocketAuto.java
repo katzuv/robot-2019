@@ -9,8 +9,8 @@ public class TwoHatchAutoNearRocketAuto extends CommandGroup {
 
     public TwoHatchAutoNearRocketAuto() {
         addSequential(new DriveToRocket());
-        addSequential(new RocketToLoading());
-        addSequential(new RocketToLoading());
+        addSequential(new RocketToLoading(true));
+        addSequential(new RocketToLoading(true));
 
         // Add Commands here:
         // e.g. addSequential(new Command1());

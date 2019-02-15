@@ -24,7 +24,6 @@ import robot.subsystems.drivetrain.Paths.NearCargoAuto;
 import robot.subsystems.drivetrain.Paths.TwoHatchAutoNearRocketAuto;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 /**
@@ -152,14 +151,12 @@ public class Robot extends TimedRobot {
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
 
-        PurePursue pursue = new PurePursue(path, false, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV);
 
         //Print the variables for testing.
         System.out.println(path);
         SmartDashboard.putString("pursue command", "start");
         SmartDashboard.putString("last waypoint", path.getWaypoint(path.length() - 1).toString());
 
-        pursue.start(); //Run the command.
     }
 
     /**

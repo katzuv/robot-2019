@@ -14,8 +14,10 @@ public class RocketToLoading extends Command {
 
     NetworkTableEntry distanceEntry;
     NetworkTableEntry angleEntry;
+    Boolean isReversed;
 
-    public RocketToLoading() {
+    public RocketToLoading(boolean isReversed) {
+        this.isReversed = isReversed;
 
     }
         // Called just before this Command runs the first time
@@ -26,7 +28,11 @@ public class RocketToLoading extends Command {
             distanceEntry = table.getEntry("distance");
 
             Path path = new Path();
-            path.appendWaypoint(new Waypoint(0,-3.5));
+            if ((isReversed)) {
+                path.appendWaypoint(new Waypoint(0, -3.5));
+            } else {
+                path.appendWaypoint(new Waypoint(0, 3.5));
+            }
             path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
             PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
             pursue.start();
