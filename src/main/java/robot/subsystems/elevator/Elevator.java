@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 import robot.subsystems.elevator.commands.JoystickElevatorSpeed;
 
