@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class TwoHatchAutoNearRocket extends CommandGroup {
+public class TwoHatchAutoNearRocketAuto extends CommandGroup {
 
-    public TwoHatchAutoNearRocket() {
+    public TwoHatchAutoNearRocketAuto() {
         addSequential(new DriveToRocket());
         addSequential(new RocketToLoading());
         addSequential(new RocketToLoading());
-        addSequential(new DriveToRocket());
+
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
