@@ -1,13 +1,13 @@
-package robot.subsystems.drivetrain.commands;
+package robot.subsystems.drivetrain.Paths;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class TwoHatchAuto extends CommandGroup {
+public class TwoHatchAutoNearRocket extends CommandGroup {
 
-    public TwoHatchAuto() {
+    public TwoHatchAutoNearRocket() {
         addSequential(new DriveToRocket());
         addSequential(new RocketToLoading());
         addSequential(new RocketToLoading());
