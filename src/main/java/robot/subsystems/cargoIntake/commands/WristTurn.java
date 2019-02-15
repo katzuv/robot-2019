@@ -10,7 +10,6 @@ import robot.subsystems.cargoIntake.Constants;
  *
  */
 public class WristTurn extends Command {
-    private double arcLength;
     private double angle;
     private CargoIntake cargoIntake = new CargoIntake();
 
@@ -24,9 +23,6 @@ public class WristTurn extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-//        double relativeAngle = this.angle / 180;
-        double circumference = 2 * Math.PI * Constants.WRIST_RADIUS;
-        this.arcLength = this.angle * circumference;
         SmartDashboard.putString("command state", "start");
         cargoIntake.setWristPosition(angle);
         cargoIntake.wrist.set(ControlMode.MotionMagic, cargoIntake.convertAngleToTicks(angle));

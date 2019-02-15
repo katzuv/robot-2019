@@ -24,7 +24,4 @@ public class Constants {
 
     final static double CARGO_IN_VOLTAGE = 2.5;//felt cute might delete later
     final static boolean SENSOR_PHASE = false;
-
-
-    public final static double WRIST_RADIUS = 0;
 }
