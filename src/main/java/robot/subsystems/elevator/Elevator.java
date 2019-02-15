@@ -22,57 +22,57 @@ public class Elevator extends Subsystem {
 
     /* pid slots for the four states: up and down on the first level and up and down on the second level of the cascade*/
     private final int TALON_LOW_UP_PID_SLOT = 0;
-    private final VictorSPX victorMotor = new VictorSPX(Ports.victorPort);
-    private final TalonSRX talonMotor = new TalonSRX(Ports.talonPort);
+    private final VictorSPX slaveMotor = new VictorSPX(Ports.victorPort);
+    private final TalonSRX masterMotor = new TalonSRX(Ports.talonPort);
     private double setpoint;
 
     public Elevator() {
-        talonMotor.setInverted(Constants.TALON_REVERSE);
-        victorMotor.setInverted(Constants.VICTOR_REVERSE);
+        masterMotor.setInverted(Constants.TALON_REVERSE);
+        slaveMotor.setInverted(Constants.VICTOR_REVERSE);
 
         //what the motor does when not given voltage (Brake - decelerate the motor, Coast - not stop the motor)
-        victorMotor.setNeutralMode(NeutralMode.Brake);
-        talonMotor.setNeutralMode(NeutralMode.Brake);
+        slaveMotor.setNeutralMode(NeutralMode.Brake);
+        masterMotor.setNeutralMode(NeutralMode.Brake);
 
         /* set closed loop gains in slot0 */
-        talonMotor.config_kP(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kI(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kD(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        talonMotor.config_kF(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kP(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kI(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kD(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kF(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
 
-        talonMotor.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_SPEED);
-        talonMotor.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION);
+        masterMotor.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_SPEED);
+        masterMotor.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION);
         //the victor follows all the inputs the talon has
-        victorMotor.follow(talonMotor);
+        slaveMotor.follow(masterMotor);
 
         /* Nominal Output- The "minimal" or "weakest" motor output allowed if the output is nonzero
          * Peak Output- The "maximal" or "strongest" motor output allowed.
          * These settings are useful to reduce the maximum velocity of the mechanism,
          * and can make tuning the closed-loop simpler.  */
-        talonMotor.configNominalOutputForward(Constants.NOMINAL_OUT_FWD, Constants.TALON_TIMEOUT_MS);
-        talonMotor.configPeakOutputForward(Constants.PEAK_OUT_FWD, Constants.TALON_TIMEOUT_MS);
-        talonMotor.configNominalOutputReverse(Constants.NOMINAL_OUT_REV, Constants.TALON_TIMEOUT_MS);
-        talonMotor.configPeakOutputReverse(Constants.PEAK_OUT_REV, Constants.TALON_TIMEOUT_MS);
+        masterMotor.configNominalOutputForward(Constants.NOMINAL_OUT_FWD, Constants.TALON_TIMEOUT_MS);
+        masterMotor.configPeakOutputForward(Constants.PEAK_OUT_FWD, Constants.TALON_TIMEOUT_MS);
+        masterMotor.configNominalOutputReverse(Constants.NOMINAL_OUT_REV, Constants.TALON_TIMEOUT_MS);
+        masterMotor.configPeakOutputReverse(Constants.PEAK_OUT_REV, Constants.TALON_TIMEOUT_MS);
 
-        talonMotor.setSensorPhase(Constants.ENCODER_REVERSED);
+        masterMotor.setSensorPhase(Constants.ENCODER_REVERSED);
         /* Configure the encoder */
-        talonMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
+        masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
 
         /* Configure the hall effect sensors */
         // TOP hall effect
-        talonMotor.configForwardLimitSwitchSource(
+        masterMotor.configForwardLimitSwitchSource(
                 LimitSwitchSource.FeedbackConnector,
                 Constants.TOP_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIMEOUT_MS
         );
         // BOTTOM hall effect
-        talonMotor.configReverseLimitSwitchSource(
+        masterMotor.configReverseLimitSwitchSource(
                 LimitSwitchSource.FeedbackConnector,
                 Constants.BOTTOM_HALL_REVERSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIMEOUT_MS
         );
-        talonMotor.overrideLimitSwitchesEnable(false);
-        talonMotor.overrideSoftLimitsEnable(false);
+        masterMotor.overrideLimitSwitchesEnable(false);
+        masterMotor.overrideSoftLimitsEnable(false);
     }
 
     /**
@@ -81,7 +81,7 @@ public class Elevator extends Subsystem {
      * @return Current height of the elevator in meters
      */
     public double getHeight() {
-        return convertTicksToHeight(talonMotor.getSelectedSensorPosition(0));
+        return convertTicksToHeight(masterMotor.getSelectedSensorPosition(0));
     }
 
     /**
@@ -94,7 +94,7 @@ public class Elevator extends Subsystem {
     }
 
     public double getTicks() {
-        return talonMotor.getSelectedSensorPosition(0);
+        return masterMotor.getSelectedSensorPosition(0);
     }
 
     /**
@@ -110,11 +110,11 @@ public class Elevator extends Subsystem {
      */
     public void moveElevator() {
         if (getHeight() < 0.05)
-            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, 0);
+            masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, 0);
         else if (atSecondStage())
-            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
+            masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
-            talonMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
+            masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
     }
 
     /**
@@ -124,11 +124,11 @@ public class Elevator extends Subsystem {
     private void preventOverShoot() {
         if (atTop()) {
             //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
-            talonMotor.setSelectedSensorPosition((int) (Constants.ELEVATOR_MAX_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
+            masterMotor.setSelectedSensorPosition((int) (Constants.ELEVATOR_MAX_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
         }
         if (atBottom()) {
             //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
-            talonMotor.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the encoder position to the bottom
+            masterMotor.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the encoder position to the bottom
         }
     }
 
@@ -138,7 +138,7 @@ public class Elevator extends Subsystem {
      * @return velocity of the motor, in m/s
      */
     public double getSpeed() {
-        return convertTicksToHeight(10 * talonMotor.getSelectedSensorVelocity(0)); //sensorVelocity calculates for 100ms
+        return convertTicksToHeight(10 * masterMotor.getSelectedSensorVelocity(0)); //sensorVelocity calculates for 100ms
     }
 
     /**
@@ -147,7 +147,7 @@ public class Elevator extends Subsystem {
      * @param speed speed of the motor from -1 to 1
      */
     public void setSpeed(double speed) {
-        talonMotor.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
+        masterMotor.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
     }
 
     /**
@@ -157,7 +157,7 @@ public class Elevator extends Subsystem {
      */
     public boolean atTop() {
         //return Math.abs(getHeight()) > Constants.ELEVATOR_MAX_HEIGHT;
-        return talonMotor.getSensorCollection().isFwdLimitSwitchClosed();
+        return masterMotor.getSensorCollection().isFwdLimitSwitchClosed();
     }
 
     /**
@@ -167,7 +167,7 @@ public class Elevator extends Subsystem {
      */
     public boolean atBottom() {
         //return Math.abs(getHeight()) < 0.05;
-        return talonMotor.getSensorCollection().isRevLimitSwitchClosed();
+        return masterMotor.getSensorCollection().isRevLimitSwitchClosed();
     }
 
     /**
@@ -189,7 +189,7 @@ public class Elevator extends Subsystem {
      * @return return motor value, from -1 to 1
      */
     public double getOutputPrecent() {
-        return talonMotor.getMotorOutputPercent();
+        return masterMotor.getMotorOutputPercent();
     }
 
     /**
@@ -213,7 +213,7 @@ public class Elevator extends Subsystem {
     }
 
     public void resetEncoders() {
-        talonMotor.setSelectedSensorPosition(-800, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
+        masterMotor.setSelectedSensorPosition(-800, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
     }
 
     @Override
