@@ -194,7 +194,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
         SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("elevator Speed", elevator.getSpeed());
 
+        SmartDashboard.putNumber("highest speed", Math.max(SmartDashboard.getNumber("highest speed", 0), elevator.getSpeed() * 10));
     }
 
     /**
