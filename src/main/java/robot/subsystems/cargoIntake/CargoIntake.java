@@ -66,8 +66,8 @@ public class CargoIntake extends Subsystem {
         /*
         motion magic speed config
          */
-        wrist.configMotionCruiseVelocity(1187, Constants.TALON_TIME_OUT);
-        wrist.configMotionAcceleration(1187, Constants.TALON_TIME_OUT);
+        wrist.configMotionCruiseVelocity(Constants.CRUISE_VELOCITY, Constants.TALON_TIME_OUT);
+        wrist.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIME_OUT);
         /*
         limit switch config
          */
@@ -108,11 +108,11 @@ public class CargoIntake extends Subsystem {
 
     public double stallCurrent() {
         final double wristAngle = cargoIntake.getWristAngle();
-        if (wristAngle < 5) {
+        if (wristAngle < 0) {
+            System.out.println(1.1 * (0.2 * Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle())) + 0.025 * Math.signum(Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle())))));
             return 0;
         }
         final double COMCosine = Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle()));
-        final double COMCosine = Math.cos(Math.toRadians(19+cargoIntake.getWristAngle()));
         return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
 
