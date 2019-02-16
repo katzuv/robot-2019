@@ -14,10 +14,8 @@ import robot.Robot;
 import static robot.Robot.drivetrain;
 
 public class JoystickDrive extends Command {
-    private double maxVelocity;
 
     public JoystickDrive() {
-        maxVelocity = 0;
         requires(drivetrain);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
