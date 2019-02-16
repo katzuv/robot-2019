@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.Elevator;
 
@@ -163,8 +162,8 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
 
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
-        SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
+        SmartDashboard.putNumber("right distance", drivetrain.getRightPosition());
+        SmartDashboard.putNumber("left distance", drivetrain.getLeftPosition());
         SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
         SmartDashboard.putNumber("current Angle", navx.getAngle());
 
@@ -192,8 +191,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("height in meters", elevator.getHeight());
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
-        SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
-        SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("current left encoder", drivetrain.getLeftPosition());
+        SmartDashboard.putNumber("current right encoder", drivetrain.getRightPosition());
         SmartDashboard.putNumber("elevator Speed", elevator.getSpeed());
 
         SmartDashboard.putNumber("highest height", Math.max(SmartDashboard.getNumber("highest height", 0), elevator.getHeight() ));

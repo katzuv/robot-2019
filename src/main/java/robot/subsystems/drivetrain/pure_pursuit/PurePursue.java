@@ -1,8 +1,6 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.drivetrain.pure_pursuit.*;
 
 import static robot.Robot.drivetrain;
 
@@ -59,8 +57,8 @@ public class PurePursue extends Command {
             currentPoint = new Point(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
         }
 
-        lastLeftEncoder = drivetrain.getLeftDistance();
-        lastRightEncoder = drivetrain.getRightDistance();
+        lastLeftEncoder = drivetrain.getLeftPosition();
+        lastRightEncoder = drivetrain.getRightPosition();
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drivetrain.getLeftSpeed();
         lastRightSpeed = direction * drivetrain.getRightSpeed();
@@ -100,15 +98,15 @@ public class PurePursue extends Command {
      */
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
-        double distance = ((drivetrain.getLeftDistance() - lastLeftEncoder) + (drivetrain.getRightDistance() - lastRightEncoder)) / 2;
+        double distance = ((drivetrain.getLeftPosition() - lastLeftEncoder) + (drivetrain.getRightPosition() - lastRightEncoder)) / 2;
 
         //update the x, y coordinates based on the robot angle and the distance the robot moved.
         currentPoint.setX(currentPoint.getX() + direction * distance * Math.sin((drivetrain.getAngle() - initAngle) * (Math.PI / 180.0)));
         currentPoint.setY(currentPoint.getY() + direction * distance * Math.cos((drivetrain.getAngle() - initAngle) * (Math.PI / 180.0)));
 
         //updates values for next run
-        lastLeftEncoder = drivetrain.getLeftDistance();
-        lastRightEncoder = drivetrain.getRightDistance();
+        lastLeftEncoder = drivetrain.getLeftPosition();
+        lastRightEncoder = drivetrain.getRightPosition();
         drivetrain.currentLocation.setX(currentPoint.getX());
         drivetrain.currentLocation.setY(currentPoint.getY());
     }

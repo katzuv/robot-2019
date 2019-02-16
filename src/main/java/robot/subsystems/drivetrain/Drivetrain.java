@@ -86,7 +86,7 @@ public class Drivetrain extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        //setDefaultCommand(new JoystickDrive());
+        setDefaultCommand(new JoystickDrive());
     }
 
     /**
@@ -153,7 +153,7 @@ public class Drivetrain extends Subsystem {
      * @return The distance driven on the left side of the robot since the last
      *         reset
      */
-    public double getLeftDistance() {
+    public double getLeftPosition() {
         return convertTicksToDistance(leftMaster.getSelectedSensorPosition(0));
     }
 
@@ -161,7 +161,7 @@ public class Drivetrain extends Subsystem {
      * @return The distance driven on the right side of the robot since the last
      *         reset
      */
-    public double getRightDistance() {
+    public double getRightPosition() {
         return convertTicksToDistance(rightMaster.getSelectedSensorPosition(0));
     }
 
