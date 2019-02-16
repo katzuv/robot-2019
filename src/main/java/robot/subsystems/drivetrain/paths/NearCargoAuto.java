@@ -6,9 +6,8 @@ import robot.subsystems.drivetrain.paths.subpaths.HabToCargo;
 
 public class NearCargoAuto extends CommandGroup {
     public NearCargoAuto() {
-        addSequential(new HabToCargo());
-        addSequential(new CargoToLoading());
-        addSequential(new CargoToLoading());
-        addSequential(new HabToCargo());
+        addSequential(new HabToCargo());//drive to cargo
+        addSequential(new CargoToLoading());//drive to loading
+        addSequential(new CargoToLoading());//drive to the other cargo
     }
 }

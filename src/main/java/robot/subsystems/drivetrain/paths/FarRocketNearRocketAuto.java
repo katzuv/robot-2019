@@ -12,11 +12,11 @@ import robot.subsystems.drivetrain.paths.subpaths.RocketToLoading;
 public class FarRocketNearRocketAuto extends CommandGroup {
 
     public FarRocketNearRocketAuto() {
-        addSequential(new HabToFarRocket(true));
-        addSequential(new DriveToRocket());
-        addSequential(new FarRocketToHab());
-        addSequential(new RocketToLoading(false));
-        addSequential(new RocketToLoading(true));
+        addSequential(new HabToFarRocket(true));// drive to far rocket
+        addSequential(new DriveToRocket());// drive to rocket when in his range of view
+        addSequential(new FarRocketToHab());// drive from far rocket to loading
+        addSequential(new RocketToLoading(false));//drive to loading when in his range of view
+        addSequential(new RocketToLoading(true));//drive to close rocket from loading
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

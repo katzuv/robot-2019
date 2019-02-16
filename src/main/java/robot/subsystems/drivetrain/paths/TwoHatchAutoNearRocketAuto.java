@@ -10,9 +10,9 @@ import robot.subsystems.drivetrain.paths.subpaths.RocketToLoading;
 public class TwoHatchAutoNearRocketAuto extends CommandGroup {
 
     public TwoHatchAutoNearRocketAuto() {
-        addSequential(new DriveToRocket());
-        addSequential(new RocketToLoading(true));
-        addSequential(new RocketToLoading(true));
+        addSequential(new DriveToRocket());// drive to close rocket
+        addSequential(new RocketToLoading(true));//drive to loading station
+        addSequential(new RocketToLoading(true));// drive to the rocket from loading
 
         // Add Commands here:
         // e.g. addSequential(new Command1());

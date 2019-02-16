@@ -12,10 +12,10 @@ import robot.subsystems.drivetrain.paths.subpaths.LoadingToFarRocket;
 public class CargoAndFarRocketAuto extends CommandGroup {
 
     public CargoAndFarRocketAuto() {
-        addSequential(new HabToCargo());
-        addSequential(new CargoToLoading());
-        addSequential(new LoadingToFarRocket(true));
-        addSequential(new DriveToRocket());
+        addSequential(new HabToCargo());// drive to cargo ship
+        addSequential(new CargoToLoading());// drive to loading station
+        addSequential(new LoadingToFarRocket(true));// drive to far rocket
+        addSequential(new DriveToRocket());// drive to rocket when it is in his range of view
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

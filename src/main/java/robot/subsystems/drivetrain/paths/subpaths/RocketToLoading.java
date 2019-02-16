@@ -76,7 +76,7 @@ public class RocketToLoading extends Command {
      * @return the path
      */
     private Path generateFromVision(double angle, double distance) {
-        double targetDistance = distance / 100;
+        double targetDistance = distance / 100; // convert centimeters to meters
         Waypoint target = target(angle, targetDistance);
         Waypoint middleWP = getMiddleWP(target);
         Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});

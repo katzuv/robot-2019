@@ -69,7 +69,7 @@ public class DriveToRocket extends Command {
      * @return full path to target
      */
     private Path generateFromVision(double angle, double distance) {
-        Waypoint target = target(angle, distance/100);
+        Waypoint target = target(angle, distance / 100/*centimeters to meters*/);
         Waypoint middleWP = getMiddleWP(target);
         Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});
         System.out.println(path1);
