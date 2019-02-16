@@ -22,7 +22,8 @@ public class TurnByAngle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Math.abs((drivetrain.getLeftPosition() - initialLeftDistance) - distance) < Constants.ROTATION_TOLERANCE &&
+                Math.abs((drivetrain.getRightPosition() - initialRightDistance) - distance) < Constants.ROTATION_TOLERANCE ;
     }
 
     // Called once after isFinished returns true
