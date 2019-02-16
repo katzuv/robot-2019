@@ -206,6 +206,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("current wrist angle", cargoIntake.getWristAngle());
 //        WristSpeedTurn wristSpeedTurn = new WristSpeedTurn();
 //        wristSpeedTurn.start();
+        SmartDashboard.putNumber("Velocity", cargoIntake.getProximityVoltage());
 
 
     }

@@ -9,7 +9,7 @@ import robot.Robot;
  */
 public class WristSpeedTurn extends Command {
     public WristSpeedTurn() {
-
+        requires(Robot.cargoIntake);
     }
 
     // Called just before this Command runs the first time

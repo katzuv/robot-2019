@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.cargoIntake.CargoIntake;
 import robot.subsystems.cargoIntake.Constants;
 
+import static robot.Robot.cargoIntake;
+
 /**
  *
  */
 public class WristTurn extends Command {
     private double angle;
-    private CargoIntake cargoIntake = new CargoIntake();
-
     public WristTurn(double angle) {
         this.angle = angle;
         requires(cargoIntake);

@@ -2,13 +2,15 @@ package robot.subsystems.cargoIntake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.OI;
+import robot.Robot;
 import robot.subsystems.cargoIntake.CargoIntake;
+
+import static robot.Robot.cargoIntake;
 
 /**
  *
  */
 public class GripperControl extends Command {
-    private static CargoIntake cargoIntake = new CargoIntake();
     private double speed;//speed of the gripper
     private boolean continuousWhileHeld;//indicator for if it should stop when the button isn't pressed or when the cargo is inside
 
@@ -17,7 +19,7 @@ public class GripperControl extends Command {
         this.continuousWhileHeld = continuousWhileHeld;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-
+        requires(cargoIntake);
     }
 
     // Called just before this Command runs the first time
