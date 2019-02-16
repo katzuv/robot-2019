@@ -8,12 +8,16 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 
 import static robot.Robot.drivetrain;
 
 public class JoystickDrive extends Command {
+    private double maxVelocity;
+
     public JoystickDrive() {
+        maxVelocity = 0;
         requires(drivetrain);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -28,6 +32,7 @@ public class JoystickDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        SmartDashboard.putNumber("maximal velocity", Math.max(SmartDashboard.getNumber("maximal velocity", 0), (drivetrain.getRightSpeed() + drivetrain.getLeftSpeed()) / 2));
         // 1: linear
         // 2: bell
         // 3: x^3
