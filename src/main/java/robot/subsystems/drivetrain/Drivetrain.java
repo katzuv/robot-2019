@@ -111,6 +111,19 @@ public class Drivetrain extends Subsystem {
         }
     }
 
+    public void setPosition(double left, double right){
+        setLeftPosition(left);
+        setRightPosition(right);
+    }
+
+    private void setLeftPosition(double position){
+        leftMaster.set(ControlMode.MotionMagic, position);
+    }
+
+    private void setRightPosition(double position){
+        rightMaster.set(ControlMode.MotionMagic, position);
+    }
+
     /**
      * @return the speed of the left side of the Drivetrain
      */
