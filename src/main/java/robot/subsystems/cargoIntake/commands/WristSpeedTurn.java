@@ -4,17 +4,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 
-import static robot.Robot.cargoIntake;
-
 /**
  *
  */
 public class WristSpeedTurn extends Command {
-
     public WristSpeedTurn() {
-        requires(cargoIntake);
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+
     }
 
     // Called just before this Command runs the first time
@@ -24,7 +19,7 @@ public class WristSpeedTurn extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         double joystickPercent = -Robot.m_oi.leftStick.getY();
-        cargoIntake.setWristSpeed(joystickPercent);
+        robot.Robot.cargoIntake.setWristSpeed(joystickPercent);
         SmartDashboard.putNumber("current output", joystickPercent);
 
     }
