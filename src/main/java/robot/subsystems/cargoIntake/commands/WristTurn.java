@@ -26,7 +26,7 @@ public class WristTurn extends Command {
     protected void initialize() {
         SmartDashboard.putString("command state", "start");
         cargoIntake.setWristPosition(angle);
-        cargoIntake.wrist.set(ControlMode.MotionMagic, cargoIntake.convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, 0.25 * Math.cos(Math.toRadians(15+cargoIntake.getWristAngle())));
+        cargoIntake.wrist.set(ControlMode.MotionMagic, cargoIntake.convertAngleToTicks(angle), DemandType.ArbitraryFeedForward,cargoIntake.stallCurrent());
     }
 
     // Called repeatedly when this Command is scheduled to run
