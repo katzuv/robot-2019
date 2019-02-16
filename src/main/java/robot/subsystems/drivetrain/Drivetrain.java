@@ -66,6 +66,11 @@ public class Drivetrain extends Subsystem {
         rightMaster.config_kI(0, Constants.PIDF[1], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kD(0, Constants.PIDF[2], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kF(0, Constants.PIDF[3], Constants.TALON_TIMEOUT_MS);
+
+        leftMaster.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION);
+        leftMaster.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_VELOCITY);
+        rightMaster.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION);
+        rightMaster.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_VELOCITY);
     }
 
     @Override

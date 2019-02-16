@@ -4,7 +4,9 @@ public class Constants {
     public final static double ROBOT_WIDTH = 0.6; //the distance between the left and right wheels on the robot
     public static final double MAX_RATE = 0.3;
     public static final double DISTANCE_PER_PULSE = (0.2032 * Math.PI) / 231;//diameter of the wheel is 0.2032 meters (8 inches), the encoder sends 226 pulses every 360 degree turn
-                                                                              // (8 inches), the encoder sends 226
+    public static final int MOTION_MAGIC_CRUISE_VELOCITY = 1;
+    public static final int MOTION_MAGIC_ACCELERATION = 1;
+    // (8 inches), the encoder sends 226
                                                                               // pulses every 360 degree turn
     static final boolean LEFT_MASTER_REVERSED = false;
     static final boolean LEFT_SLAVE1_REVERSED = false;
