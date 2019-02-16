@@ -8,9 +8,9 @@ import robot.subsystems.drivetrain.Paths.Subpaths.RocketToLoading;
 /**
  *
  */
-public class CargoAndRocketAuto extends CommandGroup {
+public class CargoAndNearRocketAuto extends CommandGroup {
 
-    public CargoAndRocketAuto() {
+    public CargoAndNearRocketAuto() {
         addSequential(new HabToCargo());
         addSequential(new CargoToLoading());
         addSequential(new RocketToLoading(true));
