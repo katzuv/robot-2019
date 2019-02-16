@@ -186,7 +186,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        cargoIntake.resetWristEncoder();
+        cargoIntake.resetSensors(); // TODO: move to auto init.
         navx.reset();
 
     }

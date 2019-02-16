@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import static robot.Robot.cargoIntake;
@@ -23,7 +24,7 @@ import static robot.Robot.cargoIntake;
  */
 public class CargoIntake extends Subsystem {
     public final TalonSRX wrist = new TalonSRX(Ports.WristMotor); // TODO: Make "wrist" private
-    //private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
+    private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
 
     // Put methods for controlling this subsystem
@@ -83,7 +84,7 @@ public class CargoIntake extends Subsystem {
 
 
     public double getProximityVoltage() {
-        return 2;//proximitySensor.getVoltage();
+        return proximitySensor.getVoltage();//proximitySensor.getVoltage();
     }//returns the current voltage in the proximity sensor
 
     public boolean isCargoInside() {
@@ -102,7 +103,12 @@ public class CargoIntake extends Subsystem {
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
-    public void resetWristEncoder() {
+    public void resetSensors(){
+        resetProximitySensor();
+        resetWristEncoder();
+    }
+
+    private void resetWristEncoder() {
         wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
     }
 
@@ -151,5 +157,9 @@ public class CargoIntake extends Subsystem {
     @Override
     public void initDefaultCommand() {
 
+    }
+
+    private void resetProximitySensor(){
+        proximitySensor.resetAccumulator();
     }
 }
