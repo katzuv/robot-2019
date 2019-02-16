@@ -31,7 +31,9 @@ public class WristTurn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        cargoIntake.wrist.set(ControlMode.MotionMagic, cargoIntake.convertAngleToTicks(angle), DemandType.ArbitraryFeedForward,cargoIntake.stallCurrent());
         SmartDashboard.putString("command state", "executing");
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
