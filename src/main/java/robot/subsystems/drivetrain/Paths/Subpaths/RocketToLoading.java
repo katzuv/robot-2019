@@ -1,4 +1,4 @@
-package robot.subsystems.drivetrain.Paths;
+package robot.subsystems.drivetrain.Paths.Subpaths;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;

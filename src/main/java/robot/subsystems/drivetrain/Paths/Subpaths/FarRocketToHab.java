@@ -1,4 +1,4 @@
-package robot.subsystems.drivetrain.Paths;
+package robot.subsystems.drivetrain.Paths.Subpaths;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
