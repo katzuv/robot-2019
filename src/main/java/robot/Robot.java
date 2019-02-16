@@ -158,6 +158,10 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
 
+        if (m_autonomousCommand != m_chooser.getSelected() && m_autonomousCommand != null) {
+            m_autonomousCommand.start();
+        }
+
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
         SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
