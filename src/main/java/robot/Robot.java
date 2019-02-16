@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto mode", m_chooser);
         navx.reset();
         elevator.resetEncoders();
+        drivetrain.resetEncoders();
     }
 
     /**
@@ -171,6 +172,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        drivetrain.resetEncoders();//TODO: remove for the games
+
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -178,7 +181,9 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        drivetrain.setSpeed(1, 0);
         navx.reset();
+        SmartDashboard.putNumber("distance", drivetrain.getLeftPosition());
 
     }
 
