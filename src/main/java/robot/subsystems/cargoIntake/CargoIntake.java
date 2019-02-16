@@ -16,14 +16,15 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import static robot.Robot.cargoIntake;
+
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
  * first the gripper
  */
 public class CargoIntake extends Subsystem {
+    public final TalonSRX wrist = new TalonSRX(Ports.WristMotor); // TODO: Make "wrist" private
     //private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
-    public final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -71,20 +72,15 @@ public class CargoIntake extends Subsystem {
         limit switch config
          */
         /**wrist.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-                Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-                Constants.TALON_TIME_OUT);
-        wrist.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-                Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-                Constants.TALON_TIME_OUT);*/
+         Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+         Constants.TALON_TIME_OUT);
+         wrist.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+         Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+         Constants.TALON_TIME_OUT);*/
 
 
     }
 
-    @Override
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
-    }
 
     public double getProximityVoltage() {
         return 2;//proximitySensor.getVoltage();
@@ -108,6 +104,16 @@ public class CargoIntake extends Subsystem {
 
     public void resetWristEncoder() {
         wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
+    }
+
+    private double stallCurrent() {
+        final double wristAngle = cargoIntake.getWristAngle();
+        if (wristAngle < 5) {
+            return 0;
+        }
+        //return 0.2452 * Math.cos(Math.toRadians(cargoIntake.getWristAngle())) - 0.0394;
+        final double COMCosine = Math.cos(Math.toRadians(19+cargoIntake.getWristAngle()));
+        return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
 
     /**
@@ -135,8 +141,15 @@ public class CargoIntake extends Subsystem {
      */
     public double getWristAngle() {
         return convertTicksToAngle(wrist.getSelectedSensorPosition());
+
     }
+
     public int getVelocity() {
         return wrist.getSelectedSensorVelocity();
+    }
+
+    @Override
+    public void initDefaultCommand() {
+
     }
 }
