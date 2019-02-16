@@ -10,18 +10,20 @@ import static robot.Robot.drivetrain;
  */
 public class TurnByAngle extends Command {
     private double distance;
+    private double angle;
     private double initialLeftDistance;
     private double initialRightDistance;
 
     public TurnByAngle(double angle) {
-        distance = Math.PI * Constants.ROBOT_WIDTH * (angle / 360);
-        this.initialLeftDistance = drivetrain.getLeftPosition();
-        this.initialRightDistance = drivetrain.getRightPosition();
+        this.angle = angle;
         requires(drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        distance = Math.PI * Constants.ROBOT_WIDTH * (angle / 360);
+        this.initialLeftDistance = drivetrain.getLeftPosition();
+        this.initialRightDistance = drivetrain.getRightPosition();
         drivetrain.setPosition(distance, -distance);
     }
 
