@@ -34,7 +34,7 @@ public class OI {
 
     public OI() {
         a.whenPressed(new WristTurn(120));
-        x.whenPressed(new WristTurn(30));
+        x.whenPressed(new WristTurn(0));
         b.whenPressed(new WristTurn(90));
         y.whenPressed(new GripperControl(0.75, false));
     }
