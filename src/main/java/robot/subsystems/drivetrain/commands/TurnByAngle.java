@@ -21,10 +21,10 @@ public class TurnByAngle extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        distance = Math.PI * Constants.ROBOT_WIDTH * (angle / 360);
+        distance = Math.toRadians(angle)*Constants.ROBOT_WIDTH;
         this.initialLeftDistance = drivetrain.getLeftPosition();
         this.initialRightDistance = drivetrain.getRightPosition();
-        drivetrain.setPosition(distance, -distance);
+        drivetrain.setPosition(distance-initialLeftDistance, -distance-initialRightDistance);
     }
 
     // Called repeatedly when this Command is scheduled to run
