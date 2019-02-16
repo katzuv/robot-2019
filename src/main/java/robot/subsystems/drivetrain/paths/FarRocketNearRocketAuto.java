@@ -1,19 +1,22 @@
-package robot.subsystems.drivetrain.Paths;
+package robot.subsystems.drivetrain.paths;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import robot.subsystems.drivetrain.Paths.Subpaths.DriveToRocket;
-import robot.subsystems.drivetrain.Paths.Subpaths.RocketToLoading;
+import robot.subsystems.drivetrain.paths.subpaths.DriveToRocket;
+import robot.subsystems.drivetrain.paths.subpaths.FarRocketToHab;
+import robot.subsystems.drivetrain.paths.subpaths.HabToFarRocket;
+import robot.subsystems.drivetrain.paths.subpaths.RocketToLoading;
 
 /**
  *
  */
-public class TwoHatchAutoNearRocketAuto extends CommandGroup {
+public class FarRocketNearRocketAuto extends CommandGroup {
 
-    public TwoHatchAutoNearRocketAuto() {
+    public FarRocketNearRocketAuto() {
+        addSequential(new HabToFarRocket(true));
         addSequential(new DriveToRocket());
+        addSequential(new FarRocketToHab());
+        addSequential(new RocketToLoading(false));
         addSequential(new RocketToLoading(true));
-        addSequential(new RocketToLoading(true));
-
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
