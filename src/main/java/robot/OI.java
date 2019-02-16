@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.drivetrain.commands.TurnByAngle;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 
 /**
@@ -41,10 +42,10 @@ public class OI {
     Button c = new JoystickButton(xbox, 3);
     Button d = new JoystickButton(xbox, 4);
     public OI (){
-        a.whenPressed(new ElevatorCommand(0));
-        b.whenPressed(new ElevatorCommand(0.5));
-        c.whenPressed(new ElevatorCommand(1));
-        d.whenPressed(new ElevatorCommand(1.56));
+        a.whenPressed(new TurnByAngle(0));
+        b.whenPressed(new TurnByAngle(90));
+        c.whenPressed(new TurnByAngle(180));
+        d.whenPressed(new TurnByAngle(270));
     }
     //// CREATING BUTTONS
     // One type of butto][\
