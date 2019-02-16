@@ -127,11 +127,11 @@ public class Drivetrain extends Subsystem {
     }
 
     private void setLeftPosition(double position){
-        leftMaster.set(ControlMode.MotionMagic, position);
+        leftMaster.set(ControlMode.MotionMagic, convertDistanceToTicks(position));
     }
 
     private void setRightPosition(double position){
-        rightMaster.set(ControlMode.MotionMagic, position);
+        rightMaster.set(ControlMode.MotionMagic, convertDistanceToTicks(position));
     }
 
     /**
