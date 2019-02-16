@@ -95,7 +95,7 @@ public class CargoIntake extends Subsystem {
     }
 
     public void setWristPosition(double pos) {
-        wrist.set(ControlMode.Position, pos);
+        wrist.set(ControlMode.Position, pos, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
     public void setWristSpeed(double speed) {
