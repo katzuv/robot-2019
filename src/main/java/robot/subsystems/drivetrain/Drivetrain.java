@@ -71,6 +71,17 @@ public class Drivetrain extends Subsystem {
         leftMaster.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_VELOCITY);
         rightMaster.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION);
         rightMaster.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_VELOCITY);
+
+        leftMaster.configPeakOutputForward(Constants.PEAK_OUTPUT_FORWARD);
+        leftMaster.configPeakOutputReverse(Constants.PEAK_OUTPUT_REVERSE);
+        leftMaster.configPeakOutputForward(Constants.NOMINAL_OUTPUT_FORWARD);
+        leftMaster.configPeakOutputReverse(Constants.NOMINAL_OUTPUT_REVERSE);
+        
+        rightMaster.configPeakOutputForward(Constants.PEAK_OUTPUT_FORWARD);
+        rightMaster.configPeakOutputReverse(Constants.PEAK_OUTPUT_REVERSE);
+        rightMaster.configPeakOutputForward(Constants.NOMINAL_OUTPUT_FORWARD);
+        rightMaster.configPeakOutputReverse(Constants.NOMINAL_OUTPUT_REVERSE);
+
     }
 
     @Override
