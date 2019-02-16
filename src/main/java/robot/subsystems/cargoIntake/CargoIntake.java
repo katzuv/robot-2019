@@ -55,8 +55,8 @@ public class CargoIntake extends Subsystem {
         /*
         nominal and peak output config
          */
-        wrist.configNominalOutputForward(0.1, Constants.TALON_TIME_OUT);
-        wrist.configNominalOutputReverse(-0.1, Constants.TALON_TIME_OUT);
+        wrist.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
+        wrist.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
         wrist.configPeakOutputForward(0.5, Constants.TALON_TIME_OUT);
         wrist.configPeakOutputReverse(-0.5, Constants.TALON_TIME_OUT);
         /*
@@ -106,7 +106,7 @@ public class CargoIntake extends Subsystem {
         wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
     }
 
-    private double stallCurrent() {
+    public double stallCurrent() {
         final double wristAngle = cargoIntake.getWristAngle();
         if (wristAngle < 5) {
             return 0;
