@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.cargoIntake.CargoIntake;
+import robot.subsystems.cargoIntake.commands.WristSpeedTurn;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
@@ -108,8 +109,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-        cargoIntake.resetWristEncoder();
-        /**TODO: make it so the motor of the wrist has precentoutput 0 or something alone those lines
+
+        /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
          * to cancel the motion magic that is currently taking place and will still run if you re enable
          */
     }
@@ -185,7 +186,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-
+        cargoIntake.resetWristEncoder();
         navx.reset();
 
     }
@@ -203,6 +204,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("current proximity sensor voltage " , cargoIntake.getProximityVoltage());
 //        cargoIntake.setWristPosition();
         SmartDashboard.putNumber("current wrist angle", cargoIntake.getWristAngle());
+//        WristSpeedTurn wristSpeedTurn = new WristSpeedTurn();
+//        wristSpeedTurn.start();
 
 
     }
