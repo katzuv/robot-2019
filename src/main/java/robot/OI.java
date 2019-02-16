@@ -8,20 +8,45 @@
 package robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.elevator.commands.ElevatorCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
-    public static double JOYSTICK_ROUNDOFF_DELTA = 0.2; // the difference between joysticks which will be omitted
-
+      public static double JOYSTICK_ROUNDOFF_DELTA = 0.2; // the difference between joysticks which will be omitted
+    /**
+     * The Y value area in which the xbox joystick won't make the lift move.
+     */
+    public static double XBOX_JOYSTICK_DEAD_BAND = 0;
+    /**
+     * The rate at which the lift will goes down with the xbox joystick.
+     */
+    public static final double DOWN_SPEED_RATE = 0.08;
+    /**
+     * The rate at which the lift will goes up with the xbox joystick.
+     */
+    public static final double UP_SPEED_RATE = 0.08;
 
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
+    public XboxController xbox = new XboxController(2);
 
 
+    Button a = new JoystickButton(xbox, 1);
+    Button b = new JoystickButton(xbox, 2);
+    Button c = new JoystickButton(xbox, 3);
+    Button d = new JoystickButton(xbox, 4);
+    public OI (){
+        a.whenPressed(new ElevatorCommand(0));
+        b.whenPressed(new ElevatorCommand(0.5));
+        c.whenPressed(new ElevatorCommand(1));
+        d.whenPressed(new ElevatorCommand(1.56));
+    }
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.
