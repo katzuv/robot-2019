@@ -19,10 +19,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.Paths.FarRocketNearRocketAuto;
-import robot.subsystems.drivetrain.Paths.NearCargoAuto;
-import robot.subsystems.drivetrain.Paths.Subpaths.CargoToLoading;
-import robot.subsystems.drivetrain.Paths.TwoHatchAutoNearRocketAuto;
+import robot.subsystems.drivetrain.Paths.*;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
@@ -87,7 +84,8 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("drive to the rocket", new TwoHatchAutoNearRocketAuto());
         m_chooser.addOption("drive to cargo", new NearCargoAuto());
         m_chooser.addOption("Far rocket", new FarRocketNearRocketAuto());
-        m_chooser.addOption("cargo and rocket", new CargoToLoading());
+        m_chooser.addOption("cargo and near rocket", new CargoAndNearRocketAuto());
+        m_chooser.addOption("cargo and far rocket", new CargoAndFarRocketAuto());
 
         SmartDashboard.putData("Auto mode", m_chooser);
         navx.reset();
@@ -152,13 +150,6 @@ public class Robot extends TimedRobot {
         path.appendWaypoint(new Waypoint(-2, 2));
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-
-
-        //Print the variables for testing.
-        System.out.println(path);
-        SmartDashboard.putString("pursue command", "start");
-        SmartDashboard.putString("last waypoint", path.getWaypoint(path.length() - 1).toString());
-
     }
 
     /**
