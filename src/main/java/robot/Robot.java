@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.Paths.*;
+import robot.subsystems.drivetrain.Paths.Subpaths.CargoToLoading;
+import robot.subsystems.drivetrain.Paths.Subpaths.RocketToLoading;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
@@ -82,10 +84,12 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         m_oi = new OI();
         m_chooser.addOption("drive to the rocket", new TwoHatchAutoNearRocketAuto());
-        m_chooser.addOption("drive to cargo", new NearCargoAuto());
         m_chooser.addOption("Far rocket", new FarRocketNearRocketAuto());
+        m_chooser.addOption("drive to cargo", new NearCargoAuto());
         m_chooser.addOption("cargo and near rocket", new CargoAndNearRocketAuto());
         m_chooser.addOption("cargo and far rocket", new CargoAndFarRocketAuto());
+        m_chooser.addOption("one hatch on rocket from loading", new RocketToLoading(true));
+        m_chooser.addOption("one hatch cargo from loading", new CargoToLoading());
 
         SmartDashboard.putData("Auto mode", m_chooser);
         navx.reset();
