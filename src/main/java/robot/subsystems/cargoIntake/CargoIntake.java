@@ -111,7 +111,7 @@ public class CargoIntake extends Subsystem {
         if (wristAngle < 5) {
             return 0;
         }
-        //return 0.2452 * Math.cos(Math.toRadians(cargoIntake.getWristAngle())) - 0.0394;
+        final double COMCosine = Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle()));
         final double COMCosine = Math.cos(Math.toRadians(19+cargoIntake.getWristAngle()));
         return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
