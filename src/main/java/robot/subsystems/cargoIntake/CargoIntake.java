@@ -52,12 +52,12 @@ public class CargoIntake extends Subsystem {
          */
         wrist.configNominalOutputForward(0.1, Constants.TALON_TIME_OUT);
         wrist.configNominalOutputReverse(-0.1, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputForward(0.3, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputReverse(-0.3, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputForward(0.5, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputReverse(-0.5, Constants.TALON_TIME_OUT);
         /*
         profile config
          */
-        wrist.selectProfileSlot(0,0);
+        wrist.selectProfileSlot(0, 0);
         /*
         motion magic speed config
          */
