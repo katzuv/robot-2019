@@ -13,6 +13,13 @@ public class Constants {
     static final boolean RIGHT_SLAVE1_REVERSED = true;
     static final boolean RIGHT_SLAVE2_REVERSED = true;
 
+    public static final int MOTION_MAGIC_CRUISE_VELOCITY = 0;
+    public static final int MOTION_MAGIC_ACCELERATION = 0;
+    public static final double PEAK_OUTPUT_FORWARD = 0;
+    public static final double PEAK_OUTPUT_REVERSE = 0;
+    public static final double NOMINAL_OUTPUT_FORWARD = 0;
+    public static final double NOMINAL_OUTPUT_REVERSE = 0;
+
     public static final boolean LEFT_ENCODER_REVERSED = false;
     public static final boolean RIGHT_ENCODER_REVERSED = false;
     public static final double TICKS_PER_METER = 2138.7750882690398; // [1m / (diameter=0.1254 * pi)] * (ticks_per_meter=1024s)
