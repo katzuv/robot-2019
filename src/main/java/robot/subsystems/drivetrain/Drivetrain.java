@@ -74,13 +74,12 @@ public class Drivetrain extends Subsystem {
 
         leftMaster.configPeakOutputForward(Constants.PEAK_OUTPUT_FORWARD);
         leftMaster.configPeakOutputReverse(Constants.PEAK_OUTPUT_REVERSE);
-        leftMaster.configPeakOutputForward(Constants.NOMINAL_OUTPUT_FORWARD);
-        leftMaster.configPeakOutputReverse(Constants.NOMINAL_OUTPUT_REVERSE);
-        
+        leftMaster.configNominalOutputForward(Constants.NOMINAL_OUTPUT_FORWARD);
+        leftMaster.configNominalOutputReverse(Constants.NOMINAL_OUTPUT_REVERSE);
         rightMaster.configPeakOutputForward(Constants.PEAK_OUTPUT_FORWARD);
         rightMaster.configPeakOutputReverse(Constants.PEAK_OUTPUT_REVERSE);
-        rightMaster.configPeakOutputForward(Constants.NOMINAL_OUTPUT_FORWARD);
-        rightMaster.configPeakOutputReverse(Constants.NOMINAL_OUTPUT_REVERSE);
+        rightMaster.configNominalOutputForward(Constants.NOMINAL_OUTPUT_FORWARD);
+        rightMaster.configNominalOutputReverse(Constants.NOMINAL_OUTPUT_REVERSE);
 
     }
 
