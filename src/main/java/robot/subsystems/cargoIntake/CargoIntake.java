@@ -102,6 +102,10 @@ public class CargoIntake extends Subsystem {
         wrist.set(ControlMode.Position, pos);
     }
 
+    public void setWristSpeed(double speed) {
+        wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
+    }
+
     public void resetWristEncoder() {
         wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
     }
