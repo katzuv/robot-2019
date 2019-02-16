@@ -57,6 +57,8 @@ public class Constants {
     static final double ELEVATOR_MAX_HEIGHT = 1.6;
     static final double ELEVATOR_MID_HEIGHT = 0.797;
 
+    static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT = 0.08; //The height in which the elevator tries to hold itself up using the arbitrary feedforward.
+
     /**
      * enum storing all height values assigned to their respective height.
      * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
