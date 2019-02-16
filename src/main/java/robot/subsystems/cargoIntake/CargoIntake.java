@@ -7,11 +7,15 @@
 
 package robot.subsystems.cargoIntake;
 
-import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import static robot.Robot.cargoIntake;
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
  * first the gripper
@@ -61,8 +65,8 @@ public class CargoIntake extends Subsystem {
         /*
         motion magic speed config
          */
-        wrist.configMotionCruiseVelocity(15000, Constants.TALON_TIME_OUT);
-        wrist.configMotionAcceleration(6000, Constants.TALON_TIME_OUT);
+        wrist.configMotionCruiseVelocity(1187, Constants.TALON_TIME_OUT);
+        wrist.configMotionAcceleration(1187, Constants.TALON_TIME_OUT);
         /*
         limit switch config
          */
