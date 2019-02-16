@@ -1,8 +1,8 @@
-package robot.subsystems.drivetrain.Paths;
+package robot.subsystems.drivetrain.paths;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import robot.subsystems.drivetrain.Paths.Subpaths.CargoToLoading;
-import robot.subsystems.drivetrain.Paths.Subpaths.HabToCargo;
+import robot.subsystems.drivetrain.paths.subpaths.CargoToLoading;
+import robot.subsystems.drivetrain.paths.subpaths.HabToCargo;
 
 public class NearCargoAuto extends CommandGroup {
     public NearCargoAuto() {
