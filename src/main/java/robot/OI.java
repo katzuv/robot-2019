@@ -24,6 +24,10 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+
+    public static int right_y_stick = 5;
+
+    public static final double WRIST_ROTATE_RATE = 0.1;
     /**
      * The Y value area in which the xbox joystick won't make the lift move.
      */
