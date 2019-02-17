@@ -17,14 +17,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class HatchIntake extends Subsystem { //TODO: needs java-doc
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private final DoubleSolenoid gripper;
-    private final DoubleSolenoid gripperPlate;
+    private final DoubleSolenoid gripper = new DoubleSolenoid(1, Ports.gripperForward, Ports.gripperReverse);
+    private final DoubleSolenoid gripperPlate = new DoubleSolenoid(1, Ports.gripperPlateForward, Ports.gripperPlateReverse);
 //    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);
 
 
     public HatchIntake() {
-        gripper = new DoubleSolenoid(Ports.gripperForward, Ports.gripperReverse);
-        gripperPlate  = new DoubleSolenoid(Ports.gripperPlateForward, Ports.gripperPlateReverse);
 //        hatchSensor.resetAccumulator();
     }
 
