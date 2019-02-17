@@ -17,7 +17,7 @@ public class Constants {
     static final double TICKS_PER_METER = 2138.7750882690398; // [1m / (diameter=0.1254 * pi)] * (ticks_per_meter=1024s)
     static final int TALON_RUNNING_TIMEOUT_MS = 0;
     static final int TALON_TIMEOUT_MS = 30;
-    static final double[] PIDF = {2, 0, 0, 1023.0 / 744};
+    static final double[] PIDF = {76, 0, 3, 1023.0 / 732};
     // (8 inches), the encoder sends 226
     // pulses every 360 degree turn
     static final boolean LEFT_MASTER_REVERSED = false;
