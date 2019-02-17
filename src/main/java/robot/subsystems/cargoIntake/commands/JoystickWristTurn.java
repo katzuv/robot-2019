@@ -7,8 +7,8 @@ import robot.Robot;
 /**
  *
  */
-public class WristSpeedTurn extends Command {
-    public WristSpeedTurn() {
+public class JoystickWristTurn extends Command {
+    public JoystickWristTurn() {
         requires(Robot.cargoIntake);
     }
 
