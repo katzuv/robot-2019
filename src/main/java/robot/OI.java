@@ -16,36 +16,41 @@ import robot.subsystems.cargoIntake.commands.GripperControl;
 import robot.subsystems.cargoIntake.commands.WristTurn;
 
 import static robot.Robot.cargoIntake;
+import robot.subsystems.elevator.commands.ElevatorCommand;
+
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+    /**
+     * The Y value area in which the xbox joystick won't make the lift move.
+     */
+    public static double XBOX_JOYSTICK_DEAD_BAND = 0;
+    /**
+     * The rate at which the lift will goes down with the xbox joystick.
+     */
+    public static final double DOWN_SPEED_RATE = 0.08;
+    /**
+     * The rate at which the lift will goes up with the xbox joystick.
+     */
+    public static final double UP_SPEED_RATE = 0.08;
 
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
-    public static XboxController xbox = new XboxController(2);
-    public static Button a = new JoystickButton(xbox, 1);
-    public static Button b = new JoystickButton(xbox, 2);
-    public static Button x = new JoystickButton(xbox, 3);
-    public static Button y = new JoystickButton(xbox, 4);
+    public XboxController xbox = new XboxController(2);
 
 
-    public OI() {
-        a.whenPressed(new WristTurn(120));
-        x.whenPressed(new WristTurn(0));
-        b.whenPressed(new WristTurn(90));
-        y.whenPressed(new GripperControl(0.75, false));
+    Button a = new JoystickButton(xbox, 1);
+    Button b = new JoystickButton(xbox, 2);
+    Button c = new JoystickButton(xbox, 3);
+    Button d = new JoystickButton(xbox, 4);
+    public OI (){
     }
-    /*
-    driver's preference: a button for intake until sensor senses the cargo or with another button press, rb and lb for continous intake and outtake
-     */
-
-
-
     //// CREATING BUTTONS
-    // One type of button is a joystick button which is any button on a
+    // One type of butto][\
+    // n is a joystick button which is any button on a
     //// joystick.
     // You create one by telling it which joystick it's on and which button
     // number it is.
