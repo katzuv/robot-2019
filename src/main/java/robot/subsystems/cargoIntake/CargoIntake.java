@@ -159,9 +159,10 @@ public class CargoIntake extends Subsystem {
     @Override
     public void initDefaultCommand() {
 
+
     }
 
     private void resetProximitySensor() {
-        proximitySensor.resetAccumulator();
+        //proximitySensor.resetAccumulator();
     }
 }
