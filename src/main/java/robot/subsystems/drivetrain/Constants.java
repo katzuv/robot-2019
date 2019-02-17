@@ -5,6 +5,7 @@ public class Constants {
     public static final double MAX_RATE = 0.3;
     public static final double DISTANCE_PER_PULSE = (0.2032 * Math.PI) / 231;//diameter of the wheel is 0.2032 meters (8 inches), the encoder sends 226 pulses every 360 degree turn
     public static final double ROTATION_TOLERANCE = 0.08;
+    public static final double DRIVE_TOLERANCE = 0.05;
     static final int MOTION_MAGIC_CRUISE_VELOCITY = 372;
     static final int MOTION_MAGIC_ACCELERATION = 744;
     static final double PEAK_OUTPUT_FORWARD = 1;
