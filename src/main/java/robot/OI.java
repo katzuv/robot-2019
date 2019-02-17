@@ -8,18 +8,13 @@
 package robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import robot.subsystems.hatch_intake.commands.Gripper;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import robot.subsystems.cargoIntake.CargoIntake;
 import robot.subsystems.cargoIntake.commands.GripperControl;
 import robot.subsystems.cargoIntake.commands.WristTurn;
-
-import static robot.Robot.cargoIntake;
-import robot.subsystems.elevator.commands.ElevatorCommand;
+import robot.subsystems.hatch_intake.commands.Gripper;
+import robot.subsystems.hatch_intake.commands.GripperTransportation;
 
 
 /**
@@ -30,10 +25,6 @@ public class OI {
 
     public static final double WRIST_ROTATE_RATE = 0.1;
     /**
-     * The Y value area in which the xbox joystick won't make the lift move.
-     */
-    public static double XBOX_JOYSTICK_DEAD_BAND = 0;
-    /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
     public static final double DOWN_SPEED_RATE = 0.08;
@@ -41,9 +32,10 @@ public class OI {
      * The rate at which the lift will goes up with the xbox joystick.
      */
     public static final double UP_SPEED_RATE = 0.08;
-
-    public Joystick leftStick = new Joystick(0);
-    public Joystick rightStick = new Joystick(1);
+    /**
+     * The Y value area in which the xbox joystick won't make the lift move.
+     */
+    public static double XBOX_JOYSTICK_DEAD_BAND = 0;
     public static XboxController xbox = new XboxController(2);
     public static Button a = new JoystickButton(xbox, 1);
     public static Button b = new JoystickButton(xbox, 2);
@@ -55,20 +47,31 @@ public class OI {
     public static Button start = new JoystickButton(xbox, 8);
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
-
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
     public static int right_trigger = 3;
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
-
+    public Joystick leftStick = new Joystick(0);
+    public Joystick rightStick = new Joystick(1);
 
 
     public OI() {
+        rb.whileHeld(new GripperControl(0.9, true));
+        start.whileHeld(new GripperControl(-0.9, true));
+
+        a.whenPressed(new WristTurn(0));
+        b.whenPressed(new WristTurn(82.75));
+        x.whenPressed(new WristTurn(172));
+        y.whenPressed(new WristTurn(135));
+
+        select.whenPressed(new GripperTransportation());
+        lb.whenPressed(new Gripper());
 
     }
-    //// CREATING BUTTONS
+
+    // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.
     // You create one by telling it which joystick it's on and which button
