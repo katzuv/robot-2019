@@ -21,9 +21,11 @@ import static robot.Robot.cargoIntake;
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
  * first the gripper
+ *
+ * @author lior
  */
 public class CargoIntake extends Subsystem {
-    public final TalonSRX wrist = new TalonSRX(Ports.WristMotor); // TODO: Make "wrist" private
+    private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
 
@@ -95,8 +97,8 @@ public class CargoIntake extends Subsystem {
         IntakeMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public void setWristPosition(double pos) {
-        wrist.set(ControlMode.Position, pos, DemandType.ArbitraryFeedForward, stallCurrent());
+    public void setWristAngle(double angle) {
+        cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward,cargoIntake.stallCurrent());
     }
 
     public void setWristSpeed(double speed) {
