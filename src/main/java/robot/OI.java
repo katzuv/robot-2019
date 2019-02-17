@@ -37,6 +37,9 @@ public class OI {
      * The Y value area in which the xbox joystick won't make the lift move.
      */
     public static double XBOX_JOYSTICK_DEAD_BAND = 0;
+
+    public static Joystick leftStick = new Joystick(0);
+    public static Joystick rightStick = new Joystick(1);
     public static XboxController xbox = new XboxController(2);
     public static Button a = new JoystickButton(xbox, 1);
     public static Button b = new JoystickButton(xbox, 2);
@@ -54,8 +57,6 @@ public class OI {
     public static int right_trigger = 3;
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
-    public Joystick leftStick = new Joystick(0);
-    public Joystick rightStick = new Joystick(1);
 
 
     public OI() {
