@@ -1,10 +1,6 @@
 package robot.subsystems.cargoIntake.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
-import robot.OI;
-import robot.Robot;
-import robot.subsystems.cargoIntake.CargoIntake;
 
 import static robot.Robot.cargoIntake;
 
@@ -30,7 +26,7 @@ public class GripperControl extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(!(cargoIntake.isCargoInside() && speed < 0))
+        if (!(cargoIntake.isCargoInside() && speed < 0))
             cargoIntake.setGripperSpeed(speed);
 
     }

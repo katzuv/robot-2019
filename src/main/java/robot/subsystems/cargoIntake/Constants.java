@@ -17,7 +17,7 @@ public class Constants {
     final static double kI = 0.001;
 
 
-    final static double TICKS_PER_DEGREE = 11.73333333333333333333333*4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
+    final static double TICKS_PER_DEGREE = 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
     final static boolean WRIST_MOTOR_REVERSED = false;
     final static boolean WRIST_LIMIT_REVESED = true;//might need to be changed
