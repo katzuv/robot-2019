@@ -27,9 +27,7 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
-    public static int right_y_stick = 5;
-
+    
     public static final double WRIST_ROTATE_RATE = 0.1;
     /**
      * The Y value area in which the xbox joystick won't make the lift move.
@@ -46,13 +44,29 @@ public class OI {
 
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
-    public XboxController xbox = new XboxController(2);
+    public static XboxController xbox = new XboxController(2);
+    public static Button a = new JoystickButton(xbox, 1);
+    public static Button b = new JoystickButton(xbox, 2);
+    public static Button x = new JoystickButton(xbox, 3);
+    public static Button y = new JoystickButton(xbox, 4);
+    public static Button lb = new JoystickButton(xbox, 5);
+    public static Button rb = new JoystickButton(xbox, 6);
+    public static Button select = new JoystickButton(xbox, 7);
+    public static Button start = new JoystickButton(xbox, 8);
+    public static Button ls = new JoystickButton(xbox, 9);
+    public static Button rs = new JoystickButton(xbox, 10);
 
-    Button a = new JoystickButton(xbox, 1);
-    Button b = new JoystickButton(xbox, 2);
-    Button c = new JoystickButton(xbox, 3);
-    Button d = new JoystickButton(xbox, 4);
-    public OI (){
+    public static double left_x_stick = 0;
+    public static double left_y_stick = 1;
+    public static double left_trigger = 2;
+    public static double right_trigger = 3;
+    public static double right_x_stick = 4;
+    public static double right_y_stick = 5;
+
+
+
+    public OI() {
+
     }
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
