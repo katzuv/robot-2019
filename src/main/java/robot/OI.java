@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.cargoIntake.Constants;
 import robot.subsystems.cargoIntake.commands.GripperControl;
 import robot.subsystems.cargoIntake.commands.WristTurn;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -61,10 +62,10 @@ public class OI {
         rb.whileHeld(new GripperControl(0.9, true));
         start.whileHeld(new GripperControl(-0.9, true));
 
-        a.whenPressed(new WristTurn(0));
-        b.whenPressed(new WristTurn(82.75));
-        x.whenPressed(new WristTurn(172));
-        y.whenPressed(new WristTurn(135));
+        a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL_ANGLE.getValue()));
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP.getValue()));
+        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE_ANGLE.getValue()));
+        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING_ANGLE.getValue()));
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());

@@ -26,4 +26,23 @@ public class Constants {
 
     final static double CARGO_IN_VOLTAGE = 0.64;
     final static boolean SENSOR_PHASE = false;
+
+    public enum WRIST_ANGLES{
+        INITIAL_ANGLE(0),
+        UP(82.75),
+        SHOOTING_ANGLE(135),
+        INTAKE_ANGLE(172),
+        MAXIMAL_ANGLE(230);
+
+        private final double wristAngle;
+
+        WRIST_ANGLES(double height) {
+            this.wristAngle = height;
+        }
+
+        public double getValue() {
+            return wristAngle;
+        }
+
+    }
 }
