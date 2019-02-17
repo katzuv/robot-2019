@@ -1,19 +1,28 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.Robot;
 
 /**
  *
  */
-public class DriveStraight extends Command {
+public class DriveToPosition extends Command {
+    private double targetLeftDistance;
+    private double targetRightDistance;
+    private double initialLeftDistance;
+    private double initialRightDistance;
 
-    public DriveStraight() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    public DriveToPosition(double left, double right) {
+        targetLeftDistance = left;
+        targetRightDistance = right;
+        requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        initialLeftDistance = Robot.drivetrain.getLeftPosition();
+        initialRightDistance = Robot.drivetrain.getRightPosition();
+        Robot.drivetrain.setPosition(targetLeftDistance + initialLeftDistance, targetRightDistance + initialRightDistance);
     }
 
     // Called repeatedly when this Command is scheduled to run
