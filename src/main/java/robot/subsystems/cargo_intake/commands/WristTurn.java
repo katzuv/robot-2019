@@ -1,6 +1,7 @@
 package robot.subsystems.cargo_intake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.subsystems.cargo_intake.Constants;
 
 import static robot.Robot.cargoIntake;
 
@@ -16,6 +17,16 @@ public class WristTurn extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 
+    }
+
+
+    /**
+     * Use the pre-defined angles to rotate the wrist.
+     *
+     * @param wristState an enum, holding the states. currently holds INITIAL, UP, SHOOTING, INTAKE and MAXIMAL angles
+     */
+    public WristTurn(Constants.WRIST_ANGLES wristState) {
+        this(wristState.getValue());
     }
 
     // Called just before this Command runs the first time

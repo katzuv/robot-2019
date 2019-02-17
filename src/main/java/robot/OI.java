@@ -62,10 +62,10 @@ public class OI {
         rb.whileHeld(new GripperControl(0.9));
         start.whileHeld(new GripperControl(-0.9));
 
-        a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL_ANGLE.getValue()));
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP.getValue()));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE_ANGLE.getValue()));
-        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING_ANGLE.getValue()));
+        a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL_ANGLE));
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE_ANGLE));
+        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING_ANGLE));
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
