@@ -56,12 +56,12 @@ public class OI {
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
 
-    public static double left_x_stick = 0;
-    public static double left_y_stick = 1;
-    public static double left_trigger = 2;
-    public static double right_trigger = 3;
-    public static double right_x_stick = 4;
-    public static double right_y_stick = 5;
+    public static int left_x_stick = 0;
+    public static int left_y_stick = 1;
+    public static int left_trigger = 2;
+    public static int right_trigger = 3;
+    public static int right_x_stick = 4;
+    public static int right_y_stick = 5;
 
 
 
