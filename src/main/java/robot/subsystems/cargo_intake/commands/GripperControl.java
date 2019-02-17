@@ -1,6 +1,5 @@
 package robot.subsystems.cargo_intake.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 import static robot.Robot.cargoIntake;
@@ -14,10 +13,8 @@ public class GripperControl extends InstantCommand {
     private double speed;//speed of the gripper
 
     public GripperControl(double speed) {
-        this.speed = speed;
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
         requires(cargoIntake);
+        this.speed = speed;
     }
 
     // Called just before this Command runs the first time
