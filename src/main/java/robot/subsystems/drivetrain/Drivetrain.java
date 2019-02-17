@@ -138,14 +138,14 @@ public class Drivetrain extends Subsystem {
      * @return the speed of the left side of the Drivetrain
      */
     public double getLeftSpeed() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0));
+        return convertTicksToDistance(10*leftMaster.getSelectedSensorVelocity(0));
     }
 
     /**
      * @return the speed of the right side of the Drivetrain
      */
     public double getRightSpeed() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0));
+        return convertTicksToDistance(10*leftMaster.getSelectedSensorVelocity(0));
     }
 
     /**
