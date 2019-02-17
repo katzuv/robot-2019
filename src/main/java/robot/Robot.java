@@ -23,6 +23,7 @@ import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import robot.subsystems.hatch_intake.HatchIntake;
 import robot.subsystems.elevator.Elevator;
 
 /**
@@ -35,6 +36,7 @@ import robot.subsystems.elevator.Elevator;
 public class Robot extends TimedRobot {
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
+    public static final HatchIntake hatchIntake = new HatchIntake();
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 

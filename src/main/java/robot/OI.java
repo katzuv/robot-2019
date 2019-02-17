@@ -8,6 +8,9 @@
 package robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.hatch_intake.commands.Gripper;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -45,7 +48,6 @@ public class OI {
     public Joystick rightStick = new Joystick(1);
     public XboxController xbox = new XboxController(2);
 
-
     Button a = new JoystickButton(xbox, 1);
     Button b = new JoystickButton(xbox, 2);
     Button c = new JoystickButton(xbox, 3);
@@ -76,7 +78,8 @@ public class OI {
     // Run the command while the button is being held down and interrupt it once
     // the button is released.
     // button.whileHeld(new ExampleCommand());
-
+    public OI() {
+    }
     // Start the command when the button is released and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
