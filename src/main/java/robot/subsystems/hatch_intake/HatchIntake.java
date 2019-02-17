@@ -32,7 +32,7 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
     /**
      * @return the voltage from the sensor
      */
-    public double voltage() {
+    public double getVoltage() {
 //        return hatchSensor.getVoltage();
         return 2;
     }
