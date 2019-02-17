@@ -13,7 +13,7 @@ import robot.Robot;
 import static robot.Robot.drivetrain;
 
 public class JoystickDrive extends Command {
-    public JoystickDrive() {
+    public  JoystickDrive() {
         requires(drivetrain);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

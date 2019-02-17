@@ -24,6 +24,6 @@ public class Constants {
 
     final static int TALON_TIME_OUT = 10;
 
-    final static double CARGO_IN_VOLTAGE = 2.5;//felt cute might delete later
+    final static double CARGO_IN_VOLTAGE = 0.64;//felt cute might delete later
     final static boolean SENSOR_PHASE = false;
 }
