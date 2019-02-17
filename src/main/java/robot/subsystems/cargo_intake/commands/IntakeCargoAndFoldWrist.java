@@ -11,7 +11,7 @@ public class IntakeCargoAndFoldWrist extends CommandGroup {
 
     public IntakeCargoAndFoldWrist() {
         addSequential(new WristTurn(Constants.INITIAL_ANGLE));
-        addSequential(new GripperControl(0.75, false));
+        addSequential(new GripperControl(0.75));
         addSequential(new WristTurn(90));
         // Add Commands here:
         // e.g. addSequential(new Command1());

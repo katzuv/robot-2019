@@ -1,19 +1,20 @@
 package robot.subsystems.cargo_intake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 import static robot.Robot.cargoIntake;
 
 /**
+ * Instant Command in charge of controlling the speed of the wrist wheels, the wheels in charge of grabbing and releasing cargo.
  *
+ * @author Lior
  */
-public class GripperControl extends Command {
+public class GripperControl extends InstantCommand {
     private double speed;//speed of the gripper
-    private boolean continuousWhileHeld;//indicator for if it should stop when the button isn't pressed or when the cargo is inside
 
-    public GripperControl(double speed, boolean continuousWhileHeld) {
+    public GripperControl(double speed) {
         this.speed = speed;
-        this.continuousWhileHeld = continuousWhileHeld;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(cargoIntake);
@@ -21,22 +22,18 @@ public class GripperControl extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-
+        if (!(cargoIntake.isCargoInside() && speed < 0))
+            cargoIntake.setGripperSpeed(speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (!(cargoIntake.isCargoInside() && speed < 0))
-            cargoIntake.setGripperSpeed(speed);
 
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if (speed < 0)
-            return !continuousWhileHeld || cargoIntake.isCargoInside();
-        else
-            return !continuousWhileHeld;
+        return true;
     }
 
     // Called once after isFinished returns true
