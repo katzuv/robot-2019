@@ -15,7 +15,7 @@ public class Constants {
 
     public static final boolean LEFT_ENCODER_REVERSED = false;
     public static final boolean RIGHT_ENCODER_REVERSED = false;
-    public static final double TICKS_PER_METER = 2138.7750882690398; // [1m / (diameter=0.1254 * pi)] * (ticks_per_meter=1024s)
+    public static final double TICKS_PER_METER = 2138.7750882690398; // [1m / (diameter=0.1524 * pi)] * (ticks_per_meter=1024s)
     public static final int TALON_RUNNING_TIMEOUT_MS = 0;
     public static final int TALON_TIMEOUT_MS = 10;
     public static final double[] PIDF = { 0, 0, 0, 0 };
