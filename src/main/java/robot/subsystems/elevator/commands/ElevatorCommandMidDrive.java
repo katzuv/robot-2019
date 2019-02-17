@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.elevator.Constants;
 
 import static robot.Robot.elevator;
+import static robot.Robot.hatchIntake;
 
 /**
  * Move the elevator to a certain height
@@ -41,7 +42,7 @@ public class ElevatorCommandMidDrive extends Command {
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         NetworkTable table = inst.getTable("vision");
         targetDistanceEntry = table.getEntry("distance");
-        if (targetDistanceEntry.getDouble(0) <= 1 && !lifted){
+        if (targetDistanceEntry.getDouble(0) <= 1 && !lifted && !hatchIntake.isGripperPlateExtended() && !hatchIntake.isGripperOpen()){
             elevator.setHeight(height);
             lifted = true;
         }
