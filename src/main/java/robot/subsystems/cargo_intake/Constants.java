@@ -31,6 +31,21 @@ public class Constants {
     final static double CARGO_IN_VOLTAGE;
     final static boolean SENSOR_PHASE;
 
+    public enum WRIST_ANGLES{
+        INITIAL(0),
+        UP(82.75),
+        SHOOTING(135),
+        INTAKE(172),
+        MAXIMAL(230);
+        private final double wristAngle;
+        WRIST_ANGLES(double height) {
+            this.wristAngle = height;
+        }
+        public double getValue() {
+            return wristAngle;
+        }
+    }
+
     static {
         if (Robot.isRobotA) {
             GRIPPER_WHEELS_SPEED = 0.75;
