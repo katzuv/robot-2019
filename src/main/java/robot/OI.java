@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (x) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.drivetrain.commands.TurnByAngle;
-import robot.subsystems.elevator.commands.ElevatorCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -39,13 +38,13 @@ public class OI {
 
     Button a = new JoystickButton(xbox, 1);
     Button b = new JoystickButton(xbox, 2);
-    Button c = new JoystickButton(xbox, 3);
-    Button d = new JoystickButton(xbox, 4);
+    Button x = new JoystickButton(xbox, 3);
+    Button y = new JoystickButton(xbox, 4);
     public OI (){
         a.whenPressed(new TurnByAngle(0));
         b.whenPressed(new TurnByAngle(90));
-        c.whenPressed(new TurnByAngle(180));
-        d.whenPressed(new TurnByAngle(270));
+        x.whenPressed(new TurnByAngle(180));
+        y.whenPressed(new TurnByAngle(360));
     }
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a

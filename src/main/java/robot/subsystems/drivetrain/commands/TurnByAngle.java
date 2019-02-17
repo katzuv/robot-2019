@@ -10,21 +10,19 @@ import static robot.Robot.drivetrain;
  */
 public class TurnByAngle extends Command {
     private double distance;
-    private double angle;
     private double initialLeftDistance;
     private double initialRightDistance;
 
     public TurnByAngle(double angle) {
-        this.angle = angle;
         requires(drivetrain);
+        distance = Math.toRadians(angle) * Constants.ROBOT_WIDTH / 2;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        distance = Math.toRadians(angle)*Constants.ROBOT_WIDTH;
         this.initialLeftDistance = drivetrain.getLeftPosition();
         this.initialRightDistance = drivetrain.getRightPosition();
-        drivetrain.setPosition(distance-initialLeftDistance, -distance-initialRightDistance);
+        drivetrain.setPosition(distance + initialLeftDistance,  - distance + initialRightDistance);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,8 +32,9 @@ public class TurnByAngle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs((drivetrain.getLeftPosition() - initialLeftDistance) - distance) < Constants.ROTATION_TOLERANCE &&
-                Math.abs((drivetrain.getRightPosition() - initialRightDistance) - distance) < Constants.ROTATION_TOLERANCE ;
+
+        return Math.abs(drivetrain.getLeftPosition() - (initialLeftDistance + distance)) < Math.toRadians(Constants.DRIVE_TOLERANCE) * Constants.ROBOT_WIDTH / 2 &&
+                Math.abs(drivetrain.getRightPosition() - (initialRightDistance - distance)) < Math.toRadians(Constants.DRIVE_TOLERANCE) * Constants.ROBOT_WIDTH / 2 ;
     }
 
     // Called once after isFinished returns true
