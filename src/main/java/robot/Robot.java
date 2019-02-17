@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.subsystems.cargoIntake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.Elevator;
 
@@ -35,6 +35,7 @@ import robot.subsystems.elevator.Elevator;
 public class Robot extends TimedRobot {
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
+    public static final CargoIntake cargoIntake = new CargoIntake();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
 
@@ -109,6 +110,10 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
+
+        /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
+         * to cancel the motion magic that is currently taking place and will still run if you re enable
+         */
     }
 
     @Override
@@ -151,9 +156,6 @@ public class Robot extends TimedRobot {
         path.appendWaypoint(new Waypoint(-2, 2));
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-
-        SmartDashboard.putString("pursue command", "start");
-        SmartDashboard.putString("last waypoint", path.getWaypoint(path.length() - 1).toString());
     }
 
     /**
@@ -179,6 +181,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        cargoIntake.resetSensors(); // TODO: move to auto init.
         navx.reset();
 
     }
@@ -194,6 +197,14 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
         SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
+
+        SmartDashboard.putNumber("current proximity sensor voltage " , cargoIntake.getProximityVoltage());
+//        cargoIntake.setWristPosition();
+        SmartDashboard.putNumber("current wrist angle", cargoIntake.getWristAngle());
+//        JoystickWristTurn wristSpeedTurn = new JoystickWristTurn();
+//        wristSpeedTurn.start();
+        SmartDashboard.putNumber("Velocity", cargoIntake.getProximityVoltage());
+
         SmartDashboard.putNumber("elevator Speed", elevator.getSpeed());
 
         SmartDashboard.putNumber("highest height", Math.max(SmartDashboard.getNumber("highest height", 0), elevator.getHeight() ));

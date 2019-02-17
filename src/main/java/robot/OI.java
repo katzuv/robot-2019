@@ -11,13 +11,23 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.cargoIntake.CargoIntake;
+import robot.subsystems.cargoIntake.commands.GripperControl;
+import robot.subsystems.cargoIntake.commands.WristTurn;
+
+import static robot.Robot.cargoIntake;
 import robot.subsystems.elevator.commands.ElevatorCommand;
+
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+
+    public static int right_y_stick = 5;
+
+    public static final double WRIST_ROTATE_RATE = 0.1;
     /**
      * The Y value area in which the xbox joystick won't make the lift move.
      */
@@ -41,10 +51,6 @@ public class OI {
     Button c = new JoystickButton(xbox, 3);
     Button d = new JoystickButton(xbox, 4);
     public OI (){
-        a.whenPressed(new ElevatorCommand(0));
-        b.whenPressed(new ElevatorCommand(0.5));
-        c.whenPressed(new ElevatorCommand(1));
-        d.whenPressed(new ElevatorCommand(1.56));
     }
     //// CREATING BUTTONS
     // One type of butto][\
