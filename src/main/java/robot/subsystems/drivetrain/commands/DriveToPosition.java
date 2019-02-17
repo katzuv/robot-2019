@@ -2,6 +2,7 @@ package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
+import robot.subsystems.drivetrain.Constants;
 
 /**
  *
@@ -31,7 +32,8 @@ public class DriveToPosition extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return (Robot.drivetrain.getLeftPosition() - (initialLeftDistance + targetLeftDistance)) < Constants.DRIVE_TOLERANCE &&
+                (Robot.drivetrain.getRightPosition() - (initialRightDistance + targetRightDistance)) < Constants.DRIVE_TOLERANCE;
     }
 
     // Called once after isFinished returns true
