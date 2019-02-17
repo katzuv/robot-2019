@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 import robot.subsystems.hatch_intake.HatchIntake;
 
+import static robot.Robot.hatchIntake;
+
 /*
 this command controls the flower on the robot
  */
@@ -11,8 +13,6 @@ public class Gripper extends Command {
 
     private boolean open;//indicates whether the flower is open or not
 
-    
-    private HatchIntake hatchIntake = new HatchIntake();
     private gripperState current;//enum variable that indicates the current mode of the gripper
 
 
@@ -21,7 +21,7 @@ public class Gripper extends Command {
      * instead of going to the wanted state
      */
     public Gripper() {
-        requires(Robot.hatchIntake);
+        requires(hatchIntake);
         current = gripperState.TOGGLE_GRIPPER;
 
     }
@@ -32,7 +32,7 @@ public class Gripper extends Command {
      * @param open if true changes the wanted state to open and otherwise sets the wanted state to cloes
      */
     public Gripper(boolean open) {
-        requires(Robot.hatchIntake);
+        requires(hatchIntake);
         if (open)
             current = gripperState.GRIPPER_GRAB;
         else
