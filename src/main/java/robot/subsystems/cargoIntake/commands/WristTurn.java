@@ -1,11 +1,6 @@
 package robot.subsystems.cargoIntake.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.cargoIntake.CargoIntake;
-import robot.subsystems.cargoIntake.Constants;
 
 import static robot.Robot.cargoIntake;
 
@@ -14,6 +9,7 @@ import static robot.Robot.cargoIntake;
  */
 public class WristTurn extends Command {
     private double angle;
+
     public WristTurn(double angle) {
         this.angle = angle;
         requires(cargoIntake);

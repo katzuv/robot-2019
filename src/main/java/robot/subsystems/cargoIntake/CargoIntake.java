@@ -97,15 +97,11 @@ public class CargoIntake extends Subsystem {
         IntakeMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public void setWristAngle(double angle) {
-        cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward,cargoIntake.stallCurrent());
-    }
-
     public void setWristSpeed(double speed) {
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
-    public void resetSensors(){
+    public void resetSensors() {
         resetProximitySensor();
         resetWristEncoder();
     }
@@ -152,6 +148,10 @@ public class CargoIntake extends Subsystem {
 
     }
 
+    public void setWristAngle(double angle) {
+        cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
+    }
+
     public int getVelocity() {
         return wrist.getSelectedSensorVelocity();
     }
@@ -161,7 +161,7 @@ public class CargoIntake extends Subsystem {
 
     }
 
-    private void resetProximitySensor(){
+    private void resetProximitySensor() {
         proximitySensor.resetAccumulator();
     }
 }
