@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
 
@@ -51,6 +54,8 @@ public class OI {
     public static Button start = new JoystickButton(xbox, 8);
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
+    public static Button lsMid = new JoystickButton(leftStick, 3);
+    public static Button lsBottom = new JoystickButton(leftStick, 2);
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -70,6 +75,36 @@ public class OI {
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
+
+        Path drive = new Path(
+                new Waypoint(0,0),
+                new Waypoint(0,3),
+                new Waypoint(-1, 4));
+        drive.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
+
+        lsMid.whenPressed(new PurePursue(
+                drive, robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                true,
+                false));
+
+
+        lsBottom.whenPressed(new PurePursue(
+                new Path(
+                        new Waypoint(0,0),
+                        new Waypoint(1,1)
+                ), robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                false,
+                false));
 
     }
 
