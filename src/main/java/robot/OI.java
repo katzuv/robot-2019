@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.cargoIntake.commands.GripperControl;
 import robot.subsystems.cargoIntake.commands.WristTurn;
+import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
 
@@ -47,6 +49,9 @@ public class OI {
     public static Button start = new JoystickButton(xbox, 8);
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
+    public static Button povd = new POVButton(xbox, 180);
+    public static Button povr = new POVButton(xbox, 90);
+    public static Button povl = new POVButton(xbox, 270);
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -58,6 +63,9 @@ public class OI {
 
 
     public OI() {
+        povd.whenPressed(new ElevatorCommand(0));
+        povl.whenPressed(new ElevatorCommand(0.78));
+        povr.whenPressed(new ElevatorCommand(1.4));
         rb.whileHeld(new GripperControl(0.9, true));
         start.whileHeld(new GripperControl(-0.9, true));
 
