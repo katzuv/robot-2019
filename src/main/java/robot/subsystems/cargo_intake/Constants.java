@@ -28,11 +28,11 @@ public class Constants {
     final static boolean SENSOR_PHASE = false;
 
     public enum WRIST_ANGLES{
-        INITIAL_ANGLE(0),
+        INITIAL(0),
         UP(82.75),
-        SHOOTING_ANGLE(135),
-        INTAKE_ANGLE(172),
-        MAXIMAL_ANGLE(230);
+        SHOOTING(135),
+        INTAKE(172),
+        MAXIMAL(230);
 
         private final double wristAngle;
 
