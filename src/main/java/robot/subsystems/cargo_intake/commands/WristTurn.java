@@ -1,4 +1,4 @@
-package robot.subsystems.cargoIntake.commands;
+package robot.subsystems.cargo_intake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 

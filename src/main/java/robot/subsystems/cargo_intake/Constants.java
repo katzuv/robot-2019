@@ -1,4 +1,4 @@
-package robot.subsystems.cargoIntake;
+package robot.subsystems.cargo_intake;
 
 public class Constants {
     public final static double GRIPPER_WHEELS_SPEED = 0.75;

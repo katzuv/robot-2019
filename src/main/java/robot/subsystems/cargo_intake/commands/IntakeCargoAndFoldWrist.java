@@ -1,7 +1,7 @@
-package robot.subsystems.cargoIntake.commands;
+package robot.subsystems.cargo_intake.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import robot.subsystems.cargoIntake.Constants;
+import robot.subsystems.cargo_intake.Constants;
 
 /**
  * This cargo intake command group follows three basic steps, put the wrist up against the cargo,

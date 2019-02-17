@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.cargoIntake.CargoIntake;
+import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
@@ -201,7 +201,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
 
         SmartDashboard.putNumber("current proximity sensor voltage " , cargoIntake.getProximityVoltage());
-//        cargoIntake.setWristPosition();
+//        cargo_intake.setWristPosition();
         SmartDashboard.putNumber("current wrist angle", cargoIntake.getWristAngle());
 //        JoystickWristTurn wristSpeedTurn = new JoystickWristTurn();
 //        wristSpeedTurn.start();

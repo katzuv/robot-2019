@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import robot.subsystems.cargoIntake.Constants;
-import robot.subsystems.cargoIntake.commands.GripperControl;
-import robot.subsystems.cargoIntake.commands.WristTurn;
+import robot.subsystems.cargo_intake.Constants;
+import robot.subsystems.cargo_intake.commands.GripperControl;
+import robot.subsystems.cargo_intake.commands.WristTurn;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
 
