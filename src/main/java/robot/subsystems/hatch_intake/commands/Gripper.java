@@ -1,6 +1,7 @@
 package robot.subsystems.hatch_intake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 import robot.subsystems.hatch_intake.HatchIntake;
 
@@ -9,7 +10,7 @@ import static robot.Robot.hatchIntake;
 /*
 this command controls the flower on the robot
  */
-public class Gripper extends Command {
+public class Gripper extends InstantCommand {
 
     private boolean open;//indicates whether the flower is open or not
 
