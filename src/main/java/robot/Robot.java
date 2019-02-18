@@ -188,7 +188,7 @@ public class Robot extends TimedRobot {
         }
         cargoIntake.resetSensors(); // TODO: move to auto init. deal with all resets better
         navx.reset();
-
+        cargoIntake.resetSensors();
     }
 
     /**
@@ -202,18 +202,14 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
         SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
-
         SmartDashboard.putNumber("current proximity sensor voltage " , cargoIntake.getProximityVoltage());
-//        cargo_intake.setWristPosition();
         SmartDashboard.putNumber("current wrist angle", cargoIntake.getWristAngle());
-//        JoystickWristTurn wristSpeedTurn = new JoystickWristTurn();
-//        wristSpeedTurn.start();
         SmartDashboard.putNumber("Velocity", cargoIntake.getProximityVoltage());
-
         SmartDashboard.putNumber("elevator Speed", elevator.getSpeed());
-
+        SmartDashboard.putNumber("wrist angle", cargoIntake.getWristAngle());
         SmartDashboard.putNumber("highest height", Math.max(SmartDashboard.getNumber("highest height", 0), elevator.getHeight() ));
         SmartDashboard.putNumber("highest speed", Math.max(SmartDashboard.getNumber("highest speed", 0), elevator.getSpeed()));
+        compressor.stop();
     }
 
     /**
