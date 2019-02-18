@@ -170,10 +170,7 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
 
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
-        SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
         SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
-        SmartDashboard.putNumber("current Angle", navx.getAngle());
 
     }
 
@@ -201,20 +198,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        SmartDashboard.putNumber("height in ticks", elevator.getTicks());
-        SmartDashboard.putNumber("height in meters", elevator.getHeight());
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
-        SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
-        SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
-        SmartDashboard.putNumber("current proximity sensor voltage " , cargoIntake.getProximityVoltage());
-        SmartDashboard.putNumber("current wrist angle", cargoIntake.getWristAngle());
-        SmartDashboard.putNumber("Velocity", cargoIntake.getProximityVoltage());
-        SmartDashboard.putNumber("elevator Speed", elevator.getSpeed());
-        SmartDashboard.putNumber("wrist angle", cargoIntake.getWristAngle());
-        SmartDashboard.putNumber("highest height", Math.max(SmartDashboard.getNumber("highest height", 0), elevator.getHeight() ));
-        SmartDashboard.putNumber("highest speed", Math.max(SmartDashboard.getNumber("highest speed", 0), elevator.getSpeed()));
-        compressor.stop();
+
     }
 
     /**
