@@ -1,4 +1,4 @@
-package robot.subsystems.cargo_intake;
+package robot.subsystems.cargoIntake;
 
 public class Ports {
     final static int IntakeMotor = 10;
