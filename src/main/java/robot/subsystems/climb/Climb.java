@@ -181,6 +181,9 @@ public class Climb extends Subsystem {
         return 10*wheelDrive.getSelectedSensorVelocity();
     }
 
+    public void resetEncoders(){
+        
+    }
     //TODO: move this enum to the Constants class.
     public enum HAB_LEG_HEIGHTS { //TODO:refactor all these values.
         GROUND(0.05),
