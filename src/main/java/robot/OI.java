@@ -71,8 +71,9 @@ public class OI {
 
         a.whenPressed(new WristTurn(0));
         b.whenPressed(new WristTurn(82.75));
-        x.whenPressed(new WristTurn(172));
+        x.whenPressed(new WristTurn(168));
         y.whenPressed(new WristTurn(135));
+
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
