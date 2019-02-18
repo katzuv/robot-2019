@@ -182,7 +182,7 @@ public class Climb extends Subsystem {
     }
 
     public void resetEncoders(){
-        
+
     }
     //TODO: move this enum to the Constants class.
     public enum HAB_LEG_HEIGHTS { //TODO:refactor all these values.
