@@ -8,9 +8,11 @@
 package robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.climb.commands.RiseToHeight;
+import robot.subsystems.climb.commands.RiseToHeightEncoders;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -19,9 +21,14 @@ import robot.subsystems.climb.commands.RiseToHeight;
 public class OI {
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
-    public Button a = new JoystickButton(leftStick,3);
+    public XboxController xbox = new XboxController(2);
+    public Button a = new JoystickButton(xbox,1);
+    public Button b = new JoystickButton(xbox,2);
+
     public OI(){
-        a.whenPressed(new RiseToHeight(0.1));
+        a.whenPressed(new RiseToHeightEncoders(0.1));
+        b.whenPressed(new RiseToHeightEncoders(0));
+
     }
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
