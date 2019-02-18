@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
 
 
     public static OI m_oi;
-    public final static boolean isRobotA = false;
+    public final static boolean isRobotA = true;
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -105,6 +105,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putNumber("Arm angle", Robot.cargoIntake.getWristAngle());
 
     }
 
