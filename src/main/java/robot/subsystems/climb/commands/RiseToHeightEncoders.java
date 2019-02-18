@@ -1,6 +1,7 @@
 package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.climb.Constants;
@@ -39,6 +40,12 @@ public class RiseToHeightEncoders extends Command {
         climb.setLegFRHeight(targetHeight, minimumLeg-climb.getLegFRHeight());
         climb.setLegBLHeight(targetHeight, minimumLeg-climb.getLegBLHeight());
         climb.setLegBRHeight(targetHeight, minimumLeg-climb.getLegBRHeight());
+        SmartDashboard.putNumber("BL height", climb.getLegBLHeight());
+        SmartDashboard.putNumber("BR height", climb.getLegBRHeight());
+        SmartDashboard.putNumber("FL height", climb.getLegFLHeight());
+        SmartDashboard.putNumber("FR height", climb.getLegFRHeight());
+        SmartDashboard.putNumber("target height", targetHeight);
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -51,10 +58,12 @@ public class RiseToHeightEncoders extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+        //TODO: stop all motors
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        cancel();
     }
 }
