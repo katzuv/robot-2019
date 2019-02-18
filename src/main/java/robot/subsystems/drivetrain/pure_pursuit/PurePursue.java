@@ -25,6 +25,7 @@ public class PurePursue extends Command {
     private boolean isRelative;
     private double initAngle;
     private double lastTimestamp;
+    private double delta;
 
     /**
      * An implementation of these command class. for more information see documentation on the wpilib command class.
@@ -68,10 +69,10 @@ public class PurePursue extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        updateTimeDelta();
         updatePoint();
         updateLookaheadInPath(path);
         drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
-
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -273,13 +274,14 @@ public class PurePursue extends Command {
 
     /**
      * call the timestamp on the robot
-     * @return
+     * @return timestamp in seconds
      */
     private double getTimeDelta() {
-        double delta = Timer.getFPGATimestamp() - lastTimestamp;
+        return this.delta;
+    }
+
+    private void updateTimeDelta(){
+        delta = Math.max(Timer.getFPGATimestamp() - lastTimestamp,0.005);
         lastTimestamp += delta;
-        if(delta == 0)
-            return 0.02;
-        return delta;
     }
 }
