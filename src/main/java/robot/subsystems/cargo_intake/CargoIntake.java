@@ -12,6 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import robot.subsystems.cargo_intake.commands.JoystickSpeedWristTurn;
+import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
 import static robot.Robot.cargoIntake;
 
@@ -155,7 +157,7 @@ public class CargoIntake extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-
+        setDefaultCommand(new JoystickSpeedWristTurn());
 
     }
 
