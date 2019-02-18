@@ -210,18 +210,15 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleborad() {
-        SmartDashboard.putNumber("height in ticks", elevator.getTicks());
-        SmartDashboard.putNumber("height in meters", elevator.getHeight());
-        SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
-        SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
-        SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
-        SmartDashboard.putNumber("current proximity sensor voltage ", cargoIntake.getProximityVoltage());
-        SmartDashboard.putNumber("current wrist angle", cargoIntake.getWristAngle());
-        SmartDashboard.putNumber("Velocity", cargoIntake.getProximityVoltage());
-        SmartDashboard.putNumber("elevator Speed", elevator.getSpeed());
-        SmartDashboard.putNumber("highest height", Math.max(SmartDashboard.getNumber("highest height", 0), elevator.getHeight()));
-        SmartDashboard.putNumber("highest speed", Math.max(SmartDashboard.getNumber("highest speed", 0), elevator.getSpeed()));
-        SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
+        SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
+        SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
+        SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
+        SmartDashboard.putNumber("Drivetrain: left distance", drivetrain.getLeftDistance());
+        SmartDashboard.putNumber("Drivetrain: right distance", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("Cargo intake: proximity value", cargoIntake.getProximityVoltage());
+        SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
+        SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
+        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
 
     }
 }
