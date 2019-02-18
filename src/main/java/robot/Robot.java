@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.cargo_intake.CargoIntake;
+import robot.subsystems.cargoIntake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
@@ -38,11 +39,11 @@ public class Robot extends TimedRobot {
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final CargoIntake cargoIntake = new CargoIntake();
+    public static final Compressor compressor = new Compressor(1);
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
 
     public static OI m_oi;
-    public final static boolean isRobotA = false;
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -191,7 +192,7 @@ public class Robot extends TimedRobot {
         drivetrain.resetEncoders();
         elevator.resetEncoders();
         navx.reset();
-
+        cargoIntake.resetSensors();
     }
 
     /**
@@ -205,18 +206,14 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
         SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
         SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
-
         SmartDashboard.putNumber("current proximity sensor voltage " , cargoIntake.getProximityVoltage());
-//        cargo_intake.setWristPosition();
         SmartDashboard.putNumber("current wrist angle", cargoIntake.getWristAngle());
-//        JoystickWristTurn wristSpeedTurn = new JoystickWristTurn();
-//        wristSpeedTurn.start();
         SmartDashboard.putNumber("Velocity", cargoIntake.getProximityVoltage());
-
         SmartDashboard.putNumber("elevator Speed", elevator.getSpeed());
-
+        SmartDashboard.putNumber("wrist angle", cargoIntake.getWristAngle());
         SmartDashboard.putNumber("highest height", Math.max(SmartDashboard.getNumber("highest height", 0), elevator.getHeight() ));
         SmartDashboard.putNumber("highest speed", Math.max(SmartDashboard.getNumber("highest speed", 0), elevator.getSpeed()));
+        compressor.stop();
     }
 
     /**

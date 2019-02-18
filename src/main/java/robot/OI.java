@@ -11,12 +11,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import robot.subsystems.cargo_intake.Constants;
-import robot.subsystems.cargo_intake.commands.GripperControl;
-import robot.subsystems.cargo_intake.commands.WristTurn;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.subsystems.cargoIntake.commands.GripperControl;
+import robot.subsystems.cargoIntake.commands.WristTurn;
+import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
 
@@ -54,8 +52,9 @@ public class OI {
     public static Button start = new JoystickButton(xbox, 8);
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
-    public static Button lsMid = new JoystickButton(leftStick, 3);
-    public static Button lsBottom = new JoystickButton(leftStick, 2);
+    public static Button povd = new POVButton(xbox, 180);
+    public static Button povr = new POVButton(xbox, 90);
+    public static Button povl = new POVButton(xbox, 270);
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -65,13 +64,16 @@ public class OI {
 
 
     public OI() {
-        rb.whileHeld(new GripperControl(0.9));
-        start.whileHeld(new GripperControl(-0.9));
+        povd.whenPressed(new ElevatorCommand(0));
+        povl.whenPressed(new ElevatorCommand(0.78));
+        povr.whenPressed(new ElevatorCommand(1.4));
+        rb.whileHeld(new GripperControl(0.9, true));
+        start.whileHeld(new GripperControl(-0.9, true));
 
-        a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+        a.whenPressed(new WristTurn(0));
+        b.whenPressed(new WristTurn(82.75));
+        x.whenPressed(new WristTurn(172));
+        y.whenPressed(new WristTurn(135));
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
