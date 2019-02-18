@@ -2,8 +2,12 @@ package robot.subsystems.climb;
 
 public class Constants {
     //The climbing mechanism dimensions, given from the robot.
-    public static final double LEG_X_DIMENSION = 0.5;
-    public static final double LEG_Y_DIMENSION = 0.5;
+    public static final double LEG_X_DIMENSION = 0.325;
+    public static final double LEG_Y_DIMENSION = 0.19;
+
+    public static final double BACK_LEG_X_DIMENSION = 0.35;
+    public static final double BACK_LEG_Y_DIMENSION = 0.09;
+
     public static final double LEVEL_THREE_LEG_LENGTH = 0.5; //Length of leg in meters when climbing. todo:change
     public static final double LEVEL_TWO_LEG_LENGTH = 0.2; //Length of leg in meters when climbing to hab 2. todo:change
     public static final double CLIMB_TOLERANCE = 0.025; //tolerance in meters from the target position, to allow when stopping the code.
