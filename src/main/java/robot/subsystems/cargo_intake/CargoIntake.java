@@ -5,12 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package robot.subsystems.cargoIntake;
+package robot.subsystems.cargo_intake;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -41,7 +38,7 @@ public class CargoIntake extends Subsystem {
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
         wrist.overrideLimitSwitchesEnable(true);
         wrist.overrideSoftLimitsEnable(true);
-        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
+//        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
         /*
         PIDF config
          */
@@ -60,8 +57,8 @@ public class CargoIntake extends Subsystem {
          */
         wrist.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
         wrist.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputForward(1, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputReverse(-1, Constants.TALON_TIME_OUT); //TODO: change back to .5
+        wrist.configPeakOutputForward(0.3, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputReverse(-0.3, Constants.TALON_TIME_OUT); //TODO: change back to .5
         /*
         profile config
          */
@@ -74,12 +71,12 @@ public class CargoIntake extends Subsystem {
         /*
         limit switch config
          */
-        /**wrist.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-         Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+        wrist.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+         Constants.FORWARD_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
          Constants.TALON_TIME_OUT);
          wrist.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-         Constants.WRIST_LIMIT_REVESED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-         Constants.TALON_TIME_OUT);*/
+         Constants.REVERSE_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+         Constants.TALON_TIME_OUT);
 
 
     }

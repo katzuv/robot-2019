@@ -12,8 +12,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import robot.subsystems.cargoIntake.commands.GripperControl;
-import robot.subsystems.cargoIntake.commands.WristTurn;
+import robot.subsystems.cargo_intake.Constants;
+import robot.subsystems.cargo_intake.commands.GripperControl;
+import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
@@ -38,6 +42,9 @@ public class OI {
      * The Y value area in which the xbox joystick won't make the lift move.
      */
     public static double XBOX_JOYSTICK_DEAD_BAND = 0;
+
+    public static Joystick leftStick = new Joystick(0);
+    public static Joystick rightStick = new Joystick(1);
     public static XboxController xbox = new XboxController(2);
     public static Button a = new JoystickButton(xbox, 1);
     public static Button b = new JoystickButton(xbox, 2);
@@ -52,31 +59,62 @@ public class OI {
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
+
+    public static Button lsMid = new JoystickButton(leftStick, 3);
+    public static Button lsBottom = new JoystickButton(leftStick, 2);
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
     public static int right_trigger = 3;
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
-    public Joystick leftStick = new Joystick(0);
-    public Joystick rightStick = new Joystick(1);
 
 
     public OI() {
         povd.whenPressed(new ElevatorCommand(0));
         povl.whenPressed(new ElevatorCommand(0.78));
         povr.whenPressed(new ElevatorCommand(1.4));
-        rb.whileHeld(new GripperControl(0.9, true));
-        start.whileHeld(new GripperControl(-0.9, true));
+        rb.whileHeld(new GripperControl(0.9));
+        start.whileHeld(new GripperControl(-0.9));
 
-        a.whenPressed(new WristTurn(0));
-        b.whenPressed(new WristTurn(82.75));
-        x.whenPressed(new WristTurn(168));
-        y.whenPressed(new WristTurn(135));
+        a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
 
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
+
+        Path drive = new Path(
+                new Waypoint(0,0),
+                new Waypoint(0,3),
+                new Waypoint(-1, 4));
+        drive.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
+
+        lsMid.whenPressed(new PurePursue(
+                drive, robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                true,
+                false));
+
+
+        lsBottom.whenPressed(new PurePursue(
+                new Path(
+                        new Waypoint(0,0),
+                        new Waypoint(1,1)
+                ), robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                false,
+                false));
 
     }
 
