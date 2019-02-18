@@ -8,6 +8,9 @@
 package robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import robot.subsystems.climb.commands.RiseToHeight;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -16,7 +19,10 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
-
+    public Button a = new JoystickButton(leftStick,3);
+    public OI(){
+        a.whenPressed(new RiseToHeight(0.1));
+    }
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.
