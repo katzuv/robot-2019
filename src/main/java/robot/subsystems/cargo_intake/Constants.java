@@ -95,14 +95,14 @@ public class Constants {
             TICKS_PER_DEGREE = 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
             WRIST_MOTOR_REVERSED = true;
-            REVERSE_NORMALLY_CLOSED = false;
-            FORWARD_NORMALLY_CLOSED = false;
+            REVERSE_NORMALLY_CLOSED = true;
+            FORWARD_NORMALLY_CLOSED = true;
 
 
             TALON_TIME_OUT = 10;
 
             CARGO_IN_VOLTAGE = 0.64;
-            SENSOR_PHASE = false;
+            SENSOR_PHASE = true;
         }
     }
 }
