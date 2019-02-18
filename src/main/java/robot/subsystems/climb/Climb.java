@@ -172,6 +172,15 @@ public class Climb extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
+    public void setWheelVelocity(double velocity){
+        wheelDrive.set(ControlMode.Velocity, velocity);
+    }
+
+    public double getWheelVelocity(){
+        return 10*wheelDrive.getSelectedSensorVelocity();
+    }
+
+    //TODO: move this enum to the Constants class.
     public enum HAB_LEG_HEIGHTS { //TODO:refactor all these values.
         GROUND(0.05),
         LEVEL2(Constants.LEVEL_TWO_LEG_LENGTH),
