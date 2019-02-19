@@ -5,7 +5,7 @@ import robot.Robot;
 import static robot.Robot.isRobotA;
 
 public class Constants {
-    public final static double GRIPPER_INTAKE_SPEED = isRobotA ? -0.75 : 0.75; //should always be negative
+    public final static double GRIPPER_INTAKE_SPEED = isRobotA ? -0.75 : -0.75; //should always be negative
     public final static double GRIPPER_SHOOT_SPEED = isRobotA ? 0.9 : 0.9; //should always be positive
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 1000;
