@@ -12,25 +12,13 @@ import robot.subsystems.hatch_intake.commands.PlaceHatch;
  */
 public class hatchScoring extends CommandGroup {
 
-    int level;
+
 
     /**
-     * @param level of the hatch
+     * @param elevatorState of the elevator
      */
-    public hatchScoring(int level) {
-        this.level = level;
-        switch (level) {
-            case 1:
-                addSequential(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-                break;
-            case 2:
-                addSequential(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-                break;
-
-            case 3:
-                addSequential(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
-                break;
-        }
+    public hatchScoring(Constants.ELEVATOR_STATES elevatorState) {
+        addSequential(new ElevatorCommand(elevatorState));
         addSequential(new PlaceHatch());
 
         // Add Commands here:
