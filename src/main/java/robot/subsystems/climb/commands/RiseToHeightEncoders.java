@@ -49,10 +49,10 @@ public class RiseToHeightEncoders extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() { //TODO: either try out an average, a timeout or an angle consideration aswell
-        return climb.getLegFLHeight() > targetHeight - Constants.CLIMB_TOLERANCE &&
-                climb.getLegFRHeight() > targetHeight - Constants.CLIMB_TOLERANCE &&
-                climb.getLegBLHeight() > targetHeight - Constants.CLIMB_TOLERANCE &&
-                climb.getLegBRHeight() > targetHeight - Constants.CLIMB_TOLERANCE;
+        return Math.abs(climb.getLegFLHeight() - targetHeight) < Constants.CLIMB_TOLERANCE &&
+                Math.abs(climb.getLegFRHeight() - targetHeight) < Constants.CLIMB_TOLERANCE &&
+                Math.abs(climb.getLegBLHeight() - targetHeight) < Constants.CLIMB_TOLERANCE &&
+                Math.abs(climb.getLegBRHeight() - targetHeight) < Constants.CLIMB_TOLERANCE;
     }
 
     // Called once after isFinished returns true

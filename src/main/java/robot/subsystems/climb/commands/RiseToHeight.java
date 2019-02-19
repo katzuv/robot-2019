@@ -16,7 +16,7 @@ import static robot.Robot.climb;
  * @author paulo
  */
 public class RiseToHeight extends Command {
-    private double targetHeight = Constants.LEVEL_THREE_LEG_LENGTH;
+    private double targetHeight;
 
     //gamers, (lose yourself and) rise up
     public RiseToHeight(double targetHeight) {
@@ -43,14 +43,15 @@ public class RiseToHeight extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() { //TODO: either try out an average, a timeout or an angle consideration aswell
-        return climb.getLegFLHeight() > targetHeight - Constants.CLIMB_TOLERANCE &&
-                climb.getLegFRHeight() > targetHeight - Constants.CLIMB_TOLERANCE &&
-                climb.getLegBLHeight() > targetHeight - Constants.CLIMB_TOLERANCE &&
-                climb.getLegBRHeight() > targetHeight - Constants.CLIMB_TOLERANCE;
+        return Math.abs(climb.getLegFLHeight() - targetHeight) < Constants.CLIMB_TOLERANCE &&
+                Math.abs(climb.getLegFRHeight() - targetHeight) < Constants.CLIMB_TOLERANCE &&
+                Math.abs(climb.getLegBLHeight() - targetHeight) < Constants.CLIMB_TOLERANCE &&
+                Math.abs(climb.getLegBRHeight() - targetHeight) < Constants.CLIMB_TOLERANCE;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+
     }
 
     // Called when another command which requires one or more of the same
