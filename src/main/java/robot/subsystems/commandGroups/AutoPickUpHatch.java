@@ -10,12 +10,12 @@ import robot.subsystems.hatch_intake.commands.Gripper;
 /**
  *
  */
-public class autoPickUp extends CommandGroup {
+public class AutoPickUpHatch extends CommandGroup {
 
-    public autoPickUp(boolean isHatch) {
+    public AutoPickUpHatch() {
 
         addSequential(new GamePiecePickup());
-        ReactToGamePiece(isHatch);// react by the game piece that inside
+        addSequential(new Gripper(false));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -34,12 +34,4 @@ public class autoPickUp extends CommandGroup {
         // arm.
     }
 
-    private void ReactToGamePiece(boolean isHatch) {
-        if ((isHatch)) {
-            addSequential(new Gripper());
-        } else {
-            addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            addParallel(new GripperControl(0.3));
-        }
-    }
 }
