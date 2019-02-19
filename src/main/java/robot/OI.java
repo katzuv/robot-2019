@@ -71,18 +71,18 @@ public class OI {
 
 
     public OI() {
-        povd.whenPressed(new ElevatorCommand(0));
-        povl.whenPressed(new ElevatorCommand(0.78));
-        povr.whenPressed(new ElevatorCommand(1.4));
+        povd.toggleWhenPressed(new ElevatorCommand(0));
+        povl.toggleWhenPressed(new ElevatorCommand(0.78));
+        povr.toggleWhenPressed(new ElevatorCommand(1.4));
 
         rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
         start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
 
-        a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
-        
+        a.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+        x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        y.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
