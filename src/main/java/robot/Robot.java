@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -18,11 +19,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import robot.subsystems.elevator.Elevator;
+import robot.subsystems.hatch_intake.HatchIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,11 +36,17 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
  * project.
  */
 public class Robot extends TimedRobot {
+    public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
+    public static final HatchIntake hatchIntake = new HatchIntake();
+    public static final CargoIntake cargoIntake = new CargoIntake();
+    public static final Compressor compressor = new Compressor(1);
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
+    public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
 
 
     public static OI m_oi;
+    public final static boolean isRobotA = false;
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -80,10 +90,13 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
+
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
+        SmartDashboard.putBoolean("Robot A", isRobotA);
         navx.reset();
+        elevator.resetEncoders();
     }
 
     /**
@@ -96,6 +109,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        addToShuffleboard();
 
     }
 
@@ -106,6 +120,10 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
+
+        /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
+         * to cancel the motion magic that is currently taking place and will still run if you re enable
+         */
     }
 
     @Override
@@ -130,6 +148,9 @@ public class Robot extends TimedRobot {
         navx.reset();
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
+        elevator.resetEncoders();
+        visionTable.getEntry("direction").setString(drivetrain.isDrivingForward() ? "front" : "back");
+
 
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
         // schedule the autonomous command (example)
@@ -142,10 +163,11 @@ public class Robot extends TimedRobot {
         Path path = new Path();
         path.appendWaypoint(new Waypoint(0, 0));
         path.appendWaypoint(new Waypoint(0, 1));
+        path.appendWaypoint(new Waypoint(-2, 2));
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
 
-        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
+        PurePursue pursue = new PurePursue(path, false, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV);
 
         //Print the variables for testing.
         System.out.println(path);
@@ -162,10 +184,6 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
 
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("right distance", drivetrain.getRightDistance());
-        SmartDashboard.putNumber("left distance", drivetrain.getLeftDistance());
-        SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
-        SmartDashboard.putNumber("current Angle", navx.getAngle());
 
     }
 
@@ -178,8 +196,15 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        navx.reset();
+        cargoIntake.resetSensors(); // TODO: move to auto init. deal with all resets better
 
+        navx.reset();
+        drivetrain.resetLocation();
+        drivetrain.resetEncoders();
+        elevator.resetEncoders();
+        navx.reset();
+        cargoIntake.resetSensors();
+        compressor.start();
     }
 
     /**
@@ -187,11 +212,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("current Angle teleop", navx.getAngle());
-        SmartDashboard.putNumber("current left encoder", drivetrain.getLeftDistance());
-        SmartDashboard.putNumber("current right encoder", drivetrain.getRightDistance());
 
     }
 
@@ -200,5 +221,19 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
+    }
+
+
+    public void addToShuffleboard() {
+        SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
+        SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
+        SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
+        SmartDashboard.putNumber("Drivetrain: left distance", drivetrain.getLeftDistance());
+        SmartDashboard.putNumber("Drivetrain: right distance", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("Cargo intake: proximity value", cargoIntake.getProximityVoltage());
+        SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
+        SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
+        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
+
     }
 }

@@ -13,7 +13,7 @@ import robot.Robot;
 import static robot.Robot.drivetrain;
 
 public class JoystickDrive extends Command {
-    public JoystickDrive() {
+    public  JoystickDrive() {
         requires(drivetrain);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -35,8 +35,8 @@ public class JoystickDrive extends Command {
         // 4: e^C(x - 1)
         int option = 1;
         final int C = 5;
-        double leftInput = -Robot.m_oi.leftStick.getY();
-        double rightInput = -Robot.m_oi.rightStick.getY();
+        double leftInput = Robot.m_oi.leftDriveStick();
+        double rightInput = Robot.m_oi.rightDriveStick();
 
         double leftOutput, rightOutput;
         switch (option) {

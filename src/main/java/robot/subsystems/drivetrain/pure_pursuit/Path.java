@@ -25,17 +25,16 @@ public class Path {
 
     }
 
-    /**
-     * Create a Path instance
-     *
-     * @param array the array of points to add into the arraylist
-     */
-    public Path(Waypoint[] array) {
-        path.addAll(Arrays.asList(array));
-    }
-
     public Path(ArrayList<Waypoint> w) {
         path.addAll(w);
+    }
+
+    public Path(Path path){
+        path.addAll(path);
+    }
+
+    public Path(Waypoint ... p){
+        addAll(p);
     }
 
     private static double[][] doubleArrayCopy(double[][] arr) {
