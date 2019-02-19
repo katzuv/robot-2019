@@ -119,6 +119,22 @@ public class OI {
 
     }
 
+    /* instead of defining the joysticks in each default command, all of them call these methods */
+    public double leftDriveStick(){ // TODO: might need name refactoring
+        return -leftStick.getY();
+    }
+
+    public double rightDriveStick(){
+        return -rightStick.getY();
+    }
+
+    public double WristStick(){
+        xbox.getRawAxis(right_y_stick);
+    }
+
+    public double ElevatorStick(){
+        return -xbox.getRawAxis(left_y_stick);
+    }
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.
