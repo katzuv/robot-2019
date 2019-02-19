@@ -1,13 +1,10 @@
 package robot.subsystems.drivetrain;
 
 public class Ports {
-    final static int leftForwardMotor = 8;
-    final static int leftBackMotor = 9;
-    final static int rightForwardMotor = 7;
-    final static int rightBackMotor = 6;
-    final static int rightEncoderChannelA = 2;
-    final static int rightEncoderChannelB = 3;
-    final static int leftEncoderChannelA = 0;
-    final static int leftEncoderChannelB = 1;
-
+    final static int leftMaster = 3;
+    final static int leftSlave1 = 4;
+    public static int leftSlave2 = 5;
+    final static int rightMaster = 6;
+    final static int rightSlave1 = 7;
+    public static int rightSlave2 = 8;
 }
