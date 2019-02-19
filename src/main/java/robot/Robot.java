@@ -92,6 +92,7 @@ public class Robot extends TimedRobot {
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
+        SmartDashboard.putBoolean("Robot A", isRobotA);
         navx.reset();
         elevator.resetEncoders();
     }
