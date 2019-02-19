@@ -1,6 +1,7 @@
 package robot.subsystems.drivetrain.paths;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import robot.Robot;
 import robot.subsystems.drivetrain.paths.subpaths.CargoToLoading;
 import robot.subsystems.drivetrain.paths.subpaths.DriveToRocket;
 import robot.subsystems.drivetrain.paths.subpaths.HabToCargo;
