@@ -6,7 +6,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
-import robot.subsystems.drivetrain.pure_pursuit.*;
+import robot.subsystems.drivetrain.pure_pursuit.Constants;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 /**
  *
@@ -18,9 +21,8 @@ public class GamePiecePickup extends Command {
         // eg. requires(chassis);
     }
 
-    NetworkTableEntry targetAngleEntry;
-    NetworkTableEntry targetDistanceEntry;
-    private double currentDistanceUsed;
+    private NetworkTableEntry targetAngleEntry;
+    private NetworkTableEntry targetDistanceEntry;
 
 
     /**
@@ -28,12 +30,15 @@ public class GamePiecePickup extends Command {
      */
     // Called just before this Command runs the first time
     protected void initialize() {
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        NetworkTable table = inst.getTable("vision");
-        targetAngleEntry = table.getEntry("angle");
-        targetDistanceEntry = table.getEntry("distance");
-        currentDistanceUsed = targetDistanceEntry.getDouble(0);
-        Path path1 = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
+        targetAngleEntry = Robot.visionTable.getEntry("cargo_angle");
+        targetDistanceEntry = Robot.visionTable.getEntry("cargo_distance");
+
+        double targetDistance = targetDistanceEntry.getDouble(0)/100;
+        double targetAngle = targetAngleEntry.getDouble(0);
+        Waypoint target = new Waypoint(Math.sin(Math.toRadians(targetAngle)) * targetDistance +0.15, Math.cos(Math.toRadians(targetAngle)) * targetDistance   );
+        Waypoint middleWP = new Waypoint(0, target.getY()-target.getY()/2);
+        Path path1 = new Path(new Waypoint[]{new Waypoint(0,0), middleWP ,  target});
+        System.out.println(path1);
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         SmartDashboard.putNumber("target distance", targetDistanceEntry.getDouble(0) / 100);
         SmartDashboard.putNumber("target angle ", targetAngleEntry.getDouble(0));
