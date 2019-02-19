@@ -370,7 +370,7 @@ public class Path {
         //Each point is given a speed based on its curvature, and the maximum velocity allowed.
         for (int i = 0; i < this.length(); i++) {
             if (this.getWaypoint(i).getCurvature() != 0) //prevent zero division error
-                this.getWaypoint(i).setSpeed(Math.max(Math.min(pathMaximumVelocity, Constants.K_CURVE / this.getWaypoint(i).getCurvature()),( drivetrain.getLeftSpeed()+drivetrain.getRightSpeed())/2));
+                this.getWaypoint(i).setSpeed(Math.min(pathMaximumVelocity, Constants.K_CURVE / this.getWaypoint(i).getCurvature()));
             else
                 this.getWaypoint(i).setSpeed(pathMaximumVelocity);
         }

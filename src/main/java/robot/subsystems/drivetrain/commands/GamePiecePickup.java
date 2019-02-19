@@ -49,9 +49,7 @@ public class GamePiecePickup extends Command {
     protected void execute() {
         Waypoint targetWP =target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
         Waypoint middle =getMiddleWP(targetWP);
-        if (Point.distance(Robot.drivetrain.currentLocation, targetWP) <= Point.distance( middle, targetWP) &&
-                Point.distance(Robot.drivetrain.currentLocation, targetWP) >= Constants.MIN_DISTANCE) {
-
+        if (targetDistanceEntry.getDouble(0) > 0.3) {
             Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
             path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
             System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
@@ -65,12 +63,12 @@ public class GamePiecePickup extends Command {
      */
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Point.distance(Robot.drivetrain.currentLocation, target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0)))
-                <= 0;
+        return (targetDistanceEntry.getDouble(0) < 0.3);
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        System.out.println("paulo shahor");
     }
 
     // Called when another command which requires one or more of the same
