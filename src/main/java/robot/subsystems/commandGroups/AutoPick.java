@@ -12,9 +12,11 @@ public class AutoPick extends InstantCommand {
 
     protected void initialize(){
         if (isHatch){
-            new AutoPickUpHatch();
+            AutoPickUpHatch hatchPick = new AutoPickUpHatch();
+            hatchPick.start();
         }else {
-            new AutoPickUpCargo();
+            AutoPickUpCargo cargoPick = new AutoPickUpCargo();
+            cargoPick.start();
         }
     }
 
