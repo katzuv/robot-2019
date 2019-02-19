@@ -1,5 +1,6 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -27,7 +28,8 @@ public class PurePursue extends Command {
     private boolean isRelative;
     public static int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double initAngle;
-
+    private double delta;
+    private double lastTimestamp;
     /**
      * An implementation of these command class. for more information see documentation on the wpilib command class.
      *
@@ -248,7 +250,7 @@ public class PurePursue extends Command {
      * @author lior
      */
     public double getRightSpeedVoltage(Path path) {
-        double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / Constants.CYCLE_TIME;
+        double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / getTimeDelta();
         lastRightSpeed = drivetrain.getRightSpeed();
         return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
@@ -264,7 +266,7 @@ public class PurePursue extends Command {
      * @author lior
      */
     public double getLeftSpeedVoltage(Path path) {
-        double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / Constants.CYCLE_TIME;
+        double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / getTimeDelta();
         lastLeftSpeed = drivetrain.getLeftSpeed();
         return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
