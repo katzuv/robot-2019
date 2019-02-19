@@ -4,12 +4,11 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
-import robot.subsystems.drivetrain.pure_pursuit.Constants;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import robot.subsystems.drivetrain.pure_pursuit.*;
+
 
 import static robot.Robot.*;
+
 
 /**
  *
@@ -54,7 +53,7 @@ public class GamePiecePickup extends Command {
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         SmartDashboard.putNumber("target distance", targetDistance);
         SmartDashboard.putNumber("target angle ", targetAngle);
-        path1 = new Path(new Point(0,0),0 , target, targetFieldAngle,  Constants.TURN_RADIUS);
+        path1 = new Path(new Point(0,0),0 , target, ReflectorFieldAngleEntry.getDouble(0),  Constants.TURN_RADIUS);
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         PurePursue pursue = new PurePursue(path1, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
         pursue.start();
