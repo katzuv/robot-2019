@@ -19,6 +19,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.commands.ElevatorCommand;
+import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
 
@@ -77,9 +78,8 @@ public class OI {
         povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH));
         povu.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
-
         rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-        start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+        lb.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
 
         a.whenPressed(new Gripper());
         y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
@@ -87,39 +87,8 @@ public class OI {
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
         //TODO: add right stick to control the cargo intake
 
-        rb.whenPressed(new GripperTransportation(true));
-        lb.whenPressed(new GripperTransportation(false));
-
-        Path drive = new Path(
-                new Waypoint(0,0),
-                new Waypoint(0,3),
-                new Waypoint(-1, 4));
-        drive.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
-
-        lsMid.whenPressed(new PurePursue(
-                drive, robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
-                true,
-                false));
-
-
-        lsBottom.whenPressed(new PurePursue(
-                new Path(
-                        new Waypoint(0,0),
-                        new Waypoint(1,1)
-                ), robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
-                false,
-                false));
-
+        start.whenPressed(new GripperTransportation());
+        select.whenPressed(new CloseBoth());
     }
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
