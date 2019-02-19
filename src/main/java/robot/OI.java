@@ -83,9 +83,10 @@ public class OI {
         rb.whileHeld(new GripperControl(0.9));
         start.whileHeld(new GripperControl(-0.9));
 
+        x.whenPressed(new RiseToHeightEncoders(-0.1));
         a.whenPressed(new RiseToHeightEncoders(0.1));
         b.whenPressed(new RiseToHeightEncoders(0));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        //x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
         y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
 
         select.whenPressed(new GripperTransportation());
