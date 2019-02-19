@@ -174,11 +174,11 @@ public class Climb extends Subsystem {
     }
 
     public void setWheelVelocity(double velocity){
-        wheelDrive.set(ControlMode.Velocity, velocity);
+        wheelDrive.set(ControlMode.Velocity, metersToTicks(velocity)/10.0);
     }
 
     public double getWheelVelocity(){
-        return 10*wheelDrive.getSelectedSensorVelocity();
+        return 10*ticksToMeters(wheelDrive.getSelectedSensorVelocity());
     }
 
     /**
