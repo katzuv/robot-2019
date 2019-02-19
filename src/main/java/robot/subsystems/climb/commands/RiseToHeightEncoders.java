@@ -2,10 +2,8 @@ package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.Robot;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.climb.Constants;
-import robot.subsystems.climb.TiltUtils;
 
 import static robot.Robot.climb;
 
@@ -36,15 +34,16 @@ public class RiseToHeightEncoders extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         double minimumLeg = Math.min(climb.getLegBLHeight(), Math.min(climb.getLegBRHeight(), Math.min(climb.getLegFLHeight(), climb.getLegFRHeight())));
-        climb.setLegFLHeight(targetHeight, minimumLeg-climb.getLegFLHeight());
-        climb.setLegFRHeight(targetHeight, minimumLeg-climb.getLegFRHeight());
-        climb.setLegBLHeight(targetHeight, minimumLeg-climb.getLegBLHeight());
-        climb.setLegBRHeight(targetHeight, minimumLeg-climb.getLegBRHeight());
+        climb.setLegFLHeight(targetHeight, minimumLeg - climb.getLegFLHeight());
+        climb.setLegFRHeight(targetHeight, minimumLeg - climb.getLegFRHeight());
+        climb.setLegBLHeight(targetHeight, minimumLeg - climb.getLegBLHeight());
+        climb.setLegBRHeight(targetHeight, minimumLeg - climb.getLegBRHeight());
         SmartDashboard.putNumber("BL height", climb.getLegBLHeight());
         SmartDashboard.putNumber("BR height", climb.getLegBRHeight());
         SmartDashboard.putNumber("FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("FR height", climb.getLegFRHeight());
         SmartDashboard.putNumber("target height", targetHeight);
+        SmartDashboard.putNumber("velocity", 0);
 
     }
 
@@ -58,7 +57,11 @@ public class RiseToHeightEncoders extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        //TODO: stop all motors
+        climb.setLegBLSpeed(0);
+        climb.setLegBRSpeed(0);
+        climb.setLegFLSpeed(0);
+        climb.setLegFRSpeed(0);
+
     }
 
     // Called when another command which requires one or more of the same
