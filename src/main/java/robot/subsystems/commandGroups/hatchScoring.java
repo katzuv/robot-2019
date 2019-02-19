@@ -6,12 +6,17 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 /**
- *
+ *This command group gets a level as parameter and then rise to this level,
+ * at then place the hatch
+ * @author Orel
  */
 public class hatchScoring extends CommandGroup {
 
     int level;
 
+    /**
+     * @param level of the hatch
+     */
     public hatchScoring(int level) {
         this.level = level;
         switch (level) {
