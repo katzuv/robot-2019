@@ -28,6 +28,9 @@ public class Constants {
 
     final static double CARGO_IN_VOLTAGE = isRobotA ? 0.64 : 0.64;
     final static boolean SENSOR_PHASE = isRobotA ? false : false;
+    final static boolean SOFT_LIMIT_SWITCH_OVERRIDE =isRobotA ? true : true;
+    final static boolean LIMIT_SWITCH_OVERRIDE =isRobotA ? true : false;
+
 
     public enum WRIST_ANGLES{
         INITIAL(0),
