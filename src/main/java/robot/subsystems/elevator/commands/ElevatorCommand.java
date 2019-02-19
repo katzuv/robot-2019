@@ -29,6 +29,7 @@ public class ElevatorCommand extends Command {
      * @param state an enum of heights, defined in the elevator constants class.
      */
     public ElevatorCommand(Constants.ELEVATOR_STATES state) {
+
         this(state.getLevelHeight());
     }
 

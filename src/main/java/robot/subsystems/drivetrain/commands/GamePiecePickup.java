@@ -11,8 +11,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
-import static robot.Robot.drivetrain;
-import static robot.Robot.navx;
+import static robot.Robot.*;
 
 /**
  *
@@ -29,6 +28,10 @@ public class GamePiecePickup extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        if (cargoIntake.isCargoInside())
+            visionTable.getEntry("game_piece").setString("cargo");
+        else
+            visionTable.getEntry("game_piece").setString("hatch");
         targetAngleEntry = Robot.visionTable.getEntry("cargo_angle");
         targetDistanceEntry = Robot.visionTable.getEntry("cargo_distance");
 
