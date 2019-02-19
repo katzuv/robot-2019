@@ -15,13 +15,7 @@ public class autoPickUp extends CommandGroup {
     public autoPickUp(boolean isHatch) {
 
         addSequential(new GamePiecePickup());
-        if ((isHatch)) {
-            addSequential(new Gripper());
-        } else {
-            addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            addParallel(new GripperControl(0.3));
-        }
-
+        ReactToGamePiece(isHatch);// react by the game piece that inside
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -38,5 +32,14 @@ public class autoPickUp extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    }
+
+    private void ReactToGamePiece(boolean isHatch) {
+        if ((isHatch)) {
+            addSequential(new Gripper());
+        } else {
+            addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+            addParallel(new GripperControl(0.3));
+        }
     }
 }
