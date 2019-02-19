@@ -137,7 +137,7 @@ public class Drivetrain extends Subsystem {
         return Robot.navx.getYaw();
     }
 
-    public boolean getDirection() {
+    public boolean isDrivingForward() {
         return getLeftSpeed() >= 0 || getRightSpeed() >= 0;
     }
 
