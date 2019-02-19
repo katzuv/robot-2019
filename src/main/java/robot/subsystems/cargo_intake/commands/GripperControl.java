@@ -1,5 +1,7 @@
 package robot.subsystems.cargo_intake.commands;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 import static robot.Robot.cargoIntake;
@@ -9,7 +11,7 @@ import static robot.Robot.cargoIntake;
  *
  * @author Lior
  */
-public class GripperControl extends InstantCommand {
+public class GripperControl extends Command {
     private double speed;//speed of the gripper
 
     public GripperControl(double speed) {
@@ -30,7 +32,12 @@ public class GripperControl extends InstantCommand {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return cargoIntake.isCargoInside() && speed < 0;
+        if (speed < 0)
+            return cargoIntake.isCargoInside() && speed < 0;
+        else {
+            Timer.delay(0.5);
+            return true;
+        }
     }
 
     // Called once after isFinished returns true
