@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import static robot.Robot.cargoIntake;
+import static robot.Robot.isRobotA;
 
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
@@ -33,12 +34,18 @@ public class CargoIntake extends Subsystem {
         /*
         config for the feedback sensor
          */
-        wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+        if (Constants.IS_MAG_ENCODER_RELATIVE)
+            wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        else
+            wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+
         wrist.setSensorPhase(Constants.SENSOR_PHASE);
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
         wrist.overrideLimitSwitchesEnable(true);
         wrist.overrideSoftLimitsEnable(true);
-//        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
+
+
+
         /*
         PIDF config
          */
