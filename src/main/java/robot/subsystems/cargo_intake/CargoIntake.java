@@ -16,6 +16,7 @@ import robot.subsystems.cargo_intake.commands.JoystickWristTurn;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
 import static robot.Robot.cargoIntake;
+import static robot.Robot.isRobotA;
 
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
@@ -35,12 +36,18 @@ public class CargoIntake extends Subsystem {
         /*
         config for the feedback sensor
          */
-        wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+        if (Constants.IS_MAG_ENCODER_RELATIVE)
+            wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        else
+            wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+
         wrist.setSensorPhase(Constants.SENSOR_PHASE);
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
-        wrist.overrideLimitSwitchesEnable(true);
-        wrist.overrideSoftLimitsEnable(true);
-//        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
+        wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
+        wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
+
+
+
         /*
         PIDF config
          */
