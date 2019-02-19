@@ -1,6 +1,7 @@
 package robot.subsystems.elevator.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.Robot;
 import robot.subsystems.elevator.Constants;
 
 import static robot.Robot.elevator; //elevator subsystem
@@ -29,8 +30,8 @@ public class ElevatorCommand extends Command {
      * @param state an enum of heights, defined in the elevator constants class.
      */
     public ElevatorCommand(Constants.ELEVATOR_STATES state) {
-
         this(state.getLevelHeight());
+        Robot.visionTable.getEntry("target_type").setString(state.getString());
     }
 
     // Called just before this Command runs the first time
