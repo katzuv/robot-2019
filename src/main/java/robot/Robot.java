@@ -96,6 +96,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto mode", m_chooser);
         navx.reset();
         elevator.resetEncoders();
+        climb.resetEncoders();
     }
 
     /**
