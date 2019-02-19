@@ -21,7 +21,7 @@ public class Constants {
 
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
-    final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : true;
+    final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : false;
     final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : false;
     final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : false;
 
@@ -29,9 +29,12 @@ public class Constants {
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
     final static double CARGO_IN_VOLTAGE = isRobotA ? 1 : 0.64;
-    final static boolean SENSOR_PHASE = isRobotA ? true : true;
+    final static boolean SENSOR_PHASE = isRobotA ? true : false;
     final static boolean SOFT_LIMIT_OVERRIDE =isRobotA ? true : true;
     final static boolean LIMIT_SWITCH_OVERRIDE =isRobotA ? true : false;
+
+    final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.3 : 0.6;
+    final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.3 : -0.6;
 
 
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? false : true;
