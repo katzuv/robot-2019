@@ -10,14 +10,14 @@ import robot.subsystems.hatch_intake.commands.PlaceHatch;
  * at then place the hatch
  * @author Orel
  */
-public class hatchScoring extends CommandGroup {
+public class HatchScoring extends CommandGroup {
 
 
 
     /**
      * @param elevatorState of the elevator
      */
-    public hatchScoring(Constants.ELEVATOR_STATES elevatorState) {
+    public HatchScoring(Constants.ELEVATOR_STATES elevatorState) {
         addSequential(new ElevatorCommand(elevatorState));
         addSequential(new PlaceHatch());
 
