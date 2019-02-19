@@ -434,10 +434,6 @@ public class Path {
         2. find the correct tangent points
         3. create points on the circles
          */
-        System.out.println("Distance right: " + distanceXLookahead(start_position, start_angle, end_position));
-        System.out.println("Sinus: " + Math.sin(Math.toRadians(end_angle - start_angle)));
-        System.out.println("Calc: " + Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
-                radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle))));
         String path_type;
         Point c_start;
         Point c_end;
