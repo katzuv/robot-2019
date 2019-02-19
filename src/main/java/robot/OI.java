@@ -134,6 +134,12 @@ public class OI {
 
     public double ElevatorStick(){
         return -xbox.getRawAxis(left_y_stick);
+    public boolean enableElevator() {
+        return xbox.getRawButton(9);
+    }
+
+    public boolean enableWrist() {
+        return xbox.getRawButton(10);
     }
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
