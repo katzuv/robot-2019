@@ -8,6 +8,7 @@ public class Constants {
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 1000;
     public static final int CRUISE_VELOCITY  = isRobotA ? 1600 : 1600;
+    public static final double MIN_STALL_ANGLE = 5;
 
     final static double kP = isRobotA ? 0.6 : 0.6;
     final static double kD = isRobotA ? 100 : 100;
