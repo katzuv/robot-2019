@@ -23,9 +23,10 @@ import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
-import robot.subsystems.hatch_intake.HatchIntake;
 import robot.subsystems.elevator.Elevator;
+import robot.subsystems.hatch_intake.HatchIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -146,7 +147,6 @@ public class Robot extends TimedRobot {
         elevator.resetEncoders();
 
 
-
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
         // schedule the autonomous command (example)
         m_autonomousCommand = m_chooser.getSelected();
@@ -157,10 +157,11 @@ public class Robot extends TimedRobot {
         //Create the path and points.
         Path path = new Path();
         path.appendWaypoint(new Waypoint(0, 0));
-        path.appendWaypoint(new Waypoint(0, 1));
-        path.appendWaypoint(new Waypoint(-2, 2));
+        path.appendWaypoint(new Waypoint(0, 6));
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, false, false);
+        pursue.start();
     }
 
     /**
@@ -170,7 +171,6 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
 
         Scheduler.getInstance().run();
-        SmartDashboard.putString("current location", drivetrain.currentLocation.getX() + " " + drivetrain.currentLocation.getY());
 
     }
 
