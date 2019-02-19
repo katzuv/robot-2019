@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
 
 
     public static OI m_oi;
-    public final static boolean isRobotA = true;
+    public final static boolean isRobotA = false;
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
