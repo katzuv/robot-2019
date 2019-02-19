@@ -34,9 +34,9 @@ public class GripperControl extends InstantCommand {
     }
 
     // Called once after isFinished returns true
-    protected void end() {
-        cargoIntake.setGripperSpeed(0);
-    }
+//    protected void end() {
+//        cargoIntake.setGripperSpeed(0);
+//    }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run

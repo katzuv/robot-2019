@@ -7,14 +7,9 @@
 
 package robot.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
@@ -38,6 +33,11 @@ public class Drivetrain extends Subsystem {
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         leftMaster.setSensorPhase(Constants.LEFT_ENCODER_REVERSED);
         rightMaster.setSensorPhase(Constants.RIGHT_ENCODER_REVERSED);
+
+        if (!Robot.isRobotA) { // TODO: Check whether this condition is mandatory
+            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyClosed);
+            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyClosed);
+        }
 
         leftSlave1.follow(leftMaster);
         leftSlave2.follow(leftMaster);
