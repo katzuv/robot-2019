@@ -5,7 +5,8 @@ import robot.Robot;
 import static robot.Robot.isRobotA;
 
 public class Constants {
-    public final static double GRIPPER_WHEELS_SPEED = isRobotA ? 0.75 : 0.75;
+    public final static double GRIPPER_INTAKE_SPEED = isRobotA ? -0.75 : 0.75; //should always be negative
+    public final static double GRIPPER_SHOOT_SPEED = isRobotA ? 0.9 : 0.9; //should always be positive
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 1000;
     public static final int CRUISE_VELOCITY  = isRobotA ? 1600 : 1600;
@@ -27,14 +28,13 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    final static double CARGO_IN_VOLTAGE = isRobotA ? 0.64 : 0.64;
+    final static double CARGO_IN_VOLTAGE = isRobotA ? 1 : 0.64;
     final static boolean SENSOR_PHASE = isRobotA ? true : true;
     final static boolean SOFT_LIMIT_OVERRIDE =isRobotA ? true : true;
     final static boolean LIMIT_SWITCH_OVERRIDE =isRobotA ? true : false;
 
 
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? false : true;
-
 
     public enum WRIST_ANGLES{
         INITIAL(0),

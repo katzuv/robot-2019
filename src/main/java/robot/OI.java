@@ -29,7 +29,7 @@ import robot.subsystems.hatch_intake.commands.GripperTransportation;
  */
 public class OI {
 
-    public static final double WRIST_ROTATE_RATE = 0.1;
+    public static final double WRIST_ROTATE_RATE = 5;
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
@@ -74,8 +74,9 @@ public class OI {
         povd.whenPressed(new ElevatorCommand(0));
         povl.whenPressed(new ElevatorCommand(0.78));
         povr.whenPressed(new ElevatorCommand(1.4));
-        rb.whileHeld(new GripperControl(0.9));
-        start.whileHeld(new GripperControl(-0.9));
+
+        rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
+        start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
 
         a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));

@@ -12,6 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import robot.subsystems.cargo_intake.commands.JoystickWristTurn;
+import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
 import static robot.Robot.cargoIntake;
 import static robot.Robot.isRobotA;
@@ -94,7 +96,7 @@ public class CargoIntake extends Subsystem {
     }//returns the current voltage in the proximity sensor
 
     public boolean isCargoInside() {
-        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;//felt cute might delete later
+        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;
     }
 
     public void setGripperSpeed(double speed) {
@@ -162,8 +164,7 @@ public class CargoIntake extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-
-
+        setDefaultCommand(new JoystickWristTurn());
     }
 
     private void resetProximitySensor() {
