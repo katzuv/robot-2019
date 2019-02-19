@@ -59,7 +59,6 @@ public class OI {
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
-    public static Button povu = new POVButton(xbox, 0);
 
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsBottom = new JoystickButton(leftStick, 2);
@@ -73,9 +72,8 @@ public class OI {
 
     public OI() {
         povd.whenPressed(new ElevatorCommand(0));
-        povl.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH));
-        povu.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+        povl.whenPressed(new ElevatorCommand(0.78));
+        povr.whenPressed(new ElevatorCommand(1.4));
 
         rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
         start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
