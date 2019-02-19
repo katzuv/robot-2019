@@ -149,6 +149,7 @@ public class Robot extends TimedRobot {
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
         elevator.resetEncoders();
+        visionTable.getEntry("direction").setString(drivetrain.isDrivingForward() ? "front" : "back");
 
 
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }

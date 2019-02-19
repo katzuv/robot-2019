@@ -80,7 +80,7 @@ public class Drivetrain extends Subsystem {
      * @param rightSpeed Speed for the right side
      */
     public void setSpeed(double leftSpeed, double rightSpeed) {
-        Robot.visionTable.getEntry("driving_direction").setString(leftSpeed+rightSpeed > 0 ? "front" : "back")
+        Robot.visionTable.getEntry("driving_direction").setString(leftSpeed+rightSpeed > 0 ? "front" : "back");
         setLeftSpeed(leftSpeed);
         setRightSpeed(rightSpeed);
     }
