@@ -30,13 +30,13 @@ public class GripperControl extends InstantCommand {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return cargoIntake.isCargoInside() && speed < 0;
     }
 
     // Called once after isFinished returns true
-//    protected void end() {
-//        cargoIntake.setGripperSpeed(0);
-//    }
+    protected void end() {
+        cargoIntake.setGripperSpeed(0);
+    }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
