@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
+    public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
 
 
     public static OI m_oi;
