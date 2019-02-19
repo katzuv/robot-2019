@@ -3,11 +3,8 @@ package robot.subsystems.drivetrain.pure_pursuit;
 public class Constants {
     //DRIVING CONSTANTS
 
-<<<<<<< HEAD
     public final static double LOOKAHEAD_DISTANCE = 0.65; //in meters
-=======
-    public final static double LOOKAHEAD_DISTANCE = 0.55; //in meters
->>>>>>> auto-adjustment
+
     public static final double MAX_VELOCITY = 3.762;
 
     //PATH GENERATION CONSTANTS
@@ -35,7 +32,6 @@ public class Constants {
 
     public final static double ROBOT_WIDTH = 0.74; //width of the robot
 
-    public final static double ROBOT_WIDTH = 0.8; //width of the robot
 
     public final static double TURN_RADIUS = 0.2;//turn radius for dubins path
 }

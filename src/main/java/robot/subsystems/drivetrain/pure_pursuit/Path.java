@@ -70,9 +70,8 @@ public class Path {
         path.addAll(path);
     }
 
-    public Path(Waypoint ... p){
-        addAll(p);
-    }
+
+
 
     private static double[][] doubleArrayCopy(double[][] arr) {
         //size first dimension of array
