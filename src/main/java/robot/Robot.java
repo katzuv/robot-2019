@@ -49,9 +49,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        NetworkTable table = inst.getTable("vision");
-        directionEntry = table.getEntry("driving forward");
+
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
@@ -68,7 +66,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        directionEntry.setBoolean(drivetrain.getDirection());
     }
 
     /**
