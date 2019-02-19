@@ -20,7 +20,7 @@ import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
-import robot.subsystems.hatch_intake.commands.GripperTransportation;
+import robot.subsystems.hatch_intake.commands.GripperMovement;
 
 
 /**
@@ -83,7 +83,7 @@ public class OI {
         y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
 
 
-        select.whenPressed(new GripperTransportation());
+        select.whenPressed(new GripperMovement());
         lb.whenPressed(new Gripper());
 
         Path drive = new Path(

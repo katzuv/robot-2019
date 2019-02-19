@@ -3,10 +3,10 @@ package robot.subsystems.hatch_intake.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
-public class GripperTransportation extends InstantCommand { //TODO: Refactor transportation to a better name
+public class GripperMovement extends InstantCommand {
     private gripperPlateState current;//enum variable that indicates the current mode of the gripperPlate
 
-    public GripperTransportation(boolean extend) {
+    public GripperMovement(boolean extend) {
         requires(Robot.hatchIntake);
         if (extend)
             current = gripperPlateState.GRIPPER_PLATE_EXTEND;
@@ -14,7 +14,7 @@ public class GripperTransportation extends InstantCommand { //TODO: Refactor tra
             current = gripperPlateState.GRIPPER_PLATE_PULL;
     }
 
-    public GripperTransportation() {
+    public GripperMovement() {
         requires(Robot.hatchIntake);
         current = gripperPlateState.TOGGLE_GRIPPER_PLATE;
     }
