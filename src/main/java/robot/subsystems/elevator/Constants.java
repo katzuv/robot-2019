@@ -1,29 +1,29 @@
 package robot.subsystems.elevator;
 
 import robot.Robot;
-
+import static robot.Robot.isRobotA;
 public class Constants {
 
     //Encoder constants:
-    static final double TICKS_PER_METER;
-    static final boolean ENCODER_REVERSED;
+    static final double TICKS_PER_METER = isRobotA ? 25993 : 25993;
+    static final boolean ENCODER_REVERSED  = isRobotA ? true : true;
 
     //Motor reverse constants:
-    static final boolean VICTOR_REVERSE;
-    static final boolean TALON_REVERSE;
+    static final boolean VICTOR_REVERSE = isRobotA ? true : true;
+    static final boolean TALON_REVERSE = isRobotA ? true : true;
 
     //Limit switch / Magnet hall constants:
-    static final boolean TOP_HALL_REVERSED;
-    static final boolean BOTTOM_HALL_REVERSED;
+    static final boolean TOP_HALL_REVERSED = isRobotA ? false : false;
+    static final boolean BOTTOM_HALL_REVERSED = isRobotA ? false : false;
 
     //PIDF values of the elevator
-    static final double[] LIFT_LOW_UP_PIDF; //Units * cruise percent speed / max tested speed
+    static final double[] LIFT_LOW_UP_PIDF = isRobotA ? new double[]{0.3, 0.0, 0.8, (1023*1.0)/4378.0} : new double[]{0.3, 0.0, 0.8, (1023*1.0)/4378.0};//Units * cruise percent speed / max tested speed
 
     //Feedforward values for the top and bottom parts of the robot
-    static final double FIRST_STAGE_FEEDFORWARD;
-    static final double SECOND_STAGE_FEEDFORWARD;
+    static final double FIRST_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
+    static final double SECOND_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
 
-    static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT;
+    static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT = isRobotA ? 0.08 : 0.08;
 
     public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
@@ -58,8 +58,8 @@ public class Constants {
     static final double PEAK_OUT_REV = -1;
 
     /* Motion magic speed constants */
-    static final int MOTION_MAGIC_ACCELERATION;
-    static final int MOTION_MAGIC_CRUISE_SPEED;
+    static final int MOTION_MAGIC_ACCELERATION = isRobotA ? (int) (1.7 * TICKS_PER_METER / 10) : (int) (1.7 * TICKS_PER_METER / 10);
+    static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (2 * TICKS_PER_METER / 10) : (int) (2 * TICKS_PER_METER / 10);
 
     /**
      * enum storing all height values assigned to their respective height.
@@ -87,57 +87,4 @@ public class Constants {
         }
     }
 
-    static {
-        if (Robot.isRobotA) {
-            //Encoder constants:
-            TICKS_PER_METER = 25993;
-            ENCODER_REVERSED = true;
-
-            //Motor reverse constants:
-            VICTOR_REVERSE = true;
-            TALON_REVERSE = true;
-
-            //Limit switch / Magnet hall constants:
-            TOP_HALL_REVERSED = false;
-            BOTTOM_HALL_REVERSED = false;
-
-            //PIDF values of the elevator
-            LIFT_LOW_UP_PIDF = new double[]{0.3, 0, 0.8, (1023 * 1.0) / 4378.0}; //Units * cruise percent speed / max tested speed
-
-            //Feedforward values for the top and bottom parts of the robot
-            FIRST_STAGE_FEEDFORWARD = 0.17;
-            SECOND_STAGE_FEEDFORWARD = 0.17;
-
-            /* Motion magic speed constants */
-            MOTION_MAGIC_ACCELERATION = (int) (1.7 * TICKS_PER_METER / 10);
-            MOTION_MAGIC_CRUISE_SPEED = (int) (2 * TICKS_PER_METER / 10);
-
-            ELEVATOR_HOLD_IN_PLACE_HEIGHT = 0.08; //The height in which the elevator tries to hold itself up using the arbitrary feedforward.
-        } else {
-            //Encoder constants:
-            TICKS_PER_METER = 25993;
-            ENCODER_REVERSED = true;
-
-            //Motor reverse constants:
-            VICTOR_REVERSE = true;
-            TALON_REVERSE = true;
-
-            //Limit switch / Magnet hall constants:
-            TOP_HALL_REVERSED = false;
-            BOTTOM_HALL_REVERSED = false;
-
-            //PIDF values of the elevator
-            LIFT_LOW_UP_PIDF = new double[]{0.3, 0, 0.8, (1023 * 1.0) / 4378.0}; //Units * cruise percent speed / max tested speed
-
-            //Feedforward values for the top and bottom parts of the robot
-            FIRST_STAGE_FEEDFORWARD = 0.17;
-            SECOND_STAGE_FEEDFORWARD = 0.17;
-
-            /* Motion magic speed constants */
-            MOTION_MAGIC_ACCELERATION = (int) (1.7 * TICKS_PER_METER / 10);
-            MOTION_MAGIC_CRUISE_SPEED = (int) (2 * TICKS_PER_METER / 10);
-
-            ELEVATOR_HOLD_IN_PLACE_HEIGHT = 0.08; //The height in which the elevator tries to hold itself up using the arbitrary feedforward.
-        }
-    }
 }

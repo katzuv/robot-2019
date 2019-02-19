@@ -25,9 +25,8 @@ public class PurePursue extends Command {
     private double lookaheadRadius;
     private boolean isRelative;
     private double initAngle;
-    private double lastTimestamp;
     private double delta;
-
+    private double lastTimestamp;
     /**
      * An implementation of these command class. for more information see documentation on the wpilib command class.
      *
