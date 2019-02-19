@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.elevator.Constants;
 
 import static robot.Robot.elevator; //elevator subsystem
+import static robot.Robot.hatchIntake;
 
 /**
  * Move the elevator to a certain height
@@ -33,7 +34,8 @@ public class ElevatorCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        elevator.setHeight(height);
+        if (!hatchIntake.isGripperOpen() && !hatchIntake.isGripperPlateExtended())
+            elevator.setHeight(height);
 
     }
 
