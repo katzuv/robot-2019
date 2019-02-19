@@ -7,14 +7,14 @@
 
 package robot.subsystems.hatch_intake;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * An example subsystem.  You can replace me with your own Subsystem.
+ * this subsystem contain the solenoids of the hatch intake
+ * @author oreld
  */
-public class HatchIntake extends Subsystem { //TODO: needs java-doc
+public class HatchIntake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private final DoubleSolenoid gripper = new DoubleSolenoid(1, Ports.gripperForward, Ports.gripperReverse);
