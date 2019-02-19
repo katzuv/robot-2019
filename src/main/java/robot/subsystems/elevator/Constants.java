@@ -4,6 +4,7 @@ import robot.Robot;
 import static robot.Robot.isRobotA;
 public class Constants {
 
+    public static final int START_UNIT = isRobotA ? -800 : -600;
     //Encoder constants:
     static final double TICKS_PER_METER = isRobotA ? 25993 : 25993;
     static final boolean ENCODER_REVERSED  = isRobotA ? true : true;
