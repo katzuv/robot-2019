@@ -87,7 +87,7 @@ public class CargoIntake extends Subsystem {
     }//returns the current voltage in the proximity sensor
 
     public boolean isCargoInside() {
-        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;//felt cute might delete later
+        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;
     }
 
     public void setGripperSpeed(double speed) {
