@@ -88,7 +88,6 @@ public class OI {
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
         y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
 
-
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
 

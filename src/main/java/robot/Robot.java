@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 
 
     public static OI m_oi;
-    public final static boolean isRobotA = true;
+    public final static boolean isRobotA = false;
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -108,7 +108,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        addToShuffleborad();
 
     }
 
@@ -201,8 +200,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        compressor.stop();
-
     }
 
     /**
@@ -210,19 +207,5 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
-    }
-
-
-    public void addToShuffleborad() {
-        SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
-        SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
-        SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
-        SmartDashboard.putNumber("Drivetrain: left distance", drivetrain.getLeftDistance());
-        SmartDashboard.putNumber("Drivetrain: right distance", drivetrain.getRightDistance());
-        SmartDashboard.putNumber("Cargo intake: proximity value", cargoIntake.getProximityVoltage());
-        SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
-        SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
-        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
-
     }
 }

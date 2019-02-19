@@ -1,10 +1,8 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import robot.subsystems.drivetrain.pure_pursuit.*;
-
 
 import static robot.Robot.drivetrain;
 
@@ -14,6 +12,7 @@ import static robot.Robot.drivetrain;
  * https://www.chiefdelphi.com/media/papers/download/5533
  */
 public class PurePursue extends Command {
+    public static int direction; //whether the robot drives forward or backwards (-1 or 1)
     private Path path; //Command specific path to follow
     private Point currentPoint = new Point(0, 0); //holds X and Y variables for the robot
     private Point currentLookahead; //holds X and Y variables for the Lookahead point
@@ -25,8 +24,9 @@ public class PurePursue extends Command {
     private double kP, kA, kV;
     private double lookaheadRadius;
     private boolean isRelative;
-    public static int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double initAngle;
+    private double lastTimestamp;
+    private double delta;
 
     /**
      * An implementation of these command class. for more information see documentation on the wpilib command class.
@@ -52,11 +52,10 @@ public class PurePursue extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if(isRelative) {
+        if (isRelative) {
             initAngle = drivetrain.getAngle() + (direction == -1 ? 180 : 0);
             currentPoint = new Point(0, 0);
-        }
-        else {
+        } else {
             initAngle = 0;
             currentPoint = new Point(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
         }
@@ -66,13 +65,16 @@ public class PurePursue extends Command {
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drivetrain.getLeftSpeed();
         lastRightSpeed = direction * drivetrain.getRightSpeed();
+        lastTimestamp = Timer.getFPGATimestamp();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        updateTimeDelta();
         updatePoint();
         updateLookaheadInPath(path);
         drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+        SmartDashboard.putNumber("velocity", (drivetrain.getLeftSpeed() + drivetrain.getRightSpeed()) / 2);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -93,6 +95,8 @@ public class PurePursue extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        end();
+        cancel();
     }
 
     /**
@@ -233,7 +237,7 @@ public class PurePursue extends Command {
         angle = Math.toRadians(angle);
         double a = -Math.tan(angle);
         double c = Math.tan(angle) * currentPoint.getX() - currentPoint.getY();
-        double x = Math.abs(currentLookahead.getX() * a + currentLookahead.getY() + c) / Math.sqrt(a*a + 1);
+        double x = Math.abs(currentLookahead.getX() * a + currentLookahead.getY() + c) / Math.sqrt(a * a + 1);
         double sign = Math.sin(angle) * (currentLookahead.getX() - currentPoint.getX()) - Math.cos(angle) * (currentLookahead.getY() - currentPoint.getY());
         double side = Math.signum(sign);
         return x * side;
@@ -248,7 +252,7 @@ public class PurePursue extends Command {
      * @author lior
      */
     public double getRightSpeedVoltage(Path path) {
-        double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / Constants.CYCLE_TIME;
+        double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / getTimeDelta();
         lastRightSpeed = drivetrain.getRightSpeed();
         return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
@@ -264,12 +268,13 @@ public class PurePursue extends Command {
      * @author lior
      */
     public double getLeftSpeedVoltage(Path path) {
-        double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / Constants.CYCLE_TIME;
+        double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / getTimeDelta();
         lastLeftSpeed = drivetrain.getLeftSpeed();
         return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());
     }
+
     /**
      * call the timestamp on the robot
      *
