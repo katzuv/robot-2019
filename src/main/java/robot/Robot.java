@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
 
     public static OI m_oi;
     public final static boolean isRobotA = false;
+    public final static int driveType = 1; //type 1 = rons drive, type 2 = testing drive, type 3 = paulos disabled arm (not yet)
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();

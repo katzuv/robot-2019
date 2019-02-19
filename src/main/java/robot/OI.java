@@ -73,22 +73,40 @@ public class OI {
 
 
     public OI() {
-        povd.whenPressed(new ElevatorCommand(0));
-        povl.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH));
-        povu.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+        if(Robot.driveType == 1) {
+            povd.whenPressed(new ElevatorCommand(0));
+            povl.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+            povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH));
+            povu.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
-        rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-        lb.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+            rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
+            lb.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
 
-        a.whenPressed(new Gripper());
-        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
-        //TODO: add right stick to control the cargo intake
+            a.whenPressed(new Gripper());
+            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+            b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+            x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+            //TODO: add right stick to control the cargo intake
 
-        start.whenPressed(new GripperTransportation());
-        select.whenPressed(new CloseBoth());
+            start.whenPressed(new GripperTransportation());
+            select.whenPressed(new CloseBoth());
+        }else if(Robot.driveType==2) {
+            povd.toggleWhenPressed(new ElevatorCommand(0));
+            povl.toggleWhenPressed(new ElevatorCommand(0.78));
+            povr.toggleWhenPressed(new ElevatorCommand(1.4));
+
+            rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
+            start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+
+            a.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+            b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+            x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+            y.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+
+
+            select.whenPressed(new GripperTransportation());
+            lb.whenPressed(new Gripper());
+        }
     }
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
