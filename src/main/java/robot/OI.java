@@ -28,6 +28,12 @@ import robot.subsystems.hatch_intake.commands.GripperTransportation;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+    public Joystick leftStick = new Joystick(0);
+    public Joystick rightStick = new Joystick(1);
+    public JoystickButton middleButtom = new JoystickButton(rightStick, 3);
+    public OI(){
+        middleButtom.whenPressed(new GamePiecePickup());
+    }
 
     public static final double WRIST_ROTATE_RATE = 5;
     /**
@@ -142,6 +148,8 @@ public class OI {
     // Run the command while the button is being held down and interrupt it once
     // the button is released.
     // button.whileHeld(new ExampleCommand());
+
+
     // Start the command when the button is released and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
