@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class hatchScoringLevel1 extends CommandGroup {
+public class hatchScoring extends CommandGroup {
 
-    public hatchScoringLevel1() {
+    public hatchScoring() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
