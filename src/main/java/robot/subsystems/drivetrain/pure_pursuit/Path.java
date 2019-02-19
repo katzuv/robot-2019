@@ -3,6 +3,8 @@ package robot.subsystems.drivetrain.pure_pursuit;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static robot.Robot.drivetrain;
+
 
 /**
  * @author Paulo Khayat
@@ -64,6 +66,14 @@ public class Path {
      * @param arr original matrix
      * @return a new instance of a double matrix, holding all of the same values as the first
      */
+    public Path(Path path){
+        path.addAll(path);
+    }
+
+    public Path(Waypoint ... p){
+        addAll(p);
+    }
+
     private static double[][] doubleArrayCopy(double[][] arr) {
         //size first dimension of array
         double[][] temp = new double[arr.length][arr[0].length];

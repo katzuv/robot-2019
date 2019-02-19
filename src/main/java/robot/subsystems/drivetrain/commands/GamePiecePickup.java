@@ -1,14 +1,15 @@
 package robot.subsystems.drivetrain.commands;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.drivetrain.pure_pursuit.*;
+import robot.Robot;
+import robot.subsystems.drivetrain.pure_pursuit.Constants;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
-import static robot.Robot.drivetrain;
-import static robot.Robot.navx;
+import static robot.Robot.*;
 
 /**
  *
@@ -20,20 +21,32 @@ public class GamePiecePickup extends Command {
         // eg. requires(chassis);
     }
 
-    NetworkTableEntry targetAngleEntry;
-    NetworkTableEntry targetDistanceEntry;
-    NetworkTableEntry reflectorAngleEntry;
+    private NetworkTableEntry CargotargetAngleEntry;
+    private NetworkTableEntry CargotargetDistanceEntry;
+    private NetworkTableEntry ReflectorAngleEntry;
+    private NetworkTableEntry ReflectorDistanceEntry;
+    private NetworkTableEntry ReflectorFieldAngleEntry;
+    private NetworkTableEntry HatchAngleEntry;
+    private NetworkTableEntry HatchDistanceEntry;
+
+
+
     // Called just before this Command runs the first time
     protected void initialize() {
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        navx.reset();
-        NetworkTable table = inst.getTable("vision");
-        targetAngleEntry = table.getEntry("angle");
-        targetDistanceEntry = table.getEntry("distance");
-        reflectorAngleEntry = table.getEntry( "field_angle");
-        double targetDistance = targetDistanceEntry.getDouble(0)-0.38;
-        double targetAngle = targetAngleEntry.getDouble(0);
-        double targetFieldAngle = reflectorAngleEntry.getDouble(0);
+        if (cargoIntake.isCargoInside())
+            visionTable.getEntry("game_piece").setString("cargo");
+        else
+            visionTable.getEntry("game_piece").setString("hatch");
+        CargotargetAngleEntry = Robot.visionTable.getEntry("cargo_angle");
+        CargotargetDistanceEntry = Robot.visionTable.getEntry("cargo_distance");
+        HatchAngleEntry = Robot.visionTable.getEntry("hatch_angle");
+        HatchDistanceEntry = Robot.visionTable.getEntry("hatch_distance");
+        ReflectorFieldAngleEntry = Robot.visionTable.getEntry("tape_field_angle");
+        ReflectorAngleEntry = Robot.visionTable.getEntry("tape_angle");
+        ReflectorDistanceEntry = Robot.visionTable.getEntry("tape_distance");  
+
+        double targetDistance = CargotargetDistanceEntry.getDouble(0)/100;
+        double targetAngle = CargotargetAngleEntry.getDouble(0);
         Waypoint target = new Waypoint(Math.sin(Math.toRadians(targetAngle)) * targetDistance +0.15, Math.cos(Math.toRadians(targetAngle)) * targetDistance   );
         Waypoint middleWP = new Waypoint(0, target.getY()-target.getY()/2);
         Path path1 = new Path(new Waypoint[]{new Waypoint(0,0), middleWP ,  target});

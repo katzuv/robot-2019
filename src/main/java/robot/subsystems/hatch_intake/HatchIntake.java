@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class HatchIntake extends Subsystem { //TODO: needs java-doc
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private DoubleSolenoid gripper = new DoubleSolenoid(Ports.gripperForward, Ports.gripperReverse);
-    private DoubleSolenoid gripperPlate = new DoubleSolenoid( Ports.gripperPlateForward, Ports.gripperPlateReverse);
+    private final DoubleSolenoid gripper = new DoubleSolenoid(1, Ports.gripperForward, Ports.gripperReverse);
+    private final DoubleSolenoid gripperPlate = new DoubleSolenoid(1, Ports.gripperPlateForward, Ports.gripperPlateReverse);
 //    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);
 
 
@@ -29,7 +29,7 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
     /**
      * @return the voltage from the sensor
      */
-    public double voltage() {
+    public double getVoltage() {
 //        return hatchSensor.getVoltage();
         return 2;
     }
@@ -72,8 +72,7 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
      * @return if the hatch is inside
      */
     public boolean isHatchInside() {
-//        return getVoltage() <= Constants.HATCH_IN_VOLTAGE;
-        return false;
+        return getVoltage() <= Constants.HATCH_IN_VOLTAGE;
     }
 
 

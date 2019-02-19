@@ -7,14 +7,9 @@
 
 package robot.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
@@ -39,6 +34,11 @@ public class Drivetrain extends Subsystem {
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         leftMaster.setSensorPhase(Constants.LEFT_ENCODER_REVERSED);
         rightMaster.setSensorPhase(Constants.RIGHT_ENCODER_REVERSED);
+
+        if (!Robot.isRobotA) { // TODO: Check whether this condition is mandatory
+            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyClosed);
+            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyClosed);
+        }
 
         leftSlave1.follow(leftMaster);
         leftSlave2.follow(leftMaster);
@@ -81,6 +81,7 @@ public class Drivetrain extends Subsystem {
      * @param rightSpeed Speed for the right side
      */
     public void setSpeed(double leftSpeed, double rightSpeed) {
+        Robot.visionTable.getEntry("driving_direction").setString(leftSpeed+rightSpeed > 0 ? "front" : "back");
         setLeftSpeed(leftSpeed);
         setRightSpeed(rightSpeed);
     }
@@ -102,6 +103,7 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
+        ;
         if (speed <= 1 && speed >= -1) {
             rightMaster.set(ControlMode.PercentOutput, speed);
         }
@@ -191,6 +193,10 @@ public class Drivetrain extends Subsystem {
 
     public double getYaw() {
         return Robot.navx.getYaw();
+    }
+
+    public boolean isDrivingForward() {
+        return getLeftSpeed() >= 0 || getRightSpeed() >= 0;
     }
 
     public void resetLocation() {

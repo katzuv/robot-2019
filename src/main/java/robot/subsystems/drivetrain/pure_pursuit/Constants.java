@@ -3,7 +3,11 @@ package robot.subsystems.drivetrain.pure_pursuit;
 public class Constants {
     //DRIVING CONSTANTS
 
+<<<<<<< HEAD
     public final static double LOOKAHEAD_DISTANCE = 0.65; //in meters
+=======
+    public final static double LOOKAHEAD_DISTANCE = 0.55; //in meters
+>>>>>>> auto-adjustment
     public static final double MAX_VELOCITY = 3.762;
 
     //PATH GENERATION CONSTANTS
@@ -24,9 +28,12 @@ public class Constants {
     public final static double kA = 0.004;
     public final static double kP = 0.01;
 
+    //Pure pursuit real time
+    public final static double MIN_DISTANCE = 0.5;//The minimum distance between the robot to the target point
+
     public final static double STOP_SPEED_THRESH = 0.1; //the speed the robot could stop at the end of the path.
 
-    public final static double CYCLE_TIME = 0.02; //cycle time of the roborio
+    public final static double ROBOT_WIDTH = 0.74; //width of the robot
 
     public final static double ROBOT_WIDTH = 0.8; //width of the robot
 
