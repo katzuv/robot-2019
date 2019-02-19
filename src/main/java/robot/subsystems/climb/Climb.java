@@ -27,10 +27,10 @@ public class Climb extends Subsystem {
     private TalonSRX wheelDrive = new TalonSRX(Ports.wheelMotor);
 
     public Climb() { //TODO: add four encoders to each of the motors just as in the elevator code.
-        configMotorMovement(talonFL, Constants.FRONT_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.TALON_TIMEOUT_MS);
-        configMotorMovement(talonFR, Constants.FRONT_RIGHT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.TALON_TIMEOUT_MS);
-        configMotorMovement(talonBL, Constants.BACK_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.TALON_TIMEOUT_MS);
-        configMotorMovement(talonBR, Constants.BACK_RIGHT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.TALON_TIMEOUT_MS);
+        configMotorMovement(talonFL, Constants.FRONT_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
+        configMotorMovement(talonFR, Constants.FRONT_RIGHT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
+        configMotorMovement(talonBL, Constants.BACK_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
+        configMotorMovement(talonBR, Constants.BACK_RIGHT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
 
         configMotorSensors(talonFL, Constants.FRONT_LEFT_FORWARD_HALL_REVERSED, Constants.FRONT_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.FRONT_LEFT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
         configMotorSensors(talonFR, Constants.FRONT_RIGHT_FORWARD_HALL_REVERSED, Constants.FRONT_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.FRONT_RIGHT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
@@ -105,6 +105,22 @@ public class Climb extends Subsystem {
         return ticksToMeters(talonBR.getSelectedSensorPosition(0));
     }
 
+    public void setLegFLSpeed(double speed){
+        talonFL.set(ControlMode.PercentOutput, speed);
+    }
+
+
+    public void setLegFRSpeed(double speed){
+        talonFR.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void setLegBLSpeed(double speed){
+        talonBL.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void setLegBRSpeed(double speed){
+        talonBR.set(ControlMode.PercentOutput, speed);
+    }
     /**
      * auxiliary method used to shorten the code when configuring the motor controllers (the talons).
      *
@@ -138,13 +154,15 @@ public class Climb extends Subsystem {
      * @param pidfConstants   PIDF movement constants.
      * @param timeout         Timeout when configuring the controller
      */
-    private void configMotorMovement(TalonSRX motorController, boolean motorInverted, NeutralMode neutralMode, double[] pidfConstants, int timeout) {
+    private void configMotorMovement(TalonSRX motorController, boolean motorInverted, NeutralMode neutralMode, double[] pidfConstants, int cruise, int acceleration, int timeout) {
         motorController.setInverted(motorInverted);
         motorController.setNeutralMode(neutralMode); //what the motor does when not given voltage (Brake - decelerate the motor, Coast - not stop the motor)
         motorController.config_kP(0, pidfConstants[0], timeout);
         motorController.config_kI(0, pidfConstants[1], timeout);
         motorController.config_kD(0, pidfConstants[2], timeout);
         motorController.config_kF(0, pidfConstants[3], timeout);
+        motorController.configMotionCruiseVelocity(cruise);
+        motorController.configMotionAcceleration(acceleration);
     }
 
     /**
