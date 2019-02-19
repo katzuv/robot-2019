@@ -10,7 +10,7 @@ import robot.subsystems.cargo_intake.Constants;
 public class IntakeCargoAndFoldWrist extends CommandGroup {
 
     public IntakeCargoAndFoldWrist() {
-        addSequential(new WristTurn(Constants.INITIAL_ANGLE));
+        addSequential(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         addSequential(new GripperControl(0.75));
         addSequential(new WristTurn(90));
         // Add Commands here:
