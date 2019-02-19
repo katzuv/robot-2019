@@ -52,7 +52,7 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
     }
 
     /**
-     *
+     * if true, extend forward
      */
     public void setGripperPlate(boolean extend) {
         if (extend)
@@ -82,4 +82,8 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
         // setDefaultCommand(new MySpecialCommand());
     }
 
+    public void emergencyClose() {
+        setGripperPlate(false);
+        setGripper(false);
+    }
 }
