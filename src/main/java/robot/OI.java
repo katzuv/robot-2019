@@ -74,8 +74,9 @@ public class OI {
         povd.whenPressed(new ElevatorCommand(0));
         povl.whenPressed(new ElevatorCommand(0.78));
         povr.whenPressed(new ElevatorCommand(1.4));
-        rb.whileHeld(new GripperControl(0.9));
-        start.whileHeld(new GripperControl(-0.9));
+
+        rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
+        start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
 
         a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
