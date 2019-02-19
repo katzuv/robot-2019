@@ -29,7 +29,7 @@ import robot.subsystems.hatch_intake.commands.GripperTransportation;
  */
 public class OI {
 
-    public static final double WRIST_ROTATE_RATE = 0.1;
+    public static final double WRIST_ROTATE_RATE = 2;
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
