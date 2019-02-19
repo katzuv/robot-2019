@@ -1,12 +1,13 @@
 package robot.subsystems.elevator;
 
-import robot.Robot;
 import static robot.Robot.isRobotA;
+
 public class Constants {
 
+    public static final int STARTING_SENSOR_POS = isRobotA ? -800 : -600;
     //Encoder constants:
     static final double TICKS_PER_METER = isRobotA ? 25993 : 25993;
-    static final boolean ENCODER_REVERSED  = isRobotA ? true : true;
+    static final boolean ENCODER_REVERSED = isRobotA ? true : true;
 
     //Motor reverse constants:
     static final boolean VICTOR_REVERSE = isRobotA ? true : true;
@@ -17,17 +18,13 @@ public class Constants {
     static final boolean BOTTOM_HALL_REVERSED = isRobotA ? false : false;
 
     //PIDF values of the elevator
-    static final double[] LIFT_LOW_UP_PIDF = isRobotA ? new double[]{0.3, 0.0, 0.8, (1023*1.0)/4378.0} : new double[]{0.3, 0.0, 0.8, (1023*1.0)/4378.0};//Units * cruise percent speed / max tested speed
+    static final double[] LIFT_LOW_UP_PIDF = isRobotA ? new double[]{0.3, 0.0, 0.8, (1023 * 1.0) / 4378.0} : new double[]{0.3, 0.0, 0.8, (1023 * 1.0) / 4378.0};//Units * cruise percent speed / max tested speed
 
     //Feedforward values for the top and bottom parts of the robot
     static final double FIRST_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
     static final double SECOND_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
 
     static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT = isRobotA ? 0.08 : 0.08;
-
-    public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
-
-
     /* Talon constants */
     /*
      * Since most config* calls occur during the robot boot sequence, the recommended value for timeoutMs is 10 (ms).
@@ -43,11 +40,9 @@ public class Constants {
      */
     static final int TALON_TIMEOUT_MS = 10; //timeout when configuring the robot, if takes longer an error is raised (1)
     static final int TALON_RUNNING_TIMEOUT_MS = 0; //as seen in the excerpt above, there should be no timeout on the talon in the robot loop.
-
     //Mechanical heights of the elevator, at its maximum position and semi position(where the elevator splits from one segment to two)
     static final double ELEVATOR_MAX_HEIGHT = 1.6;
     static final double ELEVATOR_MID_HEIGHT = 0.797;
-
     /* Nominal Output- The "minimal" or "weakest" motor output allowed if the output is nonzero
      * Peak Output- The "maximal" or "strongest" motor output allowed.
      * These settings are useful to reduce the maximum velocity of the mechanism,
@@ -56,10 +51,10 @@ public class Constants {
     static final double PEAK_OUT_FWD = 1;
     static final double NOMINAL_OUT_REV = 0;
     static final double PEAK_OUT_REV = -1;
-
     /* Motion magic speed constants */
     static final int MOTION_MAGIC_ACCELERATION = isRobotA ? (int) (1.7 * TICKS_PER_METER / 10) : (int) (1.7 * TICKS_PER_METER / 10);
     static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (2 * TICKS_PER_METER / 10) : (int) (2 * TICKS_PER_METER / 10);
+    public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
     /**
      * enum storing all height values assigned to their respective height.

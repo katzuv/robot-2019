@@ -213,7 +213,7 @@ public class Elevator extends Subsystem {
     }
 
     public void resetEncoders() {
-        masterMotor.setSelectedSensorPosition(-800, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
+        masterMotor.setSelectedSensorPosition(Constants.STARTING_SENSOR_POS, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
     }
 
     @Override
