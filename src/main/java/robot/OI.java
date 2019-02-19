@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.drivetrain.commands.GamePiecePickup;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
@@ -28,7 +29,6 @@ import robot.subsystems.hatch_intake.commands.GripperTransportation;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
     public static final double WRIST_ROTATE_RATE = 5;
     /**
      * The rate at which the lift will goes down with the xbox joystick.
@@ -74,6 +74,8 @@ public class OI {
         povd.whenPressed(new ElevatorCommand(0));
         povl.whenPressed(new ElevatorCommand(0.78));
         povr.whenPressed(new ElevatorCommand(1.4));
+
+        ls.whenPressed(new GamePiecePickup());
 
         rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
         start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
@@ -142,6 +144,8 @@ public class OI {
     // Run the command while the button is being held down and interrupt it once
     // the button is released.
     // button.whileHeld(new ExampleCommand());
+
+
     // Start the command when the button is released and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
