@@ -41,8 +41,8 @@ public class CargoIntake extends Subsystem {
 
         wrist.setSensorPhase(Constants.SENSOR_PHASE);
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
-        wrist.overrideLimitSwitchesEnable(true);
-        wrist.overrideSoftLimitsEnable(true);
+        wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
+        wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
 
 
 

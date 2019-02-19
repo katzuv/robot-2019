@@ -32,6 +32,7 @@ public class Constants {
     final static boolean LIMIT_SWITCH_OVERRIDE =isRobotA ? true : false;
 
 
+    final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? false : true;
     public enum WRIST_ANGLES{
         INITIAL(0),
         UP(82.75),
