@@ -191,6 +191,7 @@ public class Robot extends TimedRobot {
         elevator.resetEncoders();
         navx.reset();
         cargoIntake.resetSensors();
+        compressor.stop();
     }
 
     /**
@@ -199,7 +200,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-
     }
 
     /**
