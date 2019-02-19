@@ -1,5 +1,6 @@
 package robot.subsystems.cargo_intake;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import robot.Robot;
 import static robot.Robot.isRobotA;
 
@@ -28,11 +29,13 @@ public class Constants {
 
     final static double CARGO_IN_VOLTAGE = isRobotA ? 0.64 : 0.64;
     final static boolean SENSOR_PHASE = isRobotA ? true : true;
-    final static boolean SOFT_LIMIT_SWITCH_OVERRIDE =isRobotA ? true : true;
+    final static boolean SOFT_LIMIT_OVERRIDE =isRobotA ? true : true;
     final static boolean LIMIT_SWITCH_OVERRIDE =isRobotA ? true : false;
 
 
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? false : true;
+
+
     public enum WRIST_ANGLES{
         INITIAL(0),
         UP(82.75),
