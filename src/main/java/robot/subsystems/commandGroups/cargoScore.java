@@ -12,10 +12,10 @@ import robot.subsystems.hatch_intake.commands.Gripper;
  */
 public class cargoScore extends CommandGroup {
 
-    public cargoScore(robot.subsystems.elevator.Constants.ELEVATOR_STATES states) {
-        addParallel(new ElevatorCommand(elevator_state.getLevelHeight()));
+    public cargoScore(robot.subsystems.elevator.Constants.ELEVATOR_STATES state) {
+        addParallel(new ElevatorCommand(state.getLevelHeight()));
         addSequential(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
-        addSequential(new GripperControl(0.9));
+        addSequential(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
         addSequential(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
 
         // Add Commands here:
