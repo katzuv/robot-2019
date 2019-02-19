@@ -29,7 +29,7 @@ public class Constants {
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
     final static double CARGO_IN_VOLTAGE = isRobotA ? 1 : 0.64;
-    final static boolean SENSOR_PHASE = isRobotA ? true : true;
+    final static boolean SENSOR_PHASE = isRobotA ? false : true;
     final static boolean SOFT_LIMIT_OVERRIDE =isRobotA ? true : true;
     final static boolean LIMIT_SWITCH_OVERRIDE =isRobotA ? true : false;
 
