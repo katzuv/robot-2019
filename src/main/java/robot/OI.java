@@ -129,11 +129,12 @@ public class OI {
     }
 
     public double WristStick(){
-        xbox.getRawAxis(right_y_stick);
+        return xbox.getRawAxis(right_y_stick);
     }
 
-    public double ElevatorStick(){
+    public double ElevatorStick() {
         return -xbox.getRawAxis(left_y_stick);
+    }
     public boolean enableElevator() {
         return xbox.getRawButton(9);
     }
