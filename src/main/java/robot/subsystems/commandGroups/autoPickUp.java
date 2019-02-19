@@ -19,7 +19,7 @@ public class autoPickUp extends CommandGroup {
             addSequential(new Gripper());
         } else {
             addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            addParallel(new GripperControl(0.3));
+            addParallel(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
         }
 
         // Add Commands here:
