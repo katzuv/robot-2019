@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        addToShuffleborad();
+        addToShuffleboard();
 
     }
 
@@ -192,7 +192,7 @@ public class Robot extends TimedRobot {
         elevator.resetEncoders();
         navx.reset();
         cargoIntake.resetSensors();
-        compressor.stop();
+        compressor.start();
     }
 
     /**
@@ -201,7 +201,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        compressor.stop();
 
     }
 
@@ -213,7 +212,7 @@ public class Robot extends TimedRobot {
     }
 
 
-    public void addToShuffleborad() {
+    public void addToShuffleboard() {
         SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
         SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
         SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
