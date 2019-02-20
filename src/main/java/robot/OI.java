@@ -71,6 +71,10 @@ public class OI {
 
     public OI() {
         if(Robot.driveType == 1) {
+            double extraAngle = Math.tan(xbox.getRawAxis(right_y_stick) / xbox.getRawAxis(right_x_stick));
+            double wristDesiredAngle = wristRange(Robot.cargoIntake.getWristAngle(), extraAngle);
+            rs.whileHeld(new WristTurn(wristDesiredAngle));
+
             povd.whenPressed(new ElevatorCommand(0));
             povl.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
             povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH));
