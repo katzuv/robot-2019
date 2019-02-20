@@ -7,11 +7,13 @@
 
 package robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
@@ -59,6 +61,9 @@ public class OI {
     public static Button povl = new POVButton(xbox, 270);
     public static Button povu = new POVButton(xbox, 0);
 
+    public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
+    public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
+
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsBottom = new JoystickButton(leftStick, 2);
     public static int left_x_stick = 0;
@@ -80,16 +85,16 @@ public class OI {
             povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH));
             povu.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
-            rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-            lb.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+            RT.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
+            LT.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
 
             a.whenPressed(new Gripper());
             y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
             //TODO: add right stick to control the cargo intake
-
-            start.whenPressed(new GripperTransportation());
+            lb.whenPressed(new GripperTransportation(false));
+            rb.whenPressed(new GripperTransportation(true));
             select.whenPressed(new CloseBoth());
         }else if(Robot.driveType==2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
