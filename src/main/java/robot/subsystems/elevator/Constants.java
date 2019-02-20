@@ -4,7 +4,7 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
 
-    public static final int START_UNIT = isRobotA ? -800 : -600;
+    public static final int START_UNIT = isRobotA ? -800 : -900;
     public static final double LOWER_DANGER_ZONE = 0.67;
     public static final double UPPER_DANGER_ZONE = 0.97;
     //Encoder constants:
