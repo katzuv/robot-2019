@@ -89,9 +89,9 @@ public class OI {
             LT.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
 
             a.whenPressed(new Gripper());
-            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-            x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+            x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
             lb.whenPressed(new GripperTransportation(false));
             rb.whenPressed(new GripperTransportation(true));
@@ -125,18 +125,19 @@ public class OI {
     }
 
     public double WristStick(){
-        return xbox.getRawAxis(right_y_stick);
+        return -xbox.getRawAxis(left_y_stick);
     }
 
     public double ElevatorStick() {
-        return -xbox.getRawAxis(left_y_stick);
+        return -xbox.getRawAxis(right_y_stick);
+
     }
     public boolean enableElevator() {
-        return xbox.getRawButton(9);
+        return xbox.getRawButton(10);
     }
 
     public boolean enableWrist() {
-        return xbox.getRawButton(10);
+        return xbox.getRawButton(9);
     }
 
     /**
