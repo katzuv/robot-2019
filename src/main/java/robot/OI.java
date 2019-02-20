@@ -15,9 +15,6 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -131,6 +128,21 @@ public class OI {
 
     public boolean enableWrist() {
         return xbox.getRawButton(10);
+    }
+
+    /**
+     * @param origin angle of the wrist
+     * @param extra  angle for the wrist
+     * @return origin + extra while it is in range of the wrist
+     */
+    public double wristRange(double origin, double extra) {
+        if (origin + extra >= 230) {
+            return 230;
+        } else if (origin + extra <= 0) {
+            return 0;
+        } else {
+            return origin + extra;
+        }
     }
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
