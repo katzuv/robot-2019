@@ -43,8 +43,11 @@ public class Path {
      * @param end_angle      ending angle of the robot, in degrees
      * @param radius         radius of the turns
      */
-    public Path(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
+    public Path(Point start_position, double start_angle, Point end_position, double end_angle, double radius, double path_acceleration, double max_path_velocity) {
         createDubinCurve(start_position, start_angle, end_position, end_angle, radius);
+        generateDistance();
+        generateCurvature();
+        generateVelocity(path_acceleration, max_path_velocity);
     }
 
     /**
@@ -433,8 +436,7 @@ public class Path {
      * @param radius
      */
     public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
-        start_angle = 180 - (start_angle % 360);
-        end_angle = 180 - (end_angle % 360);
+
         /*
         There are three stages to this algorithm.
         1. we create two pairs of circles tangent to each of the two points, and we choose which is the correct one
@@ -444,26 +446,26 @@ public class Path {
         String path_type;
         Point c_start;
         Point c_end;
-        if (distanceXLookahead(start_position, start_angle, end_position) >=
-                Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
+        if (-distanceXLookahead(start_position, start_angle, end_position) >=
+                -Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
                         radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle)))) {
             //the right circle was chosen
             c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
-            if (distanceXLookahead(end_position, end_angle, c_start) >= radius) {
-                path_type = "RSR";
-                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
-            } else {
-                path_type = "RSL";
-                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
-            }
-        } else {
-            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle + 90)), radius * Math.cos(Math.toRadians(start_angle + 90))).add(start_position);
-            if (distanceXLookahead(end_position, end_angle, c_start) <= -radius) {
+            if (-distanceXLookahead(end_position, end_angle, c_start) >= radius) {
                 path_type = "LSL";
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
             } else {
                 path_type = "LSR";
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
+            }
+        } else {
+            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle + 90)), radius * Math.cos(Math.toRadians(start_angle + 90))).add(start_position);
+            if (-distanceXLookahead(end_position, end_angle, c_start) <= -radius) {
+                path_type = "RSR";
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
+            } else {
+                path_type = "RSL";
+                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
             }
         }
         System.out.println(path_type);
@@ -494,12 +496,6 @@ public class Path {
             case "RSR":
                 tangent_points = generateDubinKeyPoints(c_start, c_end, radius)[0];
                 break;
-        }
-        for (Point[] pcouple : generateDubinKeyPoints(c_start, c_end, radius)) {
-
-            for (Point p : pcouple) {
-                System.out.println(p);
-            }
         }
 
         //TODO: Place 'generateDubinFillPoints' to here after testing.
@@ -569,7 +565,7 @@ public class Path {
 
     private double distanceXLookahead(Point current, double angle, Point target) {
         //Calculates the robot's line of view  as a line formula (a*x + b*y + c)/sqrt(a*a + b*b)
-        angle = Math.toRadians(angle);
+        angle = Math.toRadians(90 - angle);
         double a = -Math.tan(angle);
         double c = Math.tan(angle) * current.getX() - current.getY();
         double x = Math.abs(target.getX() * a + target.getY() + c) / Math.sqrt(a * a + 1);
@@ -592,7 +588,7 @@ public class Path {
         int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
         tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
         for (int j = 0; j < AmountOfPoints; j++) {
-            if(newPathClass.length() == 1)
+            if (newPathClass.length() == 1)
                 newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tan1)));
             else
                 newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tan1)));
@@ -613,8 +609,6 @@ public class Path {
         Vector end_vector = new Vector(circle_center, end);
         double delta_angle = spacing_between_points_arc / start_vector.magnitude();
         int amount_of_points = (int) Math.ceil(start_vector.magnitude() * Math.toRadians((360 + Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle())) % 360) / Math.abs(spacing_between_points_arc));
-        System.out.println(amount_of_points);
-        System.out.println(Math.signum(delta_angle) * (start_vector.angle() - end_vector.angle()));
         for (int j = 0; j < amount_of_points; j++) {
             Vector fill_point_vector = new Vector(start_vector.x, start_vector.y);
             fill_point_vector.rotate(-j * Math.toDegrees(delta_angle));
