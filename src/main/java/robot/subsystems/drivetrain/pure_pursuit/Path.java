@@ -50,6 +50,22 @@ public class Path {
     }
 
     /**
+     * Create a Dubin's Path instance
+     *
+     * @param start_position starting position of the robot
+     * @param start_angle    starting angle of the robot, in degrees
+     * @param end_position   ending position of the robot
+     * @param end_angle      ending angle of the robot, in degrees
+     * @param radius         radius of the turns
+     */
+    public Path(Point start_position, double start_angle, Point end_position, double end_angle, double radius, double maxAcceleration, double peakVelocity) {
+        createDubinCurve(start_position, start_angle, end_position, end_angle, radius);
+        generateDistance();
+        generateCurvature();
+        generateVelocity(maxAcceleration, peakVelocity);
+    }
+
+    /**
      * Create a Path instance
      *
      * @param array the array of points to add into the arraylist
@@ -603,7 +619,7 @@ public class Path {
         addAll(newPathClass);
     }
 
-    public void generateCircleFillPoints(Point start, Point end, Point circle_center, double spacing_between_points_arc, Path path) {
+    private void generateCircleFillPoints(Point start, Point end, Point circle_center, double spacing_between_points_arc, Path path) {
         Vector start_vector = new Vector(circle_center, start);
         Vector end_vector = new Vector(circle_center, end);
         double delta_angle = spacing_between_points_arc / start_vector.magnitude();
