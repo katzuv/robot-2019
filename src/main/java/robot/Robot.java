@@ -163,11 +163,6 @@ public class Robot extends TimedRobot {
         Path path = new Path(new Waypoint(0, 0), drivetrain.getAngle(), new Waypoint(-2, 2), 90,Constants.TURN_RADIUS);
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-
-        //Print the variables for testing.
-        System.out.println(path);
-        SmartDashboard.putString("pursue command", "start");
-        SmartDashboard.putString("last waypoint", path.getWaypoint(path.length() - 1).toString());
     }
 
     /**
