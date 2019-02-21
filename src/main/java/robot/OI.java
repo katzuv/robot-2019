@@ -21,6 +21,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
+import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 
 /**
@@ -56,6 +57,8 @@ public class OI {
     public static Button start = new JoystickButton(xbox, 8);
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
+
+    public static Button povu = new POVButton(xbox, 0);
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
@@ -71,6 +74,7 @@ public class OI {
 
 
     public OI() {
+        povu.toggleWhenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         povd.toggleWhenPressed(new ElevatorCommand(0));
         povl.toggleWhenPressed(new ElevatorCommand(0.78));
         povr.toggleWhenPressed(new ElevatorCommand(1.4));
@@ -82,6 +86,8 @@ public class OI {
         b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
         x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
         y.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+
+        lsMid.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
 
 
         select.whenPressed(new GripperTransportation());
