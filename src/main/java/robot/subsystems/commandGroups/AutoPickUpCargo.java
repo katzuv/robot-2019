@@ -1,26 +1,20 @@
 package robot.subsystems.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import robot.subsystems.elevator.Constants;
-import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.PlaceHatch;
+import robot.subsystems.cargo_intake.Constants;
+import robot.subsystems.cargo_intake.commands.GripperControl;
+import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.drivetrain.commands.GamePiecePickup;
 
 /**
- *This command group gets a level as parameter and then rise to this level,
- * at then place the hatch
- * @author Orel
+ *
  */
-public class hatchScoring extends CommandGroup {
+public class AutoPickUpCargo extends CommandGroup {
 
-
-
-    /**
-     * @param elevatorState of the elevator
-     */
-    public hatchScoring(Constants.ELEVATOR_STATES elevatorState) {
-        addSequential(new ElevatorCommand(elevatorState));
-        addSequential(new PlaceHatch());
-
+    public AutoPickUpCargo() {
+        addSequential(new GamePiecePickup());
+        addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        addParallel(new GripperControl(0.3));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
