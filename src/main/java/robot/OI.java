@@ -140,20 +140,7 @@ public class OI {
         return xbox.getRawButton(9);
     }
 
-    /**
-     * @param origin angle of the wrist
-     * @param extra  angle for the wrist
-     * @return origin + extra while it is in range of the wrist
-     */
-    public double wristRange(double origin, double extra) {
-        if (origin + extra >= 175) {
-            return 175;
-        } else if (origin + extra <= 0) {
-            return 0;
-        } else {
-            return origin + extra;
-        }
-    }
+    
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.

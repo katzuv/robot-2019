@@ -153,9 +153,43 @@ public class CargoIntake extends Subsystem {
         return convertTicksToAngle(wrist.getSelectedSensorPosition());
 
     }
+    /**
+     * Beyond preventing the motors from going above a certain height, this method prevents them from moving higher or
+     * lower once one of the limit switches/hall effects is pressed.
+     */
+    public void preventOverShoot() {
+        if (atTop()) {
+            //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
+            wrist.setSelectedSensorPosition((int) (Constants.WRIST_ANGLES.INTAKE.getValue() * Constants.TICKS_PER_DEGREE), 0, Constants.TALON_TIME_OUT); //set the position to the top.
+        }
+        if (atBottom()) {
+            //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
+            wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT); //set the encoder position to the bottom
+        }
+    }
+
+    /**
+     * Check if the limit switch at the top of the elevator is pressed
+     *
+     * @return boolean of the sensor true or false
+     */
+    public boolean atTop() {
+        //return Math.abs(getHeight()) > Constants.ELEVATOR_MAX_HEIGHT;
+        return wrist.getSensorCollection().isFwdLimitSwitchClosed();
+    }
+
+    /**
+     * Check if the limit switch at the bottom of the elevator is pressed
+     *
+     * @return boolean of the sensor true or false
+     */
+    public boolean atBottom() {
+        //return Math.abs(getHeight()) < 0.05;
+        return wrist.getSensorCollection().isRevLimitSwitchClosed();
+    }
 
     public void setWristAngle(double angle) {
-        cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
+        cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(Math.min(Constants.WRIST_ANGLES.INTAKE.getValue(), Math.max(0, angle))), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
     }
 
     public int getVelocity() {
