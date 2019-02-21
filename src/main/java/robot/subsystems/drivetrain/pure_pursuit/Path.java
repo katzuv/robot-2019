@@ -632,6 +632,7 @@ public class Path {
         }
     }
 
+    //TODO: maybe instead of doing this try and find where the point gets added twice and remove it
     private Path deleteClosePoints(Path path, double deleteDistance){
         Path newPath = new Path();
         Waypoint previousPoint = path.getWaypoint(0);
@@ -641,6 +642,7 @@ public class Path {
             if(Waypoint.distance(path.getWaypoint(i), previousPoint) >= deleteDistance){
                 newPath.appendWaypoint(path.getWaypoint(i));
             }
+            previousPoint = path.getWaypoint(i);
         }
         return newPath;
     }
