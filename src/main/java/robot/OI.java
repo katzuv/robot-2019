@@ -7,11 +7,13 @@
 
 package robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
@@ -62,6 +64,8 @@ public class OI {
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
+    public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
+    public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
 
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsBottom = new JoystickButton(leftStick, 2);
