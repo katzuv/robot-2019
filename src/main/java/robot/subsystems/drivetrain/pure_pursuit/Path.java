@@ -577,7 +577,7 @@ public class Path {
         return new Point[][]{{tan5, tan6}, {tan7, tan8}, {tan1, tan2}, {tan3, tan4}};
     }
 
-
+    //TODO: fix duplicate
     private double distanceXLookahead(Point current, double angle, Point target) {
         //Calculates the robot's line of view  as a line formula (a*x + b*y + c)/sqrt(a*a + b*b)
         angle = Math.toRadians(90 - angle);
@@ -615,8 +615,9 @@ public class Path {
         else
             generateCircleFillPoints(tan2, end_position, c2, -fill_delta_angle, newPathClass);
         newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
+
         clear();
-        addAll(newPathClass);
+        addAll(deleteClosePoints(newPathClass, Constants.SPACING_BETWEEN_WAYPOINTS/4));
     }
 
     private void generateCircleFillPoints(Point start, Point end, Point circle_center, double spacing_between_points_arc, Path path) {
@@ -629,6 +630,19 @@ public class Path {
             fill_point_vector.rotate(-j * Math.toDegrees(delta_angle));
             path.appendWaypoint(new Waypoint(fill_point_vector.add(circle_center).getX(), fill_point_vector.add(circle_center).getY())); //TODO: make it easier to add a point
         }
+    }
+
+    private Path deleteClosePoints(Path path, double deleteDistance){
+        Path newPath = new Path();
+        Waypoint previousPoint = path.getWaypoint(0);
+        newPath.appendWaypoint(previousPoint);
+
+        for(int i = 1; i < path.length(); i++){
+            if(Waypoint.distance(path.getWaypoint(i), previousPoint) >= deleteDistance){
+                newPath.appendWaypoint(path.getWaypoint(i));
+            }
+        }
+        return newPath;
     }
 
     @Override
