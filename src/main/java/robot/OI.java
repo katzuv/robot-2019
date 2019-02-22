@@ -146,8 +146,8 @@ public class OI {
      * @return origin + extra while it is in range of the wrist
      */
     public double wristRange(double origin, double extra) {
-        if (origin + extra >= 230) {
-            return 230;
+        if (origin + extra >= 175) {
+            return 175;
         } else if (origin + extra <= 0) {
             return 0;
         } else {
