@@ -470,6 +470,10 @@ public class Path {
         String path_type;
         Point c_start;
         Point c_end;
+        /* Find both circle pairs, and choose which is right */
+        radius += Constants.RADIUS_CLOSING;
+        do {
+            radius -= Constants.RADIUS_CLOSING;
         if (-distanceXLookahead(start_position, start_angle, end_position) >=
                 -Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
                         radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle)))) {
@@ -492,6 +496,8 @@ public class Path {
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
             }
         }
+        }while(Point.distance(c_end,c_start) < 2 * radius && radius > 0.1);
+        /* Find tangent points between both circles, and chooses which pair is right */
         Point[] tangent_points;
         switch (path_type) {
             case "LSL":
@@ -548,7 +554,7 @@ public class Path {
         newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
 
         clear();
-        addAll(deleteClosePoints(newPathClass, Constants.SPACING_BETWEEN_WAYPOINTS/4));
+        addAll(deleteClosePoints(newPathClass, Constants.SPACING_BETWEEN_WAYPOINTS/3));
 
     }
 
