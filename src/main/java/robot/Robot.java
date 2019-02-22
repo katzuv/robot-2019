@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
 
 
     public static OI m_oi;
-    public final static boolean isRobotA = false;
+    public final static boolean isRobotA = true;
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -160,9 +160,11 @@ public class Robot extends TimedRobot {
         }
 
         //Create the path and points.
-        Path path = new Path(new Waypoint(0, 0), drivetrain.getAngle(), new Waypoint(-2, 2), 90,Constants.TURN_RADIUS);
+        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(-2, 2), 0,Constants.TURN_RADIUS);
         //Generate the path to suit the pure pursuit.
-        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, 1.5, 1.2);
+        PurePursue purePursue = new PurePursue(path,Constants.LOOKAHEAD_DISTANCE,Constants.kP,Constants.kA,Constants.kV,false,false);
+        purePursue.start();
     }
 
     /**
