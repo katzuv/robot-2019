@@ -16,13 +16,13 @@ public class TwoHatchAutoNearRocketAuto extends CommandGroup {
     public TwoHatchAutoNearRocketAuto() {
         addSequential(new DriveToRocket());// drive to close rocket
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        addSequential(new PlaceHatch());
+        addSequential(new PlaceHatch(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
         addSequential(new RocketToLoading(true));//drive to loading station
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LOADING_STATION));
         addSequential(new Gripper(true));
         addSequential(new RocketToLoading(true));// drive to the rocket from loading
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
-        addSequential(new PlaceHatch());
+        addSequential(new PlaceHatch(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
         // Add Commands here:
         // e.g. addSequential(new Command1());

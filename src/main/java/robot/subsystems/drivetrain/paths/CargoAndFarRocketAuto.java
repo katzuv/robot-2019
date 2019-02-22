@@ -18,13 +18,13 @@ public class CargoAndFarRocketAuto extends CommandGroup {
     public CargoAndFarRocketAuto() {
         addSequential(new HabToCargo());// drive to cargo ship
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.SHIP_HATCH));
-        addSequential(new PlaceHatch());
+        addSequential(new PlaceHatch(Constants.ELEVATOR_STATES.SHIP_HATCH));
         addSequential(new CargoToLoading());// drive to loading station
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LOADING_STATION));
         addSequential(new Gripper(true));//close gripper
         addSequential(new LoadingToFarRocket(true));// drive to far rocket
         addSequential(new DriveToRocket());// drive to rocket when it is in his range of view
-        addSequential(new PlaceHatch());
+        addSequential(new PlaceHatch(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

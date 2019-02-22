@@ -17,12 +17,12 @@ public class CargoAndNearRocketAuto extends CommandGroup {
     public CargoAndNearRocketAuto() {
         addSequential(new HabToCargo());//drive to cargo
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.SHIP_HATCH));
-        addSequential(new PlaceHatch());
+        addSequential(new PlaceHatch(Constants.ELEVATOR_STATES.SHIP_HATCH));
         addSequential(new CargoToLoading());// drive to loading
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LOADING_STATION));
         addSequential(new Gripper(true));
         addSequential(new RocketToLoading(true));// drive to rocket
-        addSequential(new PlaceHatch());
+        addSequential(new PlaceHatch(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
