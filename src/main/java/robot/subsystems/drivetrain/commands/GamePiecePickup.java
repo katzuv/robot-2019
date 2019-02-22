@@ -59,7 +59,6 @@ public class GamePiecePickup extends Command {
         Waypoint target = new Waypoint(Math.sin(Math.toRadians(targetAngle)) * targetDistance + 0.15, Math.cos(Math.toRadians(targetAngle)) * targetDistance);
         Waypoint middleWP = new Waypoint(0, target.getY() - target.getY() / 2);
         Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});
-        System.out.println(path1);
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         SmartDashboard.putNumber("target distance", targetDistance);
         SmartDashboard.putNumber("target angle ", targetAngle);
@@ -67,7 +66,6 @@ public class GamePiecePickup extends Command {
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         PurePursue pursue = new PurePursue(path1, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
         pursue.start();
-        System.out.println(path1);
     }
 
     // Called repeatedly when this Command is scheduled to run

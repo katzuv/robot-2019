@@ -483,7 +483,6 @@ public class Path {
                 c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
             }
         }
-        System.out.println(path_type);
         Point[] tangent_points;
         switch (path_type) {
             case "LSL":

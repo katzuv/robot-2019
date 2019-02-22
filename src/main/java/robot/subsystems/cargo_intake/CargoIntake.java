@@ -119,7 +119,6 @@ public class CargoIntake extends Subsystem {
     public double stallCurrent() {
         final double wristAngle = cargoIntake.getWristAngle();
         if (wristAngle < 0) {
-            System.out.println(1.1 * (0.2 * Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle())) + 0.025 * Math.signum(Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle())))));
             return 0;
         }
         final double COMCosine = Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle()));
