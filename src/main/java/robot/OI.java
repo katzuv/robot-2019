@@ -56,6 +56,7 @@ public class OI {
     public static Button start = new JoystickButton(xbox, 8);
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
+
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
@@ -66,6 +67,19 @@ public class OI {
 
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsBottom = new JoystickButton(leftStick, 2);
+
+    public static Button ul = new JoystickButton(leftStick, 5);
+    public static Button dl = new JoystickButton(leftStick, 3);
+    public static Button ur = new JoystickButton(leftStick, 6);
+    public static Button dr = new JoystickButton(leftStick, 4);
+
+    public static Button trigger = new JoystickButton(leftStick,1);
+    public static Button back_button = new JoystickButton(leftStick,2);
+
+    public static Button nine = new JoystickButton(leftStick, 8);
+    public static Button ten = new JoystickButton(leftStick, 10);
+    public static Button twelve = new JoystickButton(leftStick, 12);
+
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -76,9 +90,7 @@ public class OI {
 
     public OI() {
         if(Robot.driveType == 1) {
-            double extraAngle = Math.tan(xbox.getRawAxis(right_y_stick) / xbox.getRawAxis(right_x_stick));
-            double wristDesiredAngle = wristRange(Robot.cargoIntake.getWristAngle(), extraAngle);
-            rs.whileHeld(new WristTurn(wristDesiredAngle));
+            rs.whileHeld(new WristTurn(WristStick()));
 
             povd.whenPressed(new ElevatorCommand(0));
             povl.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
@@ -113,32 +125,65 @@ public class OI {
             select.whenPressed(new GripperTransportation());
             lb.whenPressed(new Gripper());
         }
+        else if(Robot.driveType == 3){
+            povd.whenPressed(new ElevatorCommand(0));
+            povl.whenPressed(new ElevatorCommand(0.78));
+            povr.whenPressed(new ElevatorCommand(1.3));
+
+            povu.whenPressed(new ElevatorCommand(1.59));
+
+            trigger.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
+            ur.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+
+            nine.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+            b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+            ten.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+            twelve.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+
+            dl.whenPressed(new GripperTransportation());
+            ul.whenPressed(new Gripper());
+        }
+
     }
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
     public double leftDriveStick(){ // TODO: might need name refactoring
-        return -leftStick.getY();
+        return -0.5*leftStick.getY()+0.5*leftStick.getZ();
     }
 
     public double rightDriveStick(){
-        return -rightStick.getY();
+        return -leftStick.getY()-0.5*leftStick.getZ();
     }
 
     public double WristStick(){
+        if(Robot.driveType==3){
+            if(leftStick.getRawButton(9))
+                return -0.5;
+            else if(leftStick.getRawButton(7))
+                return 0.5;
+            return 0;
+        }
         return -xbox.getRawAxis(left_y_stick);
     }
 
     public double ElevatorStick() {
+        if(Robot.driveType==3)
+            return -leftStick.getRawAxis(3);
         return -xbox.getRawAxis(right_y_stick);
 
     }
     public boolean enableElevator() {
+        if(Robot.driveType==3)
+            return leftStick.getRawButton(11);
         return xbox.getRawButton(10);
     }
 
     public boolean enableWrist() {
+        if(Robot.driveType==3)
+            return true;
         return xbox.getRawButton(9);
     }
+
 
     
     // CREATING BUTTONS

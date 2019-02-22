@@ -223,6 +223,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
         SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
-
+        SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
     }
 }
