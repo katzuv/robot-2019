@@ -148,11 +148,15 @@ public class OI {
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
     public double leftDriveStick(){ // TODO: might need name refactoring
-        return -0.5*leftStick.getY()+0.5*leftStick.getZ();
+        if(Robot.driveType==3)
+            return -0.5*leftStick.getY()+0.5*leftStick.getZ();
+        return -leftStick.getY();
     }
 
     public double rightDriveStick(){
-        return -leftStick.getY()-0.5*leftStick.getZ();
+        if(Robot.driveType==3)
+            return -0.5*leftStick.getY()-0.5*leftStick.getZ();
+        return -rightStick.getY();
     }
 
     public double WristStick(){
