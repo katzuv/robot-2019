@@ -458,6 +458,15 @@ public class Path {
         2. find the correct tangent points
         3. create points on the circles
          */
+
+        /*
+        NEW: over here i try to improve the path and prevent errors.
+        Part 1 ~ make sure the angles dont go over 360.
+        Part 2 ~ add extra points at the start and end of the path
+        Part 3 ~ lower both radii if they intersect
+         */
+        start_angle = start_angle % 360;
+        end_angle = end_angle % 360;
         String path_type;
         Point c_start;
         Point c_end;
@@ -512,8 +521,35 @@ public class Path {
                 break;
         }
 
-        //TODO: Place 'generateDubinFillPoints' to here after testing.
-        generateDubinFillPoints(start_position, end_position, c_start, c_end, tangent_points[0], tangent_points[1], radius, path_type);
+        Path newPathClass = new Path(); //create a new path class
+
+        double fill_delta_angle = Constants.SPACING_BETWEEN_WAYPOINTS;// maybe make this number smaller, divide it by a constant or have a separate constant for turns
+        if (path_type.charAt(0) == 'R')
+            generateCircleFillPoints(start_position, tangent_points[0], c_start, fill_delta_angle, newPathClass);
+        else
+            generateCircleFillPoints(start_position, tangent_points[0], c_start, -fill_delta_angle, newPathClass);
+        if (this.length() <= 1)
+            newPathClass.appendWaypoint(new Waypoint(tangent_points[0].getX(), tangent_points[0].getY()));
+        Vector tangentVector = new Vector(tangent_points[0], tangent_points[1]);
+        int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
+        tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
+        for (int j = 0; j < AmountOfPoints; j++) {
+            if (newPathClass.length() == 1)
+                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tangent_points[0])));
+            else
+                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tangent_points[0])));
+
+        }
+
+        if (path_type.charAt(2) == 'R')
+            generateCircleFillPoints(tangent_points[1], end_position, c_end, fill_delta_angle, newPathClass);
+        else
+            generateCircleFillPoints(tangent_points[1], end_position, c_end, -fill_delta_angle, newPathClass);
+        newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
+
+        clear();
+        addAll(deleteClosePoints(newPathClass, Constants.SPACING_BETWEEN_WAYPOINTS/4));
+
     }
 
     /**
@@ -586,37 +622,6 @@ public class Path {
         double sign = Math.sin(angle) * (target.getX() - current.getX()) - Math.cos(angle) * (target.getY() - current.getY());
         double side = Math.signum(sign);
         return x * side;
-    }
-
-    private void generateDubinFillPoints(Point start_position, Point end_position, Point c1, Point c2, Point tan1, Point tan2, double radius, String path_type) {
-        Path newPathClass = new Path(); //create a new path class
-
-        double fill_delta_angle = Constants.SPACING_BETWEEN_WAYPOINTS;// maybe make this number smaller, divide it by a constant or have a separate constant for turns
-        if (path_type.charAt(0) == 'R')
-            generateCircleFillPoints(start_position, tan1, c1, fill_delta_angle, newPathClass);
-        else
-            generateCircleFillPoints(start_position, tan1, c1, -fill_delta_angle, newPathClass);
-        if (this.length() <= 1)
-            newPathClass.appendWaypoint(new Waypoint(tan1.getX(), tan1.getY()));
-        Vector tangentVector = new Vector(tan1, tan2);
-        int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
-        tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
-        for (int j = 0; j < AmountOfPoints; j++) {
-            if (newPathClass.length() == 1)
-                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tan1)));
-            else
-                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tan1)));
-
-        }
-
-        if (path_type.charAt(2) == 'R')
-            generateCircleFillPoints(tan2, end_position, c2, fill_delta_angle, newPathClass);
-        else
-            generateCircleFillPoints(tan2, end_position, c2, -fill_delta_angle, newPathClass);
-        newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
-
-        clear();
-        addAll(deleteClosePoints(newPathClass, Constants.SPACING_BETWEEN_WAYPOINTS/4));
     }
 
     private void generateCircleFillPoints(Point start, Point end, Point circle_center, double spacing_between_points_arc, Path path) {
