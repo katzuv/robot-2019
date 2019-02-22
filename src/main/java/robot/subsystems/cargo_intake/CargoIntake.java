@@ -12,8 +12,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import robot.subsystems.cargo_intake.commands.JoystickWristTurn;
+import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
 import static robot.Robot.cargoIntake;
+import static robot.Robot.isRobotA;
 
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
@@ -33,12 +36,18 @@ public class CargoIntake extends Subsystem {
         /*
         config for the feedback sensor
          */
-        wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+        if (Constants.IS_MAG_ENCODER_RELATIVE)
+            wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        else
+            wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+
         wrist.setSensorPhase(Constants.SENSOR_PHASE);
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
-        wrist.overrideLimitSwitchesEnable(true);
-        wrist.overrideSoftLimitsEnable(true);
-//        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
+        wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
+        wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
+
+
+
         /*
         PIDF config
          */
@@ -57,8 +66,8 @@ public class CargoIntake extends Subsystem {
          */
         wrist.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
         wrist.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputForward(0.3, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputReverse(-0.3, Constants.TALON_TIME_OUT); //TODO: change back to .5
+        wrist.configPeakOutputForward(Constants.PEAK_OUTPUT_FORWARD, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputReverse(Constants.PEAK_OUTPUT_REVERSE, Constants.TALON_TIME_OUT); //TODO: change back to .5
         /*
         profile config
          */
@@ -87,7 +96,7 @@ public class CargoIntake extends Subsystem {
     }//returns the current voltage in the proximity sensor
 
     public boolean isCargoInside() {
-        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;//felt cute might delete later
+        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;
     }
 
     public void setGripperSpeed(double speed) {
@@ -155,8 +164,7 @@ public class CargoIntake extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-
-
+        setDefaultCommand(new JoystickWristTurn());
     }
 
     private void resetProximitySensor() {

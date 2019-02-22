@@ -101,6 +101,7 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("one hatch cargo from loading", new CargoToLoading());
 
         SmartDashboard.putData("Auto mode", m_chooser);
+        SmartDashboard.putBoolean("Robot A", isRobotA);
         navx.reset();
         elevator.resetEncoders();
     }
@@ -115,7 +116,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        addToShuffleborad();
+        addToShuffleboard();
 
     }
 
@@ -167,13 +168,13 @@ public class Robot extends TimedRobot {
         //Create the path and points.
         Path path = new Path();
         path.appendWaypoint(new Waypoint(0, 0));
-        path.appendWaypoint(new Waypoint(0, 6));
+        path.appendWaypoint(new Waypoint(0, 2));
+        path.appendWaypoint(new Waypoint(2,2));
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-
-        SmartDashboard.putString("pursue command", "start");
-        SmartDashboard.putString("last waypoint", path.getWaypoint(path.length() - 1).toString());
-
+        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, false, false);
+        System.out.println(path);
+        pursue.start();
     }
 
     /**
@@ -208,7 +209,7 @@ public class Robot extends TimedRobot {
         elevator.resetEncoders();
         navx.reset();
         cargoIntake.resetSensors();
-        compressor.stop();
+        compressor.start();
     }
 
     /**
@@ -217,7 +218,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        compressor.stop();
 
     }
 
@@ -229,7 +229,7 @@ public class Robot extends TimedRobot {
     }
 
 
-    public void addToShuffleborad() {
+    public void addToShuffleboard() {
         SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
         SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
         SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
