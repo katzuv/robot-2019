@@ -1,7 +1,6 @@
 package robot.subsystems.drivetrain.paths;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import robot.Robot;
 import robot.subsystems.drivetrain.paths.subpaths.CargoToLoading;
 import robot.subsystems.drivetrain.paths.subpaths.DriveToRocket;
 import robot.subsystems.drivetrain.paths.subpaths.HabToCargo;
@@ -9,6 +8,7 @@ import robot.subsystems.drivetrain.paths.subpaths.LoadingToFarRocket;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
+import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 /**
  *
@@ -18,13 +18,13 @@ public class CargoAndFarRocketAuto extends CommandGroup {
     public CargoAndFarRocketAuto() {
         addSequential(new HabToCargo());// drive to cargo ship
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.SHIP_HATCH));
-        addSequential(new Gripper(false));// open gripper
+        addSequential(new PlaceHatch());
         addSequential(new CargoToLoading());// drive to loading station
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LOADING_STATION));
         addSequential(new Gripper(true));//close gripper
         addSequential(new LoadingToFarRocket(true));// drive to far rocket
         addSequential(new DriveToRocket());// drive to rocket when it is in his range of view
-        addSequential(new Gripper(false));
+        addSequential(new PlaceHatch());
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

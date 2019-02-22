@@ -7,6 +7,7 @@ import robot.subsystems.drivetrain.paths.subpaths.RocketToLoading;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
+import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 /**
  *
@@ -16,12 +17,12 @@ public class CargoAndNearRocketAuto extends CommandGroup {
     public CargoAndNearRocketAuto() {
         addSequential(new HabToCargo());//drive to cargo
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.SHIP_HATCH));
-        addSequential(new Gripper(false));
+        addSequential(new PlaceHatch());
         addSequential(new CargoToLoading());// drive to loading
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LOADING_STATION));
         addSequential(new Gripper(true));
         addSequential(new RocketToLoading(true));// drive to rocket
-        addSequential(new Gripper(false));
+        addSequential(new PlaceHatch());
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

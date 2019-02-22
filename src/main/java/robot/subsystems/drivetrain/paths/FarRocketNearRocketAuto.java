@@ -8,6 +8,7 @@ import robot.subsystems.drivetrain.paths.subpaths.RocketToLoading;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
+import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 /**
  *
@@ -18,14 +19,14 @@ public class FarRocketNearRocketAuto extends CommandGroup {
         addSequential(new HabToFarRocket(true));// drive to far rocket
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         addSequential(new DriveToRocket());// drive to rocket when in his range of view
-        addSequential(new Gripper(false));
+        addSequential(new PlaceHatch());
         addSequential(new FarRocketToHab());// drive from far rocket to loading
         addSequential(new RocketToLoading(false));//drive to loading when in his range of view
         addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LOADING_STATION));
         addSequential(new Gripper(true));
         addSequential(new RocketToLoading(true));//drive to close rocket from loading
         addSequential(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        addSequential(new Gripper(false));
+        addSequential(new PlaceHatch());
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
