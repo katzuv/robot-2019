@@ -9,10 +9,10 @@ public class Constants {
     public final static double GRIPPER_SHOOT_SPEED = isRobotA ? 0.9 : 0.9; //should always be positive
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 1000;
-    public static final int CRUISE_VELOCITY  = isRobotA ? 1600 : 1600;
+    public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 1600;
 
     final static double kP = isRobotA ? 0.6 : 0.6;
-    final static double kD = isRobotA ? 100 : 100;
+    final static double kD = isRobotA ? 150 : 100;
     final static double kF = isRobotA ? 0.48 : 0.48;
 
     final static int IZone = isRobotA ? 50 : 50;
@@ -34,17 +34,17 @@ public class Constants {
     final static boolean SOFT_LIMIT_OVERRIDE =isRobotA ? true : true;
     final static boolean LIMIT_SWITCH_OVERRIDE =isRobotA ? true : false;
 
-    final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.3 : 0.6;
-    final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.3 : -0.6;
+    final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.7 : 0.6;
+    final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.7 : -0.6;
 
 
-    final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? false : true;
+    final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
 
     public enum WRIST_ANGLES{
         INITIAL(0),
         UP(82.75),
         SHOOTING(135),
-        INTAKE(172),
+        INTAKE(165),
         MAXIMAL(230);
         private final double wristAngle;
         WRIST_ANGLES(double height) {
