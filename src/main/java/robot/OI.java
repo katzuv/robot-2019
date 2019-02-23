@@ -100,13 +100,14 @@ public class OI {
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
             LT.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
 
-            a.whenPressed(new Gripper());
+            a.whenPressed(new GripperTransportation());
+            lb.whenPressed(new Gripper(false));
+            rb.whenPressed(new Gripper(true));
+
             y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
-            lb.whenPressed(new GripperTransportation(false));
-            rb.whenPressed(new GripperTransportation(true));
             select.whenPressed(new CloseBoth());
         }else if(Robot.driveType==2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
