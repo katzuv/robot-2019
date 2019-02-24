@@ -17,7 +17,9 @@ import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.commandGroups.CargoBackwardScoring;
 import robot.subsystems.commandGroups.HatchScoring;
+import robot.subsystems.commandGroups.CargoScoring;
 import robot.subsystems.drivetrain.commands.GamePiecePickup;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
@@ -71,6 +73,9 @@ public class OI {
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsLeft = new JoystickButton(leftStick, 4);
     public static Button lsRight = new JoystickButton(leftStick, 5);
+    public static Button rsMid = new JoystickButton(rightStick, 3);
+    public static Button rsLeft = new JoystickButton(rightStick, 4);
+    public static Button rsRight = new JoystickButton(rightStick, 5);
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -97,9 +102,19 @@ public class OI {
 
 
         // Place hatch
-        lsLeft.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        lsMid.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+        //lsLeft.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        //lsMid.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        //lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+
+        // Place cargo backward
+        lsLeft.toggleWhenPressed(new CargoBackwardScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_CARGO));
+        lsMid.toggleWhenPressed(new CargoBackwardScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_CARGO_BACKWARD));
+        lsRight.toggleWhenPressed(new CargoBackwardScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO_BACKWARD));
+
+        // Score cargo
+        rsLeft.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_CARGO));
+        rsMid.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_CARGO));
+        rsRight.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO));
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());

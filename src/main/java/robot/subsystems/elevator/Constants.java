@@ -64,12 +64,15 @@ public class Constants {
         SHIP_HATCH(0.278),
         SHIP_CARGO(0.3),
         LEVEL1_HATCH(0.278),
-        LEVEL1_CARGO(0.3),
+        LEVEL1_CARGO(0),//0.3
         LEVEL2_HATCH(0.987),
-        LEVEL2_CARGO(0.85),
+        LEVEL2_CARGO(0.74),//0.85
+        LEVEL2_CARGO_BACKWARD(0.78),
         LEVEL3_HATCH(1.579),
-        LEVEL3_CARGO(1.48),
+        LEVEL3_CARGO(1.45),//1.48
+        LEVEL3_CARGO_BACKWARD(1.48),
         LOADING_STATION(0.278);
+
 
         private final double levelHeight;
 

@@ -41,6 +41,7 @@ public class Constants {
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
 
     public enum WRIST_ANGLES{
+        LEVEL1(108),
         INITIAL(0),
         UP(82.75),
         SHOOTING(135),

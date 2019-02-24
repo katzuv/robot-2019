@@ -1,6 +1,7 @@
 package robot.subsystems.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
@@ -10,13 +11,16 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
 /**
  *
  */
-public class cargoScoring extends CommandGroup {
+public class CargoScoring extends CommandGroup {
 
-    public cargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES state) {
-        addParallel(new ElevatorCommand(state.getLevelHeight()));
-        addSequential(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+    public CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES height) {
+        addParallel(new WristTurn(Constants.WRIST_ANGLES.LEVEL1));
+        addSequential(new ElevatorCommand(height));
+        addSequential(new WaitCommand(1));
         addSequential(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-        addSequential(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        addSequential(new WaitCommand(0.4));
+        addParallel(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        addSequential(new ElevatorCommand(0));
 
         // Add Commands here:
         // e.g. addSequential(new Command1());

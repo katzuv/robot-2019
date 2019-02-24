@@ -192,9 +192,9 @@ public class Robot extends TimedRobot {
         navx.reset();
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
-        elevator.resetEncoders();
+//        elevator.resetEncoders();
         navx.reset();
-        cargoIntake.resetSensors();
+//        cargoIntake.resetSensors();
         compressor.start();
     }
 
