@@ -636,6 +636,15 @@ public class Path {
         return x * side;
     }
 
+    /**
+     * Generates fill points along a circle.
+     *
+     * @param start starting point on the circle
+     * @param end final point on the circle
+     * @param circle_center the center point of the circle
+     * @param spacing_between_points_arc distance between each point on the arc
+     * @param path the path to which the points are added
+     */
     private void generateCircleFillPoints(Point start, Point end, Point circle_center, double spacing_between_points_arc, Path path) {
         Vector start_vector = new Vector(circle_center, start);
         Vector end_vector = new Vector(circle_center, end);
@@ -648,13 +657,13 @@ public class Path {
         }
     }
 
-    //TODO: maybe instead of doing this try and find where the point gets added twice and remove it
+    //TODO: maybe instead of doing this try and find where the point gets added twice and remove it (cant be done until the (if length <= 1) todo is figured out)
     private Path deleteClosePoints(Path path, double deleteDistance){
         Path newPath = new Path();
         Waypoint previousPoint = path.getWaypoint(0);
         newPath.appendWaypoint(previousPoint);
 
-        for(int i = 1; i < path.length(); i++){
+        for(int i = 1; i < path.length(); i++){ //dont add a point to the array if it is too close to the previous point.
             if(Waypoint.distance(path.getWaypoint(i), previousPoint) >= deleteDistance){
                 newPath.appendWaypoint(path.getWaypoint(i));
             }
