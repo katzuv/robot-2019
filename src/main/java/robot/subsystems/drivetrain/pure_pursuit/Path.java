@@ -471,6 +471,7 @@ public class Path {
         }
         /* Find both circle pairs, and choose which is right */
         radius += Constants.RADIUS_CLOSING;
+        boolean logical_path = true;
         do {
             radius -= Constants.RADIUS_CLOSING;
             if (-distanceXLookahead(start_position, start_angle, end_position) >=
@@ -494,8 +495,11 @@ public class Path {
                     c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
                 }
             }
-        }while(Point.distance(c_end,c_start) < 2 * radius && radius > 0.1); //Currently this method loops until the path is logical. this isnt necessary, and needs fixing, but right now its the safest answer that will always be right.
-
+            logical_path = path_type.charAt(0) == path_type.charAt(2) ?
+                    Point.distance(c_start, end_position) > radius : // RSR and LSL type paths
+                    Point.distance(c_end,c_start) > 2 * radius; // RSL and LSR type paths
+        }while(!logical_path && radius > 0.1); //Currently this method loops until the path is logical. this isnt necessary, and needs fixing, but right now its the safest answer that will always be right.
+        System.out.println(path_type);
         /* Find tangent points between both circles, and chooses which pair is right */
         Point[] tangent_points;
         switch (path_type) {
