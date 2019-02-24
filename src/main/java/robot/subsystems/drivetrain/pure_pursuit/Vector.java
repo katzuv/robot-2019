@@ -46,5 +46,10 @@ public class Vector extends Vector2d {
     public Vector normalize() {
         return this.multiply(1 / this.magnitude());
     }
+
+    public Vector rotated(double angle){
+        double radians = -Math.toRadians(angle);
+        return new Vector(x * Math.cos(radians) - y * Math.sin(radians), x * Math.sin(radians) + y * Math.cos(radians));
+    }
 }
 
