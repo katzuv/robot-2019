@@ -447,11 +447,11 @@ public class Path {
      * The main method of the dubin paths.
      * this method creates a short, direct path between a robots starting angle and position,
      * to a target angle and position.
-     * @param start_position
-     * @param start_angle
-     * @param end_position
-     * @param end_angle
-     * @param radius
+     * @param start_position starting coordinates of the robot
+     * @param start_angle starting angle of the robot
+     * @param end_position target coordinates of the robot
+     * @param end_angle target angle of the robot
+     * @param radius turning radius
      */
     public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
         start_angle = start_angle % 360; //prevent path angle from creating an error
@@ -588,7 +588,7 @@ public class Path {
         Point tan8 = v4.normalize().multiply(-min_radius).add(c2);
 
         if (2 * min_radius > Point.distance(c1, c2))
-            return new Point[][]{{tan5, tan6}, {tan7, tan8}}; //return null if both circles intersect
+            return new Point[][]{{tan5, tan6}, {tan7, tan8}}; // if both circles intersect
         if (2 * min_radius == Point.distance(c1, c2))
             return new Point[][]{{tan5, tan6}, {tan7, tan8}, {Point.average(c1, c2), Point.average(c1, c2)}}; //if both circles are tangent
         /* The goal of this method is to return the tangent points between both circles.
