@@ -441,9 +441,12 @@ public class Path {
     }
 
 
-    // ----== Functions for Dubin's path generation: ==----
+    /* ----== Functions for Dubin's path generation: ==---- */
 
     /**
+     * The main method of the dubin paths.
+     * this method creates a short, direct path between a robots starting angle and position,
+     * to a target angle and position.
      * @param start_position
      * @param start_angle
      * @param end_position
@@ -451,26 +454,15 @@ public class Path {
      * @param radius
      */
     public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
-        /*
-        There are three stages to this algorithm.
-        1. we create two pairs of circles tangent to each of the two points, and we choose which is the correct one
-        2. find the correct tangent points
-        3. create points on the circles
-         */
-
-        /*
-        NEW: over here i try to improve the path and prevent errors.
-        Part 1 ~ make sure the angles dont go over 360.
-        Part 2 ~ add extra points at the start and end of the path
-        Part 3 ~ lower both radii if they intersect
-         */
-        start_angle = start_angle % 360;
+        start_angle = start_angle % 360; //prevent path angle from creating an error
         end_angle = end_angle % 360;
-        String path_type;
-        Point original_end_position = null;
+        String path_type; //the type of the dubins path. currently the only options are RSL, LSR, RSR, LSL
+        Point original_end_position = null; //in a case in which the last point is moved back, remember the previous last position
         Point c_start;
         Point c_end;
         Path newPathClass = new Path(); //create a new path class
+
+        /* if there is enough space between both points, give the distance to straighten out */
         if(Constants.END_SPACE+Constants.START_SPACE < Point.distance(end_position,start_position)) {
             newPathClass.appendWaypoint(new Waypoint(start_position));
             original_end_position = end_position;
@@ -483,10 +475,9 @@ public class Path {
             radius -= Constants.RADIUS_CLOSING;
             if (-distanceXLookahead(start_position, start_angle, end_position) >=
                     -Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
-                            radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle)))) {
-                //the right circle was chosen
+                            radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle)))) { // this equation finds whether the robot needs to start by turning left or right.
                 c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
-                if (-distanceXLookahead(end_position, end_angle, c_start) >= radius) {
+                if (-distanceXLookahead(end_position, end_angle, c_start) >= radius) { // based on the starting circle, checks if the robot must end by turning left or right
                     path_type = "LSL";
                     c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
                 } else {
@@ -503,7 +494,8 @@ public class Path {
                     c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
                 }
             }
-        }while(Point.distance(c_end,c_start) < 2 * radius && radius > 0.1);
+        }while(Point.distance(c_end,c_start) < 2 * radius && radius > 0.1); //Currently this method loops until the path is logical. this isnt necessary, and needs fixing, but right now its the safest answer that will always be right.
+
         /* Find tangent points between both circles, and chooses which pair is right */
         Point[] tangent_points;
         switch (path_type) {
@@ -537,11 +529,15 @@ public class Path {
         /* Fill the key points with points in between */
 
         double fill_delta_angle = Constants.SPACING_BETWEEN_WAYPOINTS;// maybe make this number smaller, divide it by a constant or have a separate constant for turns
+
+        // fills all the points on the starting circle.
         if (path_type.charAt(0) == 'R')
             generateCircleFillPoints(start_position, tangent_points[0], c_start, fill_delta_angle, newPathClass);
         else
             generateCircleFillPoints(start_position, tangent_points[0], c_start, -fill_delta_angle, newPathClass);
-        if (this.length() <= 1)
+
+        // fills all the points on the line.
+        if (this.length() <= 1) //TODO: no idea why i added this, i assume it fixes an error, not sure what tho.
             newPathClass.appendWaypoint(new Waypoint(tangent_points[0].getX(), tangent_points[0].getY()));
         Vector tangentVector = new Vector(tangent_points[0], tangent_points[1]);
         int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
@@ -554,15 +550,17 @@ public class Path {
 
         }
 
+        // fills all the points on the ending circle.
         if (path_type.charAt(2) == 'R')
             generateCircleFillPoints(tangent_points[1], end_position, c_end, fill_delta_angle, newPathClass);
         else
             generateCircleFillPoints(tangent_points[1], end_position, c_end, -fill_delta_angle, newPathClass);
+
         newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
         if(original_end_position != null)
             newPathClass.appendWaypoint(new Waypoint(original_end_position));
         clear();
-        addAll(deleteClosePoints(newPathClass, Constants.SPACING_BETWEEN_WAYPOINTS/3));
+        addAll(deleteClosePoints(newPathClass, Constants.SPACING_BETWEEN_WAYPOINTS/100));
 
     }
 
