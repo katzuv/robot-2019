@@ -565,12 +565,19 @@ public class Path {
     }
 
     /**
-     * Find the tangent points
+     * Find the tangent points between two circles.
+     * usually there are four pairs, two crossing, and two parallel.
+     * in cases where both circles are tangent there will be three,
+     * and in cases where the circles intersect there will be only two.
+     * this method returns an array in a format as follows:
+     * 4 pairs: {counterclockwise parallel from c1}, {clockwise parallel from c1}, {counterclockwise cross from c1}, {clockwise cross from c1}
+     * 3 pairs: {counterclockwise parallel from c1}, {clockwise parallel from c1}, {tangent to both circles}
+     * 2 pairs: {counterclockwise parallel from c1}, {clockwise parallel from c1}
      *
-     * @param c1
-     * @param c2
-     * @param min_radius
-     * @return
+     * @param c1 the center of the first circle
+     * @param c2 the center of the second circle
+     * @param min_radius radius of both circles
+     * @return array of pairs of points, which each form a line tangent to both circles.
      */
     private Point[][] generateDubinKeyPoints(Point c1, Point c2, double min_radius) {
         Vector v4 = new Vector(c1, c2);
