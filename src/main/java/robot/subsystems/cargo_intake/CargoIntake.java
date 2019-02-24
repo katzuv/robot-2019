@@ -64,10 +64,10 @@ public class CargoIntake extends Subsystem {
         /*
         nominal and peak output config
          */
-        wrist.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
+        wrist.configNominalOutputForward(0., Constants.TALON_TIME_OUT);
         wrist.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputForward(0.3, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputReverse(-0.3, Constants.TALON_TIME_OUT); //TODO: change back to .5
+        wrist.configPeakOutputForward(Constants.PEAK_OUTPUT_FORWARD, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputReverse(Constants.PEAK_OUTPUT_REVERSE, Constants.TALON_TIME_OUT); //TODO: change back to .5
         /*
         profile config
          */

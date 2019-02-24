@@ -7,11 +7,13 @@
 
 package robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
@@ -22,6 +24,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
+import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 
 /**
@@ -56,10 +59,16 @@ public class OI {
     public static Button start = new JoystickButton(xbox, 8);
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
+
+    public static Button povu = new POVButton(xbox, 0);
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
+    public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
+    public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
 
+    public static Button lsLeft = new JoystickButton(leftStick, 4);
+    public static Button lsRight = new JoystickButton(leftStick, 5);
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsBottom = new JoystickButton(leftStick, 2);
     public static int left_x_stick = 0;
@@ -71,56 +80,54 @@ public class OI {
 
 
     public OI() {
-        povd.whenPressed(new ElevatorCommand(0));
-        povl.whenPressed(new ElevatorCommand(0.78));
-        povr.whenPressed(new ElevatorCommand(1.4));
+        povu.toggleWhenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        povd.toggleWhenPressed(new ElevatorCommand(0));
+        povl.toggleWhenPressed(new ElevatorCommand(0.78));
+        povr.toggleWhenPressed(new ElevatorCommand(1.4));
 
         ls.whenPressed(new GamePiecePickup());
 
         rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
         start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
 
-        a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+        a.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+        x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        y.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+
+        // Place hatch
+        lsLeft.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        lsMid.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        lsRight.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
-
-        Path drive = new Path(
-                new Waypoint(0,0),
-                new Waypoint(0,3),
-                new Waypoint(-1, 4));
-        drive.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
-
-        lsMid.whenPressed(new PurePursue(
-                drive, robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
-                true,
-                false));
-
-
-        lsBottom.whenPressed(new PurePursue(
-                new Path(
-                        new Waypoint(0,0),
-                        new Waypoint(1,1)
-                ), robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
-                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
-                false,
-                false));
-
     }
 
+    /* instead of defining the joysticks in each default command, all of them call these methods */
+    public double leftDriveStick(){ // TODO: might need name refactoring
+        return -leftStick.getY();
+    }
+
+    public double rightDriveStick(){
+        return -rightStick.getY();
+    }
+
+    public double WristStick(){
+        return xbox.getRawAxis(right_y_stick);
+    }
+
+    public double ElevatorStick() {
+        return -xbox.getRawAxis(left_y_stick);
+    }
+    public boolean enableElevator() {
+        return xbox.getRawButton(9);
+    }
+
+    public boolean enableWrist() {
+        return xbox.getRawButton(10);
+    }
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.
