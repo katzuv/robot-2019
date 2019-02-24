@@ -451,7 +451,6 @@ public class Path {
      * @param radius
      */
     public void createDubinCurve(Point start_position, double start_angle, Point end_position, double end_angle, double radius) {
-
         /*
         There are three stages to this algorithm.
         1. we create two pairs of circles tangent to each of the two points, and we choose which is the correct one
@@ -468,34 +467,42 @@ public class Path {
         start_angle = start_angle % 360;
         end_angle = end_angle % 360;
         String path_type;
+        Point original_end_position = null;
         Point c_start;
         Point c_end;
+        Path newPathClass = new Path(); //create a new path class
+        if(Constants.END_SPACE+Constants.START_SPACE < Point.distance(end_position,start_position)) {
+            newPathClass.appendWaypoint(new Waypoint(start_position));
+            original_end_position = end_position;
+            start_position.addVector(new Vector(0, Constants.START_SPACE).rotated(start_angle));
+            end_position.subtractVector(new Vector(0, Constants.END_SPACE).rotated(end_angle));
+        }
         /* Find both circle pairs, and choose which is right */
         radius += Constants.RADIUS_CLOSING;
         do {
             radius -= Constants.RADIUS_CLOSING;
-        if (-distanceXLookahead(start_position, start_angle, end_position) >=
-                -Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
-                        radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle)))) {
-            //the right circle was chosen
-            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
-            if (-distanceXLookahead(end_position, end_angle, c_start) >= radius) {
-                path_type = "LSL";
-                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
+            if (-distanceXLookahead(start_position, start_angle, end_position) >=
+                    -Math.signum(Math.sin(Math.toRadians(end_angle - start_angle))) *
+                            radius * (1 - Math.cos(Math.toRadians(end_angle - start_angle)))) {
+                //the right circle was chosen
+                c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle - 90)), radius * Math.cos(Math.toRadians(start_angle - 90))).add(start_position);
+                if (-distanceXLookahead(end_position, end_angle, c_start) >= radius) {
+                    path_type = "LSL";
+                    c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
+                } else {
+                    path_type = "LSR";
+                    c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
+                }
             } else {
-                path_type = "LSR";
-                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
+                c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle + 90)), radius * Math.cos(Math.toRadians(start_angle + 90))).add(start_position);
+                if (-distanceXLookahead(end_position, end_angle, c_start) <= -radius) {
+                    path_type = "RSR";
+                    c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
+                } else {
+                    path_type = "RSL";
+                    c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
+                }
             }
-        } else {
-            c_start = new Vector(radius * Math.sin(Math.toRadians(start_angle + 90)), radius * Math.cos(Math.toRadians(start_angle + 90))).add(start_position);
-            if (-distanceXLookahead(end_position, end_angle, c_start) <= -radius) {
-                path_type = "RSR";
-                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle + 90)), radius * Math.cos(Math.toRadians(end_angle + 90))).add(end_position);
-            } else {
-                path_type = "RSL";
-                c_end = new Vector(radius * Math.sin(Math.toRadians(end_angle - 90)), radius * Math.cos(Math.toRadians(end_angle - 90))).add(end_position);
-            }
-        }
         }while(Point.distance(c_end,c_start) < 2 * radius && radius > 0.1);
         /* Find tangent points between both circles, and chooses which pair is right */
         Point[] tangent_points;
@@ -527,7 +534,7 @@ public class Path {
                 break;
         }
 
-        Path newPathClass = new Path(); //create a new path class
+        /* Fill the key points with points in between */
 
         double fill_delta_angle = Constants.SPACING_BETWEEN_WAYPOINTS;// maybe make this number smaller, divide it by a constant or have a separate constant for turns
         if (path_type.charAt(0) == 'R')
@@ -552,7 +559,8 @@ public class Path {
         else
             generateCircleFillPoints(tangent_points[1], end_position, c_end, -fill_delta_angle, newPathClass);
         newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
-
+        if(original_end_position != null)
+            newPathClass.appendWaypoint(new Waypoint(original_end_position));
         clear();
         addAll(deleteClosePoints(newPathClass, Constants.SPACING_BETWEEN_WAYPOINTS/3));
 
