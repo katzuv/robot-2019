@@ -17,6 +17,7 @@ import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.drivetrain.commands.GamePiecePickup;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
@@ -24,7 +25,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
-import robot.subsystems.hatch_intake.commands.PlaceHatch;
+
 
 
 /**
@@ -66,11 +67,10 @@ public class OI {
     public static Button povl = new POVButton(xbox, 270);
     public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
     public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
-
+    public static Button lsBottom = new JoystickButton(leftStick, 2);
+    public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsLeft = new JoystickButton(leftStick, 4);
     public static Button lsRight = new JoystickButton(leftStick, 5);
-    public static Button lsMid = new JoystickButton(leftStick, 3);
-    public static Button lsBottom = new JoystickButton(leftStick, 2);
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -95,11 +95,11 @@ public class OI {
         x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
         y.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
 
-        // Place hatch
-        lsLeft.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        lsMid.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        lsRight.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
+        // Place hatch
+        lsLeft.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        lsMid.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
