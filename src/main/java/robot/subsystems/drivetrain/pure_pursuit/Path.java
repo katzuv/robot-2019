@@ -465,7 +465,7 @@ public class Path {
         /* if there is enough space between both points, give the distance to straighten out */
         if(Constants.END_SPACE+Constants.START_SPACE < Point.distance(end_position,start_position)) {
             newPathClass.appendWaypoint(new Waypoint(start_position));
-            original_end_position = end_position;
+            original_end_position = new Waypoint(end_position);
             start_position.addVector(new Vector(0, Constants.START_SPACE).rotated(start_angle));
             end_position.subtractVector(new Vector(0, Constants.END_SPACE).rotated(end_angle));
         }
