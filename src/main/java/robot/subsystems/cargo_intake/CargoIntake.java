@@ -13,10 +13,8 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.subsystems.cargo_intake.commands.JoystickWristTurn;
-import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
 import static robot.Robot.cargoIntake;
-import static robot.Robot.isRobotA;
 
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
@@ -28,6 +26,7 @@ public class CargoIntake extends Subsystem {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
+    private double setPointAngle;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -118,7 +117,7 @@ public class CargoIntake extends Subsystem {
 
     public double stallCurrent() {
         final double wristAngle = cargoIntake.getWristAngle();
-        if (wristAngle < 0) {
+        if (wristAngle < 5 && setPointAngle < 3) {
             return 0;
         }
         final double COMCosine = Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle()));
@@ -154,7 +153,9 @@ public class CargoIntake extends Subsystem {
     }
 
     public void setWristAngle(double angle) {
+        setPointAngle = angle;
         cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
+
     }
 
     public int getVelocity() {
