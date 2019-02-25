@@ -7,36 +7,92 @@ import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 
+import static robot.subsystems.elevator.Constants.ELEVATOR_STATES;
+import static robot.subsystems.cargo_intake.Constants.WRIST_ANGLES;
+
 
 /**
  *
  */
 public class CargoScoring extends CommandGroup {
 
-    public CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES height, Constants.WRIST_ANGLES angle) {
+    public CargoScoring(int state, boolean isBackward) {
+
+        ELEVATOR_STATES height = getHeight(state, isBackward);
+        WRIST_ANGLES angle = getAngle(state, isBackward);
         addParallel(new WristTurn(angle));
         addSequential(new ElevatorCommand(height));
         addSequential(new WaitCommand(1));
         addSequential(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
         addSequential(new WaitCommand(0.4));
-        addParallel(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        addParallel(new WristTurn(WRIST_ANGLES.INITIAL));
         addSequential(new ElevatorCommand(0));
+    }
 
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
+    public ELEVATOR_STATES getHeight(int state, boolean isBackward){
 
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
+        if (isBackward) {
 
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
+            switch (state) {
+                case 0:
+                    return ELEVATOR_STATES.SHIP_CARGO_BACKWARD;
+                case 1:
+                    return ELEVATOR_STATES.LEVEL1_CARGO_BACKWARD;
+                case 2:
+                    return ELEVATOR_STATES.LEVEL2_CARGO_BACKWARD;
+                case 3:
+                    return ELEVATOR_STATES.LEVEL3_CARGO_BACKWARD;
+            }
+
+        } else {
+            switch (state){
+                case 0:
+                    return ELEVATOR_STATES.SHIP_CARGO;
+                case 1:
+                    return ELEVATOR_STATES.LEVEL1_CARGO;
+                case 2:
+                    return ELEVATOR_STATES.LEVEL2_CARGO;
+                case 3:
+                    return ELEVATOR_STATES.LEVEL3_CARGO;
+
+                }
+
+            }
+        return null;
+        }
+
+
+    public WRIST_ANGLES getAngle(int state, boolean isBackward){
+
+        if (isBackward) {
+
+            switch (state) {
+                case 0:
+                    return WRIST_ANGLES.SHIP_BACKWARD;
+                case 1:
+                    return WRIST_ANGLES.LEVEL_1_BACKWARD;
+                case 2:
+                    return WRIST_ANGLES.LEVEL_2_BACKWARD;
+                case 3:
+                    return WRIST_ANGLES.LEVEL_3_BACKWARD;
+            }
+
+        } else {
+            switch (state){
+                case 0:
+                    return WRIST_ANGLES.SHIP;
+                case 1:
+                    return WRIST_ANGLES.LEVEL_1;
+                case 2:
+                    return WRIST_ANGLES.LEVEL_2;
+                case 3:
+                    return WRIST_ANGLES.LEVEL_3;
+
+            }
+
+        }
+        return null;
     }
 }
+
+

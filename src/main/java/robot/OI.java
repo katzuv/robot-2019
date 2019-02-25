@@ -107,14 +107,14 @@ public class OI {
         //lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
         // Place cargo backward
-        lsLeft.toggleWhenPressed(new CargoBackwardScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_CARGO));
-        lsMid.toggleWhenPressed(new CargoBackwardScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_CARGO_BACKWARD));
-        lsRight.toggleWhenPressed(new CargoBackwardScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO_BACKWARD));
+        rsLeft.toggleWhenPressed(new CargoScoring(1, true));
+        rsMid.toggleWhenPressed(new CargoScoring(2, true));
+        rsRight.toggleWhenPressed(new CargoScoring(3, true));
 
         // Score cargo
-        rsLeft.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_CARGO, Constants.WRIST_ANGLES.LEVEL_1));
-        rsMid.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_CARGO, Constants.WRIST_ANGLES.LEVEL_2));
-        rsRight.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO, Constants.WRIST_ANGLES.LEVEL_3));
+        rsLeft.toggleWhenPressed(new CargoScoring(1, false));
+        rsMid.toggleWhenPressed(new CargoScoring(2, false));
+        rsRight.toggleWhenPressed(new CargoScoring(3, false));
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());

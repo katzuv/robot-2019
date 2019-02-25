@@ -43,9 +43,14 @@ public class Constants {
     public enum WRIST_ANGLES{
         INITIAL(0),
         UP(82.75),
+        SHIP(108),
+        SHIP_BACKWARD(108),
         LEVEL_1(108),
         LEVEL_2(108),
         LEVEL_3(108),
+        LEVEL_1_BACKWARD(108),
+        LEVEL_2_BACKWARD(108),
+        LEVEL_3_BACKWARD(108),
         INTAKE(165),
         MAXIMAL(230);
         private final double wristAngle;
