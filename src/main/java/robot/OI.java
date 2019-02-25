@@ -98,7 +98,7 @@ public class OI {
         a.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
         x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        y.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+        y.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.LEVEL_1));
 
 
         // Place hatch
@@ -112,9 +112,9 @@ public class OI {
         lsRight.toggleWhenPressed(new CargoBackwardScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO_BACKWARD));
 
         // Score cargo
-        rsLeft.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_CARGO));
-        rsMid.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_CARGO));
-        rsRight.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO));
+        rsLeft.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_CARGO, Constants.WRIST_ANGLES.LEVEL_1));
+        rsMid.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_CARGO, Constants.WRIST_ANGLES.LEVEL_2));
+        rsRight.toggleWhenPressed(new CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO, Constants.WRIST_ANGLES.LEVEL_3));
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());

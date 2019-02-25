@@ -13,8 +13,8 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
  */
 public class CargoScoring extends CommandGroup {
 
-    public CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES height) {
-        addParallel(new WristTurn(Constants.WRIST_ANGLES.LEVEL1));
+    public CargoScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES height, Constants.WRIST_ANGLES angle) {
+        addParallel(new WristTurn(angle));
         addSequential(new ElevatorCommand(height));
         addSequential(new WaitCommand(1));
         addSequential(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
