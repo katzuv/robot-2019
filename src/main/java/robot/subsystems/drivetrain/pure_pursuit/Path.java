@@ -70,7 +70,7 @@ public class Path {
      *
      * @param array the array of points to add into the arraylist
      */
-    public Path(Waypoint[] array) {
+    public Path(Waypoint ... array) {
         path.addAll(Arrays.asList(array));
     }
 
