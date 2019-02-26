@@ -12,11 +12,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import robot.Robot;
 import robot.subsystems.cargo_intake.commands.JoystickWristTurn;
-import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
 import static robot.Robot.cargoIntake;
-import static robot.Robot.isRobotA;
 
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
@@ -28,6 +27,7 @@ public class CargoIntake extends Subsystem {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
+    private double setPointAngle;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -118,8 +118,7 @@ public class CargoIntake extends Subsystem {
 
     public double stallCurrent() {
         final double wristAngle = cargoIntake.getWristAngle();
-        if (wristAngle < 0) {
-            System.out.println(1.1 * (0.2 * Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle())) + 0.025 * Math.signum(Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle())))));
+        if (wristAngle < 5 && setPointAngle < 3) {
             return 0;
         }
         final double COMCosine = Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle()));
@@ -175,7 +174,10 @@ public class CargoIntake extends Subsystem {
      */
     public boolean atTop() {
         //return Math.abs(getHeight()) > Constants.ELEVATOR_MAX_HEIGHT;
-        return wrist.getSensorCollection().isFwdLimitSwitchClosed();
+        if (!Robot.isRobotA) {
+            return wrist.getSensorCollection().isFwdLimitSwitchClosed();
+        }
+        return false;
     }
 
     /**
@@ -185,11 +187,15 @@ public class CargoIntake extends Subsystem {
      */
     public boolean atBottom() {
         //return Math.abs(getHeight()) < 0.05;
-        return wrist.getSensorCollection().isRevLimitSwitchClosed();
+        if (!Robot.isRobotA) {
+            return wrist.getSensorCollection().isRevLimitSwitchClosed();
+        }
+        return false;
     }
 
     public void setWristAngle(double angle) {
-        cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(Math.min(Constants.WRIST_ANGLES.INTAKE.getValue(), Math.max(0, angle))), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
+        setPointAngle = angle;
+        cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
     }
 
     public int getVelocity() {
