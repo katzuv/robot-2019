@@ -33,11 +33,11 @@ public class OI {
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
-    public static final double DOWN_SPEED_RATE = 0.08;
+    public static final double DOWN_SPEED_RATE = 0.05;
     /**
      * The rate at which the lift will goes up with the xbox joystick.
      */
-    public static final double UP_SPEED_RATE = 0.08;
+    public static final double UP_SPEED_RATE = 0.05;
     /**
      * The Y value area in which the xbox joystick won't make the lift move.
      */
