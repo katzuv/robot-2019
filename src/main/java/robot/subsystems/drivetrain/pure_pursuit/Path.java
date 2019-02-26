@@ -680,16 +680,15 @@ public class Path {
         Path newPath = new Path();
         Waypoint previousPoint = path.getWaypoint(0);
         newPath.appendWaypoint(previousPoint);
-
-        for(int i = 1; i < path.length(); i++){ //dont add a point to the array if it is too close to the previous point.
-            if(Waypoint.distance(path.getWaypoint(i), previousPoint) >= deleteDistance){
-                newPath.appendWaypoint(path.getWaypoint(i));
-            }
-            previousPoint = path.getWaypoint(i);
-        }
-        return newPath;
     }
 
+    public void generateLineFillPoints(Point start, Point end, Path path){
+        Vector tangentVector = new Vector(start,end);
+        int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
+        tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
+        for(int j = 0; j < AmountOfPoints; j++)
+            path.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(start)));
+    }
     @Override
     public String toString() {
         return "Path{" + "path=" + path + '}';
