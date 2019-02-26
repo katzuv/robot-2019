@@ -471,14 +471,14 @@ public class Path {
 
         /* if there is enough space between both points, give the distance to straighten out */
         if(Constants.END_SPACE+Constants.START_SPACE < Point.distance(end_position,start_position)) {
-            newPathClass.appendWaypoint(new Waypoint(start_position));
+            generateLineFillPoints(new Waypoint(start_position),new Vector(0, Constants.START_SPACE).rotated(start_angle).add(start_position), newPathClass);
             original_end_position = new Waypoint(end_position);
             start_position.addVector(new Vector(0, Constants.START_SPACE).rotated(start_angle));
             end_position.subtractVector(new Vector(0, Constants.END_SPACE).rotated(end_angle));
         }
         /* Find both circle pairs, and choose which is right */
         radius += Constants.RADIUS_CLOSING;
-        boolean logical_path = true;
+        boolean logical_path;
         do {
             radius -= Constants.RADIUS_CLOSING;
             if (-distanceXLookahead(start_position, start_angle, end_position) >=
@@ -548,18 +548,7 @@ public class Path {
             generateCircleFillPoints(start_position, tangent_points[0], c_start, -fill_delta_angle, newPathClass);
 
         // fills all the points on the line.
-        if (this.length() <= 1) //TODO: no idea why i added this, i assume it fixes an error, not sure what tho.
-            newPathClass.appendWaypoint(new Waypoint(tangent_points[0].getX(), tangent_points[0].getY()));
-        Vector tangentVector = new Vector(tangent_points[0], tangent_points[1]);
-        int AmountOfPoints = (int) Math.ceil(tangentVector.magnitude() / Constants.SPACING_BETWEEN_WAYPOINTS);
-        tangentVector = tangentVector.normalize().multiply(Constants.SPACING_BETWEEN_WAYPOINTS);
-        for (int j = 0; j < AmountOfPoints; j++) {
-            if (newPathClass.length() == 1)
-                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tangent_points[0])));
-            else
-                newPathClass.appendWaypoint(tangentVector.multiply(j).add(new Waypoint(tangent_points[0])));
-
-        }
+        generateLineFillPoints(tangent_points[0], tangent_points[1], newPathClass);
 
         // fills all the points on the ending circle.
         if (path_type.charAt(2) == 'R')
@@ -567,10 +556,11 @@ public class Path {
         else
             generateCircleFillPoints(tangent_points[1], end_position, c_end, -fill_delta_angle, newPathClass);
 
-        newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
         if(original_end_position != null)
-            newPathClass.appendWaypoint(new Waypoint(original_end_position));
+            generateLineFillPoints(end_position, original_end_position, newPathClass); //TODO: creates error i think
+
         deleteClosePoints(Constants.SPACING_BETWEEN_WAYPOINTS/100,newPathClass); //TODO: remove when sure there are no more duplicate points
+
         clear();
         addAll(newPathClass);
 
