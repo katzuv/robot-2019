@@ -23,22 +23,16 @@ public class CargoScoring extends CommandGroup {
         ELEVATOR_STATES height = getHeight(state, isBackward);
         WRIST_ANGLES angle = getAngle(state, isBackward);
         GRIPPER_SPEED speed = getSpeed(state, isBackward);
-        if (state == 1 || state == 0) {
-            addSequential(new WristTurn(angle));
-            addSequential(new GripperControl(speed));
-            addSequential(new WaitCommand(0.4));
-            addSequential(new WristTurn(WRIST_ANGLES.INITIAL));
-        } else {
-            //addParallel(new WristTurn(angle));
-            //addSequential(new ElevatorCommand(height));
-            //addSequential(new WaitCommand(3));
-            //addSequential(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-            //addSequential(new WaitCommand(0.4));
-            //addParallel(new WristTurn(WRIST_ANGLES.INITIAL));
-            //addSequential(new ElevatorCommand(0));
-        }
 
+        addSequential(new WristTurn(angle));
+        addSequential(new ElevatorCommand(height));
+        addSequential(new WaitCommand(1));
+        addSequential(new GripperControl(speed));
+        addSequential(new WaitCommand(0.4));
+        addParallel(new WristTurn(WRIST_ANGLES.INITIAL));
+        addSequential(new ElevatorCommand(0));
     }
+
 
     public ELEVATOR_STATES getHeight(int state, boolean isBackward) {
 
