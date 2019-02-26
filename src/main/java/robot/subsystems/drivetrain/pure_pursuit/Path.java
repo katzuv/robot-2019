@@ -570,8 +570,9 @@ public class Path {
         newPathClass.appendWaypoint(new Waypoint(end_position.getX(), end_position.getY()));
         if(original_end_position != null)
             newPathClass.appendWaypoint(new Waypoint(original_end_position));
+        deleteClosePoints(Constants.SPACING_BETWEEN_WAYPOINTS/100,newPathClass); //TODO: remove when sure there are no more duplicate points
         clear();
-        addAll(deleteClosePoints(newPathClass, Constants.SPACING_BETWEEN_WAYPOINTS/100));
+        addAll(newPathClass);
 
     }
 
@@ -676,10 +677,10 @@ public class Path {
     }
 
     //TODO: maybe instead of doing this try and find where the point gets added twice and remove it (cant be done until the (if length <= 1) todo is figured out)
-    private Path deleteClosePoints(Path path, double deleteDistance){
-        Path newPath = new Path();
-        Waypoint previousPoint = path.getWaypoint(0);
-        newPath.appendWaypoint(previousPoint);
+    private void deleteClosePoints(double deleteDistance, Path path){
+        for(int i = 1; i < path.length(); i++) //dont add a point to the array if it is too close to the previous point.
+            if(Waypoint.distance(path.getWaypoint(i), path.getWaypoint(i-1)) < deleteDistance)
+                path.removeWaypoint(i);
     }
 
     public void generateLineFillPoints(Point start, Point end, Path path){
