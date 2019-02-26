@@ -5,13 +5,12 @@ import robot.Robot;
 import static robot.Robot.isRobotA;
 
 public class Constants {
-    public final static double GRIPPER_INTAKE_SPEED = isRobotA ? -0.75 : -0.75; //should always be negative
-    public final static double GRIPPER_SHOOT_SPEED = isRobotA ? 0.9 : 0.9; //should always be positive
+
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 1000;
     public static final int CRUISE_VELOCITY  = isRobotA ? 2100 : 1600;
 
-    final static double kP = isRobotA ? 0.6 : 0.6;
+    final static double kP = isRobotA ? 0.3 : 0.6;
     final static double kD = isRobotA ? 150 : 100;
     final static double kF = isRobotA ? 0.48 : 0.48;
 
@@ -28,7 +27,7 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    final static double CARGO_IN_VOLTAGE = isRobotA ? 1 : 0.64;
+    final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.64;
     final static boolean SENSOR_PHASE = isRobotA ? false : false;
 
     final static boolean SOFT_LIMIT_OVERRIDE =isRobotA ? true : true;
@@ -43,15 +42,15 @@ public class Constants {
     public enum WRIST_ANGLES{
         INITIAL(0),
         UP(82.75),
-        SHIP(108),
-        SHIP_BACKWARD(108),
+        SHIP(80),
+        SHIP_BACKWARD(0),
         LEVEL_1(108),
         LEVEL_2(108),
         LEVEL_3(108),
-        LEVEL_1_BACKWARD(108),
-        LEVEL_2_BACKWARD(108),
-        LEVEL_3_BACKWARD(108),
-        INTAKE(165),
+        LEVEL_1_BACKWARD(0),
+        LEVEL_2_BACKWARD(0),
+        LEVEL_3_BACKWARD(0),
+        INTAKE(173),
         MAXIMAL(230);
         private final double wristAngle;
         WRIST_ANGLES(double height) {
@@ -60,6 +59,21 @@ public class Constants {
         public double getValue() {
             return wristAngle;
         }
+    }
+
+    public enum GRIPPER_SPEED{
+        INTAKE(-0.75),
+        SHIP(0.9),
+        SHIP_BACKWARD(0.9),
+        LEVEL_1(0.3),
+        LEVEL_2(0.5),
+        LEVEL_3(0.5),
+        LEVEL_1_BACKWARD(0.5),
+        LEVEL_2_BACKWARD(0.5),
+        LEVEL_3_BACKWARD(0.5);
+        private final double gripperSpeed;
+        GRIPPER_SPEED(double height) { this.gripperSpeed = height;}
+        public double getValue() { return gripperSpeed;}
     }
 }
 

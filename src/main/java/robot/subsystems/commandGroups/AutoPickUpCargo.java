@@ -14,7 +14,7 @@ public class AutoPickUpCargo extends CommandGroup {
     public AutoPickUpCargo() {
         addSequential(new GamePiecePickup());
         addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        addParallel(new GripperControl(0.3));
+        addParallel(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

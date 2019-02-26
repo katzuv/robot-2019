@@ -3,6 +3,7 @@ package robot.subsystems.cargo_intake.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import robot.subsystems.cargo_intake.Constants.GRIPPER_SPEED;
 
 import static robot.Robot.cargoIntake;
 
@@ -14,9 +15,9 @@ import static robot.Robot.cargoIntake;
 public class GripperControl extends Command {
     private double speed;//speed of the gripper
 
-    public GripperControl(double speed) {
+    public GripperControl(GRIPPER_SPEED gripperSpeed) {
         requires(cargoIntake);
-        this.speed = speed;
+        this.speed = gripperSpeed.getValue();
     }
 
     // Called just before this Command runs the first time

@@ -17,13 +17,8 @@ import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
-import robot.subsystems.commandGroups.CargoBackwardScoring;
-import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.CargoScoring;
 import robot.subsystems.drivetrain.commands.GamePiecePickup;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
@@ -73,9 +68,11 @@ public class OI {
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsLeft = new JoystickButton(leftStick, 4);
     public static Button lsRight = new JoystickButton(leftStick, 5);
+    public static Button rsBottom = new JoystickButton(rightStick, 2);
     public static Button rsMid = new JoystickButton(rightStick, 3);
     public static Button rsLeft = new JoystickButton(rightStick, 4);
     public static Button rsRight = new JoystickButton(rightStick, 5);
+
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -92,8 +89,8 @@ public class OI {
 
         ls.whenPressed(new GamePiecePickup());
 
-        rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-        start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+        rb.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
+        start.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
         a.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
@@ -107,11 +104,35 @@ public class OI {
         //lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
         // Place cargo backward
-        rsLeft.toggleWhenPressed(new CargoScoring(1, true));
-        rsMid.toggleWhenPressed(new CargoScoring(2, true));
-        rsRight.toggleWhenPressed(new CargoScoring(3, true));
+
+        /*
+        Tiood XD
+
+        |||||||
+        |||3|||
+        |||||||
+        |||||||   Rocket
+        |||2|||
+        |||||||
+        |||||||
+        |||1|||
+        |||||||
+
+        |||||||
+        |     |
+        |     |    Bay
+        |||||||
+        |||0|||
+        |||||||
+
+         */
+        lsBottom.toggleWhenPressed(new CargoScoring(0, true));
+        lsLeft.toggleWhenPressed(new CargoScoring(1, true));
+        lsMid.toggleWhenPressed(new CargoScoring(2, true));
+        lsRight.toggleWhenPressed(new CargoScoring(3, true));
 
         // Score cargo
+        rsBottom.toggleWhenPressed(new CargoScoring(0, false));
         rsLeft.toggleWhenPressed(new CargoScoring(1, false));
         rsMid.toggleWhenPressed(new CargoScoring(2, false));
         rsRight.toggleWhenPressed(new CargoScoring(3, false));
@@ -139,6 +160,7 @@ public class OI {
     public boolean enableElevator() {
         return xbox.getRawButton(9);
     }
+
 
     public boolean enableWrist() {
         return xbox.getRawButton(10);

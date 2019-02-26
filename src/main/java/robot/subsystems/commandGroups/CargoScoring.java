@@ -6,9 +6,11 @@ import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
 import robot.subsystems.elevator.commands.ElevatorCommand;
+import robot.subsystems.hatch_intake.commands.Gripper;
 
 import static robot.subsystems.elevator.Constants.ELEVATOR_STATES;
 import static robot.subsystems.cargo_intake.Constants.WRIST_ANGLES;
+import static robot.subsystems.cargo_intake.Constants.GRIPPER_SPEED;
 
 
 /**
@@ -20,16 +22,25 @@ public class CargoScoring extends CommandGroup {
 
         ELEVATOR_STATES height = getHeight(state, isBackward);
         WRIST_ANGLES angle = getAngle(state, isBackward);
-        addParallel(new WristTurn(angle));
-        addSequential(new ElevatorCommand(height));
-        addSequential(new WaitCommand(1));
-        addSequential(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-        addSequential(new WaitCommand(0.4));
-        addParallel(new WristTurn(WRIST_ANGLES.INITIAL));
-        addSequential(new ElevatorCommand(0));
+        GRIPPER_SPEED speed = getSpeed(state, isBackward);
+        if (state == 1 || state == 0) {
+            addSequential(new WristTurn(angle));
+            addSequential(new GripperControl(speed));
+            addSequential(new WaitCommand(0.4));
+            addSequential(new WristTurn(WRIST_ANGLES.INITIAL));
+        } else {
+            //addParallel(new WristTurn(angle));
+            //addSequential(new ElevatorCommand(height));
+            //addSequential(new WaitCommand(3));
+            //addSequential(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
+            //addSequential(new WaitCommand(0.4));
+            //addParallel(new WristTurn(WRIST_ANGLES.INITIAL));
+            //addSequential(new ElevatorCommand(0));
+        }
+
     }
 
-    public ELEVATOR_STATES getHeight(int state, boolean isBackward){
+    public ELEVATOR_STATES getHeight(int state, boolean isBackward) {
 
         if (isBackward) {
 
@@ -45,7 +56,7 @@ public class CargoScoring extends CommandGroup {
             }
 
         } else {
-            switch (state){
+            switch (state) {
                 case 0:
                     return ELEVATOR_STATES.SHIP_CARGO;
                 case 1:
@@ -55,14 +66,46 @@ public class CargoScoring extends CommandGroup {
                 case 3:
                     return ELEVATOR_STATES.LEVEL3_CARGO;
 
-                }
+            }
+
+        }
+        return null;
+    }
+
+
+    public GRIPPER_SPEED getSpeed(int state, boolean isBackward) {
+
+        if (isBackward) {
+
+            switch (state) {
+                case 0:
+                    return GRIPPER_SPEED.SHIP_BACKWARD;
+                case 1:
+                    return GRIPPER_SPEED.LEVEL_1_BACKWARD;
+                case 2:
+                    return GRIPPER_SPEED.LEVEL_2_BACKWARD;
+                case 3:
+                    return GRIPPER_SPEED.LEVEL_3_BACKWARD;
+            }
+
+        } else {
+            switch (state) {
+                case 0:
+                    return GRIPPER_SPEED.SHIP;
+                case 1:
+                    return GRIPPER_SPEED.LEVEL_1;
+                case 2:
+                    return GRIPPER_SPEED.LEVEL_2;
+                case 3:
+                    return GRIPPER_SPEED.LEVEL_3;
 
             }
-        return null;
+
         }
+        return null;
+    }
 
-
-    public WRIST_ANGLES getAngle(int state, boolean isBackward){
+    public WRIST_ANGLES getAngle(int state, boolean isBackward) {
 
         if (isBackward) {
 
@@ -78,7 +121,7 @@ public class CargoScoring extends CommandGroup {
             }
 
         } else {
-            switch (state){
+            switch (state) {
                 case 0:
                     return WRIST_ANGLES.SHIP;
                 case 1:
