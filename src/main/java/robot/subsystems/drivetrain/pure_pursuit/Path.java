@@ -143,6 +143,13 @@ public class Path {
         path.add(p);
     }
 
+
+    public void removeWaypoint(int index) {
+        if (!(index < path.size() && index > -path.size()))
+            throw new ArrayIndexOutOfBoundsException("Waypoint index " + index + " is out of bounds.");
+        path.remove(Math.floorMod(index, path.size()));
+    }
+
     /**
      * Return a new subPath of the path.
      *
