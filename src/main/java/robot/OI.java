@@ -17,7 +17,11 @@ import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+<<<<<<< Updated upstream
 import robot.subsystems.commandGroups.CargoScoring;
+=======
+import robot.subsystems.commandGroups.HatchScoring;
+>>>>>>> Stashed changes
 import robot.subsystems.drivetrain.commands.GamePiecePickup;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -62,17 +66,24 @@ public class OI {
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
+<<<<<<< Updated upstream
     public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
     public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
+=======
+
+>>>>>>> Stashed changes
     public static Button lsBottom = new JoystickButton(leftStick, 2);
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsLeft = new JoystickButton(leftStick, 4);
     public static Button lsRight = new JoystickButton(leftStick, 5);
+<<<<<<< Updated upstream
     public static Button rsBottom = new JoystickButton(rightStick, 2);
     public static Button rsMid = new JoystickButton(rightStick, 3);
     public static Button rsLeft = new JoystickButton(rightStick, 4);
     public static Button rsRight = new JoystickButton(rightStick, 5);
 
+=======
+>>>>>>> Stashed changes
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -89,6 +100,7 @@ public class OI {
 
         ls.whenPressed(new GamePiecePickup());
 
+<<<<<<< Updated upstream
         rb.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
         start.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
@@ -136,6 +148,20 @@ public class OI {
         rsLeft.toggleWhenPressed(new CargoScoring(1, false));
         rsMid.toggleWhenPressed(new CargoScoring(2, false));
         rsRight.toggleWhenPressed(new CargoScoring(3, false));
+=======
+        rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
+        start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+
+        a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+
+        // Place hatch
+        lsLeft.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        lsMid.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+>>>>>>> Stashed changes
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
