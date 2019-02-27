@@ -72,17 +72,21 @@ public class PurePursue extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        updatePoint();
-        updateLookaheadInPath(path);
-        drivetrain.setSpeed(getLeftSpeedVoltage(path)*direction, getRightSpeedVoltage(path)*direction);
+        if (!isFinished()){
 
+            updatePoint();
+        updateLookaheadInPath(path);
+        drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
+        SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
+        SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
+    }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-//        return false;
-        boolean closeToLast = (drivetrain.currentLocation.getX() >= path.getWaypoint(path.length() - 1).getX() - 0.05 &&
-                drivetrain.currentLocation.getY() >= path.getWaypoint(path.length() - 1).getY() - 0.05);
+        SmartDashboard.putString("test: Final point?", path.getWaypoint(path.length() - 2).toString());
+        boolean closeToLast = (Math.abs(drivetrain.currentLocation.getX() - path.getWaypoint(path.length() - 1).getX()) <= 0.03 &&
+                Math.abs(drivetrain.currentLocation.getY() - path.getWaypoint(path.length() - 2).getY()) <= 0.03);
         return (closeToLast &&
                 drivetrain.getLeftSpeed() < Constants.STOP_SPEED_THRESH &&
                 drivetrain.getRightSpeed() < Constants.STOP_SPEED_THRESH);
