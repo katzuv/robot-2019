@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import robot.Robot;
 import robot.subsystems.cargo_intake.commands.JoystickWristTurn;
 
 import static robot.Robot.cargoIntake;
@@ -151,6 +152,47 @@ public class CargoIntake extends Subsystem {
         return convertTicksToAngle(wrist.getSelectedSensorPosition());
 
     }
+    /**
+     * Beyond preventing the motors from going above a certain height, this method prevents them from moving higher or
+     * lower once one of the limit switches/hall effects is pressed.
+     */
+    public void preventOverShoot() {
+        if (atTop()) {
+            //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
+            wrist.setSelectedSensorPosition((int) (Constants.WRIST_ANGLES.INTAKE.getValue() * Constants.TICKS_PER_DEGREE), 0, Constants.TALON_TIME_OUT); //set the position to the top.
+        }
+        if (atBottom()) {
+            //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
+            wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT); //set the encoder position to the bottom
+        }
+    }
+
+    /**
+     * Check if the limit switch at the top of the elevator is pressed
+     *
+     * @return boolean of the sensor true or false
+     */
+    public boolean atTop() {
+        //return Math.abs(getHeight()) > Constants.ELEVATOR_MAX_HEIGHT;
+        if (!Robot.isRobotA) {
+            return wrist.getSensorCollection().isFwdLimitSwitchClosed();
+        }
+        return false;
+    }
+
+    /**
+     * Check if the limit switch at the bottom of the elevator is pressed
+     *
+     * @return boolean of the sensor true or false
+     */
+    public boolean atBottom() {
+        //return Math.abs(getHeight()) < 0.05;
+        if (!Robot.isRobotA) {
+            return wrist.getSensorCollection().isRevLimitSwitchClosed();
+        }
+        return false;
+    }
+
 
     public void setWristAngle(double angle) {
         setPointAngle = angle;
@@ -158,11 +200,13 @@ public class CargoIntake extends Subsystem {
     }
 
     public int getVelocity() {
+
         return wrist.getSelectedSensorVelocity();
     }
 
     @Override
     public void initDefaultCommand() {
+
         setDefaultCommand(new JoystickWristTurn());
     }
 
