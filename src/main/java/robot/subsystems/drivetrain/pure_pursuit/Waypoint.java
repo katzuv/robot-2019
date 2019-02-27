@@ -51,6 +51,9 @@ public class Waypoint extends Point {
         return "" + "distance=" + distance + ", \t speed=" + speed + ", \t curvature=" + curvature + ",\t x=" + x + ",\t  y=" + y + "\n";
     }
 
+    public Waypoint subtract(Waypoint waypoint) {
+        return new Waypoint(waypoint.getX() - x, waypoint.getY() - y, waypoint.getDistance() - distance, waypoint.getSpeed() - speed, waypoint.getCurvature() - curvature);
+    }
 
     public Waypoint copy() {
         return new Waypoint(this);

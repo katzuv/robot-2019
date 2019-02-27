@@ -106,6 +106,14 @@ public class Drivetrain extends Subsystem {
         }
     }
 
+    public void setLeftFeedForward(double velocity) {
+        leftMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) * 10);
+    }
+
+    public void setRightFeedForward(double velocity) {
+        rightMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) * 10);
+    }
+
     /**
      * @return the speed of the left side of the Drivetrain
      */
