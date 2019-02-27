@@ -208,46 +208,6 @@ public class PurePursue extends Command {
     }
 
     /**
-     * Calculates the curvature between the tangent of the robot and its lookahead point.
-     *
-     * @return The curvature from the tangent of the robot to the setpoint
-     * @author orel
-     * @author Paulo
-     */
-    private double curvatureCalculate() {
-        double x = distanceXLookahead();
-        double L = Point.distance(currentPoint, currentLookahead);
-        double radius = Math.pow(L, 2);
-        if (radius == 0) {
-            return Math.pow(10, 6);
-        } else {
-            return 2 * x / radius;
-        }
-    }
-
-    /**
-     * Calculates how far the robots tangent is from the lookahead point.
-     * This method is used to check whether the robot is left or right of the point aswell.
-     *
-     * @return The X axis distance (relative to robot) from the lookahead, right side being positive.
-     * @author orel
-     * @author Paulo
-     * @author Lior
-     */
-    private double distanceXLookahead() {
-        //Calculates the robot's line of view  as a line formula (a*x + b*y + c)/sqrt(a*a + b*b)
-        double angle = 90 - (drivetrain.getAngle() - initAngle);
-        angle = Math.toRadians(angle);
-        double a = -Math.tan(angle);
-        double c = Math.tan(angle) * currentPoint.getX() - currentPoint.getY();
-        double x = Math.abs(currentLookahead.getX() * a + currentLookahead.getY() + c) / Math.sqrt(a*a + 1);
-        double sign = Math.sin(angle) * (currentLookahead.getX() - currentPoint.getX()) - Math.cos(angle) * (currentLookahead.getY() - currentPoint.getY());
-        double side = Math.signum(sign);
-        return x * side;
-    }
-
-
-    /**
      * calculates the speed needed in the right wheel and makes so we can apply it straight to the right engine
      *
      * @param path current path
@@ -255,12 +215,7 @@ public class PurePursue extends Command {
      * @author lior
      */
     public double getRightSpeedVoltage(Path path) {
-        double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
-        lastRightSpeed = drivetrain.getRightSpeed();
-        return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
-                kA * (target_accel) +
-                kP * (closestPoint(path).getSpeed() - drivetrain.getRightSpeed());
-
+        return 0;
     }
 
     /**
@@ -271,11 +226,7 @@ public class PurePursue extends Command {
      * @author lior
      */
     public double getLeftSpeedVoltage(Path path) {
-        double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / 0.02;
-        lastLeftSpeed = drivetrain.getLeftSpeed();
-        return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
-                kA * (target_accel) +
-                kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());
+        return 0;
     }
     /**
      * call the timestamp on the robot
