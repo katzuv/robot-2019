@@ -64,14 +64,19 @@ public class Constants {
      */
     public enum ELEVATOR_STATES {
         SHIP_HATCH(0.278),
-        SHIP_CARGO(0.3),
+        SHIP_CARGO(0.63),
+        SHIP_CARGO_BACKWARD(0.78),
         LEVEL1_HATCH(0.278),
-        LEVEL1_CARGO(0.3),
+        LEVEL1_CARGO(0.2),//0.3
+        LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_HATCH(0.987),
-        LEVEL2_CARGO(0.85),
+        LEVEL2_CARGO(0.9),//0.85
+        LEVEL2_CARGO_BACKWARD(0.83),
         LEVEL3_HATCH(1.579),
-        LEVEL3_CARGO(1.48),
+        LEVEL3_CARGO(1.56),//1.48
+        LEVEL3_CARGO_BACKWARD(1.5),
         LOADING_STATION(0.278);
+
 
         private final double levelHeight;
 
