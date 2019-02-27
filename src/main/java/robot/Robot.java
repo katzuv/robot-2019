@@ -160,10 +160,11 @@ public class Robot extends TimedRobot {
         }
 
         //Create the path and points.
-        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
+        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.7, 3.65), 90,0.5);
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, 1.5, 1.4);
         PurePursue purePursue = new PurePursue(path,0.4,Constants.kP,Constants.kA,Constants.kV,false,false);
+        System.out.println(path);
         purePursue.start();
     }
 
