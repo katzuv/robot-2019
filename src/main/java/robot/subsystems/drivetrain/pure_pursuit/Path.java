@@ -445,6 +445,13 @@ public class Path {
                     )
             );
         }
+
+        //Add tangent after path for lookahead point
+        double angle = Math.atan2(getWaypoint(path.size()-1).getY() - getWaypoint(path.size()-2).getY(),
+                                  getWaypoint(path.size()-1).getX() - getWaypoint(path.size()-2).getX());
+        appendWaypoint(new Waypoint(getWaypoint(path.size()-1).getX() + 2 * Math.cos(angle),
+                                    getWaypoint(path.size()-1).getY() + 2 * Math.sin(angle),
+                                    2, 0, Math.pow(10, 6)));
     }
 
 
@@ -472,9 +479,11 @@ public class Path {
         /* if there is enough space between both points, give the distance to straighten out */
         if(Constants.END_SPACE+Constants.START_SPACE < Point.distance(end_position,start_position)) {
             generateLineFillPoints(new Waypoint(start_position),new Vector(0, Constants.START_SPACE).rotated(start_angle).add(start_position), newPathClass);
-            original_end_position = new Waypoint(end_position);
             start_position.addVector(new Vector(0, Constants.START_SPACE).rotated(start_angle));
-            end_position.subtractVector(new Vector(0, Constants.END_SPACE).rotated(end_angle));
+            if(Constants.END_SPACE!=0) {
+                original_end_position = new Waypoint(end_position);
+                end_position.subtractVector(new Vector(0, Constants.END_SPACE).rotated(end_angle));
+            }
         }
         /* Find both circle pairs, and choose which is right */
         radius += Constants.RADIUS_CLOSING;
