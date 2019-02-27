@@ -36,7 +36,9 @@ public class ElevatorCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        elevator.setHeight(height);
+        if (!hatchIntake.isGripperOpen() && !hatchIntake.isGripperPlateExtended())
+            elevator.setHeight(height);
+
     }
 
     // Called repeatedly when this Command is scheduled to run

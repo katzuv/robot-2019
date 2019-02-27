@@ -165,7 +165,6 @@ public class Robot extends TimedRobot {
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, 1.5, 1.4);
         PurePursue purePursue = new PurePursue(path,0.4,Constants.kP,Constants.kA,Constants.kV,false,false);
         purePursue.start();
-
     }
 
     /**
@@ -187,7 +186,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-//        cargoIntake.resetSensors(); // TODO: move to auto init. deal with all resets better
+        cargoIntake.resetSensors(); // TODO: move to auto init. deal with all resets better
 
         navx.reset();
         drivetrain.resetLocation();

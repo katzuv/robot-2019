@@ -72,7 +72,6 @@ public class PurePursue extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-
         if (!isFinished()){
 
             updatePoint();
@@ -81,7 +80,6 @@ public class PurePursue extends Command {
         SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
         SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
     }
-
     }
 
     // Make this return true when this Command no longer needs to run execute()

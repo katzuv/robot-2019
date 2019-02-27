@@ -41,7 +41,7 @@ public class WristTurn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(cargoIntake.getWristAngle() - angle) < 10;
+        return Math.abs(cargoIntake.getWristAngle() - angle) < 5;
     }
 
     // Called once after isFinished returns true
