@@ -189,12 +189,12 @@ public class Robot extends TimedRobot {
         }
 //        cargoIntake.resetSensors(); // TODO: move to auto init. deal with all resets better
 
-//        navx.reset();
-//        drivetrain.resetLocation();
-//        drivetrain.resetEncoders();
-//        elevator.resetEncoders();
-//        navx.reset();
-//        cargoIntake.resetSensors();
+        navx.reset();
+        drivetrain.resetLocation();
+        drivetrain.resetEncoders();
+        elevator.resetEncoders();
+        navx.reset();
+        cargoIntake.resetSensors();
         compressor.start();
     }
 

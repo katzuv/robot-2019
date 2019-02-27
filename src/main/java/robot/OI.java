@@ -87,7 +87,6 @@ public class OI {
         povl.toggleWhenPressed(new ElevatorCommand(0.78));
         povr.toggleWhenPressed(new ElevatorCommand(1.4));
 
-        ls.whenPressed(new GamePiecePickup());
 
         rb.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
         start.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));

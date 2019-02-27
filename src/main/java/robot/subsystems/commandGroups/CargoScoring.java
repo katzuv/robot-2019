@@ -26,10 +26,10 @@ public class CargoScoring extends CommandGroup {
 
         addSequential(new WristTurn(angle));
         addSequential(new ElevatorCommand(height));
-        addSequential(new WaitCommand(1));
+        addSequential(new WaitCommand(0.25));
         addSequential(new GripperControl(speed));
-        addSequential(new WaitCommand(0.4));
-        addSequential(new WristTurn(WRIST_ANGLES.INITIAL));
+//        addSequential(new WaitCommand(0.4));
+        addParallel(new WristTurn(WRIST_ANGLES.INITIAL));
         addSequential(new ElevatorCommand(0));
     }
 
