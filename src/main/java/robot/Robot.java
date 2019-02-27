@@ -165,7 +165,6 @@ public class Robot extends TimedRobot {
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         PurePursue purePursue = new PurePursue(path,0.4,Constants.kP,Constants.kA,Constants.kV,false,false);
         System.out.println(path);
-        purePursue.start();
     }
 
     /**
