@@ -226,6 +226,21 @@ public class PurePursue extends Command {
     public static double velocityByDistance(double targetSpeed, double acceleration, double startPos, double targetPos) {
         return Math.sqrt(targetSpeed * targetSpeed + 2 * Math.abs(acceleration) * Math.abs(targetPos - startPos));
     }
+
+    /**
+     * get the vector of movement based on the path
+     *
+     * @return
+     */
+    private Vector getVelocity() {
+        Vector errorVelocityVector = getDistanceVectorFromPath(path).normalize().multiply(velocityByDistance(0, Constants.errorAcceleration, 0, getDistanceVectorFromPath(path).magnitude()));
+        Vector driveVelocityVector = driveVelocityVector(path);
+
+        driveVelocityVector.normalize().multiply(Math.max(driveVelocityVector.magnitude(),
+                Math.pow(Constants.MAX_VELOCITY, 2) - Math.pow(errorVelocityVector.magnitude(), 2)
+        )); //make sure the forward velocity doesn't pass the forward velocity
+
+        return driveVelocityVector.add(errorVelocityVector);
     }
 
 
