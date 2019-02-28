@@ -30,6 +30,16 @@ public class LimelightDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        double angle = angleEntry.getDouble(0);
+        } else if (angle > 10) { // Need to rotate left
+            drivetrain.setSpeed(0.3, -0.3);
+        } else if (angle < -10) { // Need to rotate right
+            drivetrain.setSpeed(-0.3, 0.3);
+        } else {
+            // Robot is roughly aligned, so drive forward slowly
+            drivetrain.setSpeed(0.3, 0.3);
+        }
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
