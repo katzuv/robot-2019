@@ -230,11 +230,20 @@ public class PurePursue extends Command {
 
 
     /**
-     * @param edge1
-     * @param edge2
-     * @param target
+     * @param path
      * @return
      */
+    private double getDistanceFromPath(Path path) {
+        //there are two possible segments now, so we have to try the lowest distance between the two of them
+        double closestDistance = 100000000;
+        Waypoint closestPoint;
+        for (int i = 0; i < path.length() - 1; i++) {
+            if (Math.abs(distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint)) < Math.abs(closestDistance)) {
+                closestDistance = distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint);
+        }
+        }
+        return closestDistance;
+    }
 
     /**
      * returns the distance from the path as a vector, parallel to the segment
