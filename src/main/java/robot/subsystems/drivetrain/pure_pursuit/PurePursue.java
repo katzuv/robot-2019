@@ -235,6 +235,25 @@ public class PurePursue extends Command {
      * @param target
      * @return
      */
+
+    /**
+     * returns the distance from the path as a vector, parallel to the segment
+     * @param path
+     * @return vector, facing the segment
+     */
+    private Vector getDistanceVectorFromPath(Path path) {
+        //there are two possible segments now, so we have to try the lowest distance between the two of them
+        double closestDistance = 100000000;
+        int closestPointIndex = 0;
+        for (int i = 0; i < path.length() - 1; i++) {
+            if (Math.abs(distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint)) < Math.abs(closestDistance)) {
+                closestDistance = distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint);
+                closestPointIndex = i;
+        }
+        }
+        return new Vector(currentPoint, getPointOnSegment(path.getWaypoint(closestPointIndex), path.getWaypoint(closestPointIndex + 1), currentPoint));
+    }
+
     /**
      * gets the distance between a point and a segment.
      * if the point on the right of the segment, the number will be positive (right is checked by the start and end edge)
