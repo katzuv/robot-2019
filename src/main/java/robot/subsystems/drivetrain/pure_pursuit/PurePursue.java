@@ -17,7 +17,6 @@ import static robot.Robot.drivetrain;
 public class PurePursue extends Command {
     private Path path; //Command specific path to follow
     private Point currentPoint = new Point(0, 0); //holds X and Y variables for the robot
-    private Point currentLookahead; //holds X and Y variables for the Lookahead point
     private double lastLeftSpeed; //the last speed of the left encoder
     private double lastRightSpeed; //the last speed of the right encoder
     private double lastLeftEncoder; //the last distance of the left encoder
@@ -26,7 +25,7 @@ public class PurePursue extends Command {
     private double kP, kA, kV;
     private double lookaheadRadius;
     private boolean isRelative;
-    public  int direction; //whether the robot drives forward or backwards (-1 or 1)
+    public int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double initAngle;
     private double delta;
     private double lastTimestamp;
@@ -65,7 +64,6 @@ public class PurePursue extends Command {
 
         lastLeftEncoder = drivetrain.getLeftDistance()*direction;
         lastRightEncoder = drivetrain.getRightDistance()*direction;
-        currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drivetrain.getLeftSpeed();
         lastRightSpeed = direction * drivetrain.getRightSpeed();
     }
@@ -73,9 +71,7 @@ public class PurePursue extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if (!isFinished()){
-
             updatePoint();
-        updateLookaheadInPath(path);
         drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
         SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
         SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
@@ -166,27 +162,6 @@ public class PurePursue extends Command {
                 return p.multiply(opt2).add(point1);
         }
         return null;
-    }
-
-    /**
-     * Uses the 'FindNearPath' method on all segments to find the closest point.
-     * Checks for the next intersection thats index is higher than the current lookahead point.
-     *
-     * @return the Lookahead Point.
-     * @path the path the robot is driving on.
-     * @author paulo
-     */
-    private void updateLookaheadInPath(Path path) {
-        for (int i = 0; i < path.length() - 1; i++) {
-            Waypoint wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
-            if (wp != null && Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
-                {
-                    lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
-                    currentLookahead = wp;
-                    return;
-                }
-            }
-        }
     }
 
     /**
