@@ -54,8 +54,8 @@ public class Constants {
     static final double NOMINAL_OUT_REV = 0;
     static final double PEAK_OUT_REV = -1;
     /* Motion magic speed constants */
-    static final int MOTION_MAGIC_ACCELERATION = isRobotA ? (int) (1.7 * TICKS_PER_METER / 10) : (int) (1.7 * TICKS_PER_METER / 10);
-    static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (2 * TICKS_PER_METER / 10) : (int) (2 * TICKS_PER_METER / 10);
+    static final int MOTION_MAGIC_ACCELERATION = isRobotA ? (int) (3.2 * TICKS_PER_METER / 10) : (int) (1.7 * TICKS_PER_METER / 10);
+    static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (4 * TICKS_PER_METER / 10) : (int) (2 * TICKS_PER_METER / 10);
     public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
     /**
