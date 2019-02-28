@@ -76,6 +76,42 @@ public class Climb extends Subsystem {
     }
 
     /**
+     * Set the target height of the front left leg in meters.
+     *
+     * @param height    target height in meters.
+     * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
+     */
+    public void setLegFLHeight(double height, double legOffset, double secondLegOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
+        talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    }
+
+    /**
+     * Set the target height of the front right leg in meters.
+     *
+     * @param height    target height in meters.
+     * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
+     */
+    public void setLegFRHeight(double height, double legOffset, double secondLegOffset) {
+        talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    }
+
+    /**
+     * Set the target height of the back left leg in meters.
+     *
+     * @param height    target height in meters.
+     * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
+     */
+    public void setLegBLHeight(double height, double legOffset, double secondLegOffset) {
+        talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    }
+
+    /**
+     * @return height of the back right leg in meters
+     */
+    public void setLegBRHeight(double height, double legOffset, double secondLegOffset) {
+        talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    }
+    /**
      * @return height of the front left leg in meters
      */
     public double getLegFLHeight() {
