@@ -118,6 +118,18 @@ public class Climb extends Subsystem {
         talonBL.set(ControlMode.PercentOutput, speed);
     }
 
+    /**
+     * Check if all four legs are up, using the limit switches
+     *
+     * @return if all the legs touch their limit switches, return true.
+     */
+    public boolean areAllLegsUp(){
+        return talonBL.getSensorCollection().isRevLimitSwitchClosed() == !Constants.BACK_LEFT_REVERSE_HALL_REVERSED
+                && talonFL.getSensorCollection().isRevLimitSwitchClosed() == !Constants.FRONT_LEFT_REVERSE_HALL_REVERSED
+                && talonBR.getSensorCollection().isRevLimitSwitchClosed() == !Constants.BACK_RIGHT_REVERSE_HALL_REVERSED
+                && talonFR.getSensorCollection().isRevLimitSwitchClosed() == !Constants.FRONT_RIGHT_REVERSE_HALL_REVERSED;
+    }
+
     public void setLegBRSpeed(double speed){
         talonBR.set(ControlMode.PercentOutput, speed);
     }
