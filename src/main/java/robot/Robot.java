@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
+    public static final NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
 
 
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
         final DriverStation.MatchType matchType = DriverStation.getInstance().getMatchType();
         if (DriverStation.getInstance().isFMSAttached() && matchType != DriverStation.MatchType.None) {
             final int matchNumber = DriverStation.getInstance().getMatchNumber();
-            NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
+            NetworkTable visionTable = networkTableInstance.getTable("vision");
             NetworkTableEntry matchData = visionTable.getEntry("match data");
             if (matchType == DriverStation.MatchType.Qualification) {
                 matchData.setString("Q" + matchNumber);
