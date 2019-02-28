@@ -565,3 +565,9 @@ gradle-app.setting
 *.xml
 
 \.idea/codeStyles/codeStyleConfig\.xml
+
+\.classpath
+
+\.project
+
+\.settings/org\.eclipse\.buildship\.core\.prefs
