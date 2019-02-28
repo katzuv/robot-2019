@@ -94,6 +94,7 @@ public class Robot extends TimedRobot {
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
+        SmartDashboard.putBoolean("Robot A", isRobotA);
         navx.reset();
         elevator.resetEncoders();
         climb.resetEncoders();
@@ -109,6 +110,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        addToShuffleboard();
 
     }
 
@@ -208,5 +210,19 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
+    }
+
+
+    public void addToShuffleboard() {
+        SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
+        SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
+        SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
+        SmartDashboard.putNumber("Drivetrain: left distance", drivetrain.getLeftDistance());
+        SmartDashboard.putNumber("Drivetrain: right distance", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("Cargo intake: proximity value", cargoIntake.getProximityVoltage());
+        SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
+        SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
+        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
+
     }
 }

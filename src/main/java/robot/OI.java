@@ -7,6 +7,7 @@
 
 package robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -17,6 +18,7 @@ import robot.subsystems.climb.commands.RiseToHeight;
 import robot.subsystems.climb.commands.RiseToHeightEncoders;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
@@ -26,6 +28,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
+import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 
 /**
@@ -34,9 +37,7 @@ import robot.subsystems.hatch_intake.commands.GripperTransportation;
  */
 public class OI {
 
-    //// CREATING BUTTONS
-
-    public static final double WRIST_ROTATE_RATE = 0.1;
+    public static final double WRIST_ROTATE_RATE = 5;
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
@@ -63,10 +64,16 @@ public class OI {
     public static Button start = new JoystickButton(xbox, 8);
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
+
+    public static Button povu = new POVButton(xbox, 0);
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
+    public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
+    public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
 
+    public static Button lsLeft = new JoystickButton(leftStick, 4);
+    public static Button lsRight = new JoystickButton(leftStick, 5);
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsBottom = new JoystickButton(leftStick, 2);
     public static int left_x_stick = 0;
@@ -78,11 +85,10 @@ public class OI {
 
 
     public OI() {
-        povd.whenPressed(new ElevatorCommand(0));
-        povl.whenPressed(new ElevatorCommand(0.78));
-        povr.whenPressed(new ElevatorCommand(1.4));
-        rb.whileHeld(new GripperControl(0.9));
-        start.whileHeld(new GripperControl(-0.9));
+        povu.toggleWhenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        povd.toggleWhenPressed(new ElevatorCommand(0));
+        povl.toggleWhenPressed(new ElevatorCommand(0.78));
+        povr.toggleWhenPressed(new ElevatorCommand(1.4));
 
         x.whenPressed(new RiseToHeightEncoders(-0.1));
         a.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.LEVEL2));
@@ -93,7 +99,6 @@ public class OI {
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
     }
-
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.
