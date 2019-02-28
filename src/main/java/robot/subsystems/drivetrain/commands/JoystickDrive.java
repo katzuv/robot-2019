@@ -9,7 +9,9 @@ package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
+import robot.subsystems.climb.Constants;
 
+import static robot.Robot.climb;
 import static robot.Robot.drivetrain;
 
 public class JoystickDrive extends Command {
@@ -66,7 +68,14 @@ public class JoystickDrive extends Command {
             default:
                 throw new IllegalArgumentException("Number must be 1-4");
         }
-        drivetrain.setSpeed(leftOutput, rightOutput);
+        if(Robot.climb.getLegBRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
+                Robot.climb.getLegBLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH) //TODO: check if its back right or front right
+        {
+            climb.setWheelSpeed((leftOutput + rightOutput) / 2);
+            drivetrain.setVelocity(climb.getWheelVelocity(), climb.getWheelVelocity());
+        }
+        else
+            drivetrain.setSpeed(leftOutput, rightOutput);
     }
 
     private double bell(double x, double c) {
