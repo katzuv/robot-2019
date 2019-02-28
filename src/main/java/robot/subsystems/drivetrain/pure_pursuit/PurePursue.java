@@ -228,6 +228,29 @@ public class PurePursue extends Command {
     }
     }
 
+
+    /**
+     * @param edge1
+     * @param edge2
+     * @param target
+     * @return
+     */
+    /**
+     * gets the distance between a point and a segment.
+     * if the point on the right of the segment, the number will be positive (right is checked by the start and end edge)
+     * @param edge1 starting edge of the segment
+     * @param edge2 final edge of the segment
+     * @param target reference point, calculating the distance
+     * @return distance from the segment in meters.
+     */
+    public double distBetweenPointAndLine(Point edge1, Point edge2, Point target) {
+        Vector firstVector = new Vector(edge1, edge2); //TODO: might not work
+        Vector secondVector = new Vector(edge1, target);
+
+        double a = Math.signum(firstVector.angle() - secondVector.angle());
+        return a * Point.distance(target, getPointOnSegment(edge1, edge2, target)); //TODO: needs testing
+    }
+
     /**
      * find the point on a line which is closest to a point.
      * @param edge1 first edge of the segment
