@@ -51,29 +51,28 @@ public class PurePursue extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if(isRelative) {
+        if (isRelative) {
             initAngle = drivetrain.getAngle() + (direction == -1 ? 180 : 0);
             currentPoint = new Point(0, 0);
-        }
-        else {
+        } else {
             initAngle = 0;
             currentPoint = new Point(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
         }
 
-        lastLeftEncoder = drivetrain.getLeftDistance()*direction;
-        lastRightEncoder = drivetrain.getRightDistance()*direction;
+        lastLeftEncoder = drivetrain.getLeftDistance() * direction;
+        lastRightEncoder = drivetrain.getRightDistance() * direction;
         lastLeftSpeed = direction * drivetrain.getLeftSpeed();
         lastRightSpeed = direction * drivetrain.getRightSpeed();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (!isFinished()){
+        if (!isFinished()) {
             updatePoint();
-        drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
-        SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
-        SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
-    }
+            drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
+            SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
+            SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -102,15 +101,15 @@ public class PurePursue extends Command {
      */
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
-        double distance = ((drivetrain.getLeftDistance()*direction - lastLeftEncoder) + (drivetrain.getRightDistance()*direction - lastRightEncoder)) / 2;
+        double distance = ((drivetrain.getLeftDistance() * direction - lastLeftEncoder) + (drivetrain.getRightDistance() * direction - lastRightEncoder)) / 2;
 
         //update the x, y coordinates based on the robot angle and the distance the robot moved.
         currentPoint.setX(currentPoint.getX() + direction * distance * Math.sin((drivetrain.getAngle() - initAngle) * (Math.PI / 180.0)));
         currentPoint.setY(currentPoint.getY() + direction * distance * Math.cos((drivetrain.getAngle() - initAngle) * (Math.PI / 180.0)));
 
         //updates values for next run
-        lastLeftEncoder = drivetrain.getLeftDistance()*direction;
-        lastRightEncoder = drivetrain.getRightDistance()*direction;
+        lastLeftEncoder = drivetrain.getLeftDistance() * direction;
+        lastRightEncoder = drivetrain.getRightDistance() * direction;
         drivetrain.currentLocation.setX(currentPoint.getX());
         drivetrain.currentLocation.setY(currentPoint.getY());
     }
@@ -201,6 +200,11 @@ public class PurePursue extends Command {
     public double getLeftSpeedVoltage(Path path) {
         return 0;
     }
+
+    public double getLeftVelocity() {
+        return 0;
+    }
+
     /**
      * call the timestamp on the robot
      *
@@ -217,6 +221,7 @@ public class PurePursue extends Command {
 
     /**
      * Calculate the velocity needed to get to a target velocity, at an x distance away
+     *
      * @param targetSpeed
      * @param acceleration
      * @param startPos
@@ -255,7 +260,7 @@ public class PurePursue extends Command {
         for (int i = 0; i < path.length() - 1; i++) {
             if (Math.abs(distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint)) < Math.abs(closestDistance)) {
                 closestDistance = distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint);
-        }
+            }
         }
         return closestDistance;
     }
@@ -273,7 +278,7 @@ public class PurePursue extends Command {
             if (Math.abs(distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint)) < Math.abs(closestDistance)) {
                 closestDistance = distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint);
                 closestPointIndex = i;
-        }
+            }
         }
         return new Vector(currentPoint, getPointOnSegment(path.getWaypoint(closestPointIndex), path.getWaypoint(closestPointIndex + 1), currentPoint));
     }
@@ -311,7 +316,7 @@ public class PurePursue extends Command {
         double x = (p.getY() - n + (p.getX() / slope)) / (slope + 1 / slope); // TODO: ill explain this i promise
         double y = slope * x + n;
         return new Point(x, y);
-}
+    }
 
     /**
      * finds the nearest point on the path, and gets the velocity from the waypoints at the location
