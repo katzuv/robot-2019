@@ -11,18 +11,14 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.command_groups.EndGame;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.commands.EndGame;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
@@ -44,7 +40,6 @@ public class Robot extends TimedRobot {
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
-    public static Timer currentTime = new Timer();
 
     public static OI m_oi;
     public final static boolean isRobotA = true;
@@ -91,7 +86,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
-        currentTime.reset();
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
@@ -199,6 +193,9 @@ public class Robot extends TimedRobot {
         navx.reset();
         cargoIntake.resetSensors();
         compressor.start();
+
+        EndGame end = new EndGame(1);
+        end.start();
     }
 
     /**
@@ -208,10 +205,6 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 
-        if (Timer.getMatchTime() <= 3 && climb.getLegFLHeight <= 0 && climb.getLegBLHeight <= 0) {
-            EndGame endGame = new EndGame();
-            endGame.start();
-        }
     }
 
     /**
@@ -223,6 +216,7 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleboard() {
+        SmartDashboard.putNumber("Timer", Timer.getMatchTime());
         SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
         SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
         SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
