@@ -30,7 +30,9 @@ import robot.subsystems.hatch_intake.commands.GripperTransportation;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-    public static final double WRIST_ROTATE_RATE = 5;
+
+    public static final double WRIST_ROTATE_RATE = 20;
+
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
