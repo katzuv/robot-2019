@@ -215,7 +215,16 @@ public class PurePursue extends Command {
         lastTimestamp += delta;
     }
 
-    public double velocityByDistance(double startSpeed, double a, double startPos, double x) {
-        return Math.sqrt(startSpeed * startSpeed + 2 * a * (x - startPos));
+    /**
+     * Calculate the velocity needed to get to a target velocity, at an x distance away
+     * @param targetSpeed
+     * @param acceleration
+     * @param startPos
+     * @param targetPos
+     * @return
+     */
+    public static double velocityByDistance(double targetSpeed, double acceleration, double startPos, double targetPos) {
+        return Math.sqrt(targetSpeed * targetSpeed + 2 * Math.abs(acceleration) * Math.abs(targetPos - startPos));
+    }
     }
 }
