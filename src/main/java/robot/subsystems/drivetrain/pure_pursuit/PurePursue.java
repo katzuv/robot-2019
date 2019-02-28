@@ -178,7 +178,13 @@ public class PurePursue extends Command {
      */
     private void updateLookaheadInPath(Path path) {
         for (int i = 0; i < path.length() - 1; i++) {
-            Waypoint wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
+            Waypoint wp;
+            if(i==path.length()-2) {
+                Waypoint farPoint = new Vector(path.getWaypoint(i), path.getWaypoint(i+1) ).multiply(10).add(path.getWaypoint(i));
+                wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), farPoint);
+            }
+            else
+                wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
             if (wp != null && Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                 {
                     lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();
