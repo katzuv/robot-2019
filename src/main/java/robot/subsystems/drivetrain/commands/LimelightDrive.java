@@ -1,17 +1,27 @@
 package robot.subsystems.drivetrain.commands;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
 
 import static robot.Robot.drivetrain;
+import static robot.Robot.networkTableInstance;
+
 /**
  *
  */
 public class LimelightDrive extends Command {
 
+    private NetworkTableEntry distanceEntry;
+    private NetworkTableEntry angleEntry;
     public LimelightDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(drivetrain);
+
+        NetworkTable visionTable = networkTableInstance.getTable("vision");
+        distanceEntry = visionTable.getEntry("tape_distance");
+        angleEntry = visionTable.getEntry("tape_angle");
     }
 
     // Called just before this Command runs the first time
