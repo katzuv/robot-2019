@@ -127,16 +127,16 @@ public class OI {
         |||||||
 
          */
-        lsBottom.toggleWhenPressed(new CargoScoring(0, true));
-        lsLeft.toggleWhenPressed(new CargoScoring(1, true));
-        lsMid.toggleWhenPressed(new CargoScoring(2, true));
-        lsRight.toggleWhenPressed(new CargoScoring(3, true));
+        lsBottom.whenPressed(new CargoScoring(0, true));
+        lsLeft.whenPressed(new CargoScoring(1, true));
+        lsMid.whenPressed(new CargoScoring(2, true));
+        lsRight.whenPressed(new CargoScoring(3, true));
 
         // Score cargo
-        rsBottom.toggleWhenPressed(new CargoScoring(0, false));
-        rsLeft.toggleWhenPressed(new CargoScoring(1, false));
-        rsMid.toggleWhenPressed(new CargoScoring(2, false));
-        rsRight.toggleWhenPressed(new CargoScoring(3, false));
+        rsBottom.whenPressed(new CargoScoring(0, false));
+        rsLeft.whenPressed(new CargoScoring(1, false));
+        rsMid.whenPressed(new CargoScoring(2, false));
+        rsRight.whenPressed(new CargoScoring(3, false));
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
