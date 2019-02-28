@@ -196,4 +196,15 @@ public class Drivetrain extends Subsystem {
         currentLocation.setX(0);
         currentLocation.setY(0);
     }
+
+    /**
+     * Set a distance to drive for both sides.
+     *
+     * @param leftDistance  distance for the left side to drive
+     * @param rightDistance distance for the right side to drive
+     */
+    public void setDistance(double leftDistance, double rightDistance) {
+        leftMaster.set(ControlMode.Position, leftDistance);
+        rightMaster.set(ControlMode.Position, rightDistance);
+    }
 }
