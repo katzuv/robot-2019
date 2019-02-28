@@ -153,7 +153,7 @@ public class CargoIntake extends Subsystem {
     }
 
     public void setWristAngle(double angle) {
-        setPointAngle = angle;
+
         cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
     }
 
