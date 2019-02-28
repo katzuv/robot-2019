@@ -19,15 +19,28 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
-import robot.subsystems.drivetrain.ramsete.DrivePath;
 import robot.subsystems.drivetrain.ramsete.DrivePathNew;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -147,8 +160,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         navx.reset();
-        drivetrain.resetLocation();
         drivetrain.resetEncoders();
+        drivetrain.resetLocation();
         elevator.resetEncoders();
         visionTable.getEntry("direction").setString(drivetrain.isDrivingForward() ? "front" : "back");
 
@@ -169,7 +182,35 @@ public class Robot extends TimedRobot {
 //        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, false, false);
 //        System.out.println(path);
 //        pursue.start();
-        new DrivePathNew().start();
+
+        List<Pose2d> list = new ArrayList<>();
+//        list.add(new Pose2d(LengthKt.getMeter(0), LengthKt.getMeter(0), new Rotation2d(0)));
+//        list.add(new Pose2d(LengthKt.getMeter(1), LengthKt.getMeter(0), new Rotation2d(0)));
+//        Path path = new Path(new Point(0, 0), 0, new Point(-1, 2), -90, 0.55);
+//        for (int i = 0; i < path.length() - 1; i++) {
+//            Waypoint waypoint = path.getWaypoint(i);
+//            Waypoint nextPoint = path.getWaypoint(i + 1);
+//            Rotation2d angle = Rotation2dKt.getRadian(Math.PI / 2 - Math.atan2(nextPoint.getY() - waypoint.getY(), nextPoint.getX() - waypoint.getX()));
+//            list.add(new Pose2d(LengthKt.getMeter(waypoint.getY()), LengthKt.getMeter(waypoint.getX()), angle));
+//        }
+//        list.add(new Pose2d(LengthKt.getMeter(path.getWaypoint(path.length() - 1).getY()), LengthKt.getMeter(path.getWaypoint(path.length() - 1).getX()), Rotation2dKt.getDegree(-90)));
+        list.add(new Pose2d(LengthKt.getFeet(5.595), LengthKt.getFeet(9.704), Rotation2dKt.getDegree(0)));
+        list.add(new Pose2d(LengthKt.getFeet(11.881), LengthKt.getFeet(6.913), Rotation2dKt.getDegree(-55.0)));
+        list.add(new Pose2d(LengthKt.getFeet(16.144), LengthKt.getFeet(2.536), Rotation2dKt.getDegree(-34.0)));
+
+        TimedTrajectory<Pose2dWithCurvature> trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
+                .generateTrajectory(
+                        list,
+                        Collections.emptyList(),
+                        VelocityKt.getVelocity(Length.Companion.getKZero()),
+                        VelocityKt.getVelocity(Length.Companion.getKZero()),
+                        VelocityKt.getVelocity(LengthKt.getMeter(3)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(3)),
+                        false,
+                        true
+                );
+
+        new DrivePathNew(trajectory).start();
     }
 
     /**
@@ -228,7 +269,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Cargo intake: proximity value", cargoIntake.getProximityVoltage());
         SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
         SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
-        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
+        Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
+        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
 
     }
 }

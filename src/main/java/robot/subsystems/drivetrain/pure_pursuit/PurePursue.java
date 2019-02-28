@@ -60,7 +60,7 @@ public class PurePursue extends Command {
         }
         else {
             initAngle = 0;
-            currentPoint = new Point(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
+            currentPoint = new Point(drivetrain.getCurrentLocation().getX(), drivetrain.getCurrentLocation().getY());
         }
 
         lastLeftEncoder = drivetrain.getLeftDistance()*direction;
@@ -77,16 +77,16 @@ public class PurePursue extends Command {
             updatePoint();
         updateLookaheadInPath(path);
         drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
-        SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
-        SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
+        SmartDashboard.putNumber("x", drivetrain.getCurrentLocation().x);
+        SmartDashboard.putNumber("y", drivetrain.getCurrentLocation().y);
     }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         SmartDashboard.putString("test: Final point?", path.getWaypoint(path.length() - 2).toString());
-        boolean closeToLast = (Math.abs(drivetrain.currentLocation.getX() - path.getWaypoint(path.length() - 1).getX()) <= 0.03 &&
-                Math.abs(drivetrain.currentLocation.getY() - path.getWaypoint(path.length() - 2).getY()) <= 0.03);
+        boolean closeToLast = (Math.abs(drivetrain.getCurrentLocation().getX() - path.getWaypoint(path.length() - 1).getX()) <= 0.03 &&
+                Math.abs(drivetrain.getCurrentLocation().getY() - path.getWaypoint(path.length() - 2).getY()) <= 0.03);
         return (closeToLast &&
                 drivetrain.getLeftSpeed() < Constants.STOP_SPEED_THRESH &&
                 drivetrain.getRightSpeed() < Constants.STOP_SPEED_THRESH);
@@ -117,8 +117,8 @@ public class PurePursue extends Command {
         //updates values for next run
         lastLeftEncoder = drivetrain.getLeftDistance()*direction;
         lastRightEncoder = drivetrain.getRightDistance()*direction;
-        drivetrain.currentLocation.setX(currentPoint.getX());
-        drivetrain.currentLocation.setY(currentPoint.getY());
+        drivetrain.getCurrentLocation().setX(currentPoint.getX());
+        drivetrain.getCurrentLocation().setY(currentPoint.getY());
     }
 
 

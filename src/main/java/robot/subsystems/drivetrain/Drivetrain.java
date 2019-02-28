@@ -7,10 +7,23 @@
 
 package robot.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.ghrobotics.lib.localization.Localization;
+import org.ghrobotics.lib.localization.TankEncoderLocalization;
+import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
+import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
 import robot.subsystems.drivetrain.pure_pursuit.Point;
@@ -26,8 +39,14 @@ public class Drivetrain extends Subsystem {
     private final TalonSRX rightMaster = new TalonSRX(Ports.rightMaster);
     private final VictorSPX rightSlave1 = new VictorSPX(Ports.rightSlave1);
     private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
-    public Point currentLocation = new Point(0, 0);
 
+    public Localization localization = new TankEncoderLocalization(
+            () -> Rotation2dKt.getDegree(getAngle()),
+            () -> LengthKt.getMeter(getLeftDistance()),
+            () -> LengthKt.getMeter(getRightDistance())
+    );
+
+    public TrajectoryTracker trajectoryTracker = new RamseteTracker(2.0, 0.7);
 
     public Drivetrain() {
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
@@ -81,7 +100,7 @@ public class Drivetrain extends Subsystem {
      * @param rightSpeed Speed for the right side
      */
     public void setSpeed(double leftSpeed, double rightSpeed) {
-        Robot.visionTable.getEntry("driving_direction").setString(leftSpeed+rightSpeed > 0 ? "front" : "back");
+        Robot.visionTable.getEntry("driving_direction").setString(leftSpeed + rightSpeed > 0 ? "front" : "back");
         setLeftSpeed(leftSpeed);
         setRightSpeed(rightSpeed);
     }
@@ -103,37 +122,36 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
-        ;
         if (speed <= 1 && speed >= -1) {
             rightMaster.set(ControlMode.PercentOutput, speed);
         }
     }
 
     public void setLeftFeedForward(double velocity) {
-        leftMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) * 10);
+        leftMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) / 10.0);
     }
 
     public void setRightFeedForward(double velocity) {
-        rightMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) * 10);
+        rightMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) / 10.0);
     }
 
     /**
      * @return the speed of the left side of the Drivetrain
      */
     public double getLeftSpeed() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0));
+        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0) * 10);
     }
 
     /**
      * @return the speed of the right side of the Drivetrain
      */
     public double getRightSpeed() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0));
+        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0) * 10);
     }
 
     /**
      * @return The distance driven on the left side of the robot since the last
-     *         reset
+     * reset
      */
     public double getLeftDistance() {
         return convertTicksToDistance(leftMaster.getSelectedSensorPosition(0));
@@ -141,15 +159,17 @@ public class Drivetrain extends Subsystem {
 
     /**
      * @return The distance driven on the right side of the robot since the last
-     *         reset
+     * reset
      */
     public double getRightDistance() {
         return convertTicksToDistance(rightMaster.getSelectedSensorPosition(0));
     }
 
     public void resetEncoders() {
+        Pose2d robotLocationBeforeReset = localization.getRobotPosition();
         leftMaster.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
         rightMaster.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
+        localization.reset(robotLocationBeforeReset);
     }
 
     /**
@@ -172,13 +192,17 @@ public class Drivetrain extends Subsystem {
         return ticks / Constants.TICKS_PER_METER;
     }
 
+    public Pose2d getRobotPosition() {
+        return localization.getRobotPosition();
+    }
+
     /**
      * returns the robot NAVX yaw angle
      *
      * @return navx yaw angle
      */
     public double getAngle() {
-        return Robot.navx.getAngle();
+        return -Robot.navx.getAngle();
     }
 
     /**
@@ -208,7 +232,16 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        currentLocation.setX(0);
-        currentLocation.setY(0);
+        localization.reset(new Pose2d(Length.Companion.getKZero(), Length.Companion.getKZero(), Rotation2d.Companion.getKZero()));
     }
+
+    @Override
+    public void periodic() {
+        localization.update();
+    }
+
+    public Point getCurrentLocation() {
+        return new Point(localization.getRobotPosition().getTranslation().getY().getMeter(), localization.getRobotPosition().getTranslation().getX().getMeter());
+    }
+
 }
