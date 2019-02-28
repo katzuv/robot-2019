@@ -25,6 +25,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.DrivePath;
+import robot.subsystems.drivetrain.ramsete.DrivePathNew;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
 
@@ -165,7 +166,7 @@ public class Robot extends TimedRobot {
 //        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, false, false);
 //        System.out.println(path);
 //        pursue.start();
-        new DrivePath(path).start();
+        new DrivePathNew().start();
     }
 
     /**

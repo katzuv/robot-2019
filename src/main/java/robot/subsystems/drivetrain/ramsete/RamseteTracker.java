@@ -8,6 +8,7 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Time;
+import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
@@ -93,20 +94,25 @@ public final class RamseteTracker {
         list.add(new Pose2d(LengthKt.getMeter(1), LengthKt.getMeter(0), new Rotation2d(0)));
         Trajectory trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
                 .generateTrajectory(list, new ArrayList<>(), new Velocity(0.4, new Length(0.4)), new Velocity(0.2, new Length(0.2)), new Velocity(1.2, new Length(1.2)), new Acceleration<>(1, new Length(1)), false, true);
-        org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker ramseteTracker = new org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker(2, 0.7);
+        //Trajectory trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().getBaseline();
+        org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker ramseteTracker = new org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker(2, 0.85);
 
         ramseteTracker.reset(trajectory);
 
         double x = 0;
         double y = 0;
 
-        while (x < 1) {
-            TrajectoryTrackerOutput output = ramseteTracker.nextState(new Pose2d(new Length(x), new Length(y), new Rotation2d(0)), new Time(System.currentTimeMillis()));
+        double currentTime = 0;
+
+        while (!ramseteTracker.isFinished()) {
+            Pose2d robotState = ramseteTracker.getReferencePoint().getState().getState().getPose().transformBy(new Pose2d(LengthKt.getMeter(0.1), new Length(0), new Rotation2d(0)));
+            TrajectoryTrackerOutput output = ramseteTracker.nextState(robotState, TimeUnitsKt.getSecond(currentTime));
             double linearVelocity = output.getLinearVelocity().getValue();
             double angularVelocity = -1 * output.getAngularVelocity().getValue();
             double leftVelocity = linearVelocity - (angularVelocity * Constants.ROBOT_WIDTH / 2);
             double rightVelocity = linearVelocity + (angularVelocity * Constants.ROBOT_WIDTH / 2);
             System.out.println("Left: " + leftVelocity + " | Right: " + rightVelocity);
+            currentTime += 0.02;
             x += 0.1;
             y += 0.1;
         }
