@@ -84,6 +84,11 @@ public class Drivetrain extends Subsystem {
         setRightSpeed(rightSpeed);
     }
 
+    public void setVelocity(double leftVelocity, double rightVelocity){
+        setLeftVelocity(leftVelocity);
+        setRightVelocity(rightVelocity);
+    }
+
     /**
      * Set the speed for the left side.
      *
@@ -104,6 +109,25 @@ public class Drivetrain extends Subsystem {
         if (speed <= 1 && speed >= -1) {
             rightMaster.set(ControlMode.PercentOutput, speed);
         }
+    }
+
+    /**
+     * Set the speed for the left side.
+     *
+     * @param velocity speed for the motors of the left side
+     */
+    private void setLeftVelocity(double velocity) {
+        leftMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity)/10.);
+
+    }
+
+    /**
+     * Set the speed for the right side.
+     *
+     * @param velocity speed for the motors of the right side
+     */
+    private void setRightVelocity(double velocity) {
+        rightMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity)/10.);
     }
 
     /**
