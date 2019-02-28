@@ -2,6 +2,7 @@ package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import static robot.Robot.drivetrain;
 /**
  *
  */
@@ -10,6 +11,7 @@ public class LimelightDrive extends Command {
     public LimelightDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+        requires(drivetrain);
     }
 
     // Called just before this Command runs the first time
