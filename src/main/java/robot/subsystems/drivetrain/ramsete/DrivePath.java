@@ -5,8 +5,6 @@ import robot.Robot;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
-import java.util.Arrays;
-
 import static robot.Robot.drivetrain;
 
 /**
@@ -39,16 +37,17 @@ public class DrivePath extends Command {
         Waypoint nextPoint;
         nextPoint = new Waypoint(0, 0, 0, 0, 0);
 
-        double[] speeds = tracker.calculateState(RamseteTracker.waypoints().get(index), getCurrentPoint(), nextPoint);
-        System.out.println(Arrays.toString(speeds));
+        double[] speeds = tracker.calculateState(RamseteTracker.waypoints().get(0), getCurrentPoint(), nextPoint);
+//        System.out.println(Arrays.toString(speeds));
         Robot.drivetrain.setLeftFeedForward(speeds[0]);
         Robot.drivetrain.setRightFeedForward(speeds[1]);
-        index++;
+//        index++;
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return index >= RamseteTracker.waypoints().size();
+        return false;
+//        return index >= RamseteTracker.waypoints().size();
     }
 
     // Called once after isFinished returns true
