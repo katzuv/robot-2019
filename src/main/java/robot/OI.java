@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.drivetrain.commands.GamePiecePickup;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
@@ -28,7 +29,6 @@ import robot.subsystems.hatch_intake.commands.GripperTransportation;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-        middleButtom.whenPressed(new GamePiecePickup());
 
     public static final double WRIST_ROTATE_RATE = 5;
     /**
@@ -118,6 +118,7 @@ public class OI {
                 false,
                 false));
 
+        ls.whenPressed(new GamePiecePickup());
 
     }
 
