@@ -334,5 +334,4 @@ public class PurePursue extends Command {
         }
         return new Vector(path.getWaypoint(closestPointIndex), path.getWaypoint(closestPointIndex + 1)).normalize().multiply(path.getWaypoint(closestPointIndex + 1).getSpeed());
     }
-
 }
