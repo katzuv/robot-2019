@@ -4,9 +4,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import robot.subsystems.drivetrain.pure_pursuit.*;
-
-
 import static robot.Robot.drivetrain;
 
 /**
@@ -15,6 +12,7 @@ import static robot.Robot.drivetrain;
  * https://www.chiefdelphi.com/media/papers/download/5533
  */
 public class PurePursue extends Command {
+    public int direction; //whether the robot drives forward or backwards (-1 or 1)
     private Path path; //Command specific path to follow
     private Point currentPoint = new Point(0, 0); //holds X and Y variables for the robot
     private double lastLeftSpeed; //the last speed of the left encoder
@@ -25,10 +23,10 @@ public class PurePursue extends Command {
     private double kP, kA, kV;
     private double lookaheadRadius;
     private boolean isRelative;
-    public int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double initAngle;
     private double delta;
     private double lastTimestamp;
+
     /**
      * An implementation of these command class. for more information see documentation on the wpilib command class.
      *
