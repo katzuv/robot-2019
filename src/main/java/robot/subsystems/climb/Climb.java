@@ -26,7 +26,7 @@ public class Climb extends Subsystem {
     private TalonSRX talonBR = new TalonSRX(Ports.backRightMotor);
     private TalonSRX wheelDrive = new TalonSRX(Ports.wheelMotor);
 
-    public Climb() { //TODO: add four encoders to each of the motors just as in the elevator code.
+    public Climb() {
         configMotorMovement(talonFL, Constants.FRONT_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
         configMotorMovement(talonFR, Constants.FRONT_RIGHT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
         configMotorMovement(talonBL, Constants.BACK_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
@@ -216,6 +216,7 @@ public class Climb extends Subsystem {
     //TODO: move this enum to the Constants class.
     public enum HAB_LEG_HEIGHTS { //TODO:refactor all these values.
         GROUND(0.05),
+        TEST(0.1),
         LEVEL2(Constants.LEVEL_TWO_LEG_LENGTH),
         LEVEL3(Constants.LEVEL_THREE_LEG_LENGTH);
 
