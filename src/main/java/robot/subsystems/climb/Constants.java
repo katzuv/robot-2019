@@ -17,7 +17,7 @@ public class Constants {
 
     static final double TICKS_PER_METER = isRobotA ? 16667 : 16667; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
-    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{1, 0, 0, 1, 0} : new double[]{0, 0, 0, 0, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
+    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{0.3, 0, 0, 0, 0} : new double[]{0, 0, 0, 0, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
 
     //Reverse motor directions
     static final boolean FRONT_LEFT_TALON_REVERSE = isRobotA ? true : true;
