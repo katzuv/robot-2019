@@ -31,7 +31,6 @@ import robot.subsystems.hatch_intake.commands.PlaceHatch;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
     public static final double WRIST_ROTATE_RATE = 5;
     /**
      * The rate at which the lift will goes down with the xbox joystick.
@@ -149,6 +148,7 @@ public class OI {
     // Run the command while the button is being held down and interrupt it once
     // the button is released.
     // button.whileHeld(new ExampleCommand());
+
     // Start the command when the button is released and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());

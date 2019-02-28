@@ -26,7 +26,7 @@ public class PurePursue extends Command {
     private double kP, kA, kV;
     private double lookaheadRadius;
     private boolean isRelative;
-    public static int direction; //whether the robot drives forward or backwards (-1 or 1)
+    public  int direction; //whether the robot drives forward or backwards (-1 or 1)
     private double initAngle;
     private double delta;
     private double lastTimestamp;
@@ -63,8 +63,8 @@ public class PurePursue extends Command {
             currentPoint = new Point(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
         }
 
-        lastLeftEncoder = drivetrain.getLeftDistance();
-        lastRightEncoder = drivetrain.getRightDistance();
+        lastLeftEncoder = drivetrain.getLeftDistance()*direction;
+        lastRightEncoder = drivetrain.getRightDistance()*direction;
         currentLookahead = path.getWaypoint(0);
         lastLeftSpeed = direction * drivetrain.getLeftSpeed();
         lastRightSpeed = direction * drivetrain.getRightSpeed();
@@ -72,16 +72,21 @@ public class PurePursue extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        updatePoint();
+        if (!isFinished()){
+
+            updatePoint();
         updateLookaheadInPath(path);
-        drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+        drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
+        SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
+        SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
+    }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-//        return false;
-        boolean closeToLast = (drivetrain.currentLocation.getX() >= path.getWaypoint(path.length() - 1).getX() - 0.1 &&
-                drivetrain.currentLocation.getY() >= path.getWaypoint(path.length() - 1).getY() - 0.1);
+        SmartDashboard.putString("test: Final point?", path.getWaypoint(path.length() - 2).toString());
+        boolean closeToLast = (Math.abs(drivetrain.currentLocation.getX() - path.getWaypoint(path.length() - 1).getX()) <= 0.03 &&
+                Math.abs(drivetrain.currentLocation.getY() - path.getWaypoint(path.length() - 2).getY()) <= 0.03);
         return (closeToLast &&
                 drivetrain.getLeftSpeed() < Constants.STOP_SPEED_THRESH &&
                 drivetrain.getRightSpeed() < Constants.STOP_SPEED_THRESH);
@@ -103,15 +108,15 @@ public class PurePursue extends Command {
      */
     private void updatePoint() {
         //change in (change left encoder value + change in right encoder value)/2
-        double distance = ((drivetrain.getLeftDistance() - lastLeftEncoder) + (drivetrain.getRightDistance() - lastRightEncoder)) / 2;
+        double distance = ((drivetrain.getLeftDistance()*direction - lastLeftEncoder) + (drivetrain.getRightDistance()*direction - lastRightEncoder)) / 2;
 
         //update the x, y coordinates based on the robot angle and the distance the robot moved.
         currentPoint.setX(currentPoint.getX() + direction * distance * Math.sin((drivetrain.getAngle() - initAngle) * (Math.PI / 180.0)));
         currentPoint.setY(currentPoint.getY() + direction * distance * Math.cos((drivetrain.getAngle() - initAngle) * (Math.PI / 180.0)));
 
         //updates values for next run
-        lastLeftEncoder = drivetrain.getLeftDistance();
-        lastRightEncoder = drivetrain.getRightDistance();
+        lastLeftEncoder = drivetrain.getLeftDistance()*direction;
+        lastRightEncoder = drivetrain.getRightDistance()*direction;
         drivetrain.currentLocation.setX(currentPoint.getX());
         drivetrain.currentLocation.setY(currentPoint.getY());
     }

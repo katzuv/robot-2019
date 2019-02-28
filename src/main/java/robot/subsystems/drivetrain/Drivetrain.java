@@ -28,6 +28,7 @@ public class Drivetrain extends Subsystem {
     private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
     public Point currentLocation = new Point(0, 0);
 
+
     public Drivetrain() {
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
@@ -80,6 +81,7 @@ public class Drivetrain extends Subsystem {
      * @param rightSpeed Speed for the right side
      */
     public void setSpeed(double leftSpeed, double rightSpeed) {
+        Robot.visionTable.getEntry("driving_direction").setString(leftSpeed+rightSpeed > 0 ? "front" : "back");
         setLeftSpeed(leftSpeed);
         setRightSpeed(rightSpeed);
     }
@@ -101,6 +103,7 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
+        ;
         if (speed <= 1 && speed >= -1) {
             rightMaster.set(ControlMode.PercentOutput, speed);
         }
@@ -198,6 +201,10 @@ public class Drivetrain extends Subsystem {
 
     public double getYaw() {
         return Robot.navx.getYaw();
+    }
+
+    public boolean isDrivingForward() {
+        return getLeftSpeed() >= 0 || getRightSpeed() >= 0;
     }
 
     public void resetLocation() {

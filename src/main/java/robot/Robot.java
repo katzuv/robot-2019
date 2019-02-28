@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
+    public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
 
 
     public static OI m_oi;
@@ -90,6 +91,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
+
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
@@ -148,6 +150,7 @@ public class Robot extends TimedRobot {
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
         elevator.resetEncoders();
+        visionTable.getEntry("direction").setString(drivetrain.isDrivingForward() ? "front" : "back");
 
 
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }

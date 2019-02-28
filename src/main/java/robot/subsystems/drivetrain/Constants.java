@@ -20,4 +20,11 @@ public class Constants {
     static final boolean RIGHT_MASTER_REVERSED = isRobotA ? true : true;
     static final boolean RIGHT_SLAVE1_REVERSED = isRobotA ? true : true;
     static final boolean RIGHT_SLAVE2_REVERSED = isRobotA ? true : true;
+
+    public enum DRIVING_TARGETS{
+        CARGO(),
+        HATCH(),
+        REFLECTOR();
+
+    }
 }
