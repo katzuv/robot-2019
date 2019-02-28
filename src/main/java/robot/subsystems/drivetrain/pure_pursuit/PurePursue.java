@@ -227,4 +227,22 @@ public class PurePursue extends Command {
         return Math.sqrt(targetSpeed * targetSpeed + 2 * Math.abs(acceleration) * Math.abs(targetPos - startPos));
     }
     }
+
+    /**
+     * find the point on a line which is closest to a point.
+     * @param edge1 first edge of the segment
+     * @param edge2 second edge of the segment
+     * @param p point of reference
+     * @return the point which creates with p a perpendicular line to the segment
+     */
+    public Point getPointOnSegment(Point edge1, Point edge2, Point p) {
+        double slope = (edge2.getY() - edge1.getY()) / (edge2.getX() - edge1.getX());
+        double n = edge1.getY() - slope * edge1.getX();
+        if (slope == 0)
+            return new Point(p.getX(), n);
+        if (slope > 1000000)
+            return new Point(edge1.getX(), p.getY());
+        double x = (p.getY() - n + (p.getX() / slope)) / (slope + 1 / slope); // TODO: ill explain this i promise
+        double y = slope * x + n;
+        return new Point(x, y);
 }
