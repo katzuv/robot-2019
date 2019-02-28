@@ -1,18 +1,23 @@
 package robot.subsystems.drivetrain.ramsete;
 
+import com.ctre.phoenix.motion.TrajectoryPoint;
 import org.ghrobotics.lib.mathematics.MathExtensionsKt;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.Trajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.Time;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.subsystems.drivetrain.Constants;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.Point;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
 import java.util.ArrayList;
@@ -90,10 +95,21 @@ public final class RamseteTracker {
 //        }
 
         List<Pose2d> list = new ArrayList<>();
-        list.add(new Pose2d(LengthKt.getMeter(0), LengthKt.getMeter(0), new Rotation2d(0)));
-        list.add(new Pose2d(LengthKt.getMeter(1), LengthKt.getMeter(0), new Rotation2d(0)));
+//        list.add(new Pose2d(LengthKt.getMeter(0), LengthKt.getMeter(0), new Rotation2d(0)));
+//        list.add(new Pose2d(LengthKt.getMeter(2), LengthKt.getMeter(0), new Rotation2d(0)));
+        Path path = new Path(new Point(0, 0), 0, new Point(-1, 2), -90, 0.55);
+        System.out.println(path);
+        for (int i = 0; i < path.length() - 1; i++) {
+            Waypoint waypoint = path.getWaypoint(i);
+            Waypoint nextPoint = path.getWaypoint(i + 1);
+            Rotation2d angle = Rotation2dKt.getDegree(90 - Math.toDegrees(Math.atan2(nextPoint.getY() - waypoint.getY(), nextPoint.getX() - waypoint.getX())));
+            System.out.println(waypoint.getY() + ", " + waypoint.getX() + " | " + angle.getDegree());
+            list.add(new Pose2d(LengthKt.getMeter(waypoint.getY()), LengthKt.getMeter(waypoint.getX()), angle));
+        }
+        list.add(new Pose2d(LengthKt.getMeter(path.getWaypoint(path.length() - 1).getY()), LengthKt.getMeter(path.getWaypoint(path.length() - 1).getX()), Rotation2dKt.getDegree(-90)));
+
         Trajectory trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
-                .generateTrajectory(list, new ArrayList<>(), new Velocity(0.4, new Length(0.4)), new Velocity(0.2, new Length(0.2)), new Velocity(1.2, new Length(1.2)), new Acceleration<>(1, new Length(1)), false, true);
+                .generateTrajectory(list, new ArrayList<>(), new Velocity(0, LengthKt.getMeter(0)), new Velocity(0, new Length(0)), new Velocity(0.8, new Length(0.8)), new Acceleration<>(0.5, new Length(0.5)), false, true);
         //Trajectory trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().getBaseline();
         org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker ramseteTracker = new org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker(2, 0.85);
 
