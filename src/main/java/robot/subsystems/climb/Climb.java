@@ -195,6 +195,10 @@ public class Climb extends Subsystem {
         wheelDrive.set(ControlMode.Velocity, metersToTicks(velocity)/10.0);
     }
 
+    public void setWheelSpeed(double speed){
+        wheelDrive.set(ControlMode.PercentOutput, speed);
+    }
+
     public double getWheelVelocity(){
         return 10*ticksToMeters(wheelDrive.getSelectedSensorVelocity());
     }
