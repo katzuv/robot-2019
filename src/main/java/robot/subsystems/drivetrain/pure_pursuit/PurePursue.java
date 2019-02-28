@@ -269,3 +269,22 @@ public class PurePursue extends Command {
         double y = slope * x + n;
         return new Point(x, y);
 }
+
+    /**
+     * finds the nearest point on the path, and gets the velocity from the waypoints at the location
+     * @param path
+     * @return the velocity of the path, in the direction of the path in m/s
+     */
+    public Vector driveVelocityVector(Path path) {
+        double closestDistance = 100000000;
+        int closestPointIndex = 0;
+        for (int i = 0; i < path.length() - 1; i++) {
+            if (Math.abs(distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint)) < Math.abs(closestDistance)) {
+                closestDistance = distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint);
+                closestPointIndex = i;
+            }
+        }
+        return new Vector(path.getWaypoint(closestPointIndex), path.getWaypoint(closestPointIndex + 1)).normalize().multiply(path.getWaypoint(closestPointIndex + 1).getSpeed());
+    }
+
+}
