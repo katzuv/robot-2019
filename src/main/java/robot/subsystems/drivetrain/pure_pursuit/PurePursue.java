@@ -307,12 +307,19 @@ public class PurePursue extends Command {
      * @return the point which creates with p a perpendicular line to the segment
      */
     public Point getPointOnSegment(Point edge1, Point edge2, Point p) {
+        //define the segment as a linear equation: y = m * x + n
+        if (edge1.getX() == edge2.getX())
+            return new Point(edge1.getX(), p.getY());
         double slope = (edge2.getY() - edge1.getY()) / (edge2.getX() - edge1.getX());
         double n = edge1.getY() - slope * edge1.getX();
         if (slope == 0)
-            return new Point(p.getX(), n);
-        if (slope > 1000000)
-            return new Point(edge1.getX(), p.getY());
+            return new Point(p.getX(), n); //if the slope is equal to 0, calculate the point to prevent errors.
+
+        /*
+         * we want to find the point that is on the segment.
+         * if we take the following equation: y = m * x + n
+         * y - n = m * x...
+         */
         double x = (p.getY() - n + (p.getX() / slope)) / (slope + 1 / slope); // TODO: ill explain this i promise
         double y = slope * x + n;
         return new Point(x, y);
