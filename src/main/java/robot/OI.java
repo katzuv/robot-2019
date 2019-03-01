@@ -91,8 +91,8 @@ public class OI {
         povl.toggleWhenPressed(new ElevatorCommand(0.78));
         povr.toggleWhenPressed(new ElevatorCommand(1.4));
 
-        x.whenPressed(new RiseToHeightEncoders(-0.1));
-        a.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.LEVEL2));
+        x.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.LEVEL2));
+        a.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.TEST));
         b.whenPressed(new RiseToHeightEncoders(0));
         //x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
         y.whenPressed(new CalibrateLegs());
