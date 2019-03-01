@@ -240,7 +240,7 @@ public class Drivetrain extends Subsystem {
     public void periodic() {
         localization.update();
         LiveDashboard.INSTANCE.setRobotX(localization.getRobotPosition().getTranslation().getX().getFeet());
-        LiveDashboard.INSTANCE.setRobotX(localization.getRobotPosition().getTranslation().getY().getFeet());
+        LiveDashboard.INSTANCE.setRobotY(localization.getRobotPosition().getTranslation().getY().getFeet());
         LiveDashboard.INSTANCE.setRobotHeading(localization.getRobotPosition().getRotation().getRadian());
     }
 

@@ -2,6 +2,7 @@ package robot.subsystems.drivetrain.ramsete;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
@@ -25,11 +26,17 @@ public class DrivePathNew extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         drivetrain.trajectoryTracker.reset(trajectory);
+        drivetrain.localization.reset(trajectory.getFirstState().getState().getPose());
+        LiveDashboard.INSTANCE.setFollowingPath(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         TrajectoryTrackerOutput trackerOutput = drivetrain.trajectoryTracker.nextState(drivetrain.getRobotPosition(), TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
+
+        LiveDashboard.INSTANCE.setPathX(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getX().getFeet());
+        LiveDashboard.INSTANCE.setPathY(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getY().getFeet());
+        LiveDashboard.INSTANCE.setPathHeading(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getRotation().getRadian());
 
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
@@ -38,7 +45,7 @@ public class DrivePathNew extends Command {
 
         double leftVelocity = linearVelocity - tangentialVelocity;
         double rightVelocity = linearVelocity + tangentialVelocity;
-
+        System.out.println(leftVelocity + " | " + rightVelocity);
         drivetrain.setLeftFeedForward(leftVelocity);
         drivetrain.setRightFeedForward(rightVelocity);
     }
@@ -50,6 +57,7 @@ public class DrivePathNew extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+        LiveDashboard.INSTANCE.setFollowingPath(false);
     }
 
     // Called when another command which requires one or more of the same
