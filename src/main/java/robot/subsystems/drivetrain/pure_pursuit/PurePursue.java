@@ -343,4 +343,24 @@ public class PurePursue extends Command {
         }
         return new Vector(currentPoint, getPointOnSegment(path.getWaypoint(closestPointIndex), path.getWaypoint(closestPointIndex + 1), currentPoint));
     }
+
+    /**
+     * find the nearest segment to a point from a path
+     *
+     * @param path Path class
+     * @param p a Point class of the target point
+     * @return both edges of the segment
+     */
+    private Waypoint[] getClosestSegment(Path path, Point p){ //TODO: should ignore points already passed, using distanceOnPath
+        double closestDistance = 100000000;
+        int closestPointIndex = 0;
+        //Finds the distance between the point and the center of each segment, and finds the smallest
+        for (int i = 0; i < path.length() - 1; i++) {
+            if(Point.distance(p,Point.average(path.getWaypoint(i),path.getWaypoint(i+1))) <= closestDistance){
+                closestDistance = distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint);
+                closestPointIndex = i;
+            }
+        }
+        return new Waypoint[] {path.getWaypoint(closestPointIndex), path.getWaypoint(closestPointIndex + 1)};
+    }
 }
