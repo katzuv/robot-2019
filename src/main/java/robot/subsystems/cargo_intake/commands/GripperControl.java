@@ -36,7 +36,7 @@ public class GripperControl extends Command {
         if (speed < 0)
             return cargoIntake.isCargoInside() && speed < 0;
         else {
-            return true;
+            return false;
         }
     }
 
