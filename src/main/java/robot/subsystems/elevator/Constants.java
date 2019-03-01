@@ -7,10 +7,6 @@ public class Constants {
     public static final int START_UNIT = isRobotA ? -800 : -900;
     public static final double LOWER_DANGER_ZONE = 0.67;
     public static final double UPPER_DANGER_ZONE = 0.97;
-
-    public static final int START_UNIT = isRobotA ? -800 : -600;
-    public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
-
     //Encoder constants:
     static final double TICKS_PER_METER = isRobotA ? 25993 : 25993;
     static final boolean ENCODER_REVERSED = isRobotA ? true : true;
@@ -30,8 +26,7 @@ public class Constants {
     static final double FIRST_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
     static final double SECOND_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
 
-    static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT = isRobotA ? 0.03 : 0.03
-    ;
+    static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT = isRobotA ? 0.08 : 0.08;
     /* Talon constants */
     /*
      * Since most config* calls occur during the robot boot sequence, the recommended value for timeoutMs is 10 (ms).

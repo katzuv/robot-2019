@@ -21,7 +21,6 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
-import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 
 /**
@@ -66,8 +65,6 @@ public class OI {
     public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
     public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
 
-    public static Button lsLeft = new JoystickButton(leftStick, 4);
-    public static Button lsRight = new JoystickButton(leftStick, 5);
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsBottom = new JoystickButton(leftStick, 2);
 

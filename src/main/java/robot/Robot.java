@@ -48,7 +48,6 @@ public class Robot extends TimedRobot {
     public final static boolean isRobotA = false;
     public final static int driveType = 1; //type 1 = rons drive, type 2 = testing drive, type 3 = paulos disabled arm (not yet)
 
-
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -161,12 +160,10 @@ public class Robot extends TimedRobot {
         //Create the path and points.
         Path path = new Path();
         path.appendWaypoint(new Waypoint(0, 0));
-        path.appendWaypoint(new Waypoint(0, 2));
-        path.appendWaypoint(new Waypoint(2,2));
+        path.appendWaypoint(new Waypoint(0, 6));
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
         PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, false, false);
-        System.out.println(path);
         pursue.start();
     }
 
