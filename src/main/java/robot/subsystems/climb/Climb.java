@@ -255,10 +255,10 @@ public class Climb extends Subsystem {
      * reset all four encoder values
      */
     public void resetEncoders(){
-        talonFL.setSelectedSensorPosition(0);
-        talonFR.setSelectedSensorPosition(0);
-        talonBL.setSelectedSensorPosition(0);
-        talonBR.setSelectedSensorPosition(0);
+        talonFL.setSelectedSensorPosition(Constants.FRONT_LEFT_STARTING_OFFSET);
+        talonFR.setSelectedSensorPosition(Constants.FRONT_RIGHT_STARTING_OFFSET);
+        talonBL.setSelectedSensorPosition(Constants.BACK_LEFT_STARTING_OFFSET);
+        talonBR.setSelectedSensorPosition(Constants.BACK_RIGHT_STARTING_OFFSET);
     }
 
     //TODO: move this enum to the Constants class.
