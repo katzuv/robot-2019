@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import robot.subsystems.climb.Climb;
 import robot.subsystems.climb.commands.CalibrateLegs;
+import robot.subsystems.climb.commands.ResetLegs;
 import robot.subsystems.climb.commands.RiseToHeight;
 import robot.subsystems.climb.commands.RiseToHeightEncoders;
 
@@ -95,7 +96,7 @@ public class OI {
         a.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.TEST));
         b.whenPressed(new RiseToHeightEncoders(0));
         //x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        y.whenPressed(new CalibrateLegs());
+        y.whenPressed(new ResetLegs());
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());
