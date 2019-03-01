@@ -252,6 +252,7 @@ public class VectorPursuit extends Command {
 
 
     /**
+     * Deprecated.
      * @param path
      * @return
      */
@@ -315,7 +316,6 @@ public class VectorPursuit extends Command {
      * @return the velocity of the path, in the direction of the path in m/s
      */
     public Vector driveVelocityVector(Path path) {//TODO: not right at all.
-
         double closestDistance = 100000000;
         int closestPointIndex = 0;
         for (int i = 0; i < path.length() - 1; i++) {
@@ -335,15 +335,7 @@ public class VectorPursuit extends Command {
      */
     private Vector getDistanceVectorFromPath(Path path) {
         //there are two possible segments now, so we have to try the lowest distance between the two of them
-        double closestDistance = 100000000;
-        int closestPointIndex = 0;
-        for (int i = 0; i < path.length() - 1; i++) {
-            if (Math.abs(distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint)) < Math.abs(closestDistance)) {
-                closestDistance = distBetweenPointAndLine(path.getWaypoint(i), path.getWaypoint(i + 1), currentPoint);
-                closestPointIndex = i;
-            }
-        }
-        return new Vector(currentPoint, getPointOnSegment(path.getWaypoint(closestPointIndex), path.getWaypoint(closestPointIndex + 1), currentPoint));
+        return new Vector(currentPoint, getPointOnSegment(getClosestSegment(path, currentPoint)[0],getClosestSegment(path, currentPoint)[1], currentPoint));
     }
 
     /**
