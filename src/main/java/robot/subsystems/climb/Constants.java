@@ -16,7 +16,7 @@ public class Constants {
     public static final int MOTION_MAGIC_ACCELERATION= 110;
     public static final double CALIBRATE_SPEED = 0.08;
 
-    static final double TICKS_PER_METER = isRobotA ? 16667 : 16667; //Should take into account spiral pitch and diameter. todo:change
+    static final double TICKS_PER_METER = isRobotA ? 10000 : 10000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
     static final double[] CLIMB_PIDFE = isRobotA ? new double[]{0.3, 0, 0, 0, 0} : new double[]{0, 0, 0, 0, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
 
