@@ -7,10 +7,10 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
 
-    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 1000;//1400
-    public static final int CRUISE_VELOCITY = isRobotA ? 2100 : 1600;//2500
+    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 1000;
+    public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 1600;
 
-    final static double kP = isRobotA ? 0.3 : 0.6;
+    final static double kP = isRobotA ? 0.6 : 0.6;
     final static double kD = isRobotA ? 150 : 100;
     final static double kF = isRobotA ? 0.48 : 0.48;
 
@@ -33,11 +33,11 @@ public class Constants {
     final static boolean SOFT_LIMIT_OVERRIDE = isRobotA ? true : true;
     final static boolean LIMIT_SWITCH_OVERRIDE = isRobotA ? true : false;
 
-    final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.3 : 0.6;
-    final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.3 : -0.6;
+    final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.7 : 0.6;
+    final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.7 : -0.6;
 
 
-    final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? false : true;
+    final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
 
     public enum WRIST_ANGLES {
         INITIAL(0),

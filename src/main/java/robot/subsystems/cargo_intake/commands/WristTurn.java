@@ -1,9 +1,11 @@
 package robot.subsystems.cargo_intake.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.cargo_intake.Constants;
 
 import static robot.Robot.cargoIntake;
+import static robot.Robot.hatchIntake;
 
 /**
  *
@@ -38,15 +40,21 @@ public class WristTurn extends Command {
     protected void execute() {
         cargoIntake.setWristAngle(angle);
         cargoIntake.preventOverShoot();
+        if (cargoIntake.getWristAngle() < 5 && angle < 3) {
+            cargoIntake.setWristSpeed(0);
+        }
+        else
+            cargoIntake.setWristAngle(angle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(cargoIntake.getWristAngle() - angle) < 10;
+        return Math.abs(cargoIntake.getWristAngle() - angle) < 2;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        cargoIntake.setWristSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
