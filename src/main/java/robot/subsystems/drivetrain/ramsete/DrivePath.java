@@ -39,8 +39,8 @@ public class DrivePath extends Command {
 
         double[] speeds = tracker.calculateState(RamseteTracker.waypoints().get(0), getCurrentPoint(), nextPoint);
 //        System.out.println(Arrays.toString(speeds));
-        Robot.drivetrain.setLeftFeedForward(speeds[0]);
-        Robot.drivetrain.setRightFeedForward(speeds[1]);
+        Robot.drivetrain.setLeftVelocity(speeds[0]);
+        Robot.drivetrain.setRightVelocity(speeds[1]);
 //        index++;
     }
 

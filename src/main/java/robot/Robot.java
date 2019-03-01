@@ -21,8 +21,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -39,7 +43,6 @@ import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -198,14 +201,18 @@ public class Robot extends TimedRobot {
         list.add(new Pose2d(LengthKt.getFeet(11.881), LengthKt.getFeet(6.913), Rotation2dKt.getDegree(-55.0)));
         list.add(new Pose2d(LengthKt.getFeet(16.144), LengthKt.getFeet(2.536), Rotation2dKt.getDegree(-34.0)));
 
+        List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
+        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
+        constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(4), LengthKt.getFeet(7), LengthKt.getFeet(8), LengthKt.getFeet(20)), VelocityKt.getVelocity(LengthKt.getFeet(3))));
+
         TimedTrajectory<Pose2dWithCurvature> trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
                 .generateTrajectory(
                         list,
-                        Collections.emptyList(),
+                        constraints,
                         VelocityKt.getVelocity(Length.Companion.getKZero()),
                         VelocityKt.getVelocity(Length.Companion.getKZero()),
-                        VelocityKt.getVelocity(LengthKt.getMeter(3)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(3)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(0.9144)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(0.9144)),
                         false,
                         true
                 );

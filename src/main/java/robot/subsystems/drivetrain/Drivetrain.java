@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -72,6 +73,22 @@ public class Drivetrain extends Subsystem {
         rightSlave1.setInverted(Constants.RIGHT_SLAVE1_REVERSED);
         rightSlave2.setInverted(Constants.RIGHT_SLAVE2_REVERSED);
 
+        rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
+        leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
+
+        leftMaster.configVoltageCompSaturation(12);
+        leftMaster.enableVoltageCompensation(true);
+        leftSlave1.configVoltageCompSaturation(12);
+        leftSlave1.enableVoltageCompensation(true);
+        leftSlave2.configVoltageCompSaturation(12);
+        leftSlave2.enableVoltageCompensation(true);
+        rightMaster.configVoltageCompSaturation(12);
+        rightMaster.enableVoltageCompensation(true);
+        rightSlave2.configVoltageCompSaturation(12);
+        rightSlave2.enableVoltageCompensation(true);
+        rightSlave1.configVoltageCompSaturation(12);
+        rightSlave1.enableVoltageCompensation(true);
+
         leftMaster.setNeutralMode(NeutralMode.Brake);
         leftSlave1.setNeutralMode(NeutralMode.Brake);
         leftSlave2.setNeutralMode(NeutralMode.Brake);
@@ -128,12 +145,21 @@ public class Drivetrain extends Subsystem {
         }
     }
 
-    public void setLeftFeedForward(double velocity) {
+    public void setLeftVelocity(double velocity) {
         leftMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) / 10.0);
     }
 
-    public void setRightFeedForward(double velocity) {
+    public void setRightVelocity(double velocity) {
         rightMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) / 10.0);
+    }
+
+
+    public double getLeftVelocity() {
+        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity()) * 10;
+    }
+
+    public double getRightVelocity() {
+        return convertTicksToDistance(rightMaster.getSelectedSensorVelocity()) * 10;
     }
 
     /**

@@ -41,13 +41,16 @@ public class DrivePathNew extends Command {
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
 
+        System.out.println(linearVelocity + " | " + angularVelocity);
+
         double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity;
 
         double leftVelocity = linearVelocity - tangentialVelocity;
         double rightVelocity = linearVelocity + tangentialVelocity;
-        System.out.println(leftVelocity + " | " + rightVelocity);
-        drivetrain.setLeftFeedForward(leftVelocity);
-        drivetrain.setRightFeedForward(rightVelocity);
+        drivetrain.setLeftVelocity(leftVelocity);
+        drivetrain.setRightVelocity(rightVelocity);
+        System.out.println("left: " + leftVelocity + " | " + drivetrain.getLeftVelocity());
+        System.out.println("right: " + rightVelocity + " | " + drivetrain.getRightVelocity());
     }
 
     // Make this return true when this Command no longer needs to run execute()

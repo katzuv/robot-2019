@@ -11,17 +11,17 @@ public class Constants {
     public static final double TICKS_PER_METER = isRobotA ? 2138.7750882690398 : 2138.7750882690398; // [1m / (diameter=0.1524 * pi)] * (ticks_per_meter=1024s)
     public static final int TALON_RUNNING_TIMEOUT_MS = isRobotA ? 0 : 0;
     public static final int TALON_TIMEOUT_MS = isRobotA ? 10 : 10;
-    public static final double[] PIDF = isRobotA ? new double[]{1, 0, 0, 0} : new double[]{0, 0, 0, 0};
-                                                    // (8 inches), the encoder sends 226
-                                                    // pulses every 360 degree turn
-                                                    static final boolean LEFT_MASTER_REVERSED = isRobotA ? false : false;
+    public static final double[] PIDF = isRobotA ? new double[]{3, 0.001, 0.25, 1.8} : new double[]{0, 0, 0, 0};
+    // (8 inches), the encoder sends 226
+    // pulses every 360 degree turn
+    static final boolean LEFT_MASTER_REVERSED = isRobotA ? false : false;
     static final boolean LEFT_SLAVE1_REVERSED = isRobotA ? false : false;
     static final boolean LEFT_SLAVE2_REVERSED = isRobotA ? false : false;
     static final boolean RIGHT_MASTER_REVERSED = isRobotA ? true : true;
     static final boolean RIGHT_SLAVE1_REVERSED = isRobotA ? true : true;
     static final boolean RIGHT_SLAVE2_REVERSED = isRobotA ? true : true;
 
-    public enum DRIVING_TARGETS{
+    public enum DRIVING_TARGETS {
         CARGO(),
         HATCH(),
         REFLECTOR();
