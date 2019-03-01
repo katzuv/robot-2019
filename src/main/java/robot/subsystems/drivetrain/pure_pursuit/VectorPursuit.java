@@ -10,8 +10,10 @@ import static robot.Robot.drivetrain;
  * The methods written here are all part of the Pure pursuit algorithm
  * all instances of the name 'the pure pursuit article' refer to this article by team DAWGMA 1712:
  * https://www.chiefdelphi.com/media/papers/download/5533
+ *
+ * @author paulo
  */
-public class PurePursue extends Command {
+public class VectorPursuit extends Command {
     public int direction; //whether the robot drives forward or backwards (-1 or 1)
     private Path path; //Command specific path to follow
     private Point currentPoint = new Point(0, 0); //holds X and Y variables for the robot
@@ -37,7 +39,7 @@ public class PurePursue extends Command {
      * @param kA              driving constant. Multiplied by the robots acceleration.
      * @param kV              driving constant. Multiplied by the target velocity of the nearest point.
      */
-    public PurePursue(Path path, double lookaheadRadius, double kP, double kA, double kV, boolean isRelative, boolean isReversed) {
+    public VectorPursuit(Path path, double lookaheadRadius, double kP, double kA, double kV, boolean isRelative, boolean isReversed) {
         requires(drivetrain);
         this.lookaheadRadius = lookaheadRadius;
         this.kP = kP;

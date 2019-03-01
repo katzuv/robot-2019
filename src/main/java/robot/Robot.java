@@ -23,7 +23,7 @@ import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.VectorPursuit;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
@@ -163,8 +163,8 @@ public class Robot extends TimedRobot {
         Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, 1.5, 1.4);
-        PurePursue purePursue = new PurePursue(path,0.4,Constants.kP,Constants.kA,Constants.kV,false,false);
-        purePursue.start();
+        VectorPursuit vectorPursuit = new VectorPursuit(path,0.4,Constants.kP,Constants.kA,Constants.kV,false,false);
+        vectorPursuit.start();
     }
 
     /**

@@ -64,7 +64,7 @@ public class GamePiecePickup extends Command {
         SmartDashboard.putNumber("target angle ", targetAngle);
         path1 = new Path(new Point(0, 0), 0, target, targetFieldAngle, Constants.TURN_RADIUS);
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-        PurePursue pursue = new PurePursue(path1, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
+        VectorPursuit pursue = new VectorPursuit(path1, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
         pursue.start();
     }
 
