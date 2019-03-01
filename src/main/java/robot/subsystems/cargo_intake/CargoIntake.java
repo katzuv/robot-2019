@@ -118,7 +118,7 @@ public class CargoIntake extends Subsystem {
 
     public double stallCurrent() {
         final double wristAngle = cargoIntake.getWristAngle();
-        if (wristAngle < 5 && setPointAngle < 3) {
+        if (wristAngle < 6 && setPointAngle < 3) { //TODO: needs to be a constants
             return 0;
         }
         final double COMCosine = Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle()));
@@ -194,6 +194,8 @@ public class CargoIntake extends Subsystem {
     }
 
     public void setWristAngle(double angle) {
+        angle = Math.max(0,angle);
+        angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(),angle);
         setPointAngle = angle;
         cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
     }
