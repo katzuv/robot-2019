@@ -1,9 +1,9 @@
 package robot.subsystems.climb;
 
 class Ports {
-    static final int frontLeftMotor = 11;
-    static final int frontRightMotor = 13;
-    static final int backLeftMotor = 14;
-    static final int backRightMotor = 12;
-    public static int wheelMotor = 10;
+    static final int frontLeftMotor = 15;
+    static final int frontRightMotor = 11;
+    static final int backLeftMotor = 12;
+    static final int backRightMotor = 14;
+    public static int wheelMotor = 15;
 }
