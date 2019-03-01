@@ -17,11 +17,14 @@ import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+
+import robot.subsystems.commandGroups.CargoScoring;
+import robot.subsystems.drivetrain.commands.GamePiecePickup;
+
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
-
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -90,37 +93,35 @@ public class OI {
 
     public OI() {
         if(Robot.driveType == 1) {
-            rs.whileHeld(new WristTurn(WristStick()));
-
             povd.whenPressed(new ElevatorCommand(0));
             povl.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
             povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH));
             povu.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
-            RT.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-            LT.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+            RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
+            LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
             a.whenPressed(new GripperTransportation());
             lb.whenPressed(new Gripper(false));
             rb.whenPressed(new Gripper(true));
 
-            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
-        }else if(Robot.driveType==2) {
+        }else if(Robot.driveType ==2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
             povl.toggleWhenPressed(new ElevatorCommand(0.78));
             povr.toggleWhenPressed(new ElevatorCommand(1.4));
 
-            rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-            start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+            RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
+            LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
             a.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
             b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
             x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            y.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
 
 
             select.whenPressed(new GripperTransportation());
@@ -132,19 +133,59 @@ public class OI {
             povr.whenPressed(new ElevatorCommand(1.3));
 
             povu.whenPressed(new ElevatorCommand(1.59));
-
-            trigger.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-            ur.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+            trigger.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
+            ur.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
             nine.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
             ten.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            twelve.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+            twelve.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
 
             dl.whenPressed(new GripperTransportation());
             ul.whenPressed(new Gripper());
         }
 
+
+        // Place hatch
+        //lsLeft.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        //lsMid.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        //lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+
+        // Place cargo backward
+
+        /*
+        Tiood XD
+
+        |||||||
+        |||3|||
+        |||||||
+        |||||||   Rocket
+        |||2|||
+        |||||||
+        |||||||
+        |||1|||
+        |||||||
+
+        |||||||
+        |     |
+        |     |    Bay
+        |||||||
+        |||0|||
+        |||||||
+
+         */
+        /*
+        lsBottom.whenPressed(new CargoScoring(0, true));
+        lsLeft.whenPressed(new CargoScoring(1, true));
+        lsMid.whenPressed(new CargoScoring(2, true));
+        lsRight.whenPressed(new CargoScoring(3, true));
+
+        // Score cargo
+        rsBottom.whenPressed(new CargoScoring(0, false));
+        rsLeft.whenPressed(new CargoScoring(1, false));
+        rsMid.whenPressed(new CargoScoring(2, false));
+        rsRight.whenPressed(new CargoScoring(3, false));
+        */
     }
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
@@ -183,6 +224,7 @@ public class OI {
         return xbox.getRawButton(10);
     }
 
+
     public boolean enableWrist() {
         if(Robot.driveType==3)
             return true;
@@ -214,6 +256,8 @@ public class OI {
     // Run the command while the button is being held down and interrupt it once
     // the button is released.
     // button.whileHeld(new ExampleCommand());
+
+
     // Start the command when the button is released and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());

@@ -199,11 +199,13 @@ public class CargoIntake extends Subsystem {
     }
 
     public int getVelocity() {
+
         return wrist.getSelectedSensorVelocity();
     }
 
     @Override
     public void initDefaultCommand() {
+
         setDefaultCommand(new JoystickWristTurn());
     }
 
