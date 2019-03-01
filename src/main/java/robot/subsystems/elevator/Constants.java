@@ -4,8 +4,12 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
 
-    public static final int START_UNIT = isRobotA ? -800 : -600;
+    public static final int START_UNIT = isRobotA ? -720 : -900;
+    public static final double LOWER_DANGER_ZONE = 0.67;
+    public static final double UPPER_DANGER_ZONE = 0.97;
+
     public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
+
     //Encoder constants:
     static final double TICKS_PER_METER = isRobotA ? 25993 : 25993;
     static final boolean ENCODER_REVERSED = isRobotA ? true : true;
@@ -43,7 +47,7 @@ public class Constants {
     static final int TALON_TIMEOUT_MS = 10; //timeout when configuring the robot, if takes longer an error is raised (1)
     static final int TALON_RUNNING_TIMEOUT_MS = 0; //as seen in the excerpt above, there should be no timeout on the talon in the robot loop.
     //Mechanical heights of the elevator, at its maximum position and semi position(where the elevator splits from one segment to two)
-    static final double ELEVATOR_MAX_HEIGHT = 1.6;
+    static final double ELEVATOR_MAX_HEIGHT = 1.56;
     static final double ELEVATOR_MID_HEIGHT = 0.797;
     /* Nominal Output- The "minimal" or "weakest" motor output allowed if the output is nonzero
      * Peak Output- The "maximal" or "strongest" motor output allowed.
@@ -64,14 +68,19 @@ public class Constants {
      */
     public enum ELEVATOR_STATES {
         SHIP_HATCH(0.278),
-        SHIP_CARGO(0.3),
+        SHIP_CARGO(0.63),
+        SHIP_CARGO_BACKWARD(0.78),
         LEVEL1_HATCH(0.278),
-        LEVEL1_CARGO(0.3),
+        LEVEL1_CARGO(0.2),//0.3
+        LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_HATCH(0.987),
-        LEVEL2_CARGO(0.85),
+        LEVEL2_CARGO(0.9),//0.85
+        LEVEL2_CARGO_BACKWARD(0.83),
         LEVEL3_HATCH(1.579),
-        LEVEL3_CARGO(1.48),
+        LEVEL3_CARGO(1.56),//1.48
+        LEVEL3_CARGO_BACKWARD(1.5),
         LOADING_STATION(0.278);
+
 
         private final double levelHeight;
 

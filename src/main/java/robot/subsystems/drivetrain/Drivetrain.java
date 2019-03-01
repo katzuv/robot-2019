@@ -28,6 +28,7 @@ public class Drivetrain extends Subsystem {
     private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
     public Point currentLocation = new Point(0, 0);
 
+
     public Drivetrain() {
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);

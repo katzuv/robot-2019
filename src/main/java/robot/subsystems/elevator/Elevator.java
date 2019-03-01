@@ -11,7 +11,9 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import robot.Robot;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
+import robot.subsystems.hatch_intake.HatchIntake;
 
 /**
  * Elevator subsystem for the 2019 robot 'GENESIS'
@@ -115,6 +117,9 @@ public class Elevator extends Subsystem {
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
+        if (isSetpointInDangerZone())
+            Robot.hatchIntake.emergencyClose();
+
     }
 
     /**
@@ -182,6 +187,13 @@ public class Elevator extends Subsystem {
     public boolean atSecondStage() {
         return Constants.ELEVATOR_MID_HEIGHT < getHeight();
     }
+
+    private boolean isSetpointInDangerZone() {
+        return (getHeight() < Constants.UPPER_DANGER_ZONE && setpoint > Constants.LOWER_DANGER_ZONE) ||
+                (getHeight() > Constants.LOWER_DANGER_ZONE && setpoint < Constants.UPPER_DANGER_ZONE);
+
+    }
+
 
     /**
      * Get the speed of the motor in percentages
