@@ -94,9 +94,9 @@ public class OI {
     public OI() {
         if(Robot.driveType == 1) {
             povd.whenPressed(new ElevatorCommand(0));
-            povl.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-            povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH));
-            povu.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+            povr.whenPressed(new CargoScoring(1, false));
+            povl.whenPressed(new CargoScoring(2, false));
+            povu.whenPressed(new CargoScoring(3, false));
 
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
