@@ -16,5 +16,6 @@ public class FullBackClimb extends CommandGroup {
         addSequential(new CloseBackLegs());
         addSequential(new WaitCommand(1.5));
         addSequential(new CloseForwardLegs());
+
     }
 }
