@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  * @author paulo
  */
-public class Climb extends Subsystem {
+public class Climb extends Subsystem { //TODO: only work last 30 seconds
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 

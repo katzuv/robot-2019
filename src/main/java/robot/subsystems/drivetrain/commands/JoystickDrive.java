@@ -67,7 +67,7 @@ public class JoystickDrive extends Command {
                 break;
             default:
                 throw new IllegalArgumentException("Number must be 1-4");
-        }
+        } //TODO: put this in subsystem
         if((Robot.climb.getLegFRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
                 Robot.climb.getLegFLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH) || (Robot.climb.getLegBRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
                 Robot.climb.getLegBLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH)) //maybe also lower speeds when back legs are lowered.
