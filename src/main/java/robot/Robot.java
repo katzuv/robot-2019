@@ -39,6 +39,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.DrivePathNew;
+import robot.subsystems.drivetrain.ramsete.DriveWithVision;
 import robot.subsystems.drivetrain.ramsete.HatchAuto;
 import robot.subsystems.drivetrain.ramsete.VisionTarget;
 import robot.subsystems.elevator.Elevator;
@@ -203,9 +204,12 @@ public class Robot extends TimedRobot {
         if (reversed) {
             angleModifier = 180;
         }
-        list.add(new Pose2d(LengthKt.getFeet(5.595), LengthKt.getFeet(9.704), Rotation2dKt.getDegree(angleModifier + 0)));
-        list.add(new Pose2d(LengthKt.getFeet(11.881), LengthKt.getFeet(6.913), Rotation2dKt.getDegree(angleModifier + -55.0)));
-        list.add(new Pose2d(LengthKt.getFeet(17.727), LengthKt.getFeet(1.618), Rotation2dKt.getDegree(angleModifier + -30.0)));
+
+        list.add(new Pose2d(LengthKt.getFeet(5.441), LengthKt.getFeet(9.77), Rotation2dKt.getDegree(angleModifier - 30)));
+        list.add(new Pose2d(LengthKt.getFeet(13.192), LengthKt.getFeet(4.087), Rotation2dKt.getDegree(angleModifier - 30)));
+//        list.add(new Pose2d(LengthKt.getFeet(5.595), LengthKt.getFeet(9.704), Rotation2dKt.getDegree(angleModifier + 0)));
+//        list.add(new Pose2d(LengthKt.getFeet(11.881), LengthKt.getFeet(6.913), Rotation2dKt.getDegree(angleModifier + -55.0)));
+//        list.add(new Pose2d(LengthKt.getFeet(17.727), LengthKt.getFeet(1.618), Rotation2dKt.getDegree(angleModifier + -30.0)));
 
 //        list.add(new Pose2d(LengthKt.getFeet(9.201), LengthKt.getFeet(18.52), Rotation2dKt.getDegree(angleModifier + 0)));
 //        list.add(new Pose2d(LengthKt.getFeet(18.477), LengthKt.getFeet(14.398), Rotation2dKt.getDegree(angleModifier + 0)));
@@ -237,7 +241,7 @@ public class Robot extends TimedRobot {
                         reversed,
                         true
                 );
-        new VisionTarget().start();
+        new DriveWithVision(trajectory).start();
     }
 
     /**

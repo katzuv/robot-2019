@@ -43,9 +43,9 @@ public class Drivetrain extends Subsystem {
     private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
 
     public Localization localization = new TankEncoderLocalization(
-            () -> Rotation2dKt.getDegree(getAngle()),
-            () -> LengthKt.getMeter(getLeftDistance()),
-            () -> LengthKt.getMeter(getRightDistance())
+            () -> Rotation2dKt.getDegree(180 + getAngle()),
+            () -> LengthKt.getMeter(-getLeftDistance()),
+            () -> LengthKt.getMeter(-getRightDistance())
     );
 
     public TrajectoryTracker trajectoryTracker = new RamseteTracker(2.0, 0.7);
@@ -260,7 +260,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        localization.reset(new Pose2d(LengthKt.getFeet(9.239), LengthKt.getFeet(13.495), Rotation2dKt.getDegree(0)));
+        localization.reset(new Pose2d(LengthKt.getFeet(5.441), LengthKt.getFeet(9.77), Rotation2dKt.getDegree(180 - 30)));
     }
 
     @Override
