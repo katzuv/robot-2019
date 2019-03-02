@@ -71,8 +71,9 @@ public class JoystickDrive extends Command {
         if(Robot.climb.getLegBRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
                 Robot.climb.getLegBLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH) //TODO: check if its back right or front right
         {
-            climb.setWheelSpeed((leftOutput + rightOutput) / 2);
-            drivetrain.setVelocity(climb.getWheelVelocity(), climb.getWheelVelocity());
+            climb.setWheelSpeed(rightOutput);
+            drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR,
+                    rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR);
         }
         else
             drivetrain.setSpeed(leftOutput, rightOutput);

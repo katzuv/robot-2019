@@ -15,6 +15,7 @@ public class Constants {
     public static final int MOTION_MAGIC_CRUISE_VELOCITY = 50;
     public static final int MOTION_MAGIC_ACCELERATION= 110;
     public static final double CALIBRATE_SPEED = 0.23;
+    public static final double DRIVE_CLIMB_DRIVETRAIN_DIVISOR = 4;
 
     static final double TICKS_PER_METER = isRobotA ? 10000 : 10000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
