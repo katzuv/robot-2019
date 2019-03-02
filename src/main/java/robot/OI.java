@@ -13,19 +13,18 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.auxiliary.DoubleButton;
 import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
-
 import robot.subsystems.commandGroups.CargoScoring;
-import robot.subsystems.drivetrain.commands.GamePiecePickup;
-
+import robot.subsystems.commandGroups.HatchScoring;
+import robot.subsystems.commandGroups.ScoringChooser;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
-import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -66,6 +65,24 @@ public class OI {
     public static Button povl = new POVButton(xbox, 270);
     public static Button povu = new POVButton(xbox, 0);
 
+    //Only elevator
+    public static Button elevatorD = new DoubleButton(povd, start, false);
+    public static Button elevatorR = new DoubleButton(povr, start, false);
+    public static Button elevatorL = new DoubleButton(povl, start, false);
+    public static Button elevatorU = new DoubleButton(povu, start, false);
+
+    //Autoscore forward
+    public static Button frontScoreD = new DoubleButton(povd, start, true);
+    public static Button frontScoreR = new DoubleButton(povr, start, true);
+    public static Button frontScoreL = new DoubleButton(povl, start, true);
+    public static Button frontScoreU = new DoubleButton(povu, start, true);
+
+    //Autoscore forward
+    public static Button backScoreD = new DoubleButton(povd, select, true);
+    public static Button backScoreR = new DoubleButton(povr, select, true);
+    public static Button backScoreL = new DoubleButton(povl, select, true);
+    public static Button backScoreU = new DoubleButton(povu, select, true);
+
     public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
     public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
 
@@ -79,8 +96,8 @@ public class OI {
     public static Button ur = new JoystickButton(leftStick, 6);
     public static Button dr = new JoystickButton(leftStick, 4);
 
-    public static Button trigger = new JoystickButton(leftStick,1);
-    public static Button back_button = new JoystickButton(leftStick,2);
+    public static Button trigger = new JoystickButton(leftStick, 1);
+    public static Button back_button = new JoystickButton(leftStick, 2);
 
     public static Button nine = new JoystickButton(leftStick, 8);
     public static Button ten = new JoystickButton(leftStick, 10);
@@ -95,11 +112,21 @@ public class OI {
 
 
     public OI() {
-        if(Robot.driveType == 1) {
-            povd.whenPressed(new ElevatorCommand(0));
-            povr.whenPressed(new CargoScoring(1, false));
-            povl.whenPressed(new CargoScoring(2, false));
-            povu.whenPressed(new CargoScoring(3, false));
+        if (Robot.driveType == 1) {
+            elevatorD.whenPressed(new ElevatorCommand(0));
+            elevatorL.whenPressed(new ElevatorCommand(0.78));
+            elevatorR.whenPressed(new ElevatorCommand(1.3));
+            elevatorU.whenPressed(new ElevatorCommand(1.59));
+
+            frontScoreR.whenPressed(new ScoringChooser(new CargoScoring(1, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
+            frontScoreL.whenPressed(new ScoringChooser(new CargoScoring(2, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
+            frontScoreU.whenPressed(new ScoringChooser(new CargoScoring(3, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH)));
+            frontScoreD.whenPressed(new ScoringChooser(new CargoScoring(0, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH)));
+
+            backScoreR.whenPressed(new CargoScoring(1, true));
+            backScoreL.whenPressed(new CargoScoring(2, true));
+            backScoreU.whenPressed(new CargoScoring(3, true));
+            backScoreD.whenPressed(new CargoScoring(0, true));
 
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
@@ -113,10 +140,20 @@ public class OI {
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
-        }else if(Robot.driveType ==2) {
-            povd.toggleWhenPressed(new ElevatorCommand(0));
-            povl.toggleWhenPressed(new ElevatorCommand(0.78));
-            povr.toggleWhenPressed(new ElevatorCommand(1.4));
+        } else if (Robot.driveType == 2) {
+            elevatorD.toggleWhenPressed(new ElevatorCommand(0));
+            elevatorL.toggleWhenPressed(new ElevatorCommand(1.4));
+            elevatorR.toggleWhenPressed(new ElevatorCommand(0.78));
+
+            frontScoreR.whenPressed(new ScoringChooser(new CargoScoring(1, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
+            frontScoreL.whenPressed(new ScoringChooser(new CargoScoring(2, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
+            frontScoreU.whenPressed(new ScoringChooser(new CargoScoring(3, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH)));
+            frontScoreD.whenPressed(new ScoringChooser(new CargoScoring(0, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH)));
+
+            backScoreR.whenPressed(new CargoScoring(1, true));
+            backScoreL.whenPressed(new CargoScoring(2, true));
+            backScoreU.whenPressed(new CargoScoring(3, true));
+            backScoreD.whenPressed(new CargoScoring(0, true));
 
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
@@ -129,13 +166,22 @@ public class OI {
 
             select.whenPressed(new GripperTransportation());
             lb.whenPressed(new Gripper());
-        }
-        else if(Robot.driveType == 3){
-            povd.whenPressed(new ElevatorCommand(0));
-            povl.whenPressed(new ElevatorCommand(0.78));
-            povr.whenPressed(new ElevatorCommand(1.3));
+        } else if (Robot.driveType == 3) {
+            elevatorD.whenPressed(new ElevatorCommand(0));
+            elevatorL.whenPressed(new ElevatorCommand(0.78));
+            elevatorR.whenPressed(new ElevatorCommand(1.3));
+            elevatorU.whenPressed(new ElevatorCommand(1.59));
 
-            povu.whenPressed(new ElevatorCommand(1.59));
+            frontScoreR.whenPressed(new ScoringChooser(new CargoScoring(1, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
+            frontScoreL.whenPressed(new ScoringChooser(new CargoScoring(2, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
+            frontScoreU.whenPressed(new ScoringChooser(new CargoScoring(3, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH)));
+            frontScoreD.whenPressed(new ScoringChooser(new CargoScoring(0, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.SHIP_HATCH)));
+
+            backScoreR.whenPressed(new CargoScoring(1, true));
+            backScoreL.whenPressed(new CargoScoring(2, true));
+            backScoreU.whenPressed(new CargoScoring(3, true));
+            backScoreD.whenPressed(new CargoScoring(0, true));
+
             trigger.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             ur.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
@@ -192,23 +238,23 @@ public class OI {
     }
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
-    public double leftDriveStick(){ // TODO: might need name refactoring
-        if(Robot.driveType==3)
-            return -0.5*leftStick.getY()+0.5*leftStick.getZ();
+    public double leftDriveStick() { // TODO: might need name refactoring
+        if (Robot.driveType == 3)
+            return -0.5 * leftStick.getY() + 0.5 * leftStick.getZ();
         return -leftStick.getY();
     }
 
-    public double rightDriveStick(){
-        if(Robot.driveType==3)
-            return -0.5*leftStick.getY()-0.5*leftStick.getZ();
+    public double rightDriveStick() {
+        if (Robot.driveType == 3)
+            return -0.5 * leftStick.getY() - 0.5 * leftStick.getZ();
         return -rightStick.getY();
     }
 
-    public double WristStick(){
-        if(Robot.driveType==3){
-            if(leftStick.getRawButton(9))
+    public double WristStick() {
+        if (Robot.driveType == 3) {
+            if (leftStick.getRawButton(9))
                 return -0.5;
-            else if(leftStick.getRawButton(7))
+            else if (leftStick.getRawButton(7))
                 return 0.5;
             return 0;
         }
@@ -216,26 +262,26 @@ public class OI {
     }
 
     public double ElevatorStick() {
-        if(Robot.driveType==3)
+        if (Robot.driveType == 3)
             return -leftStick.getRawAxis(3);
         return -xbox.getRawAxis(right_y_stick);
 
     }
+
     public boolean enableElevator() {
-        if(Robot.driveType==3)
+        if (Robot.driveType == 3)
             return leftStick.getRawButton(11);
         return xbox.getRawButton(10);
     }
 
 
     public boolean enableWrist() {
-        if(Robot.driveType==3)
+        if (Robot.driveType == 3)
             return true;
         return xbox.getRawButton(9);
     }
 
 
-    
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.

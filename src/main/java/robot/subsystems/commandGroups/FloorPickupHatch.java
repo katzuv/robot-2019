@@ -5,16 +5,17 @@ import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
 import robot.subsystems.drivetrain.commands.GamePiecePickup;
+import robot.subsystems.hatch_intake.commands.Gripper;
 
 /**
  *
  */
-public class AutoPickUpCargo extends CommandGroup {
+public class FloorPickupHatch extends CommandGroup {
 
-    public AutoPickUpCargo() {
+    public FloorPickupHatch() {
+
         addSequential(new GamePiecePickup());
-        addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        addParallel(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
+        addSequential(new Gripper(false));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -32,4 +33,5 @@ public class AutoPickUpCargo extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     }
+
 }

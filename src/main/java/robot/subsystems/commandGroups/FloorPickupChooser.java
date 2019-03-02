@@ -2,20 +2,20 @@ package robot.subsystems.commandGroups;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
-public class AutoPick extends InstantCommand {
+public class FloorPickupChooser extends InstantCommand {
 
     boolean isHatch;
 
-    public AutoPick(boolean isHatch){
+    public FloorPickupChooser(boolean isHatch){
         this.isHatch = isHatch;
     }
 
     protected void initialize(){
         if (isHatch){
-            AutoPickUpHatch hatchPick = new AutoPickUpHatch();
+            FloorPickupHatch hatchPick = new FloorPickupHatch();
             hatchPick.start();
         }else {
-            AutoPickUpCargo cargoPick = new AutoPickUpCargo();
+            FloorPickupCargo cargoPick = new FloorPickupCargo();
             cargoPick.start();
         }
     }
