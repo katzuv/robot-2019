@@ -1,5 +1,6 @@
 package robot.subsystems.cargo_intake.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.cargo_intake.Constants;
 
@@ -36,7 +37,11 @@ public class WristTurn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        cargoIntake.setWristAngle(angle);
+        if (cargoIntake.getWristAngle() < 5 && angle < 3) {
+            cargoIntake.setWristSpeed(0);
+        }
+        else
+            cargoIntake.setWristAngle(angle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
