@@ -94,6 +94,15 @@ public final class RamseteTracker {
 //            System.out.println(Arrays.toString(tracker.calculateState(waypoints().get(i), new Waypoint(0, 0), nextPoint)));
 //        }
 
+        double center_angle = Math.toRadians(25);
+        double distance = 2.8;
+        double field_angle = 0;
+
+        Pose2d robotPose = new Pose2d(LengthKt.getFeet(9.201), LengthKt.getFeet(18.52), Rotation2dKt.getDegree(0));
+        robotPose.transformBy(new Pose2d(Length.Companion.getKZero(), Length.Companion.getKZero(), Rotation2dKt.getDegree(180)));
+        Pose2d calculatedPose = new Pose2d(LengthKt.getMeter(Math.abs(Math.cos(center_angle) * distance)), LengthKt.getMeter(-Math.abs(Math.sin(center_angle) * distance)), Rotation2dKt.getDegree(180 + field_angle));
+        System.out.println(robotPose.transformBy(calculatedPose).getTranslation().getX().getFeet());
+
         List<Pose2d> list = new ArrayList<>();
 //        list.add(new Pose2d(LengthKt.getMeter(0), LengthKt.getMeter(0), new Rotation2d(0)));
 //        list.add(new Pose2d(LengthKt.getMeter(2), LengthKt.getMeter(0), new Rotation2d(0)));
@@ -132,6 +141,7 @@ public final class RamseteTracker {
             x += 0.1;
             y += 0.1;
         }
+
     }
 
 }

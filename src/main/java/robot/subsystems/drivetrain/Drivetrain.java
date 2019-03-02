@@ -51,6 +51,7 @@ public class Drivetrain extends Subsystem {
     public TrajectoryTracker trajectoryTracker = new RamseteTracker(2.0, 0.7);
 
     public Drivetrain() {
+
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         leftMaster.setSensorPhase(Constants.LEFT_ENCODER_REVERSED);
@@ -259,7 +260,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        localization.reset(new Pose2d(Length.Companion.getKZero(), Length.Companion.getKZero(), Rotation2d.Companion.getKZero()));
+        localization.reset(new Pose2d(Length.Companion.getKZero(), Length.Companion.getKZero(), Rotation2dKt.getDegree(0)));
     }
 
     @Override

@@ -39,6 +39,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.DrivePathNew;
+import robot.subsystems.drivetrain.ramsete.HatchAuto;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
 
@@ -164,7 +165,6 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         navx.reset();
         drivetrain.resetEncoders();
-        drivetrain.resetLocation();
         elevator.resetEncoders();
         visionTable.getEntry("direction").setString(drivetrain.isDrivingForward() ? "front" : "back");
 
@@ -197,9 +197,29 @@ public class Robot extends TimedRobot {
 //            list.add(new Pose2d(LengthKt.getMeter(waypoint.getY()), LengthKt.getMeter(waypoint.getX()), angle));
 //        }
 //        list.add(new Pose2d(LengthKt.getMeter(path.getWaypoint(path.length() - 1).getY()), LengthKt.getMeter(path.getWaypoint(path.length() - 1).getX()), Rotation2dKt.getDegree(-90)));
-        list.add(new Pose2d(LengthKt.getFeet(5.595), LengthKt.getFeet(9.704), Rotation2dKt.getDegree(0)));
-        list.add(new Pose2d(LengthKt.getFeet(11.881), LengthKt.getFeet(6.913), Rotation2dKt.getDegree(-55.0)));
-        list.add(new Pose2d(LengthKt.getFeet(16.144), LengthKt.getFeet(2.536), Rotation2dKt.getDegree(-34.0)));
+        boolean reversed = true;
+        double angleModifier = 0;
+        if (reversed) {
+            angleModifier = 180;
+        }
+        list.add(new Pose2d(LengthKt.getFeet(5.595), LengthKt.getFeet(9.704), Rotation2dKt.getDegree(angleModifier + 0)));
+        list.add(new Pose2d(LengthKt.getFeet(11.881), LengthKt.getFeet(6.913), Rotation2dKt.getDegree(angleModifier + -55.0)));
+        list.add(new Pose2d(LengthKt.getFeet(17.727), LengthKt.getFeet(1.618), Rotation2dKt.getDegree(angleModifier + -30.0)));
+
+//        list.add(new Pose2d(LengthKt.getFeet(9.201), LengthKt.getFeet(18.52), Rotation2dKt.getDegree(angleModifier + 0)));
+//        list.add(new Pose2d(LengthKt.getFeet(18.477), LengthKt.getFeet(14.398), Rotation2dKt.getDegree(angleModifier + 0)));
+//
+//        double center_angle = Math.toRadians(visionTable.getEntry("tape_angle").getDouble(0));
+//        double distance = visionTable.getEntry("tape_distance").getDouble(0);
+//        double field_angle = visionTable.getEntry("tape_field_angle").getDouble(0);
+//
+//        Pose2d robotPose = drivetrain.localization.getRobotPosition();
+//
+//        Pose2d calculatedPose = new Pose2d(LengthKt.getMeter(Math.abs(Math.cos(center_angle) * distance)), LengthKt.getMeter(-Math.abs(Math.sin(center_angle) * distance)), Rotation2dKt.getDegree(angleModifier + field_angle));
+//
+//        list.add(robotPose.transformBy(new Pose2d(Length.Companion.getKZero(), Length.Companion.getKZero(), Rotation2dKt.getDegree(angleModifier))));
+//        System.out.println(robotPose.transformBy(calculatedPose).getRotation().getDegree());
+//        list.add(robotPose.transformBy(calculatedPose));
 
         List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
         constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
@@ -211,13 +231,12 @@ public class Robot extends TimedRobot {
                         constraints,
                         VelocityKt.getVelocity(Length.Companion.getKZero()),
                         VelocityKt.getVelocity(Length.Companion.getKZero()),
-                        VelocityKt.getVelocity(LengthKt.getMeter(0.9144)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(0.9144)),
-                        false,
+                        VelocityKt.getVelocity(LengthKt.getMeter(1.5)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(1.5)),
+                        reversed,
                         true
                 );
-
-        new DrivePathNew(trajectory).start();
+        new HatchAuto(trajectory).start();
     }
 
     /**
