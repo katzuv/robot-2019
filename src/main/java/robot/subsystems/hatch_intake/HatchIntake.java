@@ -83,7 +83,7 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
     }
 
     public void emergencyClose() {
-        setGripperPlate(true);
+        setGripperPlate(false);
         setGripper(false);
     }
 }
