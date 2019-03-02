@@ -5,8 +5,8 @@ import static robot.Robot.isRobotA;
 public class Constants {
 
     public static final int START_UNIT = isRobotA ? -720 : -900;
-    public static final double LOWER_DANGER_ZONE = 0.67;
-    public static final double UPPER_DANGER_ZONE = 0.97;
+    public static final double LOWER_DANGER_ZONE = 0.32;
+    public static final double UPPER_DANGER_ZONE = 0.94;
 
     public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
 
@@ -58,8 +58,8 @@ public class Constants {
     static final double NOMINAL_OUT_REV = 0;
     static final double PEAK_OUT_REV = -1;
     /* Motion magic speed constants */
-    static final int MOTION_MAGIC_ACCELERATION = isRobotA ? (int) (1.7 * TICKS_PER_METER / 10) : (int) (1.7 * TICKS_PER_METER / 10);
-    static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (2 * TICKS_PER_METER / 10) : (int) (2 * TICKS_PER_METER / 10);
+    static final int MOTION_MAGIC_ACCELERATION = isRobotA ? (int) (3.2 * TICKS_PER_METER / 10) : (int) (1.7 * TICKS_PER_METER / 10);
+    static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (4 * TICKS_PER_METER / 10) : (int) (2 * TICKS_PER_METER / 10);
     public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
     /**

@@ -19,8 +19,10 @@ import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
 
 import robot.subsystems.commandGroups.CargoScoring;
+import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.drivetrain.commands.GamePiecePickup;
 
+import robot.subsystems.elevator.commands.ConditionalElevatorCommand;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -97,9 +99,9 @@ public class OI {
     public OI() {
         if(Robot.driveType == 1) {
             povd.whenPressed(new ElevatorCommand(0));
-            povr.whenPressed(new CargoScoring(1, false));
-            povl.whenPressed(new CargoScoring(2, false));
-            povu.whenPressed(new CargoScoring(3, false));
+            povr.whenPressed(new ConditionalElevatorCommand(new CargoScoring(1, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
+            povl.whenPressed(new ConditionalElevatorCommand(new CargoScoring(2, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
+            povu.whenPressed(new ConditionalElevatorCommand(new CargoScoring(3, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH)));
 
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
