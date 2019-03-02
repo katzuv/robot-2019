@@ -188,7 +188,7 @@ public class Elevator extends Subsystem {
         return Constants.ELEVATOR_MID_HEIGHT < getHeight();
     }
 
-    private boolean isSetpointInDangerZone() {
+    public boolean isSetpointInDangerZone() {
         return (getHeight() < Constants.UPPER_DANGER_ZONE && setpoint > Constants.LOWER_DANGER_ZONE) ||
                 (getHeight() > Constants.LOWER_DANGER_ZONE && setpoint < Constants.UPPER_DANGER_ZONE);
 
