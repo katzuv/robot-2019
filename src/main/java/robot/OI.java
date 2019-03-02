@@ -65,7 +65,7 @@ public class OI {
     public static Button povl = new POVButton(xbox, 270);
     public static Button povu = new POVButton(xbox, 0);
 
-    //Only elevator
+    // Elevator only without auto scoring
     public static Button elevatorD = new DoubleButton(povd, start, false);
     public static Button elevatorR = new DoubleButton(povr, start, false);
     public static Button elevatorL = new DoubleButton(povl, start, false);
