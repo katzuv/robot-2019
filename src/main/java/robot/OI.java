@@ -114,9 +114,15 @@ public class OI {
     public OI() {
         if (Robot.driveType == 1) {
             elevatorD.whenPressed(new ElevatorCommand(0));
-            elevatorL.whenPressed(new ElevatorCommand(0.78));
-            elevatorR.whenPressed(new ElevatorCommand(1.3));
-            elevatorU.whenPressed(new ElevatorCommand(1.59));
+            elevatorL.whenPressed(new ScoringChooser(
+                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_CARGO),
+                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
+            elevatorR.whenPressed(new ScoringChooser(
+                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_CARGO),
+                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
+            elevatorU.whenPressed(new ScoringChooser(
+                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO),
+                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH)));
 
             frontScoreR.whenPressed(new ScoringChooser(new CargoScoring(1, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
             frontScoreL.whenPressed(new ScoringChooser(new CargoScoring(2, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
