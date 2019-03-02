@@ -17,14 +17,15 @@ import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+
+import robot.subsystems.commandGroups.CargoScoring;
+import robot.subsystems.drivetrain.commands.GamePiecePickup;
+
 import robot.subsystems.elevator.commands.ElevatorCommand;
+import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
 import robot.subsystems.hatch_intake.commands.PlaceHatch;
-
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,15 +33,15 @@ import robot.subsystems.hatch_intake.commands.PlaceHatch;
  */
 public class OI {
 
-    public static final double WRIST_ROTATE_RATE = 5;
+    public static final double WRIST_ROTATE_RATE = 20;
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
-    public static final double DOWN_SPEED_RATE = 0.08;
+    public static final double DOWN_SPEED_RATE = 0.05;
     /**
      * The rate at which the lift will goes up with the xbox joystick.
      */
-    public static final double UP_SPEED_RATE = 0.08;
+    public static final double UP_SPEED_RATE = 0.05;
     /**
      * The Y value area in which the xbox joystick won't make the lift move.
      */
@@ -60,10 +61,11 @@ public class OI {
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
 
-    public static Button povu = new POVButton(xbox, 0);
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
+    public static Button povu = new POVButton(xbox, 0);
+
     public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
     public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
 
@@ -71,6 +73,19 @@ public class OI {
     public static Button lsRight = new JoystickButton(leftStick, 5);
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsBottom = new JoystickButton(leftStick, 2);
+
+    public static Button ul = new JoystickButton(leftStick, 5);
+    public static Button dl = new JoystickButton(leftStick, 3);
+    public static Button ur = new JoystickButton(leftStick, 6);
+    public static Button dr = new JoystickButton(leftStick, 4);
+
+    public static Button trigger = new JoystickButton(leftStick,1);
+    public static Button back_button = new JoystickButton(leftStick,2);
+
+    public static Button nine = new JoystickButton(leftStick, 8);
+    public static Button ten = new JoystickButton(leftStick, 10);
+    public static Button twelve = new JoystickButton(leftStick, 12);
+
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -80,52 +95,147 @@ public class OI {
 
 
     public OI() {
-        povu.toggleWhenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        povd.toggleWhenPressed(new ElevatorCommand(0));
-        povl.toggleWhenPressed(new ElevatorCommand(0.78));
-        povr.toggleWhenPressed(new ElevatorCommand(1.4));
+        if(Robot.driveType == 1) {
+            povd.whenPressed(new ElevatorCommand(0));
+            povr.whenPressed(new CargoScoring(1, false));
+            povl.whenPressed(new CargoScoring(2, false));
+            povu.whenPressed(new CargoScoring(3, false));
 
-        rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-        start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+            RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
+            LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
-        a.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
-        x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        y.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+            a.whenPressed(new GripperTransportation());
+            lb.whenPressed(new Gripper(false));
+            rb.whenPressed(new Gripper(true));
+
+            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
+            b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+            x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+            //TODO: add right stick to control the cargo intake
+            select.whenPressed(new CloseBoth());
+        }else if(Robot.driveType ==2) {
+            povd.toggleWhenPressed(new ElevatorCommand(0));
+            povl.toggleWhenPressed(new ElevatorCommand(0.78));
+            povr.toggleWhenPressed(new ElevatorCommand(1.4));
+
+            RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
+            LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
+
+            a.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+            b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+            x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
+
+
+            select.whenPressed(new GripperTransportation());
+            lb.whenPressed(new Gripper());
+        }
+        else if(Robot.driveType == 3){
+            povd.whenPressed(new ElevatorCommand(0));
+            povl.whenPressed(new ElevatorCommand(0.78));
+            povr.whenPressed(new ElevatorCommand(1.3));
+
+            povu.whenPressed(new ElevatorCommand(1.59));
+            trigger.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
+            ur.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
+
+            nine.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+            b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+            ten.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+            twelve.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
+
+            dl.whenPressed(new GripperTransportation());
+            ul.whenPressed(new Gripper());
+        }
+
 
         // Place hatch
-        lsLeft.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        lsMid.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        lsRight.toggleWhenPressed(new PlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+        //lsLeft.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        //lsMid.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        //lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
+        // Place cargo backward
 
-        select.whenPressed(new GripperTransportation());
-        lb.whenPressed(new Gripper());
+        /*
+        Tiood XD
+
+        |||||||
+        |||3|||
+        |||||||
+        |||||||   Rocket
+        |||2|||
+        |||||||
+        |||||||
+        |||1|||
+        |||||||
+
+        |||||||
+        |     |
+        |     |    Bay
+        |||||||
+        |||0|||
+        |||||||
+
+         */
+        /*
+        lsBottom.whenPressed(new CargoScoring(0, true));
+        lsLeft.whenPressed(new CargoScoring(1, true));
+        lsMid.whenPressed(new CargoScoring(2, true));
+        lsRight.whenPressed(new CargoScoring(3, true));
+
+        // Score cargo
+        rsBottom.whenPressed(new CargoScoring(0, false));
+        rsLeft.whenPressed(new CargoScoring(1, false));
+        rsMid.whenPressed(new CargoScoring(2, false));
+        rsRight.whenPressed(new CargoScoring(3, false));
+        */
     }
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
     public double leftDriveStick(){ // TODO: might need name refactoring
+        if(Robot.driveType==3)
+            return -0.5*leftStick.getY()+0.5*leftStick.getZ();
         return -leftStick.getY();
     }
 
     public double rightDriveStick(){
+        if(Robot.driveType==3)
+            return -0.5*leftStick.getY()-0.5*leftStick.getZ();
         return -rightStick.getY();
     }
 
     public double WristStick(){
-        return xbox.getRawAxis(right_y_stick);
+        if(Robot.driveType==3){
+            if(leftStick.getRawButton(9))
+                return -0.5;
+            else if(leftStick.getRawButton(7))
+                return 0.5;
+            return 0;
+        }
+        return -xbox.getRawAxis(left_y_stick);
     }
 
     public double ElevatorStick() {
-        return -xbox.getRawAxis(left_y_stick);
+        if(Robot.driveType==3)
+            return -leftStick.getRawAxis(3);
+        return -xbox.getRawAxis(right_y_stick);
+
     }
     public boolean enableElevator() {
+        if(Robot.driveType==3)
+            return leftStick.getRawButton(11);
+        return xbox.getRawButton(10);
+    }
+
+
+    public boolean enableWrist() {
+        if(Robot.driveType==3)
+            return true;
         return xbox.getRawButton(9);
     }
 
-    public boolean enableWrist() {
-        return xbox.getRawButton(10);
-    }
+
+    
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.
@@ -149,6 +259,8 @@ public class OI {
     // Run the command while the button is being held down and interrupt it once
     // the button is released.
     // button.whileHeld(new ExampleCommand());
+
+
     // Start the command when the button is released and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());

@@ -38,6 +38,8 @@ public class WristTurn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        cargoIntake.setWristAngle(angle);
+        cargoIntake.preventOverShoot();
         if (cargoIntake.getWristAngle() < 5 && angle < 3) {
             cargoIntake.setWristSpeed(0);
         }

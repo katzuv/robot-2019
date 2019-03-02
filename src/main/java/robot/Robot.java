@@ -46,6 +46,8 @@ public class Robot extends TimedRobot {
 
     public static OI m_oi;
     public final static boolean isRobotA = true;
+    public final static int driveType = 1; //type 1 = rons drive, type 2 = testing drive, type 3 = paulos disabled arm (not yet)
+
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -187,7 +189,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        cargoIntake.resetSensors(); // TODO: move to auto init. deal with all resets better
+//        cargoIntake.resetSensors(); // TODO: move to auto init. deal with all resets better
 
         navx.reset();
         drivetrain.resetLocation();
@@ -224,6 +226,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
         SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
-
+        SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
     }
 }

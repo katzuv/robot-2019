@@ -3,6 +3,8 @@ package robot.subsystems.drivetrain.pure_pursuit;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static robot.Robot.drivetrain;
+
 
 /**
  * @author Paulo Khayat
