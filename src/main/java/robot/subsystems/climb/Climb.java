@@ -10,6 +10,7 @@ package robot.subsystems.climb;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Climbing subsystem for the 2019 robot 'GENESIS'
@@ -46,6 +47,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void setLegFLHeight(double height, double legOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+        SmartDashboard.putNumber("Climb: FL target height", height);
     }
 
     /**
@@ -66,6 +68,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void setLegBLHeight(double height, double legOffset) {
         talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+        SmartDashboard.putNumber("Climb: BL target height", height);
     }
 
     /**

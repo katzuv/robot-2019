@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 
 
     public static OI m_oi;
-    public final static boolean isRobotA = false;
+    public final static boolean isRobotA = true;
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -214,6 +214,7 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleboard() {
+        SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
         SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
         SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
         SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
@@ -223,6 +224,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
         SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
-
+        SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
+        SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
+        SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
+        SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
     }
 }

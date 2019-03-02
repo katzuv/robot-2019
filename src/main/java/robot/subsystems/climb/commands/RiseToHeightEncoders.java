@@ -1,5 +1,6 @@
 package robot.subsystems.climb.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.climb.Climb;
@@ -38,13 +39,6 @@ public class RiseToHeightEncoders extends Command {
         climb.setLegFRHeight(targetHeight, minimumLeg - climb.getLegFRHeight());
         climb.setLegBLHeight(targetHeight, minimumLeg - climb.getLegBLHeight());
         climb.setLegBRHeight(targetHeight, minimumLeg - climb.getLegBRHeight());
-        SmartDashboard.putNumber("BL height", climb.getLegBLHeight());
-        SmartDashboard.putNumber("BR height", climb.getLegBRHeight());
-        SmartDashboard.putNumber("FL height", climb.getLegFLHeight());
-        SmartDashboard.putNumber("FR height", climb.getLegFRHeight());
-        SmartDashboard.putNumber("target height", targetHeight);
-        SmartDashboard.putNumber("velocity", 0);
-
     }
 
     // Make this return true when this Command no longer needs to run execute()

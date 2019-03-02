@@ -2,7 +2,6 @@ package robot.subsystems.cargo_intake.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.OI;
 import robot.Robot;
 
@@ -27,7 +26,6 @@ public class JoystickSpeedWristTurn extends InstantCommand {
 
         double yAxis = - Robot.m_oi.xbox.getRawAxis(OI.right_y_stick); // invert the input to make up positive and down negative
         Robot.cargoIntake.setWristSpeed(yAxis);
-        SmartDashboard.putNumber("arm joystick velocity", yAxis);
 
     }
 
