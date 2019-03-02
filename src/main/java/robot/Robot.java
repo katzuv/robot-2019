@@ -40,6 +40,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.DrivePathNew;
 import robot.subsystems.drivetrain.ramsete.HatchAuto;
+import robot.subsystems.drivetrain.ramsete.VisionTarget;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
 
@@ -236,7 +237,7 @@ public class Robot extends TimedRobot {
                         reversed,
                         true
                 );
-        new HatchAuto(trajectory).start();
+        new VisionTarget().start();
     }
 
     /**
