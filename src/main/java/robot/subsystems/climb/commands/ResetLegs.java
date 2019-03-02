@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ResetLegs extends CommandGroup {
 
     public ResetLegs() {
-        addSequential(new CalibrateLegs());
+        addSequential(new CloseLoopCalibrateLegs());
         addSequential(new RiseToHeightEncoders(0));
         // Add Commands here:
         // e.g. addSequential(new Command1());
