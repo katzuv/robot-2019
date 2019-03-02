@@ -71,7 +71,7 @@ public class OI {
     public static Button elevatorL = new DoubleButton(povl, start, false);
     public static Button elevatorU = new DoubleButton(povu, start, false);
 
-    //Autoscore forward
+    // Auto scoring forward
     public static Button frontScoreD = new DoubleButton(povd, start, true);
     public static Button frontScoreR = new DoubleButton(povr, start, true);
     public static Button frontScoreL = new DoubleButton(povl, start, true);
