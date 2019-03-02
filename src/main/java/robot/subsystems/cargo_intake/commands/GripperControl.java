@@ -14,10 +14,25 @@ import static robot.Robot.cargoIntake;
  */
 public class GripperControl extends Command {
     private double speed;//speed of the gripper
+    private double timeout = 0;
+
+    public GripperControl(double speed){
+        requires(cargoIntake);
+        this.speed = speed;
+    }
 
     public GripperControl(GRIPPER_SPEED gripperSpeed) {
-        requires(cargoIntake);
-        this.speed = gripperSpeed.getValue();
+        this(gripperSpeed.getValue());
+    }
+
+    public GripperControl(GRIPPER_SPEED gripperSpeed, double timeout) {
+        this(gripperSpeed);
+        this.timeout = timeout;
+    }
+
+    public GripperControl(double speed, double timeout) {
+        this(speed);
+        this.timeout = timeout;
     }
 
     // Called just before this Command runs the first time
