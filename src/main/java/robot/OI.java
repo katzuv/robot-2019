@@ -77,7 +77,7 @@ public class OI {
     public static Button frontScoreL = new DoubleButton(povl, start, true);
     public static Button frontScoreU = new DoubleButton(povu, start, true);
 
-    //Autoscore forward
+    // Auto scoring backward
     public static Button backScoreD = new DoubleButton(povd, select, true);
     public static Button backScoreR = new DoubleButton(povr, select, true);
     public static Button backScoreL = new DoubleButton(povl, select, true);
