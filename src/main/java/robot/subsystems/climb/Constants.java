@@ -15,13 +15,14 @@ public class Constants {
     public static final int MOTION_MAGIC_CRUISE_VELOCITY = 50;
     public static final int MOTION_MAGIC_ACCELERATION= 110;
     public static final double CALIBRATE_SPEED = 0.23;
-    public static final double DRIVE_CLIMB_DRIVETRAIN_DIVISOR = 4;
+    public static final double DRIVE_CLIMB_DRIVETRAIN_DIVISOR = 2.54;
 
     static final double TICKS_PER_METER = isRobotA ? 10000 : 10000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
     static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0, 0, 7.895, 0} : new double[]{0, 0, 0, 0, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
 
     //Reverse motor directions
+    static final boolean WHEEL_TALON_REVERSE = isRobotA ? true : true;
     static final boolean FRONT_LEFT_TALON_REVERSE = isRobotA ? true : true;
     static final boolean FRONT_RIGHT_TALON_REVERSE = isRobotA ? true : true;
     static final boolean BACK_LEFT_TALON_REVERSE = isRobotA ? true : true;

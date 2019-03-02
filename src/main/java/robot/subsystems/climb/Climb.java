@@ -28,6 +28,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     private TalonSRX wheelDrive = new TalonSRX(Ports.wheelMotor);
 
     public Climb() {
+        wheelDrive.setInverted(Constants.WHEEL_TALON_REVERSE);
         configMotorMovement(talonFL, Constants.FRONT_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
         configMotorMovement(talonFR, Constants.FRONT_RIGHT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
         configMotorMovement(talonBL, Constants.BACK_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
@@ -47,6 +48,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void setLegFLHeight(double height, double legOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+
         SmartDashboard.putNumber("Climb: FL target height", height);
     }
 
