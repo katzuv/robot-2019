@@ -19,7 +19,7 @@ public class Constants {
 
     static final double TICKS_PER_METER = isRobotA ? 10000 : 10000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
-    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0.118, 0, 7.895, 0} : new double[]{0, 0, 0, 0, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
+    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0, 0, 7.895, 0} : new double[]{0, 0, 0, 0, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
 
     //Reverse motor directions
     static final boolean FRONT_LEFT_TALON_REVERSE = isRobotA ? true : true;
@@ -45,8 +45,8 @@ public class Constants {
     static final boolean FRONT_RIGHT_REVERSE_HALL_REVERSED = isRobotA ? true : true;
     static final boolean FRONT_RIGHT_FORWARD_HALL_REVERSED = isRobotA ? true : true;
 
-    static final int BACK_RIGHT_STARTING_OFFSET = -886; //if the leg were to move until the limit switch, what would be its value.
-    static final int BACK_LEFT_STARTING_OFFSET = -961; //if the leg were to move until the limit switch, what would be its value.
+    static final int BACK_RIGHT_STARTING_OFFSET = -203; //if the leg were to move until the limit switch, what would be its value.
+    static final int BACK_LEFT_STARTING_OFFSET = -203; //if the leg were to move until the limit switch, what would be its value.
     static final int FRONT_RIGHT_STARTING_OFFSET = 0; //if the leg were to move until the limit switch, what would be its value.
     static final int FRONT_LEFT_STARTING_OFFSET = 0; //if the leg were to move until the limit switch, what would be its value.
 
