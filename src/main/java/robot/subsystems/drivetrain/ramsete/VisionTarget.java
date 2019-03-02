@@ -2,6 +2,7 @@ package robot.subsystems.drivetrain.ramsete;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
@@ -20,8 +21,11 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
+import robot.subsystems.drivetrain.pure_pursuit.Point;
+import robot.subsystems.drivetrain.pure_pursuit.Vector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static robot.Robot.drivetrain;
@@ -41,14 +45,18 @@ public class VisionTarget extends Command {
 
     protected void initialize() {
         LiveDashboard.INSTANCE.setFollowingPath(true);
+        double angle = Robot.visionTable.getEntry("tape_angle").getDouble(0);
+        double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
+        double field_angle = Robot.visionTable.getEntry("tape_field_angle").getDouble(0);
+        drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
     }
 
     protected void execute() {
-        double angle = Robot.visionTable.getEntry("last_angle").getDouble(0);
-        double distance = Robot.visionTable.getEntry("last_distance").getDouble(0);
-        double field_angle = Robot.visionTable.getEntry("last_field_angle").getDouble(0);
+        double angle = Robot.visionTable.getEntry("tape_angle").getDouble(0);
+        double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
+        double field_angle = Robot.visionTable.getEntry("tape_field_angle").getDouble(0);
 
-        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle) {
+        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle && distance > 1) {
             drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
             last_angle = angle;
             last_distance = distance;
@@ -79,29 +87,44 @@ public class VisionTarget extends Command {
         if (reversed) {
             angleModifier = 180;
         }
+        distance -= 0.1;
 
-        angle = Math.toRadians(angle);
+        Vector direction = new Vector(distance, 0);
 
+        angle = -angle;
+
+
+        direction.rotate(drivetrain.getAngle() + angle);
+
+        SmartDashboard.putString("Vector", direction.toString());
+        Point robotPoint = new Point(drivetrain.getRobotPosition().getTranslation().getX().getMeter(), drivetrain.getRobotPosition().getTranslation().getY().getMeter());
+        Point calculatedPoint = direction.add(robotPoint);
         List<Pose2d> list = new ArrayList<>();
         Pose2d robotPose = drivetrain.getRobotPosition();
-        list.add(robotPose.transformBy(new Pose2d(Length.Companion.getKZero(), Length.Companion.getKZero(), Rotation2dKt.getDegree(angleModifier))));
-        Pose2d calculatedPose = new Pose2d(LengthKt.getMeter(Math.abs(Math.cos(angle) * distance)), LengthKt.getMeter(-Math.abs(Math.sin(angle) * distance)), Rotation2dKt.getDegree(angleModifier + field_angle));
-        list.add(robotPose.transformBy(calculatedPose));
+        Pose2d calculatedPose = new Pose2d(LengthKt.getMeter(calculatedPoint.getX()), LengthKt.getMeter(calculatedPoint.getY()), Rotation2dKt.getDegree(angleModifier + 7));
+
+        list.add(robotPose);
+        list.add(calculatedPose);
+
+        SmartDashboard.putString("calculatedPoint", calculatedPose.toString() + ": " + calculatedPose.getRotation().getDegree());
 
         return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
                 .generateTrajectory(
                         list,
-                        constraints,
-                        VelocityKt.getVelocity(LengthKt.getMeter((drivetrain.getLeftVelocity() + drivetrain.getRightVelocity()) / 2)),
+                        Collections.emptyList(),
+                        VelocityKt.getVelocity(LengthKt.getMeter(0)),
                         VelocityKt.getVelocity(Length.Companion.getKZero()),
-                        VelocityKt.getVelocity(LengthKt.getMeter(1.5)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(1.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(0.5)),
                         reversed,
                         true
                 );
     }
+    //                        VelocityKt.getVelocity(LengthKt.getMeter((drivetrain.getLeftVelocity() + drivetrain.getRightVelocity()) / 2)),
 
     protected boolean isFinished() {
+//        double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
+//        return distance != 0 && distance < 0.3;
         return drivetrain.trajectoryTracker.isFinished();
     }
 

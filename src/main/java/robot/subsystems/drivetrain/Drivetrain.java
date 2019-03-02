@@ -44,11 +44,11 @@ public class Drivetrain extends Subsystem {
 
     public Localization localization = new TankEncoderLocalization(
             () -> Rotation2dKt.getDegree(180 + getAngle()),
-            () -> LengthKt.getMeter(-getLeftDistance()),
-            () -> LengthKt.getMeter(-getRightDistance())
+            () -> LengthKt.getMeter(getLeftDistance()),
+            () -> LengthKt.getMeter(getRightDistance())
     );
 
-    public TrajectoryTracker trajectoryTracker = new RamseteTracker(2.0, 0.7);
+    public TrajectoryTracker trajectoryTracker = new RamseteTracker(2, 0.7);
 
     public Drivetrain() {
 
@@ -260,7 +260,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        localization.reset(new Pose2d(LengthKt.getFeet(5.441), LengthKt.getFeet(9.77), Rotation2dKt.getDegree(180 - 30)));
+        localization.reset(new Pose2d(LengthKt.getFeet(5.15), LengthKt.getFeet(9.454), Rotation2dKt.getDegree(180)));
     }
 
     @Override

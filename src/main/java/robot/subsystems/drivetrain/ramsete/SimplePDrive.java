@@ -44,10 +44,10 @@ public class SimplePDrive extends Command {
 
         double distance_adjust = KpDistance * distance_error;
 
-        left_command += steering_adjust + distance_adjust;
-        right_command -= steering_adjust + distance_adjust;
+        left_command -= steering_adjust + distance_adjust;
+        right_command += steering_adjust + distance_adjust;
 
-        drivetrain.setSpeed(left_command, right_command);
+        drivetrain.setSpeed(left_command * -1, right_command * -1);
     }
 
     // Make this return true when this Command no longer needs to run execute()

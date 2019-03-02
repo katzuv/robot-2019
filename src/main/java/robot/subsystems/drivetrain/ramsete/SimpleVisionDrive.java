@@ -29,6 +29,7 @@ public class SimpleVisionDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        double speedmodifier = -1;
         double angle = angleEntry.getDouble(0);
         if (distanceEntry.getDouble(0) < 0.25) {
             if (!hasTimerStarted) {
@@ -36,14 +37,14 @@ public class SimpleVisionDrive extends Command {
                 stopTimer.start();
                 hasTimerStarted = true;
             }
-            drivetrain.setSpeed(0.3, 0.3);
+            drivetrain.setSpeed(speedmodifier * 0.3, speedmodifier * 0.3);
         } else if (angle > 10) { // Need to rotate left
-            drivetrain.setSpeed(0.3, -0.3);
+            drivetrain.setSpeed(speedmodifier * 0.3, speedmodifier * -0.3);
         } else if (angle < -10) { // Need to rotate right
-            drivetrain.setSpeed(-0.3, 0.3);
+            drivetrain.setSpeed(speedmodifier * -0.3, speedmodifier * 0.3);
         } else {
             // Robot is roughly aligned, so drive forward slowly
-            drivetrain.setSpeed(0.3, 0.3);
+            drivetrain.setSpeed(speedmodifier * 0.3, speedmodifier * 0.3);
         }
 
     }

@@ -20,7 +20,7 @@ public class PlaceHatch extends CommandGroup {
         addSequential(new GripperTransportation(false));
         addSequential(new WaitCommand(0.2));
         addSequential(new Gripper(false));
-        addSequential(new ElevatorCommand(0));
+//        addSequential(new ElevatorCommand(0));
 
     }
 }

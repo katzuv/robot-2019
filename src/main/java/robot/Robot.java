@@ -41,6 +41,7 @@ import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.DrivePathNew;
 import robot.subsystems.drivetrain.ramsete.DriveWithVision;
 import robot.subsystems.drivetrain.ramsete.HatchAuto;
+import robot.subsystems.drivetrain.ramsete.SimpleVisionDrive;
 import robot.subsystems.drivetrain.ramsete.VisionTarget;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
@@ -165,9 +166,9 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        navx.reset();
-        drivetrain.resetEncoders();
-        elevator.resetEncoders();
+//        navx.reset();
+//        drivetrain.resetEncoders();
+//        elevator.resetEncoders();
         visionTable.getEntry("direction").setString(drivetrain.isDrivingForward() ? "front" : "back");
 
 
@@ -205,8 +206,10 @@ public class Robot extends TimedRobot {
             angleModifier = 180;
         }
 
-        list.add(new Pose2d(LengthKt.getFeet(5.441), LengthKt.getFeet(9.77), Rotation2dKt.getDegree(angleModifier - 30)));
-        list.add(new Pose2d(LengthKt.getFeet(13.192), LengthKt.getFeet(4.087), Rotation2dKt.getDegree(angleModifier - 30)));
+//        list.add(new Pose2d(LengthKt.getFeet(5.441), LengthKt.getFeet(9.77), Rotation2dKt.getDegree(angleModifier - 30)));
+        list.add(drivetrain.getRobotPosition());
+        list.add(new Pose2d(LengthKt.getFeet(7.454), LengthKt.getFeet(9.638), Rotation2dKt.getDegree(angleModifier)));
+        list.add(new Pose2d(LengthKt.getFeet(13.368), LengthKt.getFeet(12.4), Rotation2dKt.getDegree(angleModifier - 15)));
 //        list.add(new Pose2d(LengthKt.getFeet(5.595), LengthKt.getFeet(9.704), Rotation2dKt.getDegree(angleModifier + 0)));
 //        list.add(new Pose2d(LengthKt.getFeet(11.881), LengthKt.getFeet(6.913), Rotation2dKt.getDegree(angleModifier + -55.0)));
 //        list.add(new Pose2d(LengthKt.getFeet(17.727), LengthKt.getFeet(1.618), Rotation2dKt.getDegree(angleModifier + -30.0)));
@@ -235,12 +238,13 @@ public class Robot extends TimedRobot {
                         list,
                         constraints,
                         VelocityKt.getVelocity(Length.Companion.getKZero()),
-                        VelocityKt.getVelocity(Length.Companion.getKZero()),
-                        VelocityKt.getVelocity(LengthKt.getMeter(1.5)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(1.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(0)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(0.5)),
                         reversed,
                         true
                 );
+
         new DriveWithVision(trajectory).start();
     }
 
