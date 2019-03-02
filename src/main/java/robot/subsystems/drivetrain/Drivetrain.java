@@ -35,9 +35,9 @@ public class Drivetrain extends Subsystem {
         leftMaster.setSensorPhase(Constants.LEFT_ENCODER_REVERSED);
         rightMaster.setSensorPhase(Constants.RIGHT_ENCODER_REVERSED);
 
-        if (!Robot.isRobotA) { // TODO: Check whether this condition is mandatory
-            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyClosed);
-            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyClosed);
+        if (!Robot.isRobotA) {
+            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
+            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
         }
 
         leftSlave1.follow(leftMaster);
