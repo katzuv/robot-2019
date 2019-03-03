@@ -12,7 +12,6 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalA
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
@@ -51,7 +50,7 @@ public class VisionTarget extends Command {
         double field_angle = Robot.visionTable.getEntry("tape_field_angle").getDouble(0);
         last_distance = distance;
         drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
-        generate = false;
+        generate = true;
     }
 
     protected void execute() {
@@ -61,7 +60,7 @@ public class VisionTarget extends Command {
 
 //        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle && distance > 1) {
         System.out.println(last_distance + "|" + distance);
-        if (distance < 1 && generate) {
+        if (distance != 0 && distance < 1.5 && generate) {
             drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
             last_angle = angle;
             last_distance = distance;
@@ -93,14 +92,14 @@ public class VisionTarget extends Command {
         if (reversed) {
             angleModifier = 180;
         }
-        distance -= 0.15;
 
         Vector direction = new Vector(distance, 0);
 
         angle = -angle;
 
-
         direction.rotate(drivetrain.getAngle() + angle);
+
+        direction = direction.add(new Vector(-0.5, 0));
 
         SmartDashboard.putString("Vector", direction.toString());
         Point robotPoint = new Point(drivetrain.getRobotPosition().getTranslation().getX().getMeter(), drivetrain.getRobotPosition().getTranslation().getY().getMeter());
