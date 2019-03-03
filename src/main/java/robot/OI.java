@@ -14,10 +14,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import robot.subsystems.climb.Climb;
-import robot.subsystems.climb.commands.CalibrateLegs;
-import robot.subsystems.climb.commands.ResetLegs;
-import robot.subsystems.climb.commands.RiseToHeight;
-import robot.subsystems.climb.commands.RiseToHeightEncoders;
+import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.auxiliary.Trigger;
@@ -92,11 +89,11 @@ public class OI {
         povl.toggleWhenPressed(new ElevatorCommand(0.78));
         povr.toggleWhenPressed(new ElevatorCommand(1.4));
 
-        x.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.LEVEL2));
+        x.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.LEVEL3));
         a.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.TEST));
-        b.whenPressed(new RiseToHeightEncoders(0));
+        b.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.LEVEL2));
         //x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        y.whenPressed(new ResetLegs());
+        y.whenPressed(new CloseLoopCalibrateLegs());
 
         select.whenPressed(new GripperTransportation());
         lb.whenPressed(new Gripper());

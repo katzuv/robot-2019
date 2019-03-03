@@ -111,12 +111,7 @@ public class CargoIntake extends Subsystem {
     }
 
     public double stallCurrent() {
-        final double wristAngle = cargoIntake.getWristAngle();
-        if (wristAngle < Constants.MIN_STALL_ANGLE) {
-            return 0;
-        }
-        final double COMCosine = Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle()));
-        return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
+        return 0;
     }
 
     /**
