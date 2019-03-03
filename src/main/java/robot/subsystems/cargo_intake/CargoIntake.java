@@ -157,11 +157,11 @@ public class CargoIntake extends Subsystem {
      * lower once one of the limit switches/hall effects is pressed.
      */
     public void preventOverShoot() {
-        if (atTop()) {
+        if (atPeak()) {
             //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
             wrist.setSelectedSensorPosition((int) (Constants.WRIST_ANGLES.INTAKE.getValue() * Constants.TICKS_PER_DEGREE), 0, Constants.TALON_TIME_OUT); //set the position to the top.
         }
-        if (atBottom()) {
+        if (atClosed()) {
             //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
             wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT); //set the encoder position to the bottom
         }
@@ -172,7 +172,7 @@ public class CargoIntake extends Subsystem {
      *
      * @return boolean of the sensor true or false
      */
-    public boolean atTop() {
+    public boolean atPeak() {
         //return Math.abs(getHeight()) > Constants.ELEVATOR_MAX_HEIGHT;
         if (!Robot.isRobotA) {
             return wrist.getSensorCollection().isFwdLimitSwitchClosed();
@@ -185,7 +185,7 @@ public class CargoIntake extends Subsystem {
      *
      * @return boolean of the sensor true or false
      */
-    public boolean atBottom() {
+    public boolean atClosed() {
         //return Math.abs(getHeight()) < 0.05;
         if (!Robot.isRobotA) {
             return wrist.getSensorCollection().isRevLimitSwitchClosed();
