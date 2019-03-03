@@ -12,7 +12,7 @@ import robot.subsystems.drivetrain.commands.GamePiecePickup;
 public class AutoPickUpCargo extends CommandGroup {
 
     public AutoPickUpCargo() {
-        addSequential(new GamePiecePickup());
+        addSequential(new GamePiecePickup(robot.subsystems.drivetrain.Constants.DRIVING_TARGETS.CARGO));
         addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
         addParallel(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
         // Add Commands here:

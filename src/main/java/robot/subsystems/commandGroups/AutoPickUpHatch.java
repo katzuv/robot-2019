@@ -1,9 +1,9 @@
 package robot.subsystems.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.drivetrain.Constants;
 import robot.subsystems.drivetrain.commands.GamePiecePickup;
 import robot.subsystems.hatch_intake.commands.Gripper;
 
@@ -14,7 +14,7 @@ public class AutoPickUpHatch extends CommandGroup {
 
     public AutoPickUpHatch() {
 
-        addSequential(new GamePiecePickup());
+        addSequential(new GamePiecePickup(Constants.DRIVING_TARGETS.HATCH));
         addSequential(new Gripper(false));
         // Add Commands here:
         // e.g. addSequential(new Command1());
