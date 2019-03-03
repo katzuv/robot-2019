@@ -10,7 +10,7 @@ public class Constants {
 
     static final double TICKS_PER_METER = isRobotA ? 10000 : 10000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
-    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0, 0, 7.895, 0} : new double[]{0, 0, 0, 0, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
+    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0, 0, 7.895, 0} : new double[]{11.567, 0, 0, 7.895, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
 
     public static final double LEVEL_THREE_LEG_LENGTH = 0.5; //Length of leg in meters when climbing. todo:change
     public static final double LEVEL_TWO_LEG_LENGTH = 0.2; //Length of leg in meters when climbing to hab 2. todo:change
