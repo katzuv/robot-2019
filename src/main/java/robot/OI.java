@@ -87,20 +87,9 @@ public class OI {
     public static Button left_joystick_eight = new JoystickButton(leftStick, 8);
     public static Button left_joystick_nine = new JoystickButton(leftStick, 9);
 
+
     public OI() {
-        povu.toggleWhenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        povd.toggleWhenPressed(new ElevatorCommand(0));
-        povl.toggleWhenPressed(new ElevatorCommand(0.78));
-        povr.toggleWhenPressed(new ElevatorCommand(1.4));
 
-        x.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.LEVEL3));
-        a.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.TEST));
-        b.whenPressed(new RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS.LEVEL2));
-        //x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        y.whenPressed(new CloseLoopCalibrateLegs());
-
-        select.whenPressed(new GripperTransportation());
-        lb.whenPressed(new Gripper());
     }
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
