@@ -198,6 +198,7 @@ public class CargoIntake extends Subsystem {
         angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(),angle);
         setPointAngle = angle;
         cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
+
     }
 
     public int getVelocity() {

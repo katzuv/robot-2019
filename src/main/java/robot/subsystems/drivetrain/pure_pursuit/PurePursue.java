@@ -60,7 +60,7 @@ public class PurePursue extends Command {
         }
         else {
             initAngle = 0;
-            currentPoint = new Point(drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY());
+            currentPoint = new Point(drivetrain.getCurrentLocation().getX(), drivetrain.getCurrentLocation().getY());
         }
 
         lastLeftEncoder = drivetrain.getLeftDistance()*direction;
@@ -72,16 +72,21 @@ public class PurePursue extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        updatePoint();
+        if (!isFinished()){
+
+            updatePoint();
         updateLookaheadInPath(path);
-        drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+        drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
+        SmartDashboard.putNumber("x", drivetrain.getCurrentLocation().x);
+        SmartDashboard.putNumber("y", drivetrain.getCurrentLocation().y);
+    }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-//        return false;
-        boolean closeToLast = (drivetrain.currentLocation.getX() >= path.getWaypoint(path.length() - 1).getX() - 0.05 &&
-                drivetrain.currentLocation.getY() >= path.getWaypoint(path.length() - 1).getY() - 0.05);
+        SmartDashboard.putString("test: Final point?", path.getWaypoint(path.length() - 2).toString());
+        boolean closeToLast = (Math.abs(drivetrain.getCurrentLocation().getX() - path.getWaypoint(path.length() - 1).getX()) <= 0.03 &&
+                Math.abs(drivetrain.getCurrentLocation().getY() - path.getWaypoint(path.length() - 2).getY()) <= 0.03);
         return (closeToLast &&
                 drivetrain.getLeftSpeed() < Constants.STOP_SPEED_THRESH &&
                 drivetrain.getRightSpeed() < Constants.STOP_SPEED_THRESH);
@@ -89,8 +94,6 @@ public class PurePursue extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        drivetrain.resetLocation();
-        drivetrain.resetEncoders();
         drivetrain.setSpeed(0, 0);
     }
 
@@ -114,8 +117,8 @@ public class PurePursue extends Command {
         //updates values for next run
         lastLeftEncoder = drivetrain.getLeftDistance()*direction;
         lastRightEncoder = drivetrain.getRightDistance()*direction;
-        drivetrain.currentLocation.setX(currentPoint.getX());
-        drivetrain.currentLocation.setY(currentPoint.getY());
+        drivetrain.getCurrentLocation().setX(currentPoint.getX());
+        drivetrain.getCurrentLocation().setY(currentPoint.getY());
     }
 
 
