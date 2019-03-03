@@ -22,7 +22,7 @@ public class Constants {
     public static final double DRIVE_CLIMB_DRIVETRAIN_DIVISOR = 2.54;
 
     //Reverse motor directions
-    static final boolean WHEEL_TALON_REVERSE = isRobotA ? true : true;
+    static final boolean WHEEL_TALON_REVERSE = isRobotA ? false : false;
     static final boolean FRONT_LEFT_TALON_REVERSE = isRobotA ? true : true;
     static final boolean FRONT_RIGHT_TALON_REVERSE = isRobotA ? true : true;
     static final boolean BACK_LEFT_TALON_REVERSE = isRobotA ? true : true;
