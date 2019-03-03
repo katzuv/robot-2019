@@ -229,7 +229,7 @@ public class Drivetrain extends Subsystem {
      * @return navx yaw angle
      */
     public double getAngle() {
-        return Robot.navx.getAngle();
+        return -Robot.navx.getAngle();
     }
 
     /**
