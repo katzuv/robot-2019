@@ -16,10 +16,10 @@ public class Constants {
     public static final double LEVEL_TWO_LEG_LENGTH = 0.17; //Length of leg in meters when climbing to hab 2. todo:change
     public static final double DRIVE_CLIMB_HEIGHT_THRESH = isRobotA ? 0.1 : 0.1;
     public static final double CLIMB_TOLERANCE = 0.0025; //tolerance in meters from the target position, to allow when stopping the code.
-    public static final int MOTION_MAGIC_CRUISE_VELOCITY = (int)(0.05 * TICKS_PER_METER / 10);
-    public static final int MOTION_MAGIC_ACCELERATION= (int)(0.05 * TICKS_PER_METER / 10);
+    public static final int MOTION_MAGIC_CRUISE_VELOCITY = (int)(0.1 * TICKS_PER_METER / 10);
+    public static final int MOTION_MAGIC_ACCELERATION= (int)(0.1 * TICKS_PER_METER / 10);
     public static final double CALIBRATE_SPEED = 0.23;
-    public static final double DRIVE_CLIMB_DRIVETRAIN_DIVISOR = 2.54;
+    public static final double DRIVE_CLIMB_DRIVETRAIN_DIVISOR = 2;
 
     //Reverse motor directions
     static final boolean WHEEL_TALON_REVERSE = isRobotA ? false : false;
