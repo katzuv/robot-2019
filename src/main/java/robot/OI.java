@@ -82,6 +82,10 @@ public class OI {
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
 
+    public static Button left_joystick_six = new JoystickButton(leftStick, 6);
+    public static Button left_joystick_seven = new JoystickButton(leftStick, 7);
+    public static Button left_joystick_eight = new JoystickButton(leftStick, 8);
+    public static Button left_joystick_nine = new JoystickButton(leftStick, 9);
 
     public OI() {
         povu.toggleWhenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
