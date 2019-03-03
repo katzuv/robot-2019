@@ -14,13 +14,13 @@ public class PlaceHatch extends CommandGroup {
         addSequential(new GripperTransportation(true));//extend
         addSequential(new Gripper(true));// release hatch;
         addSequential(new WaitCommand(0.5));
-        addSequential(new ElevatorCommand(height.getLevelHeight() - 0.10));
+        addSequential(new ElevatorCommand(height.getLevelHeight() - 0.07));
         addSequential(new WaitCommand(0.3));
         //return to previous form
         addSequential(new GripperTransportation(false));
         addSequential(new WaitCommand(0.2));
         addSequential(new Gripper(false));
-//        addSequential(new ElevatorCommand(0));
+        addSequential(new ElevatorCommand(0));
 
     }
 }

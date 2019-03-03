@@ -19,35 +19,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
-import robot.subsystems.drivetrain.ramsete.DrivePathNew;
-import robot.subsystems.drivetrain.ramsete.DriveWithVision;
-import robot.subsystems.drivetrain.ramsete.HatchAuto;
-import robot.subsystems.drivetrain.ramsete.SimpleVisionDrive;
-import robot.subsystems.drivetrain.ramsete.VisionTarget;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -63,7 +42,6 @@ public class Robot extends TimedRobot {
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
-    public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
 
 
     public static OI m_oi;
@@ -113,7 +91,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
-
         //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
         // chooser.addOption("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", m_chooser);
@@ -170,13 +147,10 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         navx.reset();
-//        drivetrain.resetEncoders();
-//        elevator.resetEncoders();
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
         elevator.resetEncoders();
         cargoIntake.resetSensors();
-        visionTable.getEntry("direction").setString(drivetrain.isDrivingForward() ? "front" : "back");
 
 
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
@@ -190,69 +164,12 @@ public class Robot extends TimedRobot {
         Path path = new Path();
         path.appendWaypoint(new Waypoint(0, 0));
         path.appendWaypoint(new Waypoint(0, 2));
+        path.appendWaypoint(new Waypoint(2,2));
         //Generate the path to suit the pure pursuit.
         path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-//        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, false, false);
-//        System.out.println(path);
-//        pursue.start();
-
-        List<Pose2d> list = new ArrayList<>();
-//        list.add(new Pose2d(LengthKt.getMeter(0), LengthKt.getMeter(0), new Rotation2d(0)));
-//        list.add(new Pose2d(LengthKt.getMeter(1), LengthKt.getMeter(0), new Rotation2d(0)));
-//        Path path = new Path(new Point(0, 0), 0, new Point(-1, 2), -90, 0.55);
-//        for (int i = 0; i < path.length() - 1; i++) {
-//            Waypoint waypoint = path.getWaypoint(i);
-//            Waypoint nextPoint = path.getWaypoint(i + 1);
-//            Rotation2d angle = Rotation2dKt.getRadian(Math.PI / 2 - Math.atan2(nextPoint.getY() - waypoint.getY(), nextPoint.getX() - waypoint.getX()));
-//            list.add(new Pose2d(LengthKt.getMeter(waypoint.getY()), LengthKt.getMeter(waypoint.getX()), angle));
-//        }
-//        list.add(new Pose2d(LengthKt.getMeter(path.getWaypoint(path.length() - 1).getY()), LengthKt.getMeter(path.getWaypoint(path.length() - 1).getX()), Rotation2dKt.getDegree(-90)));
-        boolean reversed = true;
-        double angleModifier = 0;
-        if (reversed) {
-            angleModifier = 180;
-        }
-
-//        list.add(new Pose2d(LengthKt.getFeet(5.441), LengthKt.getFeet(9.77), Rotation2dKt.getDegree(angleModifier - 30)));
-        list.add(drivetrain.getRobotPosition());
-//        list.add(new Pose2d(LengthKt.getFeet(7.454), LengthKt.getFeet(9.638), Rotation2dKt.getDegree(angleModifier)));
-        list.add(new Pose2d(LengthKt.getFeet(12.215), LengthKt.getFeet(10.786), Rotation2dKt.getDegree(angleModifier + 15)));
-//        list.add(new Pose2d(LengthKt.getFeet(5.595), LengthKt.getFeet(9.704), Rotation2dKt.getDegree(angleModifier + 0)));
-//        list.add(new Pose2d(LengthKt.getFeet(11.881), LengthKt.getFeet(6.913), Rotation2dKt.getDegree(angleModifier + -55.0)));
-//        list.add(new Pose2d(LengthKt.getFeet(17.727), LengthKt.getFeet(1.618), Rotation2dKt.getDegree(angleModifier + -30.0)));
-
-//        list.add(new Pose2d(LengthKt.getFeet(9.201), LengthKt.getFeet(18.52), Rotation2dKt.getDegree(angleModifier + 0)));
-//        list.add(new Pose2d(LengthKt.getFeet(18.477), LengthKt.getFeet(14.398), Rotation2dKt.getDegree(angleModifier + 0)));
-//
-//        double center_angle = Math.toRadians(visionTable.getEntry("tape_angle").getDouble(0));
-//        double distance = visionTable.getEntry("tape_distance").getDouble(0);
-//        double field_angle = visionTable.getEntry("tape_field_angle").getDouble(0);
-//
-//        Pose2d robotPose = drivetrain.localization.getRobotPosition();
-//
-//        Pose2d calculatedPose = new Pose2d(LengthKt.getMeter(Math.abs(Math.cos(center_angle) * distance)), LengthKt.getMeter(-Math.abs(Math.sin(center_angle) * distance)), Rotation2dKt.getDegree(angleModifier + field_angle));
-//
-//        list.add(robotPose.transformBy(new Pose2d(Length.Companion.getKZero(), Length.Companion.getKZero(), Rotation2dKt.getDegree(angleModifier))));
-//        System.out.println(robotPose.transformBy(calculatedPose).getRotation().getDegree());
-//        list.add(robotPose.transformBy(calculatedPose));
-
-        List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
-        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
-        constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(4), LengthKt.getFeet(7), LengthKt.getFeet(8), LengthKt.getFeet(20)), VelocityKt.getVelocity(LengthKt.getFeet(3))));
-
-        TimedTrajectory<Pose2dWithCurvature> trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
-                .generateTrajectory(
-                        list,
-                        constraints,
-                        VelocityKt.getVelocity(Length.Companion.getKZero()),
-                        VelocityKt.getVelocity(LengthKt.getMeter(0)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(1.5)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(1.5)),
-                        reversed,
-                        true
-                );
-
-        new VisionTarget().start();
+        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, false, false);
+        System.out.println(path);
+        pursue.start();
     }
 
     /**
@@ -311,8 +228,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Cargo intake: proximity value", cargoIntake.getProximityVoltage());
         SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
         SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
-        Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
-        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
-
+        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
+        SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
     }
 }

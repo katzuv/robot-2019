@@ -1,88 +1,111 @@
 package robot.subsystems.drivetrain.commands;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.drivetrain.pure_pursuit.*;
 
-import static robot.Robot.*;
-
-
 /**
  *
  */
 public class GamePiecePickup extends Command {
-    private robot.subsystems.drivetrain.Constants.DRIVING_TARGETS CurrentTarget;
-    private NetworkTableEntry CargotargetAngleEntry;
-    private NetworkTableEntry CargotargetDistanceEntry;
-    private NetworkTableEntry ReflectorAngleEntry;
-    private NetworkTableEntry ReflectorDistanceEntry;
-    private NetworkTableEntry ReflectorFieldAngleEntry;
-    private NetworkTableEntry HatchAngleEntry;
-    private NetworkTableEntry HatchDistanceEntry;
-    public GamePiecePickup(robot.subsystems.drivetrain.Constants.DRIVING_TARGETS target) {
-        requires(drivetrain);
-        CurrentTarget = target;
+
+    public GamePiecePickup() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
+    NetworkTableEntry targetAngleEntry;
+    NetworkTableEntry targetDistanceEntry;
+    private double currentDistanceUsed;
+
+
+    /**
+     * take distance and angle from the network tables than generate th pure pursue by that parameters
+     */
     // Called just before this Command runs the first time
     protected void initialize() {
-        if (cargoIntake.isCargoInside())
-            visionTable.getEntry("game_piece").setString("cargo");
-        else
-            visionTable.getEntry("game_piece").setString("hatch");
-        CargotargetAngleEntry = Robot.visionTable.getEntry("cargo_angle");
-        CargotargetDistanceEntry = Robot.visionTable.getEntry("cargo_distance");
-        HatchAngleEntry = Robot.visionTable.getEntry("hatch_angle");
-        HatchDistanceEntry = Robot.visionTable.getEntry("hatch_distance");
-        ReflectorFieldAngleEntry = Robot.visionTable.getEntry("tape_field_angle");
-        ReflectorAngleEntry = Robot.visionTable.getEntry("tape_angle");
-        ReflectorDistanceEntry = Robot.visionTable.getEntry("tape_distance");
-        double targetDistance = 0;
-        double targetAngle = 0;
-        double targetFieldAngle = 0;
-        if (CurrentTarget == robot.subsystems.drivetrain.Constants.DRIVING_TARGETS.CARGO) {
-            targetDistance = CargotargetDistanceEntry.getDouble(0);
-            targetAngle = CargotargetAngleEntry.getDouble(0);
-        } else if (CurrentTarget == robot.subsystems.drivetrain.Constants.DRIVING_TARGETS.HATCH) {
-            targetDistance = HatchDistanceEntry.getDouble(0);
-            targetAngle = HatchAngleEntry.getDouble(0);
-        } else {
-            targetDistance = ReflectorDistanceEntry.getDouble(0);
-            targetAngle = ReflectorAngleEntry.getDouble(0);
-            targetFieldAngle = ReflectorFieldAngleEntry.getDouble(0);
-        }
-
-        Waypoint target = new Waypoint(Math.sin(Math.toRadians(targetAngle)) * targetDistance + 0.15, Math.cos(Math.toRadians(targetAngle)) * targetDistance);
-        Waypoint middleWP = new Waypoint(0, target.getY() - target.getY() / 2);
-        Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, target});
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        NetworkTable table = inst.getTable("vision");
+        targetAngleEntry = table.getEntry("angle");
+        targetDistanceEntry = table.getEntry("distance");
+        currentDistanceUsed = targetDistanceEntry.getDouble(0);
+        Path path1 = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-        SmartDashboard.putNumber("target distance", targetDistance);
-        SmartDashboard.putNumber("target angle ", targetAngle);
-        path1 = new Path(new Point(0, 0), 0, target, targetFieldAngle, Constants.TURN_RADIUS);
-        path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+        SmartDashboard.putNumber("target distance", targetDistanceEntry.getDouble(0) / 100);
+        SmartDashboard.putNumber("target angle ", targetAngleEntry.getDouble(0));
         PurePursue pursue = new PurePursue(path1, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
         pursue.start();
+        System.out.println(path1);
     }
 
+    /**
+     * when the robot reach the middleWP the robot regenerate the purePursuit unless the distance is minimal
+     */
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        Waypoint targetWP =target(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
+        Waypoint middle =getMiddleWP(targetWP);
+        if (targetDistanceEntry.getDouble(0) > 0.3) {
+            Path path = generateFromVision(targetAngleEntry.getDouble(0), targetDistanceEntry.getDouble(0));
+            path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+            System.out.println("lior is white" + Point.distance(Robot.drivetrain.currentLocation, targetWP));
+            PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
+            pursue.start();
+        }
     }
 
+    /**
+     * @return if the robot arrived to the target
+     */
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return (targetDistanceEntry.getDouble(0) < 0.3);
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        System.out.println("paulo shahor");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    }
+
+    /**
+     * @param angle    from target
+     * @param distance from target
+     * @return path with middle waypoint to the target
+     */
+    private Path generateFromVision(double angle, double distance) {
+        double targetDistance = distance;
+        Waypoint targetWP = target(angle, targetDistance);
+        Waypoint middleWP = getMiddleWP(targetWP);
+        Path path1 = new Path(new Waypoint[]{new Waypoint(0, 0), middleWP, targetWP});
+        path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
+        System.out.println(path1);
+        return path1;
+    }
+
+    /**
+     * @param target Way Point
+     * @return the middle Way point
+     */
+    private Waypoint getMiddleWP(Waypoint target) {
+        return new Waypoint(0, target.getY() - target.getY() / 2);
+    }
+
+    /**
+     *
+     * @param angle from target
+     * @param distance from target
+     * @return the target Way point
+     */
+    private Waypoint target(double angle, double distance) {
+        return new Waypoint(Math.sin(Math.toRadians(angle)) * distance, Math.cos(Math.toRadians(angle)) * distance);
     }
 }

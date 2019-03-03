@@ -31,10 +31,4 @@ public class Constants {
 
     public final static double ROBOT_WIDTH = 0.74; //width of the robot
 
-
-    public final static double TURN_RADIUS = 0.09;//turn radius for dubins path
-    public static final double RADIUS_CLOSING = 0.05;
-    public static final double START_SPACE = 0.5;
-    public static final double END_SPACE = 0.1;
-
 }

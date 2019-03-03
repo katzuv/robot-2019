@@ -1,7 +1,5 @@
 package robot.subsystems.elevator;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
 import static robot.Robot.isRobotA;
 
 public class Constants {
@@ -93,18 +91,6 @@ public class Constants {
 
         public double getLevelHeight() {
             return levelHeight;
-        }
-
-        public String getString() {
-            if (this == SHIP_HATCH || this == SHIP_CARGO) {
-                return "ship";
-            } else if (this == LOADING_STATION) {
-                return "loading_station";
-            }
-            else if (DriverStation.getInstance().isAutonomous()) {
-                return "sandstorm";
-            }
-            return "rocket";
         }
     }
 
