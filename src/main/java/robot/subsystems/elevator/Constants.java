@@ -6,7 +6,7 @@ public class Constants {
 
     public static final int START_UNIT = isRobotA ? -720 : -900;
     public static final double LOWER_DANGER_ZONE = 0.32;
-    public static final double UPPER_DANGER_ZONE = 0.94;
+    public static final double UPPER_DANGER_ZONE = 0.96;
 
     public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
 
