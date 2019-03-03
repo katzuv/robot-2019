@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 import robot.subsystems.hatch_intake.HatchIntake;
@@ -26,7 +27,7 @@ public class Elevator extends Subsystem {
     private final int TALON_LOW_UP_PID_SLOT = 0;
     private final VictorSPX slaveMotor = new VictorSPX(Ports.victorPort);
     private final TalonSRX masterMotor = new TalonSRX(Ports.talonPort);
-    private double setpoint;
+    private int setpoint;
 
     public Elevator() {
         masterMotor.setInverted(Constants.TALON_REVERSE);
@@ -111,7 +112,8 @@ public class Elevator extends Subsystem {
      * Moves the elevator to the current setpoint, assigned in setHeight()
      */
     public void moveElevator() {
-        if (getHeight() < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT && setpoint < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT) //let the robot go if its below a certain height
+        SmartDashboard.putNumber("setPoint ", setpoint);
+    if (getHeight() < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT && setpoint < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT) //let the robot go if its below a certain height
             masterMotor.set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, Constants.FLOOR_FEEDFORWARD);
         else if (atSecondStage())
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
@@ -189,8 +191,8 @@ public class Elevator extends Subsystem {
     }
 
     public boolean isSetpointInDangerZone() {
-        return (getHeight() < Constants.UPPER_DANGER_ZONE && setpoint > Constants.LOWER_DANGER_ZONE) ||
-                (getHeight() > Constants.LOWER_DANGER_ZONE && setpoint < Constants.UPPER_DANGER_ZONE);
+        return (getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
+                (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE);
 
     }
 
