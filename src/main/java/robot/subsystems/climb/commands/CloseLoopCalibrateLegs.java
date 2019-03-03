@@ -19,13 +19,11 @@ public class CloseLoopCalibrateLegs extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if(!climb.areAllLegsUp()) {
             climb.resetEncoders();
             climb.setLegFLHeight(-Constants.LEVEL_THREE_LEG_LENGTH, 0);
             climb.setLegFRHeight(-Constants.LEVEL_THREE_LEG_LENGTH, 0);
             climb.setLegBLHeight(-Constants.LEVEL_THREE_LEG_LENGTH, 0);
             climb.setLegBRHeight(-Constants.LEVEL_THREE_LEG_LENGTH, 0);
-        }
     }
 
     // Called repeatedly when this Command is scheduled to run
