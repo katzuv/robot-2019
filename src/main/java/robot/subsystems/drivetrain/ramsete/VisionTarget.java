@@ -48,6 +48,7 @@ public class VisionTarget extends Command {
         double angle = Robot.visionTable.getEntry("tape_angle").getDouble(0);
         double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
         double field_angle = Robot.visionTable.getEntry("tape_field_angle").getDouble(0);
+        last_distance = distance;
         drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
     }
 
@@ -56,7 +57,9 @@ public class VisionTarget extends Command {
         double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
         double field_angle = Robot.visionTable.getEntry("tape_field_angle").getDouble(0);
 
-        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle && distance > 1) {
+//        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle && distance > 1) {
+        System.out.println(last_distance + "|" + distance);
+        if (distance < 1.8) {
             drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
             last_angle = angle;
             last_distance = distance;
@@ -87,7 +90,7 @@ public class VisionTarget extends Command {
         if (reversed) {
             angleModifier = 180;
         }
-        distance -= 0.1;
+//        distance -= 0.03;
 
         Vector direction = new Vector(distance, 0);
 
@@ -101,7 +104,7 @@ public class VisionTarget extends Command {
         Point calculatedPoint = direction.add(robotPoint);
         List<Pose2d> list = new ArrayList<>();
         Pose2d robotPose = drivetrain.getRobotPosition();
-        Pose2d calculatedPose = new Pose2d(LengthKt.getMeter(calculatedPoint.getX()), LengthKt.getMeter(calculatedPoint.getY()), Rotation2dKt.getDegree(angleModifier + 7));
+        Pose2d calculatedPose = new Pose2d(LengthKt.getMeter(calculatedPoint.getX()), LengthKt.getMeter(calculatedPoint.getY()), Rotation2dKt.getDegree(angleModifier));
 
         list.add(robotPose);
         list.add(calculatedPose);
@@ -112,10 +115,10 @@ public class VisionTarget extends Command {
                 .generateTrajectory(
                         list,
                         Collections.emptyList(),
-                        VelocityKt.getVelocity(LengthKt.getMeter(0)),
-                        VelocityKt.getVelocity(Length.Companion.getKZero()),
                         VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(0.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(1)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(1)),
                         reversed,
                         true
                 );

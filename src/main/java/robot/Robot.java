@@ -166,9 +166,10 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-//        navx.reset();
+        navx.reset();
 //        drivetrain.resetEncoders();
 //        elevator.resetEncoders();
+        drivetrain.resetLocation();
         visionTable.getEntry("direction").setString(drivetrain.isDrivingForward() ? "front" : "back");
 
 
@@ -208,8 +209,8 @@ public class Robot extends TimedRobot {
 
 //        list.add(new Pose2d(LengthKt.getFeet(5.441), LengthKt.getFeet(9.77), Rotation2dKt.getDegree(angleModifier - 30)));
         list.add(drivetrain.getRobotPosition());
-        list.add(new Pose2d(LengthKt.getFeet(7.454), LengthKt.getFeet(9.638), Rotation2dKt.getDegree(angleModifier)));
-        list.add(new Pose2d(LengthKt.getFeet(13.368), LengthKt.getFeet(12.4), Rotation2dKt.getDegree(angleModifier - 15)));
+//        list.add(new Pose2d(LengthKt.getFeet(7.454), LengthKt.getFeet(9.638), Rotation2dKt.getDegree(angleModifier)));
+        list.add(new Pose2d(LengthKt.getFeet(12.215), LengthKt.getFeet(10.786), Rotation2dKt.getDegree(angleModifier + 15)));
 //        list.add(new Pose2d(LengthKt.getFeet(5.595), LengthKt.getFeet(9.704), Rotation2dKt.getDegree(angleModifier + 0)));
 //        list.add(new Pose2d(LengthKt.getFeet(11.881), LengthKt.getFeet(6.913), Rotation2dKt.getDegree(angleModifier + -55.0)));
 //        list.add(new Pose2d(LengthKt.getFeet(17.727), LengthKt.getFeet(1.618), Rotation2dKt.getDegree(angleModifier + -30.0)));
@@ -239,13 +240,13 @@ public class Robot extends TimedRobot {
                         constraints,
                         VelocityKt.getVelocity(Length.Companion.getKZero()),
                         VelocityKt.getVelocity(LengthKt.getMeter(0)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(0.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(1.5)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(1.5)),
                         reversed,
                         true
                 );
 
-        new DriveWithVision(trajectory).start();
+        new VisionTarget().start();
     }
 
     /**
