@@ -19,19 +19,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.pure_pursuit.Constants;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import robot.subsystems.drivetrain.ramsete.VisionTarget;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,15 +39,11 @@ public class Robot extends TimedRobot {
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
-    public static AHRS navx = new AHRS(SPI.Port.kMXP);
-    public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
-
-
-    public static OI m_oi;
     public final static boolean isRobotA = false;
     public final static int driveType = 1; //type 1 = rons drive, type 2 = testing drive, type 3 = paulos disabled arm (not yet)
-
-
+    public static AHRS navx = new AHRS(SPI.Port.kMXP);
+    public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
+    public static OI m_oi;
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 

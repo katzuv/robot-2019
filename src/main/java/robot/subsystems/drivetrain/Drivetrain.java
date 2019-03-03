@@ -37,7 +37,7 @@ public class Drivetrain extends Subsystem {
     public Point currentLocation = new Point(0, 0);
 
     public Localization localization = new TankEncoderLocalization(
-            () -> Rotation2dKt.getDegree(getAngle()),
+            () -> Rotation2dKt.getDegree(180 + getAngle()),
             () -> LengthKt.getMeter(getLeftDistance()),
             () -> LengthKt.getMeter(getRightDistance())
     );
