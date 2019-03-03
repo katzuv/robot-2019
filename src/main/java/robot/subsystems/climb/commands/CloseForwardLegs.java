@@ -1,9 +1,7 @@
 package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import robot.Robot;
 import robot.subsystems.climb.Constants;
-import robot.subsystems.climb.TiltUtils;
 
 import static robot.Robot.climb;
 
@@ -21,8 +19,12 @@ public class CloseForwardLegs extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        climb.setLegFLHeight(0,0);
-        climb.setLegFRHeight(0,0);
+        climb.setLegFLHeight(0, 0);
+        climb.setLegFRHeight(0, 0);
+        if (climb.getLegBRHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH || climb.getLegBLHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH) {
+            climb.setLegBLHeight(climb.getLegBLHeight() - 0.01, 0);
+            climb.setLegBRHeight(climb.getLegBRHeight() - 0.01, 0);
+        }
 
     }
 
@@ -32,7 +34,7 @@ public class CloseForwardLegs extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return  climb.getLegFLHeight() < Constants.CLIMB_TOLERANCE &&
+        return climb.getLegFLHeight() < Constants.CLIMB_TOLERANCE &&
                 climb.getLegFRHeight() < Constants.CLIMB_TOLERANCE;
     }
 
