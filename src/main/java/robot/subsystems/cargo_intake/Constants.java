@@ -8,10 +8,10 @@ import static robot.Robot.isRobotA;
 public class Constants {
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 1000;
-    public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 1600;
+    public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 2300;
 
     final static double kP = isRobotA ? 0.6 : 0.6;
-    final static double kD = isRobotA ? 150 : 100;
+    final static double kD = isRobotA ? 150 : 150;
     final static double kF = isRobotA ? 0.48 : 0.48;
 
     final static int IZone = isRobotA ? 50 : 50;
