@@ -159,11 +159,11 @@ public class CargoIntake extends Subsystem {
     public void preventOverShoot() {
         if (atPeak()) {
             //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
-            wrist.setSelectedSensorPosition((int) (Constants.WRIST_ANGLES.INTAKE.getValue() * Constants.TICKS_PER_DEGREE), 0, Constants.TALON_TIME_OUT); //set the position to the top.
+            //wrist.setSelectedSensorPosition((int) (Constants.WRIST_ANGLES.INTAKE.getValue() * Constants.TICKS_PER_DEGREE), 0, Constants.TALON_TIME_OUT); //set the position to the top.
         }
         if (atClosed()) {
             //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
-            wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT); //set the encoder position to the bottom
+            //wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT); //set the encoder position to the bottom
         }
     }
 
