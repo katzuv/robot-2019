@@ -10,6 +10,8 @@ package robot.subsystems.hatch_intake;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import static robot.Robot.elevator;
+
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
@@ -38,7 +40,7 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
      * a command to set the gripper, close it if it is already open and open it if it is already closed
      */
     public void setGripper(boolean open) {
-        if (open)
+        if (open && !elevator.isSetpointInDangerZone())
             gripper.set(DoubleSolenoid.Value.kForward);
         else
             gripper.set(DoubleSolenoid.Value.kReverse);
@@ -55,7 +57,7 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
      * if true, extend forward
      */
     public void setGripperPlate(boolean extend) {
-        if (extend)
+        if (extend && !elevator.isSetpointInDangerZone())
             gripperPlate.set(DoubleSolenoid.Value.kForward);
         else
             gripperPlate.set(DoubleSolenoid.Value.kReverse);

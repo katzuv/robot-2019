@@ -1,16 +1,12 @@
 package robot.subsystems.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
-import robot.subsystems.cargo_intake.Constants;
-import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
 import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.Gripper;
 
-import static robot.subsystems.elevator.Constants.ELEVATOR_STATES;
-import static robot.subsystems.cargo_intake.Constants.WRIST_ANGLES;
 import static robot.subsystems.cargo_intake.Constants.GRIPPER_SPEED;
+import static robot.subsystems.cargo_intake.Constants.WRIST_ANGLES;
+import static robot.subsystems.elevator.Constants.ELEVATOR_STATES;
 
 
 /**
@@ -24,13 +20,15 @@ public class CargoScoring extends CommandGroup {
         WRIST_ANGLES angle = getAngle(state, isBackward);
         GRIPPER_SPEED speed = getSpeed(state, isBackward);
 
-        addSequential(new CommandGroup(){
-            {
-                addParallel(new WristTurn(angle));
-                addSequential(new ElevatorCommand(height));
-            }
-        });
-
+        addParallel(new WristTurn(angle));
+        addSequential(new ElevatorCommand(height));
+//
+//        addSequential(new CommandGroup(){
+//            {
+//                addParallel(new WristTurn(angle));
+//                addSequential(new ElevatorCommand(height));
+//            }
+//        });
 //        addSequential(new WaitCommand(0.25));
 //        addSequential(new GripperControl(speed));
 //        addSequential(new WaitCommand(0.4));
