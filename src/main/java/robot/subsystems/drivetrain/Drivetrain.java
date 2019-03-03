@@ -42,7 +42,7 @@ public class Drivetrain extends Subsystem {
             () -> LengthKt.getMeter(getRightDistance())
     );
 
-    public TrajectoryTracker trajectoryTracker = new RamseteTracker(2.5, 1.5);
+    public TrajectoryTracker trajectoryTracker = new RamseteTracker(2, 0.7);
 
     public Drivetrain() {
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
