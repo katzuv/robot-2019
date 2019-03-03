@@ -118,6 +118,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Robot A", isRobotA);
         navx.reset();
         elevator.resetEncoders();
+        compressor.stop();
     }
 
     /**

@@ -48,7 +48,7 @@ public class Drivetrain extends Subsystem {
             () -> LengthKt.getMeter(getRightDistance())
     );
 
-    public TrajectoryTracker trajectoryTracker = new RamseteTracker(2, 1);
+    public TrajectoryTracker trajectoryTracker = new RamseteTracker(2.5, 1.5);
 
     public Drivetrain() {
 

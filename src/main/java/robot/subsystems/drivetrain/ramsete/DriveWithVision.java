@@ -11,9 +11,9 @@ import robot.subsystems.hatch_intake.commands.PlaceHatch;
  */
 public class DriveWithVision extends CommandGroup {
 
-    public DriveWithVision(TimedTrajectory<Pose2dWithCurvature> trajectory) {
-        addSequential(new DrivePathNew(trajectory));
+    public DriveWithVision() {
+//        addSequential(new DrivePathNew(trajectory));
         addSequential(new VisionTarget());
-//        addSequential(new PlaceHatch(Constants.ELEVATOR_STATES.SHIP_CARGO));
+        addSequential(new PlaceHatch(Constants.ELEVATOR_STATES.SHIP_CARGO));
     }
 }

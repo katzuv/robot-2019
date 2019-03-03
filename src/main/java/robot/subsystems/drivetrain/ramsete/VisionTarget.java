@@ -36,6 +36,7 @@ public class VisionTarget extends Command {
     private double last_field_angle = 0;
     private List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
     private boolean reversed = true;
+    private boolean generate = true;
 
     public VisionTarget() {
         requires(drivetrain);
@@ -50,6 +51,7 @@ public class VisionTarget extends Command {
         double field_angle = Robot.visionTable.getEntry("tape_field_angle").getDouble(0);
         last_distance = distance;
         drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
+        generate = false;
     }
 
     protected void execute() {
@@ -59,11 +61,12 @@ public class VisionTarget extends Command {
 
 //        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle && distance > 1) {
         System.out.println(last_distance + "|" + distance);
-        if (distance < 1.8) {
+        if (distance < 1 && generate) {
             drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
             last_angle = angle;
             last_distance = distance;
             last_field_angle = field_angle;
+            generate = false;
         }
 
         TrajectoryTrackerOutput trackerOutput = drivetrain.trajectoryTracker.nextState(drivetrain.getRobotPosition(), TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
@@ -90,7 +93,7 @@ public class VisionTarget extends Command {
         if (reversed) {
             angleModifier = 180;
         }
-//        distance -= 0.03;
+        distance -= 0.15;
 
         Vector direction = new Vector(distance, 0);
 
