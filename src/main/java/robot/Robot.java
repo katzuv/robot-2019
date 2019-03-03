@@ -154,7 +154,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.start();
         }
 
-        new VisionTarget().start();
+        new DriveWithVision().start();
     }
 
     /**
