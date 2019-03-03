@@ -8,6 +8,7 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.OI;
 import robot.Robot;
 import robot.subsystems.climb.Constants;
 
@@ -72,9 +73,9 @@ public class JoystickDrive extends Command {
                 Robot.climb.getLegFLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH) || (Robot.climb.getLegBRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
                 Robot.climb.getLegBLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH)) //maybe also lower speeds when back legs are lowered.
         {
-            climb.setWheelSpeed(rightOutput);
-            drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR,
-                    rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR);
+            climb.setWheelSpeed(rightOutput*0.8);
+            drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.08,
+                    rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.08);
         }
         else
             drivetrain.setSpeed(leftOutput, rightOutput);
