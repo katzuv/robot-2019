@@ -97,6 +97,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Robot A", isRobotA);
         navx.reset();
         elevator.resetEncoders();
+        cargoIntake.resetSensors();
     }
 
     /**
@@ -149,6 +150,7 @@ public class Robot extends TimedRobot {
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
         elevator.resetEncoders();
+        cargoIntake.resetSensors();
 
 
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
@@ -189,13 +191,12 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-//        cargoIntake.resetSensors(); // TODO: move to auto init. deal with all resets better
+//         // TODO: move to auto init. deal with all resets better
 
         navx.reset();
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
         navx.reset();
-        cargoIntake.resetSensors();
         compressor.start();
     }
 
