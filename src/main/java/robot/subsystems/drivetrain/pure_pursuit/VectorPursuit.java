@@ -200,6 +200,7 @@ public class VectorPursuit extends Command {
      * @author lior
      */
     public double getLeftSpeedVoltage(Path path) {
+        SmartDashboard.putString("Vector", getVelocity().toString());
         return 0;
     }
 

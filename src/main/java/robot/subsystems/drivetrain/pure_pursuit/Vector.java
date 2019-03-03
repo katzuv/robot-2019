@@ -51,5 +51,9 @@ public class Vector extends Vector2d {
         double radians = -Math.toRadians(angle);
         return new Vector(x * Math.cos(radians) - y * Math.sin(radians), x * Math.sin(radians) + y * Math.cos(radians));
     }
+
+    public String toString(){
+        return String.format("x: %f, y: %f, d: %f", x, y, angle());
+    }
 }
 
