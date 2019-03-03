@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
@@ -27,6 +29,9 @@ import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,6 +47,7 @@ public class Robot extends TimedRobot {
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
+    public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
 
 
     public static OI m_oi;
@@ -148,10 +154,9 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         navx.reset();
         drivetrain.resetLocation();
-        drivetrain.resetEncoders();
-        elevator.resetEncoders();
+//        drivetrain.resetEncoders();
+//        elevator.resetEncoders();
         cargoIntake.resetSensors();
-
 
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
         // schedule the autonomous command (example)
@@ -160,16 +165,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.start();
         }
 
-        //Create the path and points.
-        Path path = new Path();
-        path.appendWaypoint(new Waypoint(0, 0));
-        path.appendWaypoint(new Waypoint(0, 2));
-        path.appendWaypoint(new Waypoint(2,2));
-        //Generate the path to suit the pure pursuit.
-        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-        PurePursue pursue = new PurePursue(path, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, false, false);
-        System.out.println(path);
-        pursue.start();
+        new VisionTarget().start();
     }
 
     /**
@@ -228,5 +224,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
         SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
+        Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
+        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
     }
 }
