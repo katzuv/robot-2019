@@ -10,6 +10,7 @@ package robot.subsystems.climb;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Climbing subsystem for the 2019 robot 'GENESIS'
@@ -27,6 +28,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     private TalonSRX wheelDrive = new TalonSRX(Ports.wheelMotor);
 
     public Climb() {
+        wheelDrive.setInverted(Constants.WHEEL_TALON_REVERSE);
         configMotorMovement(talonFL, Constants.FRONT_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
         configMotorMovement(talonFR, Constants.FRONT_RIGHT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
         configMotorMovement(talonBL, Constants.BACK_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
@@ -46,6 +48,8 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void setLegFLHeight(double height, double legOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+
+        SmartDashboard.putNumber("Climb: FL target height", height);
     }
 
     /**
@@ -66,6 +70,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void setLegBLHeight(double height, double legOffset) {
         talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+        SmartDashboard.putNumber("Climb: BL target height", height);
     }
 
     /**
@@ -102,14 +107,14 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
     public void setLegBLHeight(double height, double legOffset, double secondLegOffset) {
-        talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+        talonBL.set(ControlMode.MotionMagic, metersToTicks(height+0.01), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
     /**
      * @return height of the back right leg in meters
      */
     public void setLegBRHeight(double height, double legOffset, double secondLegOffset) {
-        talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+        talonBR.set(ControlMode.MotionMagic, metersToTicks(height+0.01), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
     /**
      * @return height of the front left leg in meters

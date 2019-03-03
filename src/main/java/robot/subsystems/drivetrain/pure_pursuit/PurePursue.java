@@ -2,7 +2,6 @@ package robot.subsystems.drivetrain.pure_pursuit;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static robot.Robot.drivetrain;
 
@@ -73,7 +72,6 @@ public class PurePursue extends Command {
         updatePoint();
         updateLookaheadInPath(path);
         drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
-        SmartDashboard.putNumber("velocity", (drivetrain.getLeftSpeed() + drivetrain.getRightSpeed()) / 2);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -199,7 +197,6 @@ public class PurePursue extends Command {
                 closest = path.getWaypoint(i);
             }
         }
-        SmartDashboard.putNumber("target", closest.getSpeed());
         return closest;
     }
 
