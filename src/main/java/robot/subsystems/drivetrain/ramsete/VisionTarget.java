@@ -60,7 +60,7 @@ public class VisionTarget extends Command {
 
 //        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle && distance > 1) {
         System.out.println(last_distance + "|" + distance);
-        if (distance != 0 && distance < 1.5 && generate) {
+        if (distance != 0 && distance < 2 && generate) {
             drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
             last_angle = angle;
             last_distance = distance;
