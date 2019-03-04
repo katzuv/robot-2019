@@ -108,9 +108,9 @@ public class OI {
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
-            a.whenPressed(new GripperTransportation());
-            lb.whenPressed(new Gripper(false));
-            rb.whenPressed(new Gripper(true));
+            a.whenPressed(new Gripper());
+            lb.whenPressed(new GripperTransportation(false));
+            rb.whenPressed(new GripperTransportation(true));
 
             y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));

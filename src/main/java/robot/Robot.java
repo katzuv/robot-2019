@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.start();
         }
 
-//        new DriveWithVision().start();
+        new VisionTarget().start();
     }
 
     /**
@@ -194,6 +194,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
 
     }
 
