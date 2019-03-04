@@ -5,9 +5,9 @@ import static robot.Robot.isRobotA;
 public class Constants {
 
     public static final int START_UNIT = isRobotA ? -720 : -900;
-    private static final double NEW_HATCH_DISPLACEMENT = -0.1104;
+    private static final double NEW_HATCH_DISPLACEMENT = -0.100;
     public static final double LOWER_DANGER_ZONE = 0.32;
-    public static final double UPPER_DANGER_ZONE = 0.96;
+    public static final double UPPER_DANGER_ZONE = 0.84;
 
     public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
 
