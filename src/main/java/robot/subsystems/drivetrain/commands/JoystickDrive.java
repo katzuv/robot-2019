@@ -8,8 +8,11 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.OI;
 import robot.Robot;
+import robot.subsystems.climb.Constants;
 
+import static robot.Robot.climb;
 import static robot.Robot.drivetrain;
 
 public class JoystickDrive extends Command {
@@ -35,8 +38,8 @@ public class JoystickDrive extends Command {
         // 4: e^C(x - 1)
         int option = 1;
         final int C = 5;
-        double leftInput = Robot.m_oi.leftDriveStick();
-        double rightInput = Robot.m_oi.rightDriveStick();
+        double leftInput = -Robot.m_oi.leftStick.getY();
+        double rightInput = -Robot.m_oi.rightStick.getY();
 
         double leftOutput, rightOutput;
         switch (option) {
@@ -66,8 +69,17 @@ public class JoystickDrive extends Command {
                 break;
             default:
                 throw new IllegalArgumentException("Number must be 1-4");
+        } //TODO: put this in subsystem
+        if((Robot.climb.getLegFRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
+                Robot.climb.getLegFLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH) || (Robot.climb.getLegBRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
+                Robot.climb.getLegBLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH)) //maybe also lower speeds when back legs are lowered.
+        {
+            climb.setWheelSpeed(rightOutput*0.8);
+            drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.08,
+                    rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.08);
         }
-        drivetrain.setSpeed(leftOutput, rightOutput);
+        else
+            drivetrain.setSpeed(leftOutput, rightOutput);
     }
 
     private double bell(double x, double c) {

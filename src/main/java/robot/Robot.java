@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.subsystems.climb.Climb;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
@@ -35,6 +36,7 @@ import robot.subsystems.hatch_intake.HatchIntake;
  * project.
  */
 public class Robot extends TimedRobot {
+    public static final Climb climb = new Climb();
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final HatchIntake hatchIntake = new HatchIntake();
@@ -95,6 +97,7 @@ public class Robot extends TimedRobot {
         elevator.resetEncoders();
         cargoIntake.resetSensors();
         compressor.stop();
+        climb.resetEncoders();
     }
 
     /**
@@ -207,6 +210,7 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleboard() {
+        SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
         SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
         SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
         SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());

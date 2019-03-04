@@ -12,9 +12,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
+import robot.subsystems.climb.Climb;
+import robot.subsystems.climb.Constants;
+import robot.subsystems.climb.commands.*;
+
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.auxiliary.Trigger;
-import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
 
@@ -95,6 +99,10 @@ public class OI {
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
 
+    public static Button left_joystick_six = new JoystickButton(leftStick, 6);
+    public static Button left_joystick_seven = new JoystickButton(leftStick, 7);
+    public static Button left_joystick_eight = new JoystickButton(leftStick, 8);
+    public static Button left_joystick_nine = new JoystickButton(leftStick, 9);
 
     public OI() {
         if(Robot.driveType == 1) {
