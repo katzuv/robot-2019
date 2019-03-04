@@ -99,7 +99,7 @@ public class VisionTarget extends Command {
 
         direction.rotate(drivetrain.getAngle() + angle);
 
-        direction = direction.add(new Vector(-0.8, 0));
+        direction = direction.add(new Vector(-0.6, 0));
 
         SmartDashboard.putString("Vector", direction.toString());
         Point robotPoint = new Point(drivetrain.getRobotPosition().getTranslation().getX().getMeter(), drivetrain.getRobotPosition().getTranslation().getY().getMeter());
