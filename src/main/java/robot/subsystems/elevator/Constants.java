@@ -5,7 +5,7 @@ import static robot.Robot.isRobotA;
 public class Constants {
 
     public static final int START_UNIT = isRobotA ? -720 : -900;
-    private static final double NEW_HATCH_DISPLACEMENT = 0.1104;
+    private static final double NEW_HATCH_DISPLACEMENT = -0.1104;
     public static final double LOWER_DANGER_ZONE = 0.32+Constants.NEW_HATCH_DISPLACEMENT;
     public static final double UPPER_DANGER_ZONE = 0.96+Constants.NEW_HATCH_DISPLACEMENT/2;
 
@@ -79,7 +79,7 @@ public class Constants {
         LEVEL3_HATCH(1.579+Constants.NEW_HATCH_DISPLACEMENT),
         LEVEL3_CARGO(1.56),//1.48
         LEVEL3_CARGO_BACKWARD(1.5),
-        LOADING_STATION(0.278);
+        LOADING_STATION(0.278+Constants.NEW_HATCH_DISPLACEMENT);
 
 
         private final double levelHeight;

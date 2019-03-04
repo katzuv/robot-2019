@@ -111,12 +111,13 @@ public class OI {
             a.whenPressed(new Gripper());
             lb.whenPressed(new GripperTransportation(false));
             rb.whenPressed(new GripperTransportation(true));
-
             y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
+            start.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+
         }else if(Robot.driveType ==2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
             povl.toggleWhenPressed(new ElevatorCommand(0.78));
