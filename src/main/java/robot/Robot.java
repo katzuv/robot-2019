@@ -185,7 +185,6 @@ public class Robot extends TimedRobot {
         navx.reset();
         compressor.start();
         cargoIntake.resetSensors();
-        compressor.stop();
     }
 
     /**
