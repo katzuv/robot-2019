@@ -99,10 +99,12 @@ public class OI {
 
     public OI() {
         if(Robot.driveType == 1) {
+
+            //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
             povd.whenPressed(new ElevatorCommand(0));
-            povr.whenPressed(new ConditionalElevatorCommand(new CargoScoring(1, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
-            povl.whenPressed(new ConditionalElevatorCommand(new CargoScoring(2, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
-            povu.whenPressed(new ConditionalElevatorCommand(new CargoScoring(3, false), new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH)));
+            povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_CARGO));
+            povl.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_CARGO));
+            povu.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO));
 
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
