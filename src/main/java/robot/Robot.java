@@ -94,6 +94,7 @@ public class Robot extends TimedRobot {
         navx.reset();
         elevator.resetEncoders();
         cargoIntake.resetSensors();
+        compressor.stop();
     }
 
     /**
@@ -145,7 +146,7 @@ public class Robot extends TimedRobot {
         navx.reset();
         drivetrain.resetLocation();
 //        drivetrain.resetEncoders();
-//        elevator.resetEncoders();
+        elevator.resetEncoders();
         cargoIntake.resetSensors();
 
         // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
@@ -155,7 +156,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.start();
         }
 
-        new DriveWithVision().start();
+        new VisionTarget().start();
     }
 
     /**
@@ -185,7 +186,6 @@ public class Robot extends TimedRobot {
         navx.reset();
         compressor.start();
         cargoIntake.resetSensors();
-        compressor.stop();
     }
 
     /**
@@ -194,6 +194,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
 
     }
 

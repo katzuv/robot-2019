@@ -108,15 +108,16 @@ public class OI {
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
-            a.whenPressed(new GripperTransportation());
-            lb.whenPressed(new Gripper(false));
-            rb.whenPressed(new Gripper(true));
-
+            a.whenPressed(new Gripper());
+            lb.whenPressed(new GripperTransportation(false));
+            rb.whenPressed(new GripperTransportation(true));
             y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
+            start.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+
         }else if(Robot.driveType ==2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
             povl.toggleWhenPressed(new ElevatorCommand(0.78));
@@ -199,13 +200,13 @@ public class OI {
     public double leftDriveStick(){ // TODO: might need name refactoring
         if(Robot.driveType==3)
             return -0.5*leftStick.getY()+0.5*leftStick.getZ();
-        return -leftStick.getY();
+        return -Constants.SLOW_DRIVE*leftStick.getY();
     }
 
     public double rightDriveStick(){
         if(Robot.driveType==3)
             return -0.5*leftStick.getY()-0.5*leftStick.getZ();
-        return -rightStick.getY();
+        return -Constants.SLOW_DRIVE*rightStick.getY();
     }
 
     public double WristStick(){

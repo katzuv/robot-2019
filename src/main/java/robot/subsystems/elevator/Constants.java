@@ -5,9 +5,9 @@ import static robot.Robot.isRobotA;
 public class Constants {
 
     public static final int START_UNIT = isRobotA ? -720 : -900;
-    private static final double NEW_HATCH_DISPLACEMENT = 0.1104;
-    public static final double LOWER_DANGER_ZONE = 0.32+Constants.NEW_HATCH_DISPLACEMENT;
-    public static final double UPPER_DANGER_ZONE = 0.96+Constants.NEW_HATCH_DISPLACEMENT/2;
+    private static final double NEW_HATCH_DISPLACEMENT = -0.1104;
+    public static final double LOWER_DANGER_ZONE = 0.32;
+    public static final double UPPER_DANGER_ZONE = 0.96;
 
     public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
 
@@ -47,7 +47,7 @@ public class Constants {
     static final int TALON_TIMEOUT_MS = 10; //timeout when configuring the robot, if takes longer an error is raised (1)
     static final int TALON_RUNNING_TIMEOUT_MS = 0; //as seen in the excerpt above, there should be no timeout on the talon in the robot loop.
     //Mechanical heights of the elevator, at its maximum position and semi position(where the elevator splits from one segment to two)
-    static final double ELEVATOR_MAX_HEIGHT = 1.56;
+    static final double ELEVATOR_MAX_HEIGHT = 1.58;
     static final double ELEVATOR_MID_HEIGHT = 0.797;
     /* Nominal Output- The "minimal" or "weakest" motor output allowed if the output is nonzero
      * Peak Output- The "maximal" or "strongest" motor output allowed.
@@ -67,10 +67,10 @@ public class Constants {
      * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
      */
     public enum ELEVATOR_STATES {
-        SHIP_HATCH(0.278+Constants.NEW_HATCH_DISPLACEMENT),
+        SHIP_HATCH(0.204+Constants.NEW_HATCH_DISPLACEMENT),
         SHIP_CARGO(0.63),
         SHIP_CARGO_BACKWARD(0.78),
-        LEVEL1_HATCH(0.278+Constants.NEW_HATCH_DISPLACEMENT),
+        LEVEL1_HATCH(0.204+Constants.NEW_HATCH_DISPLACEMENT),
         LEVEL1_CARGO(0.2),//0.3
         LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_HATCH(0.987+Constants.NEW_HATCH_DISPLACEMENT),
@@ -79,7 +79,7 @@ public class Constants {
         LEVEL3_HATCH(1.579+Constants.NEW_HATCH_DISPLACEMENT),
         LEVEL3_CARGO(1.56),//1.48
         LEVEL3_CARGO_BACKWARD(1.5),
-        LOADING_STATION(0.278);
+        LOADING_STATION(0.204+Constants.NEW_HATCH_DISPLACEMENT);
 
 
         private final double levelHeight;
