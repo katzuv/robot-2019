@@ -7,18 +7,17 @@ public class Constants {
 
     public static final double BACK_LEG_X_DIMENSION = isRobotA ? 0.35 : 0.35;
     public static final double BACK_LEG_Y_DIMENSION = isRobotA ? 0.09 : 0.09;
-    public static final double SLOW_DRIVE = 0.9;
 
     static final double TICKS_PER_METER = isRobotA ? 10000 : 10000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
-    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0, 0, 7.895, 0} : new double[]{11.567, 0, 0, 7.895, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
+    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0, 0, 7.895, 0} : new double[]{11.567, 0, 0, 7.895, 0.05}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
 
     public static final double LEVEL_THREE_LEG_LENGTH = 0.47; //Length of leg in meters when climbing. todo:change
     public static final double LEVEL_TWO_LEG_LENGTH = 0.17; //Length of leg in meters when climbing to hab 2. todo:change
     public static final double DRIVE_CLIMB_HEIGHT_THRESH = isRobotA ? 0.1 : 0.1;
     public static final double CLIMB_TOLERANCE = 0.0025; //tolerance in meters from the target position, to allow when stopping the code.
-    public static final int MOTION_MAGIC_CRUISE_VELOCITY = (int)(0.1 * TICKS_PER_METER / 10);
-    public static final int MOTION_MAGIC_ACCELERATION= (int)(0.1 * TICKS_PER_METER / 10);
+    public static final int MOTION_MAGIC_CRUISE_VELOCITY = (int)(0.06 * TICKS_PER_METER / 10);
+    public static final int MOTION_MAGIC_ACCELERATION= (int)(0.06 * TICKS_PER_METER / 10);
     public static final double CALIBRATE_SPEED = 0.23;
     public static final double DRIVE_CLIMB_DRIVETRAIN_DIVISOR = 2;
 
