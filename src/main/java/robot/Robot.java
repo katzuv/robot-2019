@@ -94,6 +94,7 @@ public class Robot extends TimedRobot {
         navx.reset();
         elevator.resetEncoders();
         cargoIntake.resetSensors();
+        compressor.stop();
     }
 
     /**
@@ -155,7 +156,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.start();
         }
 
-        new DriveWithVision().start();
+//        new DriveWithVision().start();
     }
 
     /**
