@@ -199,13 +199,13 @@ public class OI {
     public double leftDriveStick(){ // TODO: might need name refactoring
         if(Robot.driveType==3)
             return -0.5*leftStick.getY()+0.5*leftStick.getZ();
-        return -leftStick.getY();
+        return -Constants.SLOW_DRIVE*leftStick.getY();
     }
 
     public double rightDriveStick(){
         if(Robot.driveType==3)
             return -0.5*leftStick.getY()-0.5*leftStick.getZ();
-        return -rightStick.getY();
+        return -Constants.SLOW_DRIVE*rightStick.getY();
     }
 
     public double WristStick(){
