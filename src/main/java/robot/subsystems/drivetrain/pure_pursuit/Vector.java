@@ -39,9 +39,22 @@ public class Vector extends Vector2d {
         return new Vector(x * d, y * d);
     }
 
-
+    public double angle() {
+        return Math.toDegrees(Math.atan2(y, x));
+    }
+    
     public Vector normalize() {
         return this.multiply(1 / this.magnitude());
     }
+
+    public Vector rotated(double angle) {
+        double radians = -Math.toRadians(angle);
+        return new Vector(x * Math.cos(radians) - y * Math.sin(radians), x * Math.sin(radians) + y * Math.cos(radians));
+    }
+
+    public String toString() {
+        return String.format("x: %f, y: %f, d: %f", x, y, angle());
+    }
+
 }
 

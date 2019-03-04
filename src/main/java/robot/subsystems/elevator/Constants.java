@@ -30,8 +30,7 @@ public class Constants {
     static final double FIRST_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
     static final double SECOND_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
 
-    static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT = isRobotA ? 0.03 : 0.03
-    ;
+    static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT = isRobotA ? 0.03 : 0.03;
     /* Talon constants */
     /*
      * Since most config* calls occur during the robot boot sequence, the recommended value for timeoutMs is 10 (ms).
