@@ -253,6 +253,9 @@ public class OI {
         return xbox.getRawButton(9);
     }
 
+    public boolean autoShift(){
+        return xbox.getStartButton();
+    }
 
 
     // CREATING BUTTONS
