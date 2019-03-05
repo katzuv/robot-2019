@@ -9,7 +9,7 @@ import robot.subsystems.hatch_intake.commands.GripperTransportation;
 
 public class HatchScoring extends CommandGroup {
 
-    public HatchScoring(Constants.ELEVATOR_STATES height) {
+    public HatchScoring(Constants.ELEVATOR_STATES height, boolean atAuto) {
 
         addSequential(new ElevatorCommand(height));
         addSequential(new WaitCommand(0.1));
@@ -20,11 +20,13 @@ public class HatchScoring extends CommandGroup {
         addSequential(new WaitCommand(0.5));
         addSequential(new ElevatorCommand(height.getLevelHeight() - 0.06));
         addSequential(new WaitCommand(0.3));
-        //return to previous form
+        //Return to previous form
         addSequential(new GripperTransportation(false));
-        addSequential(new WaitCommand(0.5));
-        addSequential(new Gripper(false));
 
-
+        //If not at auto wait and close gripper
+        if (!atAuto) {
+            addSequential(new WaitCommand(0.5));
+            addSequential(new Gripper(false));
+        }
     }
 }
