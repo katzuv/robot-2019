@@ -37,6 +37,7 @@ public class VisionTarget extends Command {
     private boolean reversed = true;
     private boolean generate = true;
     private double distance;
+    private double kP = 0.2;
 
     public VisionTarget(double distance) {
         this.distance = distance;
@@ -62,7 +63,7 @@ public class VisionTarget extends Command {
 
 //        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle && distance > 1) {
         System.out.println(last_distance + "|" + distance);
-        if (distance != 0 && distance < 2 && generate) {
+        if (distance != 0 && distance < 1.8 && generate) {
             drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
             last_angle = angle;
             last_distance = distance;
@@ -78,6 +79,10 @@ public class VisionTarget extends Command {
 
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
+
+//        if(distance != 0 && distance > 1) {
+//            angularVelocity = angle * kP;
+//        }
 
         double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity;
 
@@ -101,7 +106,7 @@ public class VisionTarget extends Command {
 
         direction.rotate(drivetrain.getAngle() + angle);
 
-        direction = direction.add(new Vector(-this.distance, 0));
+        direction = direction.add(new Vector(-0.4, 0));
 
         SmartDashboard.putString("Vector", direction.toString());
         Point robotPoint = new Point(drivetrain.getRobotPosition().getTranslation().getX().getMeter(), drivetrain.getRobotPosition().getTranslation().getY().getMeter());

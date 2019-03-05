@@ -13,18 +13,33 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
-
+import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.StartButtonShift;
 import robot.subsystems.drivetrain.ramsete.LoadingStation;
+import robot.subsystems.drivetrain.ramsete.TrajectoryStation;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
-import robot.subsystems.commandGroups.HatchScoring;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -78,11 +93,11 @@ public class OI {
     public static Button ur = new JoystickButton(leftStick, 6);
     public static Button dr = new JoystickButton(leftStick, 4);
 
-    public static Button trigger = new JoystickButton(leftStick,1);
-    public static Button back_button = new JoystickButton(leftStick,2);
+    public static Button trigger = new JoystickButton(leftStick, 1);
+    public static Button back_button = new JoystickButton(leftStick, 2);
 
     public static Button nine = new JoystickButton(leftStick, 9);
-    public static Button ten = new JoystickButton(leftStick, 10);
+    public static Button ten = new JoystickButton(leftStick, 8);
     public static Button twelve = new JoystickButton(leftStick, 12);
 
     public static int left_x_stick = 0;
@@ -94,15 +109,15 @@ public class OI {
 
 
     public OI() {
-        if(Robot.driveType == 1) {
+        if (Robot.driveType == 1) {
 
             //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
             povd.whenPressed(new ElevatorCommand(0));
-            povr.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH,false),
+            povr.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH, false),
                     new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
-            povl.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH,false),
+            povl.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH, false),
                     new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
-            povu.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH,false),
+            povu.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH, false),
                     new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)));
 
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
@@ -116,9 +131,10 @@ public class OI {
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
-            nine.toggleWhenPressed(new LoadingStation());
+            nine.toggleWhenPressed(new LoadingStation(generateLoadingStationTrajectory()));
+//            ten.toggleWhenPressed(new TrajectoryStation(generateLoadingStationTrajectory()));
 
-        }else if(Robot.driveType ==2) {
+        } else if (Robot.driveType == 2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
             povl.toggleWhenPressed(new ElevatorCommand(0.78));
             povr.toggleWhenPressed(new ElevatorCommand(1.4));
@@ -134,8 +150,7 @@ public class OI {
 
             select.whenPressed(new GripperTransportation());
             lb.whenPressed(new Gripper());
-        }
-        else if(Robot.driveType == 3){
+        } else if (Robot.driveType == 3) {
             povd.whenPressed(new ElevatorCommand(0));
             povl.whenPressed(new ElevatorCommand(0.78));
             povr.whenPressed(new ElevatorCommand(1.3));
@@ -197,23 +212,23 @@ public class OI {
     }
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
-    public double leftDriveStick(){ // TODO: might need name refactoring
-        if(Robot.driveType==3)
-            return -0.5*leftStick.getY()+0.5*leftStick.getZ();
-        return -Constants.SLOW_DRIVE*leftStick.getY();
+    public double leftDriveStick() { // TODO: might need name refactoring
+        if (Robot.driveType == 3)
+            return -0.5 * leftStick.getY() + 0.5 * leftStick.getZ();
+        return -Constants.SLOW_DRIVE * leftStick.getY();
     }
 
-    public double rightDriveStick(){
-        if(Robot.driveType==3)
-            return -0.5*leftStick.getY()-0.5*leftStick.getZ();
-        return -Constants.SLOW_DRIVE*rightStick.getY();
+    public double rightDriveStick() {
+        if (Robot.driveType == 3)
+            return -0.5 * leftStick.getY() - 0.5 * leftStick.getZ();
+        return -Constants.SLOW_DRIVE * rightStick.getY();
     }
 
-    public double WristStick(){
-        if(Robot.driveType==3){
-            if(leftStick.getRawButton(9))
+    public double WristStick() {
+        if (Robot.driveType == 3) {
+            if (leftStick.getRawButton(9))
                 return -0.5;
-            else if(leftStick.getRawButton(7))
+            else if (leftStick.getRawButton(7))
                 return 0.5;
             return 0;
         }
@@ -221,29 +236,51 @@ public class OI {
     }
 
     public double ElevatorStick() {
-        if(Robot.driveType==3)
+        if (Robot.driveType == 3)
             return -leftStick.getRawAxis(3);
         return -xbox.getRawAxis(right_y_stick);
 
     }
+
     public boolean enableElevator() {
-        if(Robot.driveType==3)
+        if (Robot.driveType == 3)
             return leftStick.getRawButton(11);
         return xbox.getRawButton(10);
     }
 
 
     public boolean enableWrist() {
-        if(Robot.driveType==3)
+        if (Robot.driveType == 3)
             return true;
         return xbox.getRawButton(9);
     }
 
-    public boolean autoShift(){
+    public boolean autoShift() {
         return xbox.getStartButton();
     }
 
-    
+    private TimedTrajectory<Pose2dWithCurvature> generateLoadingStationTrajectory() {
+        List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
+        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
+        constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(4), LengthKt.getFeet(7), LengthKt.getFeet(8), LengthKt.getFeet(20)), VelocityKt.getVelocity(LengthKt.getFeet(3))));
+
+
+        List<Pose2d> list = new ArrayList<>();
+        list.add(Robot.drivetrain.getRobotPosition());
+        list.add(new Pose2d(LengthKt.getFeet(11.5), LengthKt.getFeet(23), Rotation2dKt.getDegree(180)));
+        return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
+                .generateTrajectory(
+                        list,
+                        constraints,
+                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(1)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(1)),
+                        true,
+                        true
+                );
+    }
+
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
     //// joystick.

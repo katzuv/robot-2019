@@ -7,6 +7,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
+import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
 
 import static robot.Robot.drivetrain;
@@ -14,11 +15,12 @@ import static robot.Robot.drivetrain;
 /**
  *
  */
-public class DrivePathNew extends Command {
+public class DrivePathVision extends Command {
 
     private final TimedTrajectory<Pose2dWithCurvature> trajectory;
+    private double kP = 0.2;
 
-    public DrivePathNew(TimedTrajectory<Pose2dWithCurvature> trajectory) {
+    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory) {
         this.trajectory = trajectory;
         requires(drivetrain);
     }
@@ -32,6 +34,9 @@ public class DrivePathNew extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
+        double angle = Robot.visionTable.getEntry("tape_distance").getDouble(0);
+
         TrajectoryTrackerOutput trackerOutput = drivetrain.trajectoryTracker.nextState(drivetrain.getRobotPosition(), TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
 
         LiveDashboard.INSTANCE.setPathX(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getX().getFeet());
@@ -40,6 +45,10 @@ public class DrivePathNew extends Command {
 
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
+
+        if(distance != 0 && distance < 1) {
+            angularVelocity = angle * kP;
+        }
 
         double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity;
 

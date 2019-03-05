@@ -200,7 +200,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        localization.reset(new Pose2d(LengthKt.getFeet(5.15), LengthKt.getFeet(9.454), Rotation2dKt.getDegree(180)));
+        localization.reset(new Pose2d(LengthKt.getFeet(5.194), LengthKt.getFeet(13.587), Rotation2dKt.getDegree(180)));
     }
 
     /**

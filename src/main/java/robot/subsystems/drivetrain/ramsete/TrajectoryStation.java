@@ -8,12 +8,12 @@ import robot.subsystems.hatch_intake.commands.TakeHatch;
 /**
  *
  */
-public class LoadingStation extends CommandGroup {
+public class TrajectoryStation extends CommandGroup {
 
-    public LoadingStation(TimedTrajectory<Pose2dWithCurvature> trajectory) {
+    public TrajectoryStation(TimedTrajectory<Pose2dWithCurvature> trajectory) {
 //        addSequential(new DrivePathNew(trajectory));
-        addSequential(new VisionTarget(0.4));
-//        addSequential(new DrivePathVision(trajectory));
+//        addSequential(new VisionTarget(0.6));
+        addSequential(new DrivePathVision(trajectory));
         addSequential(new TakeHatch());
     }
 }

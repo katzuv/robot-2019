@@ -11,7 +11,7 @@ public class DriveWithVision extends CommandGroup {
 
     public DriveWithVision() {
 //        addSequential(new DrivePathNew(trajectory));
-        addSequential(new VisionTarget(0.6));
+        addSequential(new VisionTarget(0.4));
         addSequential(new HatchScoring(Constants.ELEVATOR_STATES.SHIP_HATCH,true));
     }
 }
