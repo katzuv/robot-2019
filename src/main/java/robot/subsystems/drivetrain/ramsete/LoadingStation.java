@@ -12,7 +12,7 @@ public class LoadingStation extends CommandGroup {
 
     public LoadingStation(TimedTrajectory<Pose2dWithCurvature> trajectory) {
 //        addSequential(new DrivePathNew(trajectory));
-        addSequential(new VisionTarget(0.4));
+        addSequential(new VisionTarget(0.6));
 //        addSequential(new DrivePathVision(trajectory));
         addSequential(new TakeHatch());
     }
