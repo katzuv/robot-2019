@@ -27,6 +27,7 @@ import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.drivetrain.commands.GamePiecePickup;
 
 import robot.subsystems.elevator.commands.ConditionalElevatorCommand;
+import robot.subsystems.commandGroups.StartButtonShift;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -109,9 +110,12 @@ public class OI {
 
             //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
             povd.whenPressed(new ElevatorCommand(0));
-            povr.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-            povl.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-            povu.whenPressed(new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO));
+            povr.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH),
+                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
+            povl.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH),
+                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
+            povu.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH),
+                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)));
 
             RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
