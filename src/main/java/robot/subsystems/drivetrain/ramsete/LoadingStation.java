@@ -10,7 +10,7 @@ public class LoadingStation extends CommandGroup {
 
     public LoadingStation() {
 //        addSequential(new DrivePathNew(trajectory));
-        addSequential(new VisionTarget());
+        addSequential(new VisionTarget(0.6));
         addSequential(new TakeHatch());
     }
 }

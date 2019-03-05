@@ -19,6 +19,7 @@ import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
 
 import robot.subsystems.commandGroups.StartButtonShift;
+import robot.subsystems.drivetrain.ramsete.LoadingStation;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -80,7 +81,7 @@ public class OI {
     public static Button trigger = new JoystickButton(leftStick,1);
     public static Button back_button = new JoystickButton(leftStick,2);
 
-    public static Button nine = new JoystickButton(leftStick, 8);
+    public static Button nine = new JoystickButton(leftStick, 9);
     public static Button ten = new JoystickButton(leftStick, 10);
     public static Button twelve = new JoystickButton(leftStick, 12);
 
@@ -115,6 +116,7 @@ public class OI {
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
+            nine.toggleWhenPressed(new LoadingStation());
 
         }else if(Robot.driveType ==2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));

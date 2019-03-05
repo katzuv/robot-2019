@@ -36,8 +36,10 @@ public class VisionTarget extends Command {
     private List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
     private boolean reversed = true;
     private boolean generate = true;
+    private double distance;
 
-    public VisionTarget() {
+    public VisionTarget(double distance) {
+        this.distance = distance;
         requires(drivetrain);
         constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
         constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(4), LengthKt.getFeet(7), LengthKt.getFeet(8), LengthKt.getFeet(20)), VelocityKt.getVelocity(LengthKt.getFeet(3))));
@@ -99,7 +101,7 @@ public class VisionTarget extends Command {
 
         direction.rotate(drivetrain.getAngle() + angle);
 
-        direction = direction.add(new Vector(-0.6, 0));
+        direction = direction.add(new Vector(-this.distance, 0));
 
         SmartDashboard.putString("Vector", direction.toString());
         Point robotPoint = new Point(drivetrain.getRobotPosition().getTranslation().getX().getMeter(), drivetrain.getRobotPosition().getTranslation().getY().getMeter());
