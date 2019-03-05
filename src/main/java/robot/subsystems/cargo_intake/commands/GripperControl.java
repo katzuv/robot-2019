@@ -3,9 +3,11 @@ package robot.subsystems.cargo_intake.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import robot.OI;
 import robot.subsystems.cargo_intake.Constants.GRIPPER_SPEED;
 
 import static robot.Robot.cargoIntake;
+import static robot.Robot.m_oi;
 
 /**
  * Instant Command in charge of controlling the speed of the wrist wheels, the wheels in charge of grabbing and releasing cargo.
@@ -15,18 +17,29 @@ import static robot.Robot.cargoIntake;
 public class GripperControl extends Command {
     private double speed;//speed of the gripper
     private double timeout = 0;
+    private boolean useTrigger;
 
     public GripperControl(double speed){
         requires(cargoIntake);
         this.speed = speed;
     }
 
-    public GripperControl(GRIPPER_SPEED gripperSpeed) {
-        this(gripperSpeed.getValue());
+    public GripperControl(double speed, boolean useTrigger){
+        this.useTrigger = useTrigger;
+        requires(cargoIntake);
+        this.speed = speed;
     }
 
-    public GripperControl(GRIPPER_SPEED gripperSpeed, double timeout) {
-        this(gripperSpeed);
+    public GripperControl(GRIPPER_SPEED gripperSpeed, boolean useTrigger) {
+        this(gripperSpeed.getValue(), useTrigger);
+    }
+
+    public GripperControl(GRIPPER_SPEED gripperSpeed) {
+        this(gripperSpeed.getValue(), false);
+    }
+
+    public GripperControl(GRIPPER_SPEED gripperSpeed, boolean useTrigger, double timeout) {
+        this(gripperSpeed, useTrigger);
         this.timeout = timeout;
     }
 
@@ -37,13 +50,19 @@ public class GripperControl extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if (!(cargoIntake.isCargoInside() && speed < 0))
-            cargoIntake.setGripperSpeed(speed);
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        if (!(cargoIntake.isCargoInside() && speed < 0)){
+            if(useTrigger)
 
+                cargoIntake.setGripperSpeed(speed*OI.xbox.getRawAxis(OI.right_trigger));
+            else
+
+                cargoIntake.setGripperSpeed(speed);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -120,8 +120,8 @@ public class OI {
             povu.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH, false),
                     new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)));
 
-            RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
-            LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
+            RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
+            LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
 
             a.whenPressed(new Gripper());
             lb.whenPressed(new GripperTransportation(false));
