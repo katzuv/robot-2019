@@ -18,7 +18,6 @@ import static robot.Robot.drivetrain;
 public class DrivePathVision extends Command {
 
     private final TimedTrajectory<Pose2dWithCurvature> trajectory;
-    private double kP = 0.2;
 
     public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory) {
         this.trajectory = trajectory;
@@ -34,7 +33,6 @@ public class DrivePathVision extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
         double angle = Robot.visionTable.getEntry("tape_distance").getDouble(0);
 
         TrajectoryTrackerOutput trackerOutput = drivetrain.trajectoryTracker.nextState(drivetrain.getRobotPosition(), TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
@@ -46,8 +44,8 @@ public class DrivePathVision extends Command {
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
 
-        if(distance != 0 && distance < 1) {
-            angularVelocity = angle * kP;
+        if(drivetrain.getRobotPosition().getTranslation().distance(trajectory.getLastState().getState().getPose().getTranslation()) < Constants.radiusFromEnd) {
+            angularVelocity = angle * Constants.angleKp;
         }
 
         double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity;
@@ -72,5 +70,6 @@ public class DrivePathVision extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        end();
     }
 }

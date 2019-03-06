@@ -11,13 +11,22 @@ public class Constants {
     public static final double TICKS_PER_METER = isRobotA ? 2138.7750882690398 : 2138.7750882690398; // [1m / (diameter=0.1524 * pi)] * (ticks_per_meter=1024s)
     public static final int TALON_RUNNING_TIMEOUT_MS = isRobotA ? 0 : 0;
     public static final int TALON_TIMEOUT_MS = isRobotA ? 10 : 10;
-    public static final double[] PIDF = isRobotA ? new double[]{0.9, 0, 10, 1.8} : new double[]{0.9, 0, 10, 1.8};
-                                                    // (8 inches), the encoder sends 226
-                                                    // pulses every 360 degree turn
-                                                    static final boolean LEFT_MASTER_REVERSED = isRobotA ? false : false;
+    // (8 inches), the encoder sends 226
+    // pulses every 360 degree turn
+    static final boolean LEFT_MASTER_REVERSED = isRobotA ? false : false;
     static final boolean LEFT_SLAVE1_REVERSED = isRobotA ? false : false;
     static final boolean LEFT_SLAVE2_REVERSED = isRobotA ? false : false;
     static final boolean RIGHT_MASTER_REVERSED = isRobotA ? true : true;
     static final boolean RIGHT_SLAVE1_REVERSED = isRobotA ? true : true;
     static final boolean RIGHT_SLAVE2_REVERSED = isRobotA ? true : true;
+
+    /*
+    Ramsete constants
+     */
+    public static final double[] PIDF = isRobotA ? new double[]{0.9, 0, 10, 1.8} : new double[]{0.9, 0, 10, 1.8};
+    public static final double kZeta = 2;
+    public static final double kBeta = 0.7;
+    public static final double radiusFromEnd = 1;
+    public static final double angleKp = 0.2;
+
 }

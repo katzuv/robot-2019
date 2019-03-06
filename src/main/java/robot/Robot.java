@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
+import robot.subsystems.drivetrain.ramsete.DrivePathVision;
 import robot.subsystems.drivetrain.ramsete.DriveWithVision;
 import robot.subsystems.drivetrain.ramsete.VisionTarget;
 import robot.subsystems.elevator.Elevator;
@@ -87,8 +88,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
-        //m_chooser.setDefaultOption("Default Auto", new JoystickDrive());
-        // chooser.addOption("My Auto", new MyAutoCommand());
+        m_chooser.setDefaultOption("2 Hatch Rocket", new DrivePathVision());
+        m_chooser.addOption("2 Hatch Cargo", new DrivePathVision());
         SmartDashboard.putData("Auto mode", m_chooser);
         SmartDashboard.putBoolean("Robot A", isRobotA);
         navx.reset();
@@ -155,8 +156,6 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
         }
-
-        new DriveWithVision().start();
     }
 
     /**
