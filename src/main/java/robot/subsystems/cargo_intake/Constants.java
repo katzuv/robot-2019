@@ -9,14 +9,14 @@ public class Constants {
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 2468;
     public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 4200;
-    public static final double SLOW_DRIVE = 0.9;
+    public static final double SLOW_DRIVE = 0.9; //TODO: shouldnt be here
 
     final static double kP = isRobotA ? 0.6 : 0.7;
     final static double kD = isRobotA ? 150 : 150;
     final static double kF = isRobotA ? 0.48 : 0.52;
 
     final static int IZone = isRobotA ? 50 : 50;
-    final static double kI = isRobotA ? 0.001 : 0.00118;
+    final static double kI = isRobotA ? 0.001 : 0.00197;
 
 
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
