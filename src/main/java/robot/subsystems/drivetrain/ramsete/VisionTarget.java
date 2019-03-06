@@ -62,7 +62,6 @@ public class VisionTarget extends Command {
         double field_angle = Robot.visionTable.getEntry("tape_field_angle").getDouble(0);
 
 //        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle && distance > 1) {
-        System.out.println(last_distance + "|" + distance);
         if (distance != 0 && distance < 1.8 && generate) {
             drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
             last_angle = angle;
