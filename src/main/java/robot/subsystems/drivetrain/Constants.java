@@ -35,7 +35,7 @@ public class Constants {
     /*
     Ramsete constants
      */
-    public static final double[] PIDF = isRobotA ? new double[]{1, 0, 10, 1.4} : new double[]{0.9, 0, 10, 1.8};
+    public static final double[] PIDF = isRobotA ? new double[]{11, 0, 118, 1.3} : new double[]{0.9, 0, 10, 1.8};
     public static final double kZeta = 0.7;
     public static final double kBeta = 2;
     public static final double radiusFromEnd = 1;

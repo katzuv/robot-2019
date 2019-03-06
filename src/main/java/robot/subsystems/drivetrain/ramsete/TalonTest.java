@@ -1,7 +1,9 @@
 package robot.subsystems.drivetrain.ramsete;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static robot.Robot.driveType;
 import static robot.Robot.drivetrain;
 
 /**
@@ -23,6 +25,8 @@ public class TalonTest extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        SmartDashboard.putNumber("leftVelocity", drivetrain.getLeftVelocity());
+        SmartDashboard.putNumber("rightVelocity", drivetrain.getLeftVelocity());
         System.out.println(drivetrain.getLeftVelocity() + "|" + drivetrain.getRightVelocity());
     }
 
