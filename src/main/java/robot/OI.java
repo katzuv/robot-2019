@@ -32,7 +32,6 @@ import robot.subsystems.cargo_intake.commands.WristTurn;
 import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.StartButtonShift;
 import robot.subsystems.drivetrain.ramsete.LoadingStation;
-import robot.subsystems.drivetrain.ramsete.TrajectoryStation;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -96,9 +95,9 @@ public class OI {
     public static Button trigger = new JoystickButton(leftStick, 1);
     public static Button back_button = new JoystickButton(leftStick, 2);
 
-    public static Button nine = new JoystickButton(leftStick, 9);
-    public static Button ten = new JoystickButton(leftStick, 8);
-    public static Button twelve = new JoystickButton(leftStick, 12);
+    public static Button nineLeft = new JoystickButton(leftStick, 9);
+    public static Button eightLeft = new JoystickButton(leftStick, 8);
+    public static Button twelveLeft = new JoystickButton(leftStick, 12);
 
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
@@ -131,8 +130,8 @@ public class OI {
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
-            nine.toggleWhenPressed(new LoadingStation(generateLoadingStationTrajectory()));
-//            ten.toggleWhenPressed(new TrajectoryStation(generateLoadingStationTrajectory()));
+            nineLeft.toggleWhenPressed(new LoadingStation(generateLoadingStationTrajectory()));
+//            eightLeft.toggleWhenPressed(new TrajectoryStation(generateLoadingStationTrajectory()));
 
         } else if (Robot.driveType == 2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
@@ -159,10 +158,10 @@ public class OI {
             trigger.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             ur.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
-            nine.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+            nineLeft.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
-            ten.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            twelve.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
+            eightLeft.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+            twelveLeft.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
 
             dl.whenPressed(new GripperTransportation());
             ul.whenPressed(new Gripper());
