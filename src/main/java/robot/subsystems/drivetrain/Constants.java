@@ -1,5 +1,17 @@
 package robot.subsystems.drivetrain;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static robot.Robot.isRobotA;
 
 public class Constants {
@@ -23,10 +35,15 @@ public class Constants {
     /*
     Ramsete constants
      */
-    public static final double[] PIDF = isRobotA ? new double[]{0.9, 0, 10, 1.8} : new double[]{0.9, 0, 10, 1.8};
-    public static final double kZeta = 2;
-    public static final double kBeta = 0.7;
+    public static final double[] PIDF = isRobotA ? new double[]{1, 0, 10, 1.4} : new double[]{0.9, 0, 10, 1.8};
+    public static final double kZeta = 0.7;
+    public static final double kBeta = 2;
     public static final double radiusFromEnd = 1;
     public static final double angleKp = 0.2;
+    public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
 
+    static {
+        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
+        constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(4), LengthKt.getFeet(7), LengthKt.getFeet(8), LengthKt.getFeet(20)), VelocityKt.getVelocity(LengthKt.getFeet(3))));
+    }
 }

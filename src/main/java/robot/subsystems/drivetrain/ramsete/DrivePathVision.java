@@ -3,12 +3,20 @@ package robot.subsystems.drivetrain.ramsete;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.ghrobotics.lib.debug.LiveDashboard;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static robot.Robot.drivetrain;
 
@@ -19,8 +27,22 @@ public class DrivePathVision extends Command {
 
     private final TimedTrajectory<Pose2dWithCurvature> trajectory;
 
-    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory) {
-        this.trajectory = trajectory;
+    public DrivePathVision(Pose2d startingPoint, Pose2d endingPoint) {
+        drivetrain.resetLocation(startingPoint);
+        List<Pose2d> list = new ArrayList<>();
+        list.add(startingPoint);
+        list.add(endingPoint);
+        this.trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
+                .generateTrajectory(
+                        list,
+                        Constants.constraints,
+                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(1)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(1)),
+                        true,
+                        true
+                );
         requires(drivetrain);
     }
 
@@ -44,7 +66,7 @@ public class DrivePathVision extends Command {
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
 
-        if(angle != 0.0 && drivetrain.getRobotPosition().getTranslation().distance(trajectory.getLastState().getState().getPose().getTranslation()) < Constants.radiusFromEnd) {
+        if (angle != 0.0 && drivetrain.getRobotPosition().getTranslation().distance(trajectory.getLastState().getState().getPose().getTranslation()) < Constants.radiusFromEnd) {
             angularVelocity = angle * Constants.angleKp;
         }
 

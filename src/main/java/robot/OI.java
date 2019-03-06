@@ -130,8 +130,6 @@ public class OI {
             x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
-            nineLeft.toggleWhenPressed(new LoadingStation(generateLoadingStationTrajectory()));
-//            eightLeft.toggleWhenPressed(new TrajectoryStation(generateLoadingStationTrajectory()));
 
         } else if (Robot.driveType == 2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
@@ -256,28 +254,6 @@ public class OI {
 
     public boolean autoShift() {
         return xbox.getStartButton();
-    }
-
-    private TimedTrajectory<Pose2dWithCurvature> generateLoadingStationTrajectory() {
-        List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
-        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
-        constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(4), LengthKt.getFeet(7), LengthKt.getFeet(8), LengthKt.getFeet(20)), VelocityKt.getVelocity(LengthKt.getFeet(3))));
-
-
-        List<Pose2d> list = new ArrayList<>();
-        list.add(Robot.drivetrain.getRobotPosition());
-        list.add(new Pose2d(LengthKt.getFeet(11.5), LengthKt.getFeet(23), Rotation2dKt.getDegree(180)));
-        return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
-                .generateTrajectory(
-                        list,
-                        constraints,
-                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(1)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(1)),
-                        true,
-                        true
-                );
     }
 
     // CREATING BUTTONS

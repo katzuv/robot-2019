@@ -19,11 +19,15 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
 import robot.subsystems.drivetrain.ramsete.DriveWithVision;
+import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.drivetrain.ramsete.VisionTarget;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
@@ -41,7 +45,7 @@ public class Robot extends TimedRobot {
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
-    public final static boolean isRobotA = false;
+    public final static boolean isRobotA = true;
     public final static int driveType = 1; //type 1 = rons drive, type 2 = testing drive, type 3 = paulos disabled arm (not yet)
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
@@ -88,8 +92,13 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
-        m_chooser.setDefaultOption("2 Hatch Rocket", new DrivePathVision());
-        m_chooser.addOption("2 Hatch Cargo", new DrivePathVision());
+
+        Pose2d center = new Pose2d(LengthKt.getFeet(5.194), LengthKt.getFeet(13.587), Rotation2dKt.getDegree(180));
+
+        m_chooser.setDefaultOption("2 Hatch Cargo", new DrivePathVision(center, new Pose2d(LengthKt.getFeet(16.381), LengthKt.getFeet(12.622), Rotation2dKt.getDegree(180))));
+        m_chooser.addOption("Talon test", new TalonTest());
+//        m_chooser.addOption("2 Hatch Rocket Left", new DrivePathVision());
+//        m_chooser.addOption("2 Hatch Rocket Right", new DrivePathVision());
         SmartDashboard.putData("Auto mode", m_chooser);
         SmartDashboard.putBoolean("Robot A", isRobotA);
         navx.reset();

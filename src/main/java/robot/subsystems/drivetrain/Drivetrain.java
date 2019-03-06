@@ -42,7 +42,7 @@ public class Drivetrain extends Subsystem {
             () -> LengthKt.getMeter(getRightDistance())
     );
 
-    public TrajectoryTracker trajectoryTracker = new RamseteTracker(2, 0.7);
+    public TrajectoryTracker trajectoryTracker = new RamseteTracker(Constants.kBeta, Constants.kZeta);
 
     public Drivetrain() {
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
@@ -202,6 +202,11 @@ public class Drivetrain extends Subsystem {
     public void resetLocation() {
         localization.reset(new Pose2d(LengthKt.getFeet(5.194), LengthKt.getFeet(13.587), Rotation2dKt.getDegree(180)));
     }
+
+    public void resetLocation(Pose2d pose) {
+        localization.reset(pose);
+    }
+
 
     /**
      * Convert distance in meters to ticks of the encoder.
