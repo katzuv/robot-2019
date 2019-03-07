@@ -57,8 +57,7 @@ public class GripperControl extends Command {
     protected void execute() {
         if (!(cargoIntake.isCargoInside() && speed < 0)){
             if(useTrigger)
-
-                cargoIntake.setGripperSpeed(speed*OI.xbox.getRawAxis(OI.right_trigger));
+                cargoIntake.setGripperSpeed(speed);
             else
 
                 cargoIntake.setGripperSpeed(speed);
