@@ -28,7 +28,7 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    final static double CARGO_IN_VOLTAGE = isRobotA ? 1.1 : 0.64;
+    final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.64;
     final static boolean SENSOR_PHASE = isRobotA ? false : false;
 
     final static boolean SOFT_LIMIT_OVERRIDE = isRobotA ? true : true;
@@ -51,8 +51,8 @@ public class Constants {
         LEVEL_1_BACKWARD(0),
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
-        INTAKE(163),//173
-        MAXIMAL(163);
+        INTAKE(168),//173
+        MAXIMAL(178);
         private final double wristAngle;
 
         WRIST_ANGLES(double height) {
