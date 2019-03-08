@@ -25,6 +25,8 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
+import robot.subsystems.drivetrain.commands.AngleDrive;
+import robot.subsystems.drivetrain.commands.ProportionalDrive;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
 import robot.subsystems.drivetrain.ramsete.DriveWithVision;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
@@ -97,6 +99,7 @@ public class Robot extends TimedRobot {
 
         m_chooser.setDefaultOption("2 Hatch Cargo", new DrivePathVision(center, new Pose2d(LengthKt.getFeet(14.7), LengthKt.getFeet(4.042), Rotation2dKt.getDegree(180))));
         m_chooser.addOption("Talon test", new TalonTest());
+        m_chooser.addOption("Angle drive", new AngleDrive());
 //        m_chooser.addOption("2 Hatch Rocket Left", new DrivePathVision());
 //        m_chooser.addOption("2 Hatch Rocket Right", new DrivePathVision());
         SmartDashboard.putData("Auto mode", m_chooser);

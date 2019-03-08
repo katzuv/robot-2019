@@ -38,9 +38,18 @@ public class Constants {
     public static final double[] PIDF = isRobotA ? new double[]{1.85, 0.002, 10, 1.45} : new double[]{0.9, 0, 10, 1.8};
     public static final double kZeta = 0.7;
     public static final double kBeta = 20;
-    public static final double radiusFromEnd = 1;
-    public static final double angleKp = 0.2;
+    public static final double radiusFromEnd = 2;
+    public static final double angleKp = 1.8;
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
+
+
+    /*
+    Proportional Constants
+     */
+    public static double KpAim = -0.01;
+    public static double KpDistance = -0.2;
+    public static double MIN_AIM_COMMAND = 0.05;
+
 
     static {
         constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
