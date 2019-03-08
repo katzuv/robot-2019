@@ -6,35 +6,23 @@ import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Velocity;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 
+import static robot.subsystems.drivetrain.pure_pursuit.Constants.kBeta;
+import static robot.subsystems.drivetrain.pure_pursuit.Constants.kZeta;
+
 public class RamseteNew {
 
-    // Should be greater than zero and this increases correction
-    private double kBeta = Constants.kBeta; //1.5;
 
-    // Should be between zero and one and this increases dampening
-    private double kZeta = Constants.kZeta; //0.7;
-
-    // Holds what segment we are on
+    // the Waypoints
     private int WaypointIndex;
     private Waypoint currentWaypoint;
 
-    // The trajectory to follow
+    // The path
     private Path path;
 
-    // The robot's x and y position and angle
-
-    // Variable used to calculate linear and angular velocity
     private double lastTheta, nextTheta;
-    private double k, thetaError, sinThetaErrorOverThetaError;
-    private double desiredAngularVelocity, linearVelocity, angularVelocity;
-    private double odometryError;
-
-    // Constants
-    private static final double EPSILON = 0.00000001;
-
-    // Variable for holding velocity for robot to drive on
+    private double k, thetaError, sinThetaError;
+    private double desiredAngularVelocity, linearVelocity, angularVelocity, leftVelocity, rightVelocity, error;
     private Velocity velocity;
-    private double left, right;
 
 
     public RamseteNew(Path path)
@@ -48,13 +36,6 @@ public class RamseteNew {
 
     }
 
-    public RamseteNew(Path path, double b, double zeta)
-    {
-        this(path);
-
-        this.kBeta = b;
-        this.kZeta = zeta;
-    }
 
     public Velocity getVelocity()
     {
@@ -78,11 +59,11 @@ public class RamseteNew {
     {
         velocity = getVelocity();
 
-        left = (-(velocity.getAngular() * Constants.ROBOT_WIDTH) + (2 * velocity.getLinear())) / 2;
-        right = ((velocity.getAngular() * Constants.ROBOT_WIDTH) + (2 * velocity.getLinear())) / 2;
+        leftVelocity = (-(velocity.getAngular() * Constants.ROBOT_WIDTH) + (2 * velocity.getLinear())) / 2;
+        rightVelocity = ((velocity.getAngular() * Constants.ROBOT_WIDTH) + (2 * velocity.getLinear())) / 2;
 
-        Robot.drivetrain.setLeftVelocity(Robot.drivetrain.convertDistanceToTicks(left) / 10);
-        Robot.drivetrain.setRightVelocity(Robot.drivetrain.convertDistanceToTicks(right) / 10);
+        Robot.drivetrain.setLeftVelocity(Robot.drivetrain.convertDistanceToTicks(leftVelocity) / 10);
+        Robot.drivetrain.setRightVelocity(Robot.drivetrain.convertDistanceToTicks(rightVelocity) / 10);
 
         WaypointIndex++;
 
@@ -114,12 +95,11 @@ public class RamseteNew {
 
         thetaError = boundHalfRadians(desiredTheta - Math.toRadians(Robot.drivetrain.getAngle()));
 
-        odometryError = (Math.cos(Math.toRadians(Robot.drivetrain.getAngle())) * (desiredX - Robot.drivetrain.getCurrentLocation().getX()))
+        error = (Math.cos(Math.toRadians(Robot.drivetrain.getAngle())) * (desiredX - Robot.drivetrain.getCurrentLocation().getX()))
                 + (Math.sin(Math.toRadians(Robot.drivetrain.getAngle()) * (desiredY - Robot.drivetrain.getCurrentLocation().getY())));
 
-        System.out.println("k * odometryError: " + (k * odometryError));
 
-        return (desiredLinearVelocity * Math.cos(thetaError)) + (k * odometryError);
+        return (desiredLinearVelocity * Math.cos(thetaError)) + (k * error);
     }
 
     private double calculateAngularVelocity(double desiredX, double desiredY, double desiredTheta,
@@ -129,20 +109,20 @@ public class RamseteNew {
 
         thetaError = boundHalfRadians(desiredTheta - Math.toRadians(Robot.drivetrain.getAngle()));
 
-        if (Math.abs(thetaError) < EPSILON)
+        if (Math.abs(thetaError) < Constants.MIN_ERROR)
         {
             // This is for the limit as sin(x)/x approaches zero
-            sinThetaErrorOverThetaError = 1;
+            sinThetaError = 1;
         }
         else
         {
-            sinThetaErrorOverThetaError = Math.sin(thetaError) / thetaError;
+            sinThetaError = Math.sin(thetaError) / thetaError;
         }
 
-        odometryError = (Math.cos(Math.toRadians(Robot.drivetrain.getAngle()) * (desiredY - Robot.drivetrain.getCurrentLocation().getY()))
+        error = (Math.cos(Math.toRadians(Robot.drivetrain.getAngle()) * (desiredY - Robot.drivetrain.getCurrentLocation().getY()))
                 - (Math.sin(Math.toRadians(Robot.drivetrain.getAngle()) * (desiredX - Robot.drivetrain.getCurrentLocation().getX()))));
 
-        return desiredAngularVelocity + (kBeta * desiredLinearVelocity * sinThetaErrorOverThetaError * odometryError)
+        return desiredAngularVelocity + (kBeta * desiredLinearVelocity * sinThetaError * error)
                 + (k * thetaError);
     }
 
@@ -176,7 +156,7 @@ public class RamseteNew {
         return this.WaypointIndex;
     }
 
-    public void printCurrentLocation() {
+    public void printLocation() {
         System.out.printf("position" + Robot.drivetrain.currentLocation);
         System.out.println("Actual encoder left: " + Robot.drivetrain.getLeftDistance());
         System.out.println("Actual encoder right: " + Robot.drivetrain.getRightDistance());

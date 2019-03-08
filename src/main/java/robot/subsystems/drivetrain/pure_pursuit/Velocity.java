@@ -20,4 +20,12 @@ public class Velocity
     {
         return angular;
     }
+
+    public void setLinear(double linear) {
+        this.linear = linear;
+    }
+
+    public void setAngular(double angular) {
+        this.angular = angular;
+    }
 }
