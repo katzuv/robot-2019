@@ -53,6 +53,8 @@ public class Waypoint extends Point {
         this.curvature = curvature;
     }
 
+    public double getHeading(){return heading;}
+
     @Override
     public String toString() {
         return "" + "distance=" + distance + ", \t speed=" + speed + ", \t curvature=" + curvature + ",\t x=" + x + ",\t  y=" + y + "\n";
