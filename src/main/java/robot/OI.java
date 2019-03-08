@@ -129,18 +129,9 @@ public class OI {
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
             nineLeft.toggleWhenPressed(new LoadingStation(generateLoadingStationTrajectory()));
-//            eightLeft.toggleWhenPressed(new TrajectoryStation(generateLoadingStationTrajectory()));
-
-
-        // Place hatch
-        //lsLeft.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        //lsMid.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        //lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
-
         // Place cargo backward
 
         /*
-        Tiood XD
 
         |||||||
         |||3|||
