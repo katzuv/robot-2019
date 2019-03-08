@@ -31,4 +31,6 @@ public class Constants {
 
     public final static double ROBOT_WIDTH = 0.74; //width of the robot
 
+    public static double kBeta= 15;
+    public static double kZeta = 0.85;
 }
