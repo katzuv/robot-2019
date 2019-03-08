@@ -1,7 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 public class Waypoint extends Point {
-    private double distance, speed, curvature;
+    private double distance, speed, curvature, heading, acceleration;
 
     public Waypoint(double x, double y, double distance, double speed, double curvature) {
         super(x, y);
@@ -14,6 +14,13 @@ public class Waypoint extends Point {
         super(x, y);
     }
 
+    public Waypoint(double x, double y, double distance, double speed, double acceleration, double heading) {
+        super(x, y);
+        this.distance = distance;
+        this.speed = speed;
+        this.heading = heading;
+        this.acceleration = acceleration;
+    }
 
     public Waypoint(Waypoint p) {
         super(p.getX(), p.getY());
