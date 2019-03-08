@@ -26,9 +26,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
-import robot.subsystems.drivetrain.ramsete.DriveWithVision;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
-import robot.subsystems.drivetrain.ramsete.VisionTarget;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
 
@@ -95,7 +93,7 @@ public class Robot extends TimedRobot {
 
         Pose2d center = new Pose2d(LengthKt.getFeet(5.194), LengthKt.getFeet(13.587), Rotation2dKt.getDegree(180));
 
-        m_chooser.setDefaultOption("2 Hatch Cargo", new DrivePathVision(center, new Pose2d(LengthKt.getFeet(14.7), LengthKt.getFeet(4.042), Rotation2dKt.getDegree(180))));
+        m_chooser.setDefaultOption("2 Hatch Cargo", new DrivePathVision(center, new Pose2d(LengthKt.getFeet(16.381), LengthKt.getFeet(12.622), Rotation2dKt.getDegree(180))));
         m_chooser.addOption("Talon test", new TalonTest());
 //        m_chooser.addOption("2 Hatch Rocket Left", new DrivePathVision());
 //        m_chooser.addOption("2 Hatch Rocket Right", new DrivePathVision());
@@ -227,6 +225,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
         Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
-        SmartDashboard.putBoolean("Flower open",hatchIntake.isGripperOpen());
+        SmartDashboard.putBoolean("Flower open", hatchIntake.isGripperOpen());
     }
 }
