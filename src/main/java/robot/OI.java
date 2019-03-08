@@ -20,6 +20,7 @@ import robot.subsystems.cargo_intake.commands.WristTurn;
 import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.StartButtonShift;
 import robot.subsystems.drivetrain.commands.AngleDrive;
+import robot.subsystems.drivetrain.commands.GyroAngleDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -117,8 +118,7 @@ public class OI {
             select.whenPressed(new CloseBoth());
 
             nineLeft.toggleWhenPressed(new AngleDrive());
-
-
+            eightLeft.toggleWhenPressed(new GyroAngleDrive());
 
         } else if (Robot.driveType == 2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
