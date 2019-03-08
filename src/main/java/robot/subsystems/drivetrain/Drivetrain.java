@@ -209,7 +209,7 @@ public class Drivetrain extends Subsystem {
      * @param distance height in meters
      * @return ticks of the encoder
      */
-    private int convertDistanceToTicks(double distance) {
+    public int convertDistanceToTicks(double distance) {
         return (int) (distance * Constants.TICKS_PER_METER);
     }
 

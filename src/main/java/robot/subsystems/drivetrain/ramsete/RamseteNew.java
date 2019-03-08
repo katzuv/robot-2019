@@ -81,8 +81,8 @@ public class RamseteNew {
         left = (-(velocity.getAngular() * Constants.ROBOT_WIDTH) + (2 * velocity.getLinear())) / 2;
         right = ((velocity.getAngular() * Constants.ROBOT_WIDTH) + (2 * velocity.getLinear())) / 2;
 
-        Robot.drivetrain.setLeftVelocity(left);
-        Robot.drivetrain.setRightVelocity(right);
+        Robot.drivetrain.setLeftVelocity(Robot.drivetrain.convertDistanceToTicks(left) / 10);
+        Robot.drivetrain.setRightVelocity(Robot.drivetrain.convertDistanceToTicks(right) / 10);
 
         WaypointIndex++;
 
