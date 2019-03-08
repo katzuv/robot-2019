@@ -39,7 +39,8 @@ public class Constants {
     public static final double kZeta = 0.7;
     public static final double kBeta = 20;
     public static final double distanceFromEnd = 2;
-    public static final double angleKp = 1.8;
+    public static final double angleKp = 1.6;
+    public static final double angleKd = 10;
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
 
 

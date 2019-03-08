@@ -19,6 +19,7 @@ import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
 import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.StartButtonShift;
+import robot.subsystems.drivetrain.commands.AngleDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -115,6 +116,10 @@ public class OI {
             //TODO: add right stick to control the cargo intake
             select.whenPressed(new CloseBoth());
 
+            nineLeft.toggleWhenPressed(new AngleDrive());
+
+
+
         } else if (Robot.driveType == 2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));
             povl.toggleWhenPressed(new ElevatorCommand(0.78));
@@ -140,7 +145,8 @@ public class OI {
             trigger.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
             ur.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
-            nineLeft.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+            nineLeft.toggleWhenPressed(new AngleDrive());
+
             b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
             eightLeft.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
             twelveLeft.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
