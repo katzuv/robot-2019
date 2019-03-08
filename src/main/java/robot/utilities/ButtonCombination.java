@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
  * Extension of the button class, triggers a command when all of the buttons are pressed simultaneously
+ *
+ * @author paulo 
  */
 public class ButtonCombination extends Button {
 
