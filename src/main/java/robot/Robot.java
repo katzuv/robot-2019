@@ -28,9 +28,7 @@ import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.commands.AngleDrive;
 import robot.subsystems.drivetrain.commands.ProportionalDrive;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
-import robot.subsystems.drivetrain.ramsete.DriveWithVision;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
-import robot.subsystems.drivetrain.ramsete.VisionTarget;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
 
