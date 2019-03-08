@@ -33,4 +33,5 @@ public class Constants {
 
     public static double kBeta= 15;
     public static double kZeta = 0.85;
+    public static final double TWO_PI = 2 * Math.PI;
 }

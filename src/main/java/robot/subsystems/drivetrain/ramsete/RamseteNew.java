@@ -1,7 +1,6 @@
 package robot.subsystems.drivetrain.ramsete;
 
 import robot.Robot;
-import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Constants;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.Velocity;
@@ -16,11 +15,11 @@ public class RamseteNew {
     private double kZeta = Constants.kZeta; //0.7;
 
     // Holds what segment we are on
-    private int segmentIndex;
-    private Waypoint current;
+    private int WaypointIndex;
+    private Waypoint currentWaypoint;
 
     // The trajectory to follow
-    private Path trajectory;
+    private Path path;
 
     // The robot's x and y position and angle
 
@@ -32,27 +31,26 @@ public class RamseteNew {
 
     // Constants
     private static final double EPSILON = 0.00000001;
-    private static final double TWO_PI = 2 * Math.PI;
 
     // Variable for holding velocity for robot to drive on
     private Velocity velocity;
     private double left, right;
 
 
-    public RamseteNew(Path trajectory, boolean direction)
+    public RamseteNew(Path path)
     {
         //ternary operator, if direction is forward return trajectory, else return the reversed path
-        this.trajectory = trajectory;//direction == direction ? trajectory : TrajectoryUtil.reversePath(trajectory) check if needed
+        this.path = path;//direction == direction ? trajectory : TrajectoryUtil.reversePath(trajectory) check if needed
 
-        segmentIndex = 0;
+        WaypointIndex = 0;
 
 
 
     }
 
-    public RamseteNew(Path trajectory, double b, double zeta, boolean direction)
+    public RamseteNew(Path path, double b, double zeta)
     {
-        this(trajectory, direction);
+        this(path);
 
         this.kBeta = b;
         this.kZeta = zeta;
@@ -65,13 +63,13 @@ public class RamseteNew {
             return new Velocity(0, 0);
         }
 
-        current = trajectory.getWaypoint(segmentIndex);
+        currentWaypoint = path.getWaypoint(WaypointIndex);
 
         desiredAngularVelocity = calculateDesiredAngular();
 
-        linearVelocity = calculateLinearVelocity(current.getX(), current.getY(), current.getHeading(), current.getSpeed(), desiredAngularVelocity);
+        linearVelocity = calculateLinearVelocity(currentWaypoint.getX(), currentWaypoint.getY(), currentWaypoint.getHeading(), currentWaypoint.getSpeed(), desiredAngularVelocity);
 
-        angularVelocity = calculateAngularVelocity(current.getX(), current.getY(), current.getSpeed(), current.getSpeed(), desiredAngularVelocity);
+        angularVelocity = calculateAngularVelocity(currentWaypoint.getX(), currentWaypoint.getY(), currentWaypoint.getSpeed(), currentWaypoint.getSpeed(), desiredAngularVelocity);
 
         return new Velocity(linearVelocity, angularVelocity);
     }
@@ -86,18 +84,18 @@ public class RamseteNew {
         Robot.drivetrain.setLeftVelocity(left);
         Robot.drivetrain.setRightVelocity(right);
 
-        segmentIndex++;
+        WaypointIndex++;
 
 
     }
 
     private double calculateDesiredAngular()
     {
-        if (segmentIndex < trajectory.length() - 1)
+        if (WaypointIndex < path.length() - 1)
         {
-            lastTheta = trajectory.getWaypoint(segmentIndex).getHeading();
-            nextTheta = trajectory.getWaypoint(segmentIndex + 1).getHeading();
-            return boundHalfRadians(nextTheta - lastTheta) / current.getDistance();
+            lastTheta = path.getWaypoint(WaypointIndex).getHeading();
+            nextTheta = path.getWaypoint(WaypointIndex + 1).getHeading();
+            return boundHalfRadians(nextTheta - lastTheta) / currentWaypoint.getDistance();
         }
         else
         {
@@ -156,44 +154,30 @@ public class RamseteNew {
     private double boundHalfRadians(double radians)
     {
         while (radians >= Math.PI)
-            radians -= TWO_PI;
+            radians -= Constants.TWO_PI;
         while (radians < -Math.PI)
-            radians += TWO_PI;
+            radians += Constants.TWO_PI;
         return radians;
     }
 
-    public Waypoint currentSegment()
+    public Waypoint currenntWaypoint()
     {
-        return current;
+        return currentWaypoint;
     }
 
     public boolean isFinished()
     {
-        return segmentIndex >= trajectory.length();
+        return WaypointIndex >= path.length();
     }
 
-    public void printOdometry()
+
+    public int getWaypointIndex()
     {
-        System.out.println("Segment index: " + segmentIndex);
-        // // System.out.println("Trajectory.length: " + trajectory.length());
-        // if(odometry.getX() < 3)
-        //     System.out.println(odometry.getX());
-        // else
-        //     System.out.println("PASSED 3");
+        return this.WaypointIndex;
     }
 
-    public int getSegmentIndex()
-    {
-        return this.segmentIndex;
-    }
-
-    public void printCurrentLocation()
-    {
+    public void printCurrentLocation() {
         System.out.printf("position" + Robot.drivetrain.currentLocation);
-    }
-
-    public void printCurrentEncoders(){
-
         System.out.println("Actual encoder left: " + Robot.drivetrain.getLeftDistance());
         System.out.println("Actual encoder right: " + Robot.drivetrain.getRightDistance());
     }
