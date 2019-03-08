@@ -66,7 +66,9 @@ public class DrivePathVision extends Command {
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
 
-        if (angle != 0.0 && drivetrain.getRobotPosition().getTranslation().distance(trajectory.getLastState().getState().getPose().getTranslation()) < Constants.radiusFromEnd) {
+        double distanceFromLast = drivetrain.getRobotPosition().getTranslation().distance(trajectory.getLastState().getState().getPose().getTranslation());
+        System.out.println(distanceFromLast);
+        if (angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && distanceFromLast > 0.5) {
             angularVelocity = angle * Constants.angleKp;
         }
 

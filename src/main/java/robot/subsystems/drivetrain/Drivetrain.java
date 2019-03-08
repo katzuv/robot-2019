@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
+import org.ghrobotics.lib.mathematics.twodim.control.PurePursuitTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
