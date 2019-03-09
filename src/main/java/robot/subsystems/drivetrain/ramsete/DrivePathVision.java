@@ -16,7 +16,6 @@ import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static robot.Robot.drivetrain;
@@ -26,30 +25,46 @@ import static robot.Robot.drivetrain;
  */
 public class DrivePathVision extends Command {
 
-    private final TimedTrajectory<Pose2dWithCurvature> trajectory;
+    private TimedTrajectory<Pose2dWithCurvature> trajectory;
     private boolean stop = false;
+    private final boolean reversed;
+    private final List<Pose2d> waypoints;
+    private final boolean vision;
+    private final double startingVelocity;
+    private final double endingVelocity;
 
-    public DrivePathVision(List<Pose2d> waypoints, boolean reversed) {
-        drivetrain.resetLocation(waypoints.get(0));
-        this.trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
-                .generateTrajectory(
-                        waypoints,
-                        Constants.constraints,
-                        VelocityKt.getVelocity(LengthKt.getMeter(0)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(0)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(1)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(1)),
-                        reversed,
-                        true
-                );
+    /**
+     * Robot takes its current location and drives through waypoints in the list
+     * @param waypoints Target waypoints
+     * @param reversed Negative velocities
+     */
+    public DrivePathVision(List<Pose2d> waypoints, boolean reversed, boolean vision, double startingVelocity, double endingVelocity) {
+        this.reversed = reversed;
+        this.waypoints = waypoints;
+        this.vision = vision;
+        this.startingVelocity = startingVelocity;
+        this.endingVelocity = endingVelocity;
         requires(drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        waypoints.add(0, drivetrain.getRobotPosition());
+        System.out.println(waypoints.size());
+        System.out.println(waypoints.get(0));
+        this.trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
+                .generateTrajectory(
+                        waypoints,
+                        Constants.constraints,
+                        VelocityKt.getVelocity(LengthKt.getMeter(startingVelocity)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(endingVelocity)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(1.5)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(1.5)),
+                        reversed,
+                        true
+                );
         stop = false;
         drivetrain.trajectoryTracker.reset(trajectory);
-        drivetrain.localization.reset(trajectory.getFirstState().getState().getPose());
         LiveDashboard.INSTANCE.setFollowingPath(true);
     }
 
@@ -71,11 +86,11 @@ public class DrivePathVision extends Command {
 
         SmartDashboard.putBoolean("using vision", angle != 0.0 && distanceFromLast < Constants.distanceFromEnd);
         SmartDashboard.putNumber("Distance from last", distanceFromLast);
-        if (distance != 0 && distance < 0.75) {
+        if (distance != 0 && distance < 0.75 && vision) {
             stop = true;
         }
 
-        if (angle != 0.0 && distanceFromLast < Constants.distanceFromEnd) {
+        if (angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && vision) {
             angularVelocity = -Math.toRadians(angle) * Constants.pathAngleKp;
         }
         SmartDashboard.putBoolean("Stop", stop);

@@ -189,7 +189,6 @@ public class Robot extends TimedRobot {
 //         // TODO: move to auto init. deal with all resets better
 
         navx.reset();
-        drivetrain.resetLocation();
         drivetrain.resetEncoders();
         navx.reset();
         compressor.start();
