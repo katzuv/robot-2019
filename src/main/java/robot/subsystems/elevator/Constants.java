@@ -67,10 +67,10 @@ public class Constants {
      * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
      */
     public enum ELEVATOR_STATES {
-        SHIP_HATCH(0.204+Constants.NEW_HATCH_DISPLACEMENT),
+        SHIP_HATCH(0.215),
         SHIP_CARGO(0.63),
         SHIP_CARGO_BACKWARD(0.78),
-        LEVEL1_HATCH(0.204+Constants.NEW_HATCH_DISPLACEMENT),
+        LEVEL1_HATCH(0.215),
         LEVEL1_CARGO(0.2),//0.3
         LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_HATCH(0.987),
