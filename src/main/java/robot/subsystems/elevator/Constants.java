@@ -78,7 +78,7 @@ public class Constants {
         LEVEL2_CARGO_BACKWARD(0.83),
         LEVEL3_HATCH(1.58),
         LEVEL3_CARGO(1.56),//1.48
-        LEVEL3_CARGO_BACKWARD(1.5),
+        LEVEL3_CARGO_BACKWARD(1.45),
         LOADING_STATION(0.204+Constants.NEW_HATCH_DISPLACEMENT);
 
 
