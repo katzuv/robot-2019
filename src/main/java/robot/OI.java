@@ -17,10 +17,10 @@ import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.commandGroups.CargoScoring;
 import robot.subsystems.commandGroups.HatchScoring;
-import robot.subsystems.commandGroups.StartButtonShift;
+import robot.subsystems.commandGroups.ShiftButton;
 import robot.subsystems.drivetrain.commands.AngleDrive;
-import robot.subsystems.drivetrain.commands.GyroAngleDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -94,76 +94,49 @@ public class OI {
 
 
     public OI() {
-        if (Robot.driveType == 1) {
+        //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
+        povd.whenPressed(new ShiftButton(xbox, 7,
+                new CargoScoring(0, true),
+                new ShiftButton(xbox, 4,
+                        new CargoScoring(0, false),
+                        new ElevatorCommand(0))));
+        povr.whenPressed(new ShiftButton(xbox, 7,
+                new CargoScoring(1, true),
+                new ShiftButton(xbox, 8,
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH, false),
+                        new ShiftButton(xbox, 4,
+                                new CargoScoring(1, false),
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)))));
+        povl.whenPressed(new ShiftButton(xbox, 7,
+                new CargoScoring(2, true),
+                new ShiftButton(xbox, 8,
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH, false),
+                        new ShiftButton(xbox, 4,
+                                new CargoScoring(2, false),
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)))));
+        povu.whenPressed(new ShiftButton(xbox, 7,
+                new CargoScoring(3, true),
+                new ShiftButton(xbox, 8,
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH, false),
+                        new ShiftButton(xbox, 4,
+                                new CargoScoring(3, false),
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)))));
 
-            //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
-            povd.whenPressed(new ElevatorCommand(0));
-            povr.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH, false),
-                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
-            povl.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH, false),
-                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
-            povu.whenPressed(new StartButtonShift(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH, false),
-                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)));
+        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
+        LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
 
-            RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
-            LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
-
-            a.whenPressed(new Gripper());
-            lb.whenPressed(new GripperTransportation(false));
-            rb.whenPressed(new GripperTransportation(true));
-            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
-            b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-            x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            //TODO: add right stick to control the cargo intake
-            select.whenPressed(new CloseBoth());
-
-            nineLeft.toggleWhenPressed(new AngleDrive());
-
-        } else if (Robot.driveType == 2) {
-            povd.toggleWhenPressed(new ElevatorCommand(0));
-            povl.toggleWhenPressed(new ElevatorCommand(0.78));
-            povr.toggleWhenPressed(new ElevatorCommand(1.4));
-
-            RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
-            LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
-
-            a.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-            b.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
-            x.toggleWhenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
-
-
-            select.whenPressed(new GripperTransportation());
-            lb.whenPressed(new Gripper());
-        } else if (Robot.driveType == 3) {
-            povd.whenPressed(new ElevatorCommand(0));
-            povl.whenPressed(new ElevatorCommand(0.78));
-            povr.whenPressed(new ElevatorCommand(1.3));
-
-            povu.whenPressed(new ElevatorCommand(1.59));
-            trigger.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP));
-            ur.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
-
-            nineLeft.toggleWhenPressed(new AngleDrive());
-
-            b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
-            eightLeft.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            twelveLeft.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
-
-            dl.whenPressed(new GripperTransportation());
-            ul.whenPressed(new Gripper());
-        }
-
-
-        // Place hatch
-        //lsLeft.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        //lsMid.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        //lsRight.toggleWhenPressed(new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH));
-
+        a.whenPressed(new Gripper());
+        lb.whenPressed(new GripperTransportation(false));
+        rb.whenPressed(new GripperTransportation(true));
+        //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        //TODO: add right stick to control the cargo intake
+        select.whenPressed(new CloseBoth());
+        nineLeft.toggleWhenPressed(new AngleDrive());
         // Place cargo backward
 
         /*
-        Tiood XD
 
         |||||||
         |||3|||
@@ -199,14 +172,10 @@ public class OI {
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
     public double leftDriveStick() { // TODO: might need name refactoring
-        if (Robot.driveType == 3)
-            return -0.5 * leftStick.getY() + 0.5 * leftStick.getZ();
         return -Constants.SLOW_DRIVE * leftStick.getY();
     }
 
     public double rightDriveStick() {
-        if (Robot.driveType == 3)
-            return -0.5 * leftStick.getY() - 0.5 * leftStick.getZ();
         return -Constants.SLOW_DRIVE * rightStick.getY();
     }
 
@@ -215,66 +184,20 @@ public class OI {
     }
 
     public double WristStick() {
-        if (Robot.driveType == 3) {
-            if (leftStick.getRawButton(9))
-                return -0.5;
-            else if (leftStick.getRawButton(7))
-                return 0.5;
-            return 0;
-        }
         return -xbox.getRawAxis(left_y_stick);
     }
 
     public double ElevatorStick() {
-        if (Robot.driveType == 3)
-            return -leftStick.getRawAxis(3);
         return -xbox.getRawAxis(right_y_stick);
 
     }
 
     public boolean enableElevator() {
-        if (Robot.driveType == 3)
-            return leftStick.getRawButton(11);
         return xbox.getRawButton(10);
     }
 
 
     public boolean enableWrist() {
-        if (Robot.driveType == 3)
-            return true;
         return xbox.getRawButton(9);
     }
-
-    public boolean autoShift() {
-        return xbox.getStartButton();
-    }
-
-    // CREATING BUTTONS
-    // One type of button is a joystick button which is any button on a
-    //// joystick.
-    // You create one by telling it which joystick it's on and which button
-    // number it is.
-    // Joystick stick = new Joystick(port);
-    // Button button = new JoystickButton(stick, buttonNumber);
-
-    // There are a few additional built in buttons you can use. Additionally,
-    // by subclassing Button you can create custom triggers and bind those to
-    // commands the same as any other Button.
-
-    //// TRIGGERING COMMANDS WITH BUTTONS
-    // Once you have a button, it's trivial to bind it to a button in one of
-    // three ways:
-
-    // Start the command when the button is pressed and let it run the command
-    // until it is finished as determined by it's isFinished method.
-    // button.whenPressed(new ExampleCommand());
-
-    // Run the command while the button is being held down and interrupt it once
-    // the button is released.
-    // button.whileHeld(new ExampleCommand());
-
-
-    // Start the command when the button is released and let it run the command
-    // until it is finished as determined by it's isFinished method.
-    // button.whenReleased(new ExampleCommand());
 }

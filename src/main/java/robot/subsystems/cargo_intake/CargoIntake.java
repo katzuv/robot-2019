@@ -175,7 +175,7 @@ public class CargoIntake extends Subsystem {
     public boolean atPeak() {
         //return Math.abs(getHeight()) > Constants.ELEVATOR_MAX_HEIGHT;
         if (!Robot.isRobotA) {
-            return wrist.getSensorCollection().isFwdLimitSwitchClosed();
+            return wrist.getSensorCollection().isFwdLimitSwitchClosed() == !Constants.FORWARD_NORMALLY_CLOSED;
         }
         return false;
     }
@@ -188,7 +188,7 @@ public class CargoIntake extends Subsystem {
     public boolean atClosed() {
         //return Math.abs(getHeight()) < 0.05;
         if (!Robot.isRobotA) {
-            return wrist.getSensorCollection().isRevLimitSwitchClosed();
+            return wrist.getSensorCollection().isRevLimitSwitchClosed() == !Constants.REVERSE_NORMALLY_CLOSED;
         }
         return false;
     }

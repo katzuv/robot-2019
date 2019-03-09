@@ -63,21 +63,20 @@ public class Constants {
 
     /**
      * enum storing all height values assigned to their respective height.
-     * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
+     * There are separate heights for hatch, cargo, and cargo backwards.
      */
     public enum ELEVATOR_STATES {
-        SHIP_HATCH(0.18),
-        SHIP_CARGO(0.63),
-        SHIP_CARGO_BACKWARD(0.78),
         LEVEL1_HATCH(0.18),
-        LEVEL1_CARGO(0.2),//0.3
-        LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_HATCH(0.987),
-        LEVEL2_CARGO(0.9),//0.85
-        LEVEL2_CARGO_BACKWARD(0.83),
         LEVEL3_HATCH(1.58),
-        LEVEL3_CARGO(1.56),//1.48
-        LEVEL3_CARGO_BACKWARD(1.5);
+        SHIP_CARGO(0.63),
+        LEVEL1_CARGO(0.2),
+        LEVEL2_CARGO(0.9),
+        LEVEL3_CARGO(1.56),
+        SHIP_CARGO_BACKWARD(0.78),
+        LEVEL1_CARGO_BACKWARD(0.1),
+        LEVEL2_CARGO_BACKWARD(0.83),
+        LEVEL3_CARGO_BACKWARD(1.45);
 
         private final double levelHeight;
 

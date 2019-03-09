@@ -3,6 +3,11 @@ package robot.utilities;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;
 
+/**
+ * Extension of the button class, triggers a command when an axis' value raises above a height
+ *
+ * @author paulo
+ */
 public class TriggerButton extends Button {
     private final GenericHID m_joystick;
     private final int m_axis_number;
