@@ -211,6 +211,10 @@ public class OI {
         return -Constants.SLOW_DRIVE * rightStick.getY();
     }
 
+    public double rightSideAxis() {
+        return rightStick.getX();
+    }
+
     public double WristStick() {
         if (Robot.driveType == 3) {
             if (leftStick.getRawButton(9))

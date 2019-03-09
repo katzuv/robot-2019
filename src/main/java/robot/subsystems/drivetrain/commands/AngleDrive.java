@@ -13,8 +13,8 @@ import static robot.Robot.drivetrain;
 public class AngleDrive extends Command {
     private NetworkTableEntry targetAngleEntry;
     private NetworkTableEntry targetDistanceEntry;
-    private double lastAngle = 0;
     private boolean stop = false;
+    private boolean finish = false;
 
     public AngleDrive() {
         requires(drivetrain);
@@ -23,18 +23,21 @@ public class AngleDrive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        finish = false;
         stop = false;
-        lastAngle = 0;
         targetAngleEntry = Robot.visionTable.getEntry("tape_angle");
         targetDistanceEntry = Robot.visionTable.getEntry("tape_distance");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        System.out.println(Math.abs(Robot.m_oi.rightSideAxis()));
+        if (Math.abs(Robot.m_oi.rightSideAxis()) > 0.2) {
+            finish = true;
+        }
         double angle = targetAngleEntry.getDouble(0);
         double distance = targetDistanceEntry.getDouble(0);
         double speed = -1 * Robot.m_oi.leftDriveStick();
-//        double d = Constants.angleKd * (angle - lastAngle) / 0.02;
         double turn = Constants.angleKp * Math.toRadians(angle);
         if (distance != 0 && distance < 0.6) {
             stop = true;
@@ -42,16 +45,12 @@ public class AngleDrive extends Command {
         if (stop) {
             turn = 0;
         }
-        System.out.println(turn);
         drivetrain.setSpeed(speed + turn, speed - turn);
-        lastAngle = angle;
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
-//        double distance = targetDistanceEntry.getDouble(0);
-//        return distance != 0 && distance < 1.1;
+        return finish;
     }
 
     // Called once after isFinished returns true
