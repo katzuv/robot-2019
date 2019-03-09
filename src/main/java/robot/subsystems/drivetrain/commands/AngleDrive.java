@@ -46,7 +46,7 @@ public class AngleDrive extends Command {
     protected void end() {
         drivetrain.setSpeed(0, 0);
     }
-    
+
     protected void interrupted() {
         end();
     }
