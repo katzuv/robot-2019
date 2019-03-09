@@ -5,7 +5,6 @@ import static robot.Robot.isRobotA;
 public class Constants {
 
     public static final int START_UNIT = isRobotA ? -720 : -900;
-    private static final double NEW_HATCH_DISPLACEMENT = -0.100;
     public static final double LOWER_DANGER_ZONE = 0.32;
     public static final double UPPER_DANGER_ZONE = 0.84;
 
@@ -67,10 +66,10 @@ public class Constants {
      * Currently the heights are: HIGH, MID, CARGO, LOW, BOTTOM.
      */
     public enum ELEVATOR_STATES {
-        SHIP_HATCH(0.215),
+        SHIP_HATCH(0.18),
         SHIP_CARGO(0.63),
         SHIP_CARGO_BACKWARD(0.78),
-        LEVEL1_HATCH(0.215),
+        LEVEL1_HATCH(0.18),
         LEVEL1_CARGO(0.2),//0.3
         LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_HATCH(0.987),
@@ -78,9 +77,7 @@ public class Constants {
         LEVEL2_CARGO_BACKWARD(0.83),
         LEVEL3_HATCH(1.58),
         LEVEL3_CARGO(1.56),//1.48
-        LEVEL3_CARGO_BACKWARD(1.5),
-        LOADING_STATION(0.204+Constants.NEW_HATCH_DISPLACEMENT);
-
+        LEVEL3_CARGO_BACKWARD(1.5);
 
         private final double levelHeight;
 
