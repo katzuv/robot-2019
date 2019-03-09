@@ -226,6 +226,7 @@ public class Elevator extends Subsystem {
 
     public void resetEncoders() {
         masterMotor.setSelectedSensorPosition(Constants.START_UNIT, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
+        setHeight(0);
     }
 
     @Override
