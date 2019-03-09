@@ -29,7 +29,7 @@ public class DrivePathVision extends Command {
     private final TimedTrajectory<Pose2dWithCurvature> trajectory;
     private boolean stop = false;
 
-    public DrivePathVision(Pose2d startingPoint, Pose2d endingPoint) {
+    public DrivePathVision(Pose2d startingPoint, Pose2d endingPoint, boolean reversed) {
         drivetrain.resetLocation(startingPoint);
         List<Pose2d> list = new ArrayList<>();
         list.add(startingPoint);
@@ -42,7 +42,7 @@ public class DrivePathVision extends Command {
                         VelocityKt.getVelocity(LengthKt.getMeter(0)),
                         VelocityKt.getVelocity(LengthKt.getMeter(1)),
                         AccelerationKt.getAcceleration(LengthKt.getMeter(1)),
-                        true,
+                        reversed,
                         true
                 );
         requires(drivetrain);
