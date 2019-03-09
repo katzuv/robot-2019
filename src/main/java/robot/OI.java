@@ -29,6 +29,7 @@ import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
 import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.commandGroups.CargoScoring;
 import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.ShiftButton;
 import robot.subsystems.drivetrain.ramsete.LoadingStation;
@@ -108,27 +109,46 @@ public class OI {
 
 
     public OI() {
-            //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
-            povd.whenPressed(new ElevatorCommand(0));
-            povr.whenPressed(new ShiftButton(xbox, 8,new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH, false),
-                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)));
-            povl.whenPressed(new ShiftButton(xbox, 8,new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH, false),
-                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)));
-            povu.whenPressed(new ShiftButton(xbox, 8,new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH, false),
-                    new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)));
+        //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
+        povd.whenPressed(new ShiftButton(xbox, 7,
+                new CargoScoring(0, true),
+                new ShiftButton(xbox, 4,
+                        new CargoScoring(0, false),
+                        new ElevatorCommand(0))));
+        povr.whenPressed(new ShiftButton(xbox, 7,
+                new CargoScoring(1, true),
+                new ShiftButton(xbox, 8,
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH, false),
+                        new ShiftButton(xbox, 4,
+                                new CargoScoring(1, false),
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)))));
+        povl.whenPressed(new ShiftButton(xbox, 7,
+                new CargoScoring(2, true),
+                new ShiftButton(xbox, 8,
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH, false),
+                        new ShiftButton(xbox, 4,
+                                new CargoScoring(2, false),
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)))));
+        povu.whenPressed(new ShiftButton(xbox, 7,
+                new CargoScoring(3, true),
+                new ShiftButton(xbox, 8,
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH, false),
+                        new ShiftButton(xbox, 4,
+                                new CargoScoring(3, false),
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)))));
 
-            RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
-            LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
+        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
+        LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
 
-            a.whenPressed(new Gripper());
-            lb.whenPressed(new GripperTransportation(false));
-            rb.whenPressed(new GripperTransportation(true));
-            y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
-            b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-            x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-            //TODO: add right stick to control the cargo intake
-            select.whenPressed(new CloseBoth());
-            nineLeft.toggleWhenPressed(new LoadingStation(generateLoadingStationTrajectory()));
+        a.whenPressed(new Gripper());
+        lb.whenPressed(new GripperTransportation(false));
+        rb.whenPressed(new GripperTransportation(true));
+        //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        //TODO: add right stick to control the cargo intake
+        select.whenPressed(new CloseBoth());
+        nineLeft.toggleWhenPressed(new LoadingStation(generateLoadingStationTrajectory()));
         // Place cargo backward
 
         /*

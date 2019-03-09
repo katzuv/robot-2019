@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
-    public final static boolean isRobotA = false;
+    public final static boolean isRobotA = true;
     public final static int driveType = 1; //type 1 = rons drive, type 2 = testing drive, type 3 = paulos disabled arm (not yet)
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");

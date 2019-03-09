@@ -76,7 +76,7 @@ public class Constants {
         SHIP_CARGO_BACKWARD(0.78),
         LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_CARGO_BACKWARD(0.83),
-        LEVEL3_CARGO_BACKWARD(1.5);
+        LEVEL3_CARGO_BACKWARD(1.45),
 
         private final double levelHeight;
 
