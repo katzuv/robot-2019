@@ -29,14 +29,11 @@ public class DrivePathVision extends Command {
     private final TimedTrajectory<Pose2dWithCurvature> trajectory;
     private boolean stop = false;
 
-    public DrivePathVision(Pose2d startingPoint, Pose2d endingPoint, boolean reversed) {
-        drivetrain.resetLocation(startingPoint);
-        List<Pose2d> list = new ArrayList<>();
-        list.add(startingPoint);
-        list.add(endingPoint);
+    public DrivePathVision(List<Pose2d> waypoints, boolean reversed) {
+        drivetrain.resetLocation(waypoints.get(0));
         this.trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
                 .generateTrajectory(
-                        list,
+                        waypoints,
                         Constants.constraints,
                         VelocityKt.getVelocity(LengthKt.getMeter(0)),
                         VelocityKt.getVelocity(LengthKt.getMeter(0)),

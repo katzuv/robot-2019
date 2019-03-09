@@ -118,7 +118,6 @@ public class OI {
             select.whenPressed(new CloseBoth());
 
             nineLeft.toggleWhenPressed(new AngleDrive());
-            eightLeft.toggleWhenPressed(new GyroAngleDrive());
 
         } else if (Robot.driveType == 2) {
             povd.toggleWhenPressed(new ElevatorCommand(0));

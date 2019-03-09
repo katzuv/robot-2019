@@ -35,11 +35,11 @@ public class Constants {
     /*
     Ramsete constants
      */
-    public static final double[] PIDF = isRobotA ? new double[]{1.85, 0.002, 10, 1.45} : new double[]{1.85, 0.002, 10, 1.45};
+    public static final double[] PIDF = isRobotA ? new double[]{1.85, 0.002, 10, 1.45} : new double[]{1.5, 0, 10, 1.3};
     public static final double kZeta = 0.7;
     public static final double kBeta = 20;
     public static final double distanceFromEnd = 1;
-    public static final double angleKp = 1.6;
+    public static final double angleKp = isRobotA ? 1.6 : 0.91;
     public static double pathAngleKp = 2.5;
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
 

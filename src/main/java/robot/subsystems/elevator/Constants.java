@@ -4,7 +4,7 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
 
-    public static final int START_UNIT = isRobotA ? -720 : -900;
+    public static final int START_UNIT = isRobotA ? -720 : -720;
     public static final double LOWER_DANGER_ZONE = 0.32;
     public static final double UPPER_DANGER_ZONE = 0.84;
 
