@@ -57,6 +57,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
     private void setLegFLHeight(double height, double legOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
+        if(!isCompromised())
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
 
         SmartDashboard.putNumber("Climb: FL target height", height);
@@ -69,6 +70,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
     private void setLegFRHeight(double height, double legOffset) {
+        if(!isCompromised())
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
@@ -79,6 +81,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
     public void setLegBLHeight(double height, double legOffset) {
+        if(!isCompromised())
         talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
         SmartDashboard.putNumber("Climb: BL target height", height);
     }
@@ -87,6 +90,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @return height of the back right leg in meters
      */
     public void setLegBRHeight(double height, double legOffset) {
+        if(!isCompromised())
         talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
@@ -97,6 +101,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
     public void setLegFLHeight(double height, double legOffset, double secondLegOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
+        if(!isCompromised())
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
@@ -107,6 +112,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
     public void setLegFRHeight(double height, double legOffset, double secondLegOffset) {
+        if(!isCompromised())
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
@@ -117,6 +123,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
     public void setLegBLHeight(double height, double legOffset, double secondLegOffset) {
+        if(!isCompromised())
         talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
@@ -124,6 +131,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @return height of the back right leg in meters
      */
     public void setLegBRHeight(double height, double legOffset, double secondLegOffset) {
+        if(!isCompromised())
         talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
     /**
@@ -157,11 +165,14 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     public void setLegDriveSpeed(double speed){
-        talonFL.set(ControlMode.PercentOutput, speed);
-        talonFR.set(ControlMode.PercentOutput, speed);
+        if(!isCompromised()) {
+            talonFL.set(ControlMode.PercentOutput, speed);
+            talonFR.set(ControlMode.PercentOutput, speed);
+        }
     }
     
     public void setLegBLSpeed(double speed){
+        if(!isCompromised())
         talonBL.set(ControlMode.PercentOutput, speed);
     }
 
@@ -178,6 +189,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     public void setLegBRSpeed(double speed){
+        if(!isCompromised())
         talonBR.set(ControlMode.PercentOutput, speed);
     }
     /**
@@ -251,10 +263,12 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     public void setWheelVelocity(double velocity){
+        if(!isCompromised())
         wheelDrive.set(ControlMode.Velocity, metersToTicks(velocity)/10.0);
     }
 
     public void setWheelSpeed(double speed){
+        if(!isCompromised())
         wheelDrive.set(ControlMode.PercentOutput, speed);
     }
 
@@ -262,6 +276,31 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         return 10*ticksToMeters(wheelDrive.getSelectedSensorVelocity());
     }
 
+    /**
+     * checks if a talon sensor collection has disconnected, or any other extreme situation has happened which should prevent the moto motors from moving
+     */
+    public void executePreventBreak(){
+        SmartDashboard.putBoolean("Climb working", !isCompromised());
+        if(isCompromised()){
+            emergencyStop();
+        }
+    }
+
+    public boolean isCompromised(){
+        return ((!talonFL.getSensorCollection().isFwdLimitSwitchClosed() && !talonFL.getSensorCollection().isFwdLimitSwitchClosed()) ||
+                (!talonFR.getSensorCollection().isFwdLimitSwitchClosed() && !talonFR.getSensorCollection().isFwdLimitSwitchClosed()) ||
+                (!talonBL.getSensorCollection().isFwdLimitSwitchClosed() && !talonBL.getSensorCollection().isFwdLimitSwitchClosed()) ||
+                (!talonBR.getSensorCollection().isFwdLimitSwitchClosed() && !talonBR.getSensorCollection().isFwdLimitSwitchClosed())) ||
+                getLegFRHeight() - getLegFLHeight() > Constants.LEG_EMERGENCY_STOP;
+    }
+
+    public void emergencyStop(){
+        talonFL.set(ControlMode.PercentOutput, 0);
+        talonFR.set(ControlMode.PercentOutput, 0);
+        talonBL.set(ControlMode.PercentOutput, 0);
+        talonBR.set(ControlMode.PercentOutput, 0);
+        wheelDrive.set(ControlMode.PercentOutput, 0);
+    }
     /**
      * reset all four encoder values
      */
