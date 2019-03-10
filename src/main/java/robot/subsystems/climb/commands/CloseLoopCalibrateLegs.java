@@ -39,7 +39,7 @@ public class CloseLoopCalibrateLegs extends Command {
     protected void end() {
         climb.resetEncoders();
 
-        climb.setLegDriveHeight(0);
+        climb.setLegDriveHeight(0, 0);
         climb.setLegBLHeight(0, 0);
         climb.setLegBRHeight(0, 0);
     }

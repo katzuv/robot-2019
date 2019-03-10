@@ -40,9 +40,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         configMotorSensors(talonBR, Constants.BACK_RIGHT_FORWARD_HALL_REVERSED, Constants.BACK_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.BACK_RIGHT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
     }
 
-    public void setLegDriveHeight(double height){
-        setLegFLHeight(height, getLegFRHeight() - getLegFLHeight());
-        setLegFRHeight(height, getLegFLHeight() - getLegFRHeight());
+    public void setLegDriveHeight(double height, double additionalLegOffset){
+        setLegFLHeight(height,additionalLegOffset + getLegFRHeight() - getLegFLHeight());
+        setLegFRHeight(height, additionalLegOffset + getLegFLHeight() - getLegFRHeight());
     }
 
     public void setLegDriveHeightWithoutChecking(double height){
