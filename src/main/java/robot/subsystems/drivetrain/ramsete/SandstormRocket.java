@@ -15,7 +15,7 @@ public class SandstormRocket extends CommandGroup {
 
     public SandstormRocket() {
         List<Pose2d> toRocket = new ArrayList<>();
-        toRocket.add(new Pose2d(LengthKt.getFeet(5.455), LengthKt.getFeet(9.863), Rotation2dKt.getDegree(330)));
+        toRocket.add(new Pose2d(LengthKt.getFeet(16.141), LengthKt.getFeet(2.475), Rotation2dKt.getDegree(150)));
         addSequential(new DrivePathVision(toRocket, true, true, 0, 0));
 
         List<Pose2d> toLoadingStationFront = new ArrayList<>();
