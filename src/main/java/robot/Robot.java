@@ -28,6 +28,7 @@ import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.commands.AngleDrive;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
 import robot.subsystems.drivetrain.ramsete.SandstormCargo;
+import robot.subsystems.drivetrain.ramsete.SandstormRocket;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
@@ -93,13 +94,12 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         m_oi = new OI();
 
-
-        m_chooser.setDefaultOption("2 Hatch Cargo", new SandstormCargo());
-        m_chooser.addOption("Talon test", new TalonTest());
+        m_chooser.setDefaultOption("2 Hatch Rocket", new SandstormRocket());
+        m_chooser.addOption("2 Hatch Cargo", new SandstormCargo());
         m_chooser.addOption("Angle drive", new AngleDrive());
-//        m_chooser.addOption("2 Hatch Rocket Left", new DrivePathVision());
-//        m_chooser.addOption("2 Hatch Rocket Right", new DrivePathVision());
-        SmartDashboard.putData("Auto mode", m_chooser);
+        m_chooser.addOption("Talon test", new TalonTest());
+        SmartDashboard.putData("Sandstorm", m_chooser);
+
         SmartDashboard.putBoolean("Robot A", isRobotA);
         navx.reset();
         elevator.resetEncoders();
