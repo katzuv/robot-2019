@@ -7,6 +7,7 @@ public class Constants {
 
     public static final double BACK_LEG_X_DIMENSION = isRobotA ? 0.35 : 0.35;
     public static final double BACK_LEG_Y_DIMENSION = isRobotA ? 0.09 : 0.09;
+    public static final double LEG_EMERGENCY_STOP = 0.035;
 
     static final double TICKS_PER_METER = isRobotA ? 10000 : 10000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
