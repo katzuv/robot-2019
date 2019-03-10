@@ -45,6 +45,11 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         setLegFRHeight(height, getLegFLHeight() - getLegFRHeight());
     }
 
+    public void setLegDriveHeightWithoutChecking(double height){
+        setLegFLHeight(height, 0);
+        setLegFRHeight(height, 0);
+    }
+
     /**
      * Set the target height of the front left leg in meters.
      *
