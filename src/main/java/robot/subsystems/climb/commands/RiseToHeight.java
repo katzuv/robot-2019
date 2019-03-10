@@ -35,8 +35,7 @@ public class RiseToHeight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        climb.setLegFLHeight(targetHeight, TiltUtils.getLegLength(-Constants.LEG_X_DIMENSION, Constants.LEG_Y_DIMENSION, Robot.navx.getPitch(), Robot.navx.getRoll()));
-        climb.setLegFRHeight(targetHeight, TiltUtils.getLegLength(Constants.LEG_X_DIMENSION, Constants.LEG_Y_DIMENSION, Robot.navx.getPitch(), Robot.navx.getRoll()));
+        climb.setLegDriveHeight(targetHeight);
         climb.setLegBLHeight(targetHeight, TiltUtils.getLegLength(-Constants.BACK_LEG_X_DIMENSION, -Constants.BACK_LEG_Y_DIMENSION, Robot.navx.getPitch(), Robot.navx.getRoll()));
         climb.setLegBRHeight(targetHeight, TiltUtils.getLegLength(Constants.BACK_LEG_X_DIMENSION, -Constants.BACK_LEG_Y_DIMENSION, Robot.navx.getPitch(), Robot.navx.getRoll()));
     }

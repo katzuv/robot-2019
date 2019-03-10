@@ -40,13 +40,18 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         configMotorSensors(talonBR, Constants.BACK_RIGHT_FORWARD_HALL_REVERSED, Constants.BACK_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.BACK_RIGHT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
     }
 
+    public void setLegDriveHeight(double height){
+        setLegFLHeight(height, getLegFRHeight() - getLegFLHeight());
+        setLegFRHeight(height, getLegFLHeight() - getLegFRHeight());
+    }
+
     /**
      * Set the target height of the front left leg in meters.
      *
      * @param height    target height in meters.
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    public void setLegFLHeight(double height, double legOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
+    private void setLegFLHeight(double height, double legOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
 
         SmartDashboard.putNumber("Climb: FL target height", height);
@@ -58,7 +63,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param height    target height in meters.
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    public void setLegFRHeight(double height, double legOffset) {
+    private void setLegFRHeight(double height, double legOffset) {
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
