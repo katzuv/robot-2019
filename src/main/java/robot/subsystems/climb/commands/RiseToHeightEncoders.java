@@ -1,8 +1,6 @@
 package robot.subsystems.climb.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.climb.Constants;
 
@@ -52,8 +50,7 @@ public class RiseToHeightEncoders extends Command {
     protected void end() {
         climb.setLegBLSpeed(0);
         climb.setLegBRSpeed(0);
-        climb.setLegFLSpeed(0);
-        climb.setLegFRSpeed(0);
+        climb.setLegDriveSpeed(0);
 
     }
 

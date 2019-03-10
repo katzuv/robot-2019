@@ -151,15 +151,11 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         return ticksToMeters(talonBR.getSelectedSensorPosition(0));
     }
 
-    public void setLegFLSpeed(double speed){
+    public void setLegDriveSpeed(double speed){
         talonFL.set(ControlMode.PercentOutput, speed);
-    }
-
-
-    public void setLegFRSpeed(double speed){
         talonFR.set(ControlMode.PercentOutput, speed);
     }
-
+    
     public void setLegBLSpeed(double speed){
         talonBL.set(ControlMode.PercentOutput, speed);
     }

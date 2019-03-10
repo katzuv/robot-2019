@@ -39,8 +39,7 @@ public class CloseForwardLegs extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        climb.setLegFLSpeed(0);
-        climb.setLegFRSpeed(0);
+        climb.setLegDriveSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
