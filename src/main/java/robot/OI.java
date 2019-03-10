@@ -86,6 +86,7 @@ public class OI {
     public static Button left_joystick_seven = new JoystickButton(leftStick, 7);
     public static Button left_joystick_eight = new JoystickButton(leftStick, 8);
     public static Button left_joystick_nine = new JoystickButton(leftStick, 9);
+    public static Button left_joystick_ten = new JoystickButton(leftStick, 10);
 
 
     public OI() {
@@ -93,6 +94,7 @@ public class OI {
         left_joystick_seven.whenPressed(new CloseBackLegs());
         left_joystick_eight.whenPressed(new RiseToHeightEncoders(Constants.LEVEL_THREE_LEG_LENGTH));
         left_joystick_nine.whenPressed(new CloseLoopCalibrateLegs());
+        left_joystick_ten.whenPressed(new RiseToHeightEncoders(Constants.LEVEL_TWO_LEG_LENGTH));
     }
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
