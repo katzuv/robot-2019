@@ -112,14 +112,14 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
     public void setLegBLHeight(double height, double legOffset, double secondLegOffset) {
-        talonBL.set(ControlMode.MotionMagic, metersToTicks(height+0.01), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+        talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
     /**
      * @return height of the back right leg in meters
      */
     public void setLegBRHeight(double height, double legOffset, double secondLegOffset) {
-        talonBR.set(ControlMode.MotionMagic, metersToTicks(height+0.01), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+        talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
     /**
      * @return height of the front left leg in meters
