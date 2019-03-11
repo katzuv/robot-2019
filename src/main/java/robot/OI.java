@@ -138,7 +138,7 @@ public class OI {
         select.whenPressed(new CloseBoth());
 
         sixLeft.toggleWhenPressed(new AngleDrive());
-        sixRight.toggleWhenPressed(new SwitchCamera());
+        sixRight.whenPressed(new SwitchCamera());
         // Place cargo backward
 
         /*
