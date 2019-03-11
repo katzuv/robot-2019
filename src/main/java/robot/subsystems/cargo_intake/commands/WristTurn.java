@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.cargo_intake.Constants;
 
 import static robot.Robot.cargoIntake;
+import static robot.Robot.hatchIntake;
 
 /**
  *
@@ -48,11 +49,12 @@ public class WristTurn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(cargoIntake.getWristAngle() - angle) < 5;
+        return Math.abs(cargoIntake.getWristAngle() - angle) < 2;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        cargoIntake.setWristSpeed(0);
     }
 
     // Called when another command which requires one or more of the same

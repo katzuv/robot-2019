@@ -3,7 +3,7 @@ package robot.subsystems.drivetrain.pure_pursuit;
 public class Constants {
     //DRIVING CONSTANTS
 
-    public final static double LOOKAHEAD_DISTANCE = 0.55; //in meters
+    public final static double LOOKAHEAD_DISTANCE = 1; //in meters
     public static final double MAX_VELOCITY = 3.762;
 
     //PATH GENERATION CONSTANTS
@@ -30,4 +30,5 @@ public class Constants {
     public final static double STOP_SPEED_THRESH = 0.1; //the speed the robot could stop at the end of the path.
 
     public final static double ROBOT_WIDTH = 0.74; //width of the robot
+
 }
