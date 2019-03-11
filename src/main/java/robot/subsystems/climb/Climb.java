@@ -136,23 +136,16 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
-     * set the speed of the back left leg
+     * set the speed of the back legs
      *
      * @param speed percent output from -1 to 1
      */
-    public void setLegBLSpeed(double speed) {
-        if (!isCompromised())
-            talonBL.set(ControlMode.PercentOutput, speed);
-    }
-
-    /**
-     * set the speed of the back left leg
-     *
-     * @param speed percent output from -1 to 1
-     */
-    public void setLegBRSpeed(double speed) {
-        if (!isCompromised())
+    public void setBackLegSpeeds(double speed) {
+        if (!isCompromised()) {
             talonBR.set(ControlMode.PercentOutput, speed);
+            talonBL.set(ControlMode.PercentOutput, speed);
+
+        }
     }
 
     public void setWheelSpeed(double speed) {
