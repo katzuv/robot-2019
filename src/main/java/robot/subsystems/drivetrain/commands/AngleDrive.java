@@ -28,7 +28,7 @@ public class AngleDrive extends Command {
     protected void execute() {
         double angle = targetAngleEntry.getDouble(0);
         double distance = targetDistanceEntry.getDouble(0);
-        double speed = -1 * Robot.m_oi.leftDriveStick();
+        double speed = -1 * Robot.m_oi.rightDriveStick();
         double turn = Constants.angleKp * Math.toRadians(angle);
         if (distance != 0 && distance < 0.6) {
             stop = true;
@@ -40,7 +40,7 @@ public class AngleDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return Math.abs(Robot.m_oi.rightSideAxis()) > 0.2;
+        return Math.abs(Robot.m_oi.leftDriveStick()) > 0.2;
     }
 
     protected void end() {
