@@ -19,7 +19,8 @@ public class OneHatchRocket extends CommandGroup {
     public OneHatchRocket(Constants.ELEVATOR_STATES height) {
 //        addParallel(new ElevatorCommand(height));
         List<Pose2d> toRocket = new ArrayList<>();
-        toRocket.add(new Pose2d(LengthKt.getFeet(17.22), LengthKt.getFeet(2.795), Rotation2dKt.getDegree(160)));
+        toRocket.add(new Pose2d(LengthKt.getFeet(12.426), LengthKt.getFeet(4.632), Rotation2dKt.getDegree(150)));
+        toRocket.add(new Pose2d(LengthKt.getFeet(16.912), LengthKt.getFeet(2.106), Rotation2dKt.getDegree(150)));
         addSequential(new DrivePathVision(toRocket, true, true, 0, 0, false));
 //        addSequential(new HatchScoring(height, false));
     }
