@@ -79,14 +79,6 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
 
     }
 
-    /**
-     * Set the target height of the back legs in meters.
-     * this method takes into consideration the error between both legs,
-     * and lowers the speeds accordingly.
-     *
-     * @param height              target height in meters.
-     * @param additionalLegOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
-     */
     public void setBackLegHeights(double height, double additionalLegOffset) {
         if(!isCompromised()){
             talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegBRHeight() - getLegBLHeight()));
@@ -94,14 +86,6 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         }
     }
 
-    /**
-     * Set the target height of the back legs in meters.
-     * this method doesn't take into consideration the error between both back legs,
-     * and should be used primarily at times where the legs aren't calibrated.
-     *
-     * @param height    target height in meters.
-     * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
-     */
     public void setBackLegHeightsOpenLoop(double height, double legOffset) {
         if(!isCompromised()){
             talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
