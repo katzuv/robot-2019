@@ -58,9 +58,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
             return;
 
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
-                DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * additionalLegOffset + getLegFRHeight() - getLegFLHeight());
+                DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegFRHeight() - getLegFLHeight()));
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height),
-                DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * additionalLegOffset + getLegFLHeight() - getLegFRHeight());
+                DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegFLHeight() - getLegFRHeight()));
     }
 
     /**
@@ -81,8 +81,8 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
 
     public void setBackLegHeights(double height, double additionalLegOffset) {
         if(!isCompromised()){
-            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * additionalLegOffset + getLegFRHeight() - getLegFLHeight());
-            talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * additionalLegOffset + getLegFRHeight() - getLegFLHeight());
+            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegBRHeight() - getLegBLHeight()));
+            talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegBLHeight() - getLegBRHeight()));
         }
     }
 
