@@ -170,6 +170,42 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
+     * Define the cruise speed of the front legs
+     *
+     * @param cruiseVelocity cruise velocity in meters [0.0 - 0.55]
+     */
+    public void configFrontCruiseVelocity(double cruiseVelocity){
+        talonFL.configMotionCruiseVelocity(metersToTicks(cruiseVelocity)/10, Constants.TALON_TIMEOUT_MS);
+        talonFR.configMotionCruiseVelocity(metersToTicks(cruiseVelocity)/10, Constants.TALON_TIMEOUT_MS);
+    }
+
+    /**
+     * Define the cruise speed of the back legs
+     *
+     * @param cruiseVelocity cruise velocity in meters [0.0 - 0.55]
+     */
+    public void configBackCruiseVelocity(double cruiseVelocity){
+        talonFL.configMotionCruiseVelocity(metersToTicks(cruiseVelocity)/10, Constants.TALON_TIMEOUT_MS);
+        talonFR.configMotionCruiseVelocity(metersToTicks(cruiseVelocity)/10, Constants.TALON_TIMEOUT_MS);
+    }
+
+    /**
+     * Reset the cruise speed of the front legs to the defined default
+     */
+    public void configFrontCruiseVelocity(){
+        talonFL.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY)/10, Constants.TALON_TIMEOUT_MS);
+        talonFR.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY)/10, Constants.TALON_TIMEOUT_MS);
+    }
+
+    /**
+     * Reset the cruise speed of the front legs to the defined default
+     */
+    public void configBackCruiseVelocity(){
+        talonFL.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY)/10, Constants.TALON_TIMEOUT_MS);
+        talonFR.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY)/10, Constants.TALON_TIMEOUT_MS);
+    }
+
+    /**
      * Check if all four legs are up, using the limit switches
      *
      * @return if all the legs touch their limit switches, return true.
