@@ -77,8 +77,11 @@ public class JoystickDrive extends Command {
             drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.08,
                     rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.08);
         }
-        else
+        else {
             drivetrain.setSpeed(leftOutput, rightOutput);
+            climb.setWheelSpeed((rightOutput+leftOutput) *(0.8/2));
+
+        }
     }
 
     private double bell(double x, double c) {
