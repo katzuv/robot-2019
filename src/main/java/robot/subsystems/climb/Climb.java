@@ -41,7 +41,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
-     * Set the target height of the front left leg in meters.
+     * Set the target height of the front legs in meters.
+     * this method takes into consideration the error between both legs,
+     * and lowers the speeds accordingly.
      *
      * @param height    target height in meters.
      * @param additionalLegOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
@@ -57,7 +59,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
-     * Set the target height of the front right leg in meters.
+     * Set the target height of the front legs in meters.
+     * this method doesn't take into consideration the error between both front legs,
+     * and should be used primarily at times where the legs aren't calibrated.
      *
      * @param height    target height in meters.
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
@@ -112,7 +116,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
-     * get the height of the leg in meters from the encoders.
+     * get the height of the leg in meters from the encoders
      *
      * @return height of the leg in meters
      */
@@ -120,13 +124,23 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         return ticksToMeters(talonBR.getSelectedSensorPosition(0));
     }
 
+    /**
+     * set the speed to move the legs.
+     *
+     * @param speed percent output from -1 to 1
+     */
     public void setLegDriveSpeed(double speed){
         if(!isCompromised()) {
             talonFL.set(ControlMode.PercentOutput, speed);
             talonFR.set(ControlMode.PercentOutput, speed);
         }
     }
-    
+
+    /**
+     * set the speed of the back left leg
+     *
+     * @param speed percent output from -1 to 1
+     */
     public void setLegBLSpeed(double speed){
         if(!isCompromised())
         talonBL.set(ControlMode.PercentOutput, speed);
@@ -144,10 +158,16 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
                 && talonFR.getSensorCollection().isRevLimitSwitchClosed() == !Constants.FRONT_RIGHT_REVERSE_HALL_REVERSED;
     }
 
+    /**
+     * set the speed of the back left leg
+     *
+     * @param speed percent output from -1 to 1
+     */
     public void setLegBRSpeed(double speed){
         if(!isCompromised())
         talonBR.set(ControlMode.PercentOutput, speed);
     }
+    
     /**
      * auxiliary method used to shorten the code when configuring the motor controllers (the talons).
      *
@@ -233,7 +253,8 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
-     * checks if a talon sensor collection has disconnected, or any other extreme situation has happened which should prevent the moto motors from moving
+     * Checks if a talon sensor collection has disconnected, or any other extreme situation has happened which should prevent the moto motors from moving
+     * <p>calls {@link #isCompromised() isCompromised}, and if true, calls {@link #emergencyStop() emergencyStop}</p>
      */
     public void executePreventBreak(){
         SmartDashboard.putBoolean("Climb working", !isCompromised());
@@ -242,6 +263,16 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         }
     }
 
+    /**
+     * checks whether the climbing mechanism is in an illegal state.
+     *
+     * <p>
+     * this includes situations where the sensors disconnect from the talon,
+     * or if the height between both legs goes above a certain number.
+     * </p>
+     *
+     * @return returns whether the mechanism should be disabled. if the subsystem is fine, returns false.
+     */
     public boolean isCompromised(){
         return ((!talonFL.getSensorCollection().isFwdLimitSwitchClosed() && !talonFL.getSensorCollection().isFwdLimitSwitchClosed()) ||
                 (!talonFR.getSensorCollection().isFwdLimitSwitchClosed() && !talonFR.getSensorCollection().isFwdLimitSwitchClosed()) ||
@@ -250,6 +281,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
                 getLegFRHeight() - getLegFLHeight() > Constants.LEG_EMERGENCY_STOP;
     }
 
+    /**
+     * disable all motor values to 0
+     */
     public void emergencyStop(){
         talonFL.set(ControlMode.PercentOutput, 0);
         talonFR.set(ControlMode.PercentOutput, 0);
