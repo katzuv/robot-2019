@@ -10,7 +10,6 @@ package robot.subsystems.climb;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Climbing subsystem for the 2019 robot 'GENESIS'
@@ -34,12 +33,12 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         configMotorMovement(talonBL, Constants.BACK_LEFT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
         configMotorMovement(talonBR, Constants.BACK_RIGHT_TALON_REVERSE, NeutralMode.Brake, Constants.CLIMB_PIDFE, Constants.MOTION_MAGIC_CRUISE_VELOCITY, Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIMEOUT_MS);
 
-        configMotorSensors(talonFL, Constants.FRONT_LEFT_FORWARD_HALL_REVERSED, Constants.FRONT_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.FRONT_LEFT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
-        configMotorSensors(talonFR, Constants.FRONT_RIGHT_FORWARD_HALL_REVERSED, Constants.FRONT_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.FRONT_RIGHT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
-        configMotorSensors(talonBL, Constants.BACK_LEFT_FORWARD_HALL_REVERSED, Constants.BACK_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.BACK_LEFT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
-        configMotorSensors(talonBR, Constants.BACK_RIGHT_FORWARD_HALL_REVERSED, Constants.BACK_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.BACK_RIGHT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
+        configMotorSensors(talonFL, Constants.FRONT_LEFT_FORWARD_HALL_REVERSED, Constants.FRONT_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative, Constants.FRONT_LEFT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
+        configMotorSensors(talonFR, Constants.FRONT_RIGHT_FORWARD_HALL_REVERSED, Constants.FRONT_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative, Constants.FRONT_RIGHT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
+        configMotorSensors(talonBL, Constants.BACK_LEFT_FORWARD_HALL_REVERSED, Constants.BACK_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative, Constants.BACK_LEFT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
+        configMotorSensors(talonBR, Constants.BACK_RIGHT_FORWARD_HALL_REVERSED, Constants.BACK_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative, Constants.BACK_RIGHT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
     }
-    
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -51,11 +50,11 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * this method takes into consideration the error between both legs,
      * and lowers the speeds accordingly.
      *
-     * @param height    target height in meters.
+     * @param height              target height in meters.
      * @param additionalLegOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    public void setLegDriveHeight(double height, double additionalLegOffset){
-        if(isCompromised())
+    public void setLegDriveHeight(double height, double additionalLegOffset) {
+        if (isCompromised())
             return;
 
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
@@ -72,7 +71,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param height    target height in meters.
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    public void setLegDriveHeightWithoutChecking(double height, double legOffset){
+    public void setLegDriveHeightWithoutChecking(double height, double legOffset) {
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
                 DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height),
@@ -87,17 +86,16 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
     public void setLegBLHeight(double height, double legOffset) {
-        if(!isCompromised())
-        talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
-        SmartDashboard.putNumber("Climb: BL target height", height);
+        if (!isCompromised())
+            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
     /**
      * @return height of the back right leg in meters
      */
     public void setLegBRHeight(double height, double legOffset) {
-        if(!isCompromised())
-        talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+        if (!isCompromised())
+            talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
     /**
@@ -135,8 +133,8 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      *
      * @param speed percent output from -1 to 1
      */
-    public void setLegDriveSpeed(double speed){
-        if(!isCompromised()) {
+    public void setLegDriveSpeed(double speed) {
+        if (!isCompromised()) {
             talonFL.set(ControlMode.PercentOutput, speed);
             talonFR.set(ControlMode.PercentOutput, speed);
         }
@@ -147,9 +145,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      *
      * @param speed percent output from -1 to 1
      */
-    public void setLegBLSpeed(double speed){
-        if(!isCompromised())
-        talonBL.set(ControlMode.PercentOutput, speed);
+    public void setLegBLSpeed(double speed) {
+        if (!isCompromised())
+            talonBL.set(ControlMode.PercentOutput, speed);
     }
 
     /**
@@ -157,13 +155,13 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      *
      * @param speed percent output from -1 to 1
      */
-    public void setLegBRSpeed(double speed){
-        if(!isCompromised())
+    public void setLegBRSpeed(double speed) {
+        if (!isCompromised())
             talonBR.set(ControlMode.PercentOutput, speed);
     }
 
-    public void setWheelSpeed(double speed){
-        if(!isCompromised())
+    public void setWheelSpeed(double speed) {
+        if (!isCompromised())
             wheelDrive.set(ControlMode.PercentOutput, speed);
     }
 
@@ -172,7 +170,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      *
      * @return if all the legs touch their limit switches, return true.
      */
-    public boolean areAllLegsUp(){
+    public boolean areAllLegsUp() {
         return talonBL.getSensorCollection().isRevLimitSwitchClosed() == !Constants.BACK_LEFT_REVERSE_HALL_REVERSED
                 && talonFL.getSensorCollection().isRevLimitSwitchClosed() == !Constants.FRONT_LEFT_REVERSE_HALL_REVERSED
                 && talonBR.getSensorCollection().isRevLimitSwitchClosed() == !Constants.BACK_RIGHT_REVERSE_HALL_REVERSED
@@ -183,8 +181,8 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * Checks if a talon sensor collection has disconnected, or any other extreme situation has happened which should prevent the moto motors from moving
      * <p>calls {@link #isCompromised() isCompromised}, and if true, calls {@link #emergencyStop() emergencyStop}</p>
      */
-    public void executePreventBreak(){
-        if(isCompromised()){
+    public void executePreventBreak() {
+        if (isCompromised()) {
             emergencyStop();
         }
     }
@@ -201,7 +199,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      *
      * @return returns whether the mechanism should be disabled. if the subsystem is fine, returns false.
      */
-    public boolean isCompromised(){
+    public boolean isCompromised() {
         return ((!talonFL.getSensorCollection().isFwdLimitSwitchClosed() && !talonFL.getSensorCollection().isFwdLimitSwitchClosed()) ||
                 (!talonFR.getSensorCollection().isFwdLimitSwitchClosed() && !talonFR.getSensorCollection().isFwdLimitSwitchClosed()) ||
                 (!talonBL.getSensorCollection().isFwdLimitSwitchClosed() && !talonBL.getSensorCollection().isFwdLimitSwitchClosed()) ||
@@ -212,17 +210,18 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     /**
      * disable all motor values to 0
      */
-    public void emergencyStop(){
+    public void emergencyStop() {
         talonFL.set(ControlMode.PercentOutput, 0);
         talonFR.set(ControlMode.PercentOutput, 0);
         talonBL.set(ControlMode.PercentOutput, 0);
         talonBR.set(ControlMode.PercentOutput, 0);
         wheelDrive.set(ControlMode.PercentOutput, 0);
     }
+
     /**
      * reset all four encoder values
      */
-    public void resetEncoders(){
+    public void resetEncoders() {
         talonFL.setSelectedSensorPosition(Constants.FRONT_LEFT_STARTING_OFFSET);
         talonFR.setSelectedSensorPosition(Constants.FRONT_RIGHT_STARTING_OFFSET);
         talonBL.setSelectedSensorPosition(Constants.BACK_LEFT_STARTING_OFFSET);
