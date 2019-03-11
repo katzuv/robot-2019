@@ -84,12 +84,12 @@ public class Drivetrain extends Subsystem {
         rightSlave1.setInverted(Constants.RIGHT_SLAVE1_REVERSED);
         rightSlave2.setInverted(Constants.RIGHT_SLAVE2_REVERSED);
 
-        leftMaster.setNeutralMode(NeutralMode.Brake);
-        leftSlave1.setNeutralMode(NeutralMode.Brake);
-        leftSlave2.setNeutralMode(NeutralMode.Brake);
-        rightMaster.setNeutralMode(NeutralMode.Brake);
-        rightSlave2.setNeutralMode(NeutralMode.Brake);
-        rightSlave1.setNeutralMode(NeutralMode.Brake);
+        leftMaster.setNeutralMode(NeutralMode.Coast);
+        leftSlave1.setNeutralMode(NeutralMode.Coast);
+        leftSlave2.setNeutralMode(NeutralMode.Coast);
+        rightMaster.setNeutralMode(NeutralMode.Coast);
+        rightSlave2.setNeutralMode(NeutralMode.Coast);
+        rightSlave1.setNeutralMode(NeutralMode.Coast);
 
         leftMaster.config_kP(0, Constants.PIDFLeft[0], Constants.TALON_TIMEOUT_MS);
         leftMaster.config_kI(0, Constants.PIDFLeft[1], Constants.TALON_TIMEOUT_MS);
