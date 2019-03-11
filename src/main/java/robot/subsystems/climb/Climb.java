@@ -162,15 +162,6 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
             talonBR.set(ControlMode.PercentOutput, speed);
     }
 
-    public void setWheelVelocity(double velocity){
-        if(!isCompromised())
-            wheelDrive.set(ControlMode.Velocity, metersToTicks(velocity)/10.0);
-    }
-
-    public double getWheelVelocity(){
-        return 10*ticksToMeters(wheelDrive.getSelectedSensorVelocity());
-    }
-
     public void setWheelSpeed(double speed){
         if(!isCompromised())
             wheelDrive.set(ControlMode.PercentOutput, speed);

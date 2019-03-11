@@ -8,23 +8,23 @@ import robot.Robot;
  *
  */
 public class MoveForward extends Command {
-    private double velocity;
+    private double speed;
     private double timeout;
     private Timer timer = new Timer();
     /**
      * Drive the climb wheel forward at a specified speed, until an end statement is met.
      *
-     * @param velocity velocity of the wheel in meters per seconds
+     * @param speed speed of the wheel in meters per seconds
      * @param timeout  time in seconds until the command stops
      */
-    public MoveForward(double velocity, double timeout) {
-        this.velocity = velocity;
+    public MoveForward(double speed, double timeout) {
+        this.speed = speed;
         this.timeout = timeout;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.climb.setWheelVelocity(velocity);
+        Robot.climb.setWheelSpeed(speed);
         timer.reset();
         timer.start();
     }
@@ -40,7 +40,7 @@ public class MoveForward extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        Robot.climb.setWheelVelocity(0);
+        Robot.climb.setWheelSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
