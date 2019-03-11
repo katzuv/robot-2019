@@ -195,6 +195,8 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * <p>
      * this includes situations where the sensors disconnect from the talon,
      * or if the height between both legs goes above a certain number.
+     * do note, that this method takes into consideration that all limit switches are normally closed,
+     * otherwise, this method has no way of knowing if they are working or not.
      * </p>
      *
      * @return returns whether the mechanism should be disabled. if the subsystem is fine, returns false.
