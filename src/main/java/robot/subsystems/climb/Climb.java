@@ -53,7 +53,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param height              target height in meters.
      * @param additionalLegOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    public void setLegDriveHeight(double height, double additionalLegOffset) {
+    public void setFrontLegHeights(double height, double additionalLegOffset) {
         if (isCompromised())
             return;
 
@@ -71,7 +71,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param height    target height in meters.
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    public void setLegDriveHeightWithoutChecking(double height, double legOffset) {
+    public void setFrontLegHeightsOpenLoop(double height, double legOffset) {
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
                 DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height),

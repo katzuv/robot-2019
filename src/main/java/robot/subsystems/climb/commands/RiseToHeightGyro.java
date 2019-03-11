@@ -35,7 +35,7 @@ public class RiseToHeightGyro extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-//        climb.setLegDriveHeight(targetHeight, 0); WRONG VERSION OF EXECUTE, USE VERSION BEFORE COMMIT 'afc30b'
+//        climb.setFrontLegHeights(targetHeight, 0); WRONG VERSION OF EXECUTE, USE VERSION BEFORE COMMIT 'afc30b'
 //        climb.setLegBLHeight(targetHeight, TiltUtils.getLegLength(-Constants.BACK_LEG_X_DIMENSION, -Constants.BACK_LEG_Y_DIMENSION, Robot.navx.getPitch(), Robot.navx.getRoll()));
 //        climb.setLegBRHeight(targetHeight, TiltUtils.getLegLength(Constants.BACK_LEG_X_DIMENSION, -Constants.BACK_LEG_Y_DIMENSION, Robot.navx.getPitch(), Robot.navx.getRoll()));
     }
