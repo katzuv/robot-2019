@@ -20,7 +20,7 @@ public class CalibrateLegs extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
             climb.resetEncoders();
-            climb.setLegDriveHeightWithoutChecking(-1.2*Constants.LEVEL_THREE_LEG_LENGTH);
+            climb.setLegDriveHeightWithoutChecking(-1.2*Constants.LEVEL_THREE_LEG_LENGTH,0);
             climb.setLegBLHeight(-1.2*Constants.LEVEL_THREE_LEG_LENGTH, 0);
             climb.setLegBRHeight(-1.2*Constants.LEVEL_THREE_LEG_LENGTH, 0);
     }
