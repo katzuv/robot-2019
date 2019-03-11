@@ -40,27 +40,20 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         configMotorSensors(talonBR, Constants.BACK_RIGHT_FORWARD_HALL_REVERSED, Constants.BACK_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.BACK_RIGHT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
     }
 
-    public void setLegDriveHeight(double height, double additionalLegOffset){
-        setLegFLHeight(height,additionalLegOffset + getLegFRHeight() - getLegFLHeight());
-        setLegFRHeight(height, additionalLegOffset + getLegFLHeight() - getLegFRHeight());
-    }
-
-    public void setLegDriveHeightWithoutChecking(double height, double additionalLegOffset){
-        setLegFLHeight(height, additionalLegOffset);
-        setLegFRHeight(height, additionalLegOffset);
-    }
-
     /**
      * Set the target height of the front left leg in meters.
      *
      * @param height    target height in meters.
-     * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
+     * @param additionalLegOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    private void setLegFLHeight(double height, double legOffset) {//TODO: currently when the robot starts to tip, half the legs speed up, and the other half slow down. maybe we can set only two to slow down ect.
-        if(!isCompromised())
-        talonFL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    public void setLegDriveHeight(double height, double additionalLegOffset){
+        if(isCompromised())
+            return;
 
-        SmartDashboard.putNumber("Climb: FL target height", height);
+        talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
+                DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * additionalLegOffset + getLegFRHeight() - getLegFLHeight());
+        talonFR.set(ControlMode.MotionMagic, metersToTicks(height),
+                DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * additionalLegOffset + getLegFLHeight() - getLegFRHeight());
     }
 
     /**
@@ -69,9 +62,12 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param height    target height in meters.
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    private void setLegFRHeight(double height, double legOffset) {
-        if(!isCompromised())
-        talonFR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    public void setLegDriveHeightWithoutChecking(double height, double legOffset){
+        talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
+                DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+        talonFR.set(ControlMode.MotionMagic, metersToTicks(height),
+                DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+
     }
 
     /**
