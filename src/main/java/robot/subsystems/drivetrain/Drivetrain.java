@@ -64,18 +64,18 @@ public class Drivetrain extends Subsystem {
         rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
         leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
 
-        leftMaster.configVoltageCompSaturation(12);
-        leftMaster.enableVoltageCompensation(true);
-        leftSlave1.configVoltageCompSaturation(12);
-        leftSlave1.enableVoltageCompensation(true);
-        leftSlave2.configVoltageCompSaturation(12);
-        leftSlave2.enableVoltageCompensation(true);
-        rightMaster.configVoltageCompSaturation(12);
-        rightMaster.enableVoltageCompensation(true);
-        rightSlave2.configVoltageCompSaturation(12);
-        rightSlave2.enableVoltageCompensation(true);
-        rightSlave1.configVoltageCompSaturation(12);
-        rightSlave1.enableVoltageCompensation(true);
+//        leftMaster.configVoltageCompSaturation(12);
+//        leftMaster.enableVoltageCompensation(true);
+//        leftSlave1.configVoltageCompSaturation(12);
+//        leftSlave1.enableVoltageCompensation(true);
+//        leftSlave2.configVoltageCompSaturation(12);
+//        leftSlave2.enableVoltageCompensation(true);
+//        rightMaster.configVoltageCompSaturation(12);
+//        rightMaster.enableVoltageCompensation(true);
+//        rightSlave2.configVoltageCompSaturation(12);
+//        rightSlave2.enableVoltageCompensation(true);
+//        rightSlave1.configVoltageCompSaturation(12);
+//        rightSlave1.enableVoltageCompensation(true);
 
         leftMaster.setInverted(Constants.LEFT_MASTER_REVERSED);
         leftSlave1.setInverted(Constants.LEFT_SLAVE1_REVERSED);
@@ -84,21 +84,22 @@ public class Drivetrain extends Subsystem {
         rightSlave1.setInverted(Constants.RIGHT_SLAVE1_REVERSED);
         rightSlave2.setInverted(Constants.RIGHT_SLAVE2_REVERSED);
 
-        leftMaster.setNeutralMode(NeutralMode.Coast);
-        leftSlave1.setNeutralMode(NeutralMode.Coast);
-        leftSlave2.setNeutralMode(NeutralMode.Coast);
-        rightMaster.setNeutralMode(NeutralMode.Coast);
-        rightSlave2.setNeutralMode(NeutralMode.Coast);
-        rightSlave1.setNeutralMode(NeutralMode.Coast);
+        leftMaster.setNeutralMode(NeutralMode.Brake);
+        leftSlave1.setNeutralMode(NeutralMode.Brake);
+        leftSlave2.setNeutralMode(NeutralMode.Brake);
+        rightMaster.setNeutralMode(NeutralMode.Brake);
+        rightSlave2.setNeutralMode(NeutralMode.Brake);
+        rightSlave1.setNeutralMode(NeutralMode.Brake);
 
-        leftMaster.config_kP(0, Constants.PIDF[0], Constants.TALON_TIMEOUT_MS);
-        leftMaster.config_kI(0, Constants.PIDF[1], Constants.TALON_TIMEOUT_MS);
-        leftMaster.config_kD(0, Constants.PIDF[2], Constants.TALON_TIMEOUT_MS);
-        leftMaster.config_kF(0, Constants.PIDF[3], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kP(0, Constants.PIDF[0], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kI(0, Constants.PIDF[1], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kD(0, Constants.PIDF[2], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kF(0, Constants.PIDF[3], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kP(0, Constants.PIDFLeft[0], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kI(0, Constants.PIDFLeft[1], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kD(0, Constants.PIDFLeft[2], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kF(0, Constants.PIDFLeft[3], Constants.TALON_TIMEOUT_MS);
+
+        rightMaster.config_kP(0, Constants.PIDFRight[0], Constants.TALON_TIMEOUT_MS);
+        rightMaster.config_kI(0, Constants.PIDFRight[1], Constants.TALON_TIMEOUT_MS);
+        rightMaster.config_kD(0, Constants.PIDFRight[2], Constants.TALON_TIMEOUT_MS);
+        rightMaster.config_kF(0, Constants.PIDFRight[3], Constants.TALON_TIMEOUT_MS);
     }
 
     @Override
@@ -201,7 +202,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        localization.reset(new Pose2d(LengthKt.getFeet(5.678), LengthKt.getFeet(9.454), Rotation2dKt.getDegree(180)));
+        localization.reset(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180)));
     }
 
     public void resetLocation(Pose2d pose) {

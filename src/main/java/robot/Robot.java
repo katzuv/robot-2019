@@ -23,6 +23,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.commands.AngleDrive;
+import robot.subsystems.drivetrain.ramsete.OneHatchRocket;
 import robot.subsystems.drivetrain.ramsete.SandstormCargo;
 import robot.subsystems.drivetrain.ramsete.SandstormRocket;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
@@ -91,8 +92,8 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("2 Hatch Rocket", new SandstormRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        m_chooser.addOption("2 Hatch Cargo", new SandstormCargo());
+        m_chooser.setDefaultOption("1 Hatch Rocket", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        m_chooser.addOption("2 Hatch Rocket", new SandstormRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         m_chooser.addOption("Angle drive", new AngleDrive());
         m_chooser.addOption("Talon test", new TalonTest());
         SmartDashboard.putData("Sandstorm", m_chooser);
@@ -101,7 +102,6 @@ public class Robot extends TimedRobot {
         navx.reset();
         elevator.resetEncoders();
         cargoIntake.resetSensors();
-        compressor.stop();
     }
 
     /**
@@ -188,7 +188,6 @@ public class Robot extends TimedRobot {
         navx.reset();
         drivetrain.resetEncoders();
         navx.reset();
-        compressor.start();
         cargoIntake.resetSensors();
     }
 

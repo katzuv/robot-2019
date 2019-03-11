@@ -26,7 +26,7 @@ public class TalonTest extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         SmartDashboard.putNumber("leftVelocity", drivetrain.getLeftVelocity());
-        SmartDashboard.putNumber("rightVelocity", drivetrain.getLeftVelocity());
+        SmartDashboard.putNumber("rightVelocity", drivetrain.getRightVelocity());
         System.out.println(drivetrain.getLeftVelocity() + "|" + drivetrain.getRightVelocity());
     }
 
