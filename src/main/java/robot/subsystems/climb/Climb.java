@@ -184,7 +184,6 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * <p>calls {@link #isCompromised() isCompromised}, and if true, calls {@link #emergencyStop() emergencyStop}</p>
      */
     public void executePreventBreak(){
-        SmartDashboard.putBoolean("Climb working", !isCompromised());
         if(isCompromised()){
             emergencyStop();
         }

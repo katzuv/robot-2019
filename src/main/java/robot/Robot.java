@@ -229,5 +229,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
+        SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
+
     }
 }
