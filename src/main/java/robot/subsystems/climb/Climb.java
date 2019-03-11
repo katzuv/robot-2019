@@ -39,6 +39,12 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         configMotorSensors(talonBL, Constants.BACK_LEFT_FORWARD_HALL_REVERSED, Constants.BACK_LEFT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.BACK_LEFT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
         configMotorSensors(talonBR, Constants.BACK_RIGHT_FORWARD_HALL_REVERSED, Constants.BACK_RIGHT_REVERSE_HALL_REVERSED, FeedbackDevice.CTRE_MagEncoder_Relative,Constants.BACK_RIGHT_ENCODER_REVERSE, Constants.TALON_TIMEOUT_MS);
     }
+    
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+    }
 
     /**
      * Set the target height of the front legs in meters.
@@ -147,6 +153,30 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
+     * set the speed of the back left leg
+     *
+     * @param speed percent output from -1 to 1
+     */
+    public void setLegBRSpeed(double speed){
+        if(!isCompromised())
+            talonBR.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void setWheelVelocity(double velocity){
+        if(!isCompromised())
+            wheelDrive.set(ControlMode.Velocity, metersToTicks(velocity)/10.0);
+    }
+
+    public double getWheelVelocity(){
+        return 10*ticksToMeters(wheelDrive.getSelectedSensorVelocity());
+    }
+
+    public void setWheelSpeed(double speed){
+        if(!isCompromised())
+            wheelDrive.set(ControlMode.PercentOutput, speed);
+    }
+
+    /**
      * Check if all four legs are up, using the limit switches
      *
      * @return if all the legs touch their limit switches, return true.
@@ -156,100 +186,6 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
                 && talonFL.getSensorCollection().isRevLimitSwitchClosed() == !Constants.FRONT_LEFT_REVERSE_HALL_REVERSED
                 && talonBR.getSensorCollection().isRevLimitSwitchClosed() == !Constants.BACK_RIGHT_REVERSE_HALL_REVERSED
                 && talonFR.getSensorCollection().isRevLimitSwitchClosed() == !Constants.FRONT_RIGHT_REVERSE_HALL_REVERSED;
-    }
-
-    /**
-     * set the speed of the back left leg
-     *
-     * @param speed percent output from -1 to 1
-     */
-    public void setLegBRSpeed(double speed){
-        if(!isCompromised())
-        talonBR.set(ControlMode.PercentOutput, speed);
-    }
-
-    /**
-     * auxiliary method used to shorten the code when configuring the motor controllers (the talons).
-     *
-     * @param motorController    the motor controller being configured
-     * @param forwardLSReversed  is the forward limit switch reversed
-     * @param backwardLSReversed is the forward limit switch reversed
-     * @param feedbackDevice     the encoder type connected to the motor controller
-     */
-    private void configMotorSensors(TalonSRX motorController, boolean forwardLSReversed, boolean backwardLSReversed, FeedbackDevice feedbackDevice, boolean encoderReversed, int timeout) {
-        motorController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeout);
-        motorController.configForwardLimitSwitchSource(
-                LimitSwitchSource.FeedbackConnector,
-                forwardLSReversed ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-                timeout
-        );
-        motorController.configReverseLimitSwitchSource(
-                LimitSwitchSource.FeedbackConnector, backwardLSReversed
-                        ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-                timeout
-        );
-        motorController.configSelectedFeedbackSensor(feedbackDevice, 0, timeout);
-        motorController.setSensorPhase(encoderReversed);
-    }
-
-    /**
-     * auxiliary method used to shorten the code when configuring the motor controllers (the talons).
-     *
-     * @param motorController the motor controller being configured.
-     * @param motorInverted   whether the motor should be inverted or not.
-     * @param neutralMode     neutral mode of the motor. can be either COAST or BREAK.
-     * @param pidfConstants   PIDF movement constants.
-     * @param timeout         Timeout when configuring the controller
-     */
-    private void configMotorMovement(TalonSRX motorController, boolean motorInverted, NeutralMode neutralMode, double[] pidfConstants, int cruise, int acceleration, int timeout) {
-        motorController.setInverted(motorInverted);
-        motorController.setNeutralMode(neutralMode); //what the motor does when not given voltage (Brake - decelerate the motor, Coast - not stop the motor)
-        motorController.config_kP(0, pidfConstants[0], timeout);
-        motorController.config_kI(0, pidfConstants[1], timeout);
-        motorController.config_kD(0, pidfConstants[2], timeout);
-        motorController.config_kF(0, pidfConstants[3], timeout);
-        motorController.configMotionCruiseVelocity(cruise);
-        motorController.configMotionAcceleration(acceleration);
-    }
-
-    /**
-     * auxiliary method used to make the code more understandable.
-     *
-     * @param meters size or length in meters
-     * @return the ticks the motor needs to do.
-     */
-    private int metersToTicks(double meters) {
-        return (int) (meters * Constants.TICKS_PER_METER);
-    }
-
-    /**
-     * auxiliary method used to make the code more understandable.
-     *
-     * @param ticks amount of encoder ticks.
-     * @return the respective height in meters.
-     */
-    private double ticksToMeters(int ticks) {
-        return ticks / Constants.TICKS_PER_METER;
-    }
-
-    @Override
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
-    }
-
-    public void setWheelVelocity(double velocity){
-        if(!isCompromised())
-        wheelDrive.set(ControlMode.Velocity, metersToTicks(velocity)/10.0);
-    }
-
-    public void setWheelSpeed(double speed){
-        if(!isCompromised())
-        wheelDrive.set(ControlMode.PercentOutput, speed);
-    }
-
-    public double getWheelVelocity(){
-        return 10*ticksToMeters(wheelDrive.getSelectedSensorVelocity());
     }
 
     /**
@@ -299,6 +235,70 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         talonFR.setSelectedSensorPosition(Constants.FRONT_RIGHT_STARTING_OFFSET);
         talonBL.setSelectedSensorPosition(Constants.BACK_LEFT_STARTING_OFFSET);
         talonBR.setSelectedSensorPosition(Constants.BACK_RIGHT_STARTING_OFFSET);
+    }
+
+    /**
+     * auxiliary method used to make the code more understandable.
+     *
+     * @param meters size or length in meters
+     * @return the ticks the motor needs to do.
+     */
+    private int metersToTicks(double meters) {
+        return (int) (meters * Constants.TICKS_PER_METER);
+    }
+
+    /**
+     * auxiliary method used to make the code more understandable.
+     *
+     * @param ticks amount of encoder ticks.
+     * @return the respective height in meters.
+     */
+    private double ticksToMeters(int ticks) {
+        return ticks / Constants.TICKS_PER_METER;
+    }
+
+    /**
+     * auxiliary method used to shorten the code when configuring the motor controllers (the talons).
+     *
+     * @param motorController    the motor controller being configured
+     * @param forwardLSReversed  is the forward limit switch reversed
+     * @param backwardLSReversed is the forward limit switch reversed
+     * @param feedbackDevice     the encoder type connected to the motor controller
+     */
+    private void configMotorSensors(TalonSRX motorController, boolean forwardLSReversed, boolean backwardLSReversed, FeedbackDevice feedbackDevice, boolean encoderReversed, int timeout) {
+        motorController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeout);
+        motorController.configForwardLimitSwitchSource(
+                LimitSwitchSource.FeedbackConnector,
+                forwardLSReversed ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                timeout
+        );
+        motorController.configReverseLimitSwitchSource(
+                LimitSwitchSource.FeedbackConnector, backwardLSReversed
+                        ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                timeout
+        );
+        motorController.configSelectedFeedbackSensor(feedbackDevice, 0, timeout);
+        motorController.setSensorPhase(encoderReversed);
+    }
+
+    /**
+     * auxiliary method used to shorten the code when configuring the motor controllers (the talons).
+     *
+     * @param motorController the motor controller being configured.
+     * @param motorInverted   whether the motor should be inverted or not.
+     * @param neutralMode     neutral mode of the motor. can be either COAST or BREAK.
+     * @param pidfConstants   PIDF movement constants.
+     * @param timeout         Timeout when configuring the controller
+     */
+    private void configMotorMovement(TalonSRX motorController, boolean motorInverted, NeutralMode neutralMode, double[] pidfConstants, int cruise, int acceleration, int timeout) {
+        motorController.setInverted(motorInverted);
+        motorController.setNeutralMode(neutralMode); //what the motor does when not given voltage (Brake - decelerate the motor, Coast - not stop the motor)
+        motorController.config_kP(0, pidfConstants[0], timeout);
+        motorController.config_kI(0, pidfConstants[1], timeout);
+        motorController.config_kD(0, pidfConstants[2], timeout);
+        motorController.config_kF(0, pidfConstants[3], timeout);
+        motorController.configMotionCruiseVelocity(cruise);
+        motorController.configMotionAcceleration(acceleration);
     }
 
     //TODO: move this enum to the Constants class.
