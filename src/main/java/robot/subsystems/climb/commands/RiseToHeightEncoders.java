@@ -47,7 +47,8 @@ public class RiseToHeightEncoders extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        climb.setBackLegSpeeds(0);
+        climb.setLegBLSpeed(0);
+        climb.setLegBRSpeed(0);
         climb.setLegDriveSpeed(0);
 
     }
