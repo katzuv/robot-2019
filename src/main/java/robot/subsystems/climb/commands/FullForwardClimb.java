@@ -11,7 +11,7 @@ public class FullForwardClimb extends CommandGroup {
 
     public FullForwardClimb() {
 
-        addSequential(new RiseToHeight(Climb.HAB_LEG_HEIGHTS.LEVEL3));
+        addSequential(new RiseToHeightGyro(Climb.HAB_LEG_HEIGHTS.LEVEL3));
         addSequential(new WaitCommand(5));
         addSequential(new CloseForwardLegs());
         addSequential(new WaitCommand(1.5));

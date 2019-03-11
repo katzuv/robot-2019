@@ -11,9 +11,9 @@ import static robot.Robot.climb;
  *
  * @author paulo
  */
-public class CloseLoopCalibrateLegs extends Command {
+public class CalibrateLegs extends Command {
 
-    public CloseLoopCalibrateLegs() {
+    public CalibrateLegs() {
         requires(climb);
     }
 

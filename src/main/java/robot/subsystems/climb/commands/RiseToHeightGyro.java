@@ -15,16 +15,16 @@ import static robot.Robot.climb;
  *
  * @author paulo
  */
-public class RiseToHeight extends Command {
+public class RiseToHeightGyro extends Command {
     private double targetHeight;
 
     //gamers, (lose yourself and) rise up
-    public RiseToHeight(double targetHeight) {
+    public RiseToHeightGyro(double targetHeight) {
         this.targetHeight = targetHeight;
         requires(climb);
     }
 
-    public RiseToHeight(Climb.HAB_LEG_HEIGHTS height_state) {
+    public RiseToHeightGyro(Climb.HAB_LEG_HEIGHTS height_state) {
         this.targetHeight = height_state.getHABHHeight();
         requires(climb);
     }

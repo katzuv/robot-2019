@@ -13,21 +13,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-import robot.subsystems.climb.Climb;
 import robot.subsystems.climb.Constants;
 import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.auxiliary.Trigger;
-import robot.subsystems.cargo_intake.commands.GripperControl;
-import robot.subsystems.cargo_intake.commands.WristTurn;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
-import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.Gripper;
-import robot.subsystems.hatch_intake.commands.GripperTransportation;
-import robot.subsystems.hatch_intake.commands.PlaceHatch;
 
 
 /**
@@ -93,7 +83,7 @@ public class OI {
         left_joystick_six.whenPressed(new CloseForwardLegs());
         left_joystick_seven.whenPressed(new CloseBackLegs());
         left_joystick_eight.whenPressed(new RiseToHeightEncoders(Constants.LEVEL_THREE_LEG_LENGTH));
-        left_joystick_nine.whenPressed(new CloseLoopCalibrateLegs());
+        left_joystick_nine.whenPressed(new CalibrateLegs());
         left_joystick_ten.whenPressed(new RiseToHeightEncoders(Constants.LEVEL_TWO_LEG_LENGTH));
     }
     // CREATING BUTTONS
