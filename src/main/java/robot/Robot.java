@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import robot.subsystems.climb.Climb;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.ramsete.DriveWithVision;
@@ -35,12 +36,13 @@ import robot.subsystems.hatch_intake.HatchIntake;
  * project.
  */
 public class Robot extends TimedRobot {
+    public static final Climb climb = new Climb();
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
-    public final static boolean isRobotA = true;
+    public final static boolean isRobotA = false;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
@@ -102,6 +104,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         addToShuffleboard();
+        climb.executePreventBreak();
 
     }
 
@@ -142,7 +145,6 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
         }
-
         new DriveWithVision().start();
     }
 
@@ -169,8 +171,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-
-
     }
 
     /**
@@ -182,6 +182,7 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleboard() {
+        SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
         SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
         SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
         SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
@@ -195,6 +196,11 @@ public class Robot extends TimedRobot {
         Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
         SmartDashboard.putBoolean("Flower open",hatchIntake.isGripperOpen());
+        SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
+        SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
+        SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
+        SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
+        SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
     }
 
     public void resetAll(){

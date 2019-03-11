@@ -1,6 +1,5 @@
 package robot.subsystems.cargo_intake;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import robot.Robot;
 
 import static robot.Robot.isRobotA;
@@ -53,6 +52,7 @@ public class Constants {
         LEVEL_3_BACKWARD(0),
         INTAKE(168),//173
         MAXIMAL(178);
+
         private final double wristAngle;
 
         WRIST_ANGLES(double height) {

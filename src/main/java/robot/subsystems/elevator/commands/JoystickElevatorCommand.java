@@ -22,8 +22,8 @@ public class JoystickElevatorCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double yAxis = Robot.m_oi.ElevatorStick(); // invert the input to make up positive and down negative
-        if (!Robot.m_oi.enableElevator())
+        double yAxis = -Robot.m_oi.xbox.getRawAxis(1); // invert the input to make up positive and down negative
+        if (!Robot.m_oi.xbox.getRawButton(9))
             return;
         // MAPPING (|dead-band to 1| -> |0 to 1|)
         yAxis -= yAxis > 0 ? OI.XBOX_JOYSTICK_DEAD_BAND : -OI.XBOX_JOYSTICK_DEAD_BAND;

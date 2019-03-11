@@ -19,8 +19,8 @@ public class JoystickWristTurn extends Command {
     }
 
     protected void execute() {
-        double yAxis = Robot.m_oi.WristStick(); // invert the input to make up positive and down negative
-        if (!Robot.m_oi.enableWrist())
+        double yAxis = Robot.m_oi.xbox.getRawAxis(OI.right_y_stick); // invert the input to make up positive and down negative
+        if (!Robot.m_oi.xbox.getRawButton(10))
             return;
         // MAPPING (|dead-band to 1| -> |0 to 1|)
         yAxis -= yAxis > 0 ? OI.XBOX_JOYSTICK_DEAD_BAND : -OI.XBOX_JOYSTICK_DEAD_BAND;

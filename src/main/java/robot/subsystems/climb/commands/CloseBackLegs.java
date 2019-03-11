@@ -1,36 +1,44 @@
-package robot.subsystems.elevator.commands;
+package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
+import robot.subsystems.climb.Constants;
+import robot.subsystems.climb.TiltUtils;
+
+import static robot.Robot.climb;
 
 /**
  *
  */
-public class JoystickElevatorSpeed extends Command {
+public class CloseBackLegs extends Command {
 
-    public JoystickElevatorSpeed() {
-        requires(Robot.elevator);
+    public CloseBackLegs() {
+        requires(climb);
+
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+       climb.setBackLegHeights(0,0);
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double speed = 1 * Robot.m_oi.leftStick.getY();
-        Robot.elevator.setSpeed(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return  climb.getLegBLHeight() < Constants.CLIMB_TOLERANCE &&
+                climb.getLegBRHeight() < Constants.CLIMB_TOLERANCE;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+
+        climb.setBackLegSpeeds(-0.08);
     }
 
     // Called when another command which requires one or more of the same

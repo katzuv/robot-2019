@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.Robot;
 import robot.subsystems.cargo_intake.commands.JoystickWristTurn;
-
 import static robot.Robot.cargoIntake;
 
 /**
@@ -24,10 +23,10 @@ import static robot.Robot.cargoIntake;
  * @author lior
  */
 public class CargoIntake extends Subsystem {
+    private double setPointAngle = 0;
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
-    private double setPointAngle;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -36,17 +35,12 @@ public class CargoIntake extends Subsystem {
         /*
         config for the feedback sensor
          */
-        if (Constants.IS_MAG_ENCODER_RELATIVE)
-            wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-        else
-            wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
-
+        wrist.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         wrist.setSensorPhase(Constants.SENSOR_PHASE);
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
-        wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
-        wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
-
-
+        wrist.overrideLimitSwitchesEnable(true);
+        wrist.overrideSoftLimitsEnable(true);
+        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
 
         /*
         PIDF config
@@ -64,10 +58,10 @@ public class CargoIntake extends Subsystem {
         /*
         nominal and peak output config
          */
-        wrist.configNominalOutputForward(0., Constants.TALON_TIME_OUT);
+        wrist.configNominalOutputForward(0, Constants.TALON_TIME_OUT);
         wrist.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputForward(Constants.PEAK_OUTPUT_FORWARD, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputReverse(Constants.PEAK_OUTPUT_REVERSE, Constants.TALON_TIME_OUT); //TODO: change back to .5
+        wrist.configPeakOutputForward(0.3, Constants.TALON_TIME_OUT);
+        wrist.configPeakOutputReverse(-0.3, Constants.TALON_TIME_OUT); //TODO: change back to .5
         /*
         profile config
          */
@@ -96,7 +90,7 @@ public class CargoIntake extends Subsystem {
     }//returns the current voltage in the proximity sensor
 
     public boolean isCargoInside() {
-        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;
+        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;//felt cute might delete later
     }
 
     public void setGripperSpeed(double speed) {
