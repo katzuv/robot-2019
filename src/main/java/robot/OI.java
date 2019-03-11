@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
+import robot.subsystems.climb.commands.*;
+
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
@@ -40,6 +43,8 @@ import robot.subsystems.hatch_intake.commands.GripperTransportation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static robot.subsystems.cargo_intake.Constants.SLOW_DRIVE;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -107,6 +112,11 @@ public class OI {
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
 
+    public static Button left_joystick_six = new JoystickButton(leftStick, 6);
+    public static Button left_joystick_seven = new JoystickButton(leftStick, 7);
+    public static Button left_joystick_eight = new JoystickButton(leftStick, 8);
+    public static Button left_joystick_nine = new JoystickButton(leftStick, 9);
+    public static Button left_joystick_ten = new JoystickButton(leftStick, 10);
 
     public OI() {
         //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
@@ -187,11 +197,11 @@ public class OI {
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
     public double leftDriveStick() { // TODO: might need name refactoring
-        return -Constants.SLOW_DRIVE * leftStick.getY();
+        return -SLOW_DRIVE * leftStick.getY();
     }
 
     public double rightDriveStick() {
-        return -Constants.SLOW_DRIVE * rightStick.getY();
+        return -SLOW_DRIVE * rightStick.getY();
     }
 
     public double WristStick() {
