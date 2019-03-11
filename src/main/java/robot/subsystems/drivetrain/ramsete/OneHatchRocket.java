@@ -17,12 +17,21 @@ import java.util.List;
 public class OneHatchRocket extends CommandGroup {
 
     public OneHatchRocket(Constants.ELEVATOR_STATES height) {
-//        addParallel(new ElevatorCommand(height));
+        //Lift elevator before time
+        addParallel(new ElevatorCommand(height));
+        //Drive to rocket
         List<Pose2d> toRocket = new ArrayList<>();
-        toRocket.add(new Pose2d(LengthKt.getFeet(12.426), LengthKt.getFeet(4.632), Rotation2dKt.getDegree(150)));
-        toRocket.add(new Pose2d(LengthKt.getFeet(16.912), LengthKt.getFeet(2.106), Rotation2dKt.getDegree(150)));
+        toRocket.add(new Pose2d(LengthKt.getFeet(13.052), LengthKt.getFeet(4.284), Rotation2dKt.getDegree(150)));
+        toRocket.add(new Pose2d(LengthKt.getFeet(16.996), LengthKt.getFeet(1.976), Rotation2dKt.getDegree(150)));
         addSequential(new DrivePathVision(toRocket, true, true, 0, 0, false));
-//        addSequential(new HatchScoring(height, false));
+        //Score hatch
+        addSequential(new HatchScoring(height, false));
+
+        //Turn to prepare for loading station path
+//        List<Pose2d> turn = new ArrayList<>();
+//        turn.add(new Pose2d(LengthKt.getFeet(13.416), LengthKt.getFeet(3.847), Rotation2dKt.getDegree(-90)));
+//        addSequential(new DrivePathVision(turn, false, false, 0, 0, false));
+
     }
 
 }

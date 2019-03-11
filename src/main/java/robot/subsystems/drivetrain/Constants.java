@@ -38,10 +38,10 @@ public class Constants {
     public static final double[] PIDFLeft = isRobotA ? new double[]{1.85, 0.002, 10, 1.45} : new double[]{1.5, 0, 10, 1.3};
     public static final double[] PIDFRight = isRobotA ? new double[]{1.5, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
     public static final double kZeta = 0.7;
-    public static final double kBeta = 2.5;
-    public static final double distanceFromEnd = 1.5;
+    public static final double kBeta = 2.3;
+    public static final double distanceFromEnd = 2;
     public static final double angleKp = isRobotA ? 1.6 : 0.91;
-    public static double pathAngleKp = 3.4;
+    public static double pathAngleKp = 2.3;
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
 
     static {
