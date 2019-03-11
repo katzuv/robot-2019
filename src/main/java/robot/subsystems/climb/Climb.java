@@ -45,9 +45,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         setLegFRHeight(height, additionalLegOffset + getLegFLHeight() - getLegFRHeight());
     }
 
-    public void setLegDriveHeightWithoutChecking(double height){
-        setLegFLHeight(height, 0);
-        setLegFRHeight(height, 0);
+    public void setLegDriveHeightWithoutChecking(double height, double additionalLegOffset){
+        setLegFLHeight(height, additionalLegOffset);
+        setLegFRHeight(height, additionalLegOffset);
     }
 
     /**
