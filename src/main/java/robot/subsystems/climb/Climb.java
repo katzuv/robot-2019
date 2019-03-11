@@ -167,7 +167,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         if(!isCompromised())
         talonBR.set(ControlMode.PercentOutput, speed);
     }
-    
+
     /**
      * auxiliary method used to shorten the code when configuring the motor controllers (the talons).
      *
@@ -278,7 +278,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
                 (!talonFR.getSensorCollection().isFwdLimitSwitchClosed() && !talonFR.getSensorCollection().isFwdLimitSwitchClosed()) ||
                 (!talonBL.getSensorCollection().isFwdLimitSwitchClosed() && !talonBL.getSensorCollection().isFwdLimitSwitchClosed()) ||
                 (!talonBR.getSensorCollection().isFwdLimitSwitchClosed() && !talonBR.getSensorCollection().isFwdLimitSwitchClosed())) ||
-                getLegFRHeight() - getLegFLHeight() > Constants.LEG_EMERGENCY_STOP;
+                Math.abs(getLegFRHeight() - getLegFLHeight()) > Constants.LEG_EMERGENCY_STOP;
     }
 
     /**
