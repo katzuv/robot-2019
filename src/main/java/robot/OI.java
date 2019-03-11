@@ -21,6 +21,7 @@ import robot.subsystems.commandGroups.CargoScoring;
 import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.ShiftButton;
 import robot.subsystems.drivetrain.commands.AngleDrive;
+import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
@@ -82,6 +83,8 @@ public class OI {
     public static Button back_button = new JoystickButton(leftStick, 2);
 
     public static Button nineLeft = new JoystickButton(leftStick, 9);
+    public static Button sixLeft = new JoystickButton(leftStick, 6);
+    public static Button sixRight = new JoystickButton(rightStick, 6);
     public static Button eightLeft = new JoystickButton(leftStick, 8);
     public static Button twelveLeft = new JoystickButton(leftStick, 12);
 
@@ -133,7 +136,9 @@ public class OI {
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
         //TODO: add right stick to control the cargo intake
         select.whenPressed(new CloseBoth());
-        nineLeft.toggleWhenPressed(new AngleDrive());
+
+        sixLeft.toggleWhenPressed(new AngleDrive());
+        sixRight.toggleWhenPressed(new SwitchCamera());
         // Place cargo backward
 
         /*
