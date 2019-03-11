@@ -21,8 +21,7 @@ public class CalibrateLegs extends Command {
     protected void initialize() {
             climb.resetEncoders();
             climb.setLegDriveHeightWithoutChecking(-1.2*Constants.LEVEL_THREE_LEG_LENGTH,0);
-            climb.setLegBLHeight(-1.2*Constants.LEVEL_THREE_LEG_LENGTH, 0);
-            climb.setLegBRHeight(-1.2*Constants.LEVEL_THREE_LEG_LENGTH, 0);
+            climb.setBackLegHeightsOpenLoop(-1.2*Constants.LEVEL_THREE_LEG_LENGTH, 0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -40,8 +39,7 @@ public class CalibrateLegs extends Command {
         climb.resetEncoders();
 
         climb.setLegDriveHeight(0, 0);
-        climb.setLegBLHeight(0, 0);
-        climb.setLegBRHeight(0, 0);
+        climb.setBackLegHeights(0,0);
     }
 
     // Called when another command which requires one or more of the same
