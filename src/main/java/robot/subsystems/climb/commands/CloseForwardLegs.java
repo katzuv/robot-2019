@@ -21,7 +21,8 @@ public class CloseForwardLegs extends Command {
     protected void initialize() {
         climb.setLegDriveHeight(0,0);
         if (climb.getLegBRHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH || climb.getLegBLHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH) {
-            climb.setBackLegHeights(climb.getLegBLHeight() - 0.02, 0);
+            climb.setLegBLHeight(climb.getLegBLHeight() - 0.02, 0);
+            climb.setLegBRHeight(climb.getLegBRHeight() - 0.02, 0);
         }
 
     }

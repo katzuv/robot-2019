@@ -79,18 +79,23 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
 
     }
 
-    public void setBackLegHeights(double height, double additionalLegOffset) {
-        if(!isCompromised()){
-            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegBRHeight() - getLegBLHeight()));
-            talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegBLHeight() - getLegBRHeight()));
-        }
+    /**
+     * Set the target height of the back left leg in meters.
+     *
+     * @param height    target height in meters.
+     * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
+     */
+    public void setLegBLHeight(double height, double legOffset) {
+        if (!isCompromised())
+            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
     }
 
-    public void setBackLegHeightsOpenLoop(double height, double legOffset) {
-        if(!isCompromised()){
-            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    /**
+     * @return height of the back right leg in meters
+     */
+    public void setLegBRHeight(double height, double legOffset) {
+        if (!isCompromised())
             talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
-        }
     }
 
     /**
