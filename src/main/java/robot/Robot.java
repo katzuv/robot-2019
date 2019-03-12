@@ -93,14 +93,15 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Hatch level 1", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         m_chooser.setDefaultOption("Hatch level 2", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        m_chooser.setDefaultOption("Hatch level 3", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+        m_chooser.addOption("Hatch level 1", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        m_chooser.addOption("Hatch level 3", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+        m_chooser.addOption("Do nothing", null);
+
         m_chooser.addOption("Talon test", new TalonTest());
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
-        resetAll();
     }
 
     /**
@@ -162,7 +163,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-
         Scheduler.getInstance().run();
 
     }
@@ -216,9 +216,7 @@ public class Robot extends TimedRobot {
     public void resetAll(){
         cargoIntake.resetSensors();
         elevator.resetEncoders();
-        drivetrain.resetEncoders();
-        drivetrain.resetLocation();
         navx.reset();
-
+        drivetrain.resetLocation();
     }
 }
