@@ -126,7 +126,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-
+        drivetrain.setMotorsToCoast();
         /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
          * to cancel the motion magic that is currently taking place and will still run if you re enable
          */
@@ -151,6 +151,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        drivetrain.setMotorsToBrake();
         resetAll();
         m_autonomousCommand = m_chooser.getSelected();
         if (m_autonomousCommand != null) {
@@ -169,6 +170,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        drivetrain.setMotorsToCoast();
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
