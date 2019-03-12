@@ -92,9 +92,9 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("1 Hatch Rocket", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        m_chooser.addOption("2 Hatch Rocket", new SandstormRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        m_chooser.addOption("Angle drive", new AngleDrive());
+        m_chooser.setDefaultOption("Hatch level 1", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        m_chooser.setDefaultOption("Hatch level 2", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        m_chooser.setDefaultOption("Hatch level 3", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
         m_chooser.addOption("Talon test", new TalonTest());
         SmartDashboard.putData("Sandstorm", m_chooser);
 
