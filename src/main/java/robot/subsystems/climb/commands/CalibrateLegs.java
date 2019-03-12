@@ -37,13 +37,11 @@ public class CalibrateLegs extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        if(isFinished()) { //prevents legs from calibrating if cancelled
         climb.resetEncoders();
 
         climb.setLegDriveHeight(0, 0);
         climb.setLegBLHeight(0, 0);
         climb.setLegBRHeight(0, 0);
-    }
     }
 
     // Called when another command which requires one or more of the same
