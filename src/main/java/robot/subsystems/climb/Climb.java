@@ -10,6 +10,7 @@ package robot.subsystems.climb;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Climbing subsystem for the 2019 robot 'GENESIS'
@@ -53,10 +54,10 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param height              target height in meters.
      * @param additionalLegOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    public void setFrontLegHeights(double height, double additionalLegOffset) {
+    public void setLegDriveHeight(double height, double additionalLegOffset) {
         if (isCompromised())
             return;
-
+        SmartDashboard.putNumber("Climb test: FR arbitrary offset", (additionalLegOffset + getLegFRHeight() - getLegFLHeight()));
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
                 DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegFRHeight() - getLegFLHeight()));
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height),
@@ -71,7 +72,8 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @param height    target height in meters.
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    public void setFrontLegHeightsOpenLoop(double height, double legOffset) {
+    public void setLegDriveHeightWithoutChecking(double height, double legOffset) {
+        SmartDashboard.putNumber("target F", height);
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
                 DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height),
@@ -80,33 +82,23 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
-     * Set the target height of the back legs in meters.
-     * this method takes into consideration the error between both legs,
-     * and lowers the speeds accordingly.
-     *
-     * @param height              target height in meters.
-     * @param additionalLegOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
-     */
-    public void setBackLegHeights(double height, double additionalLegOffset) {
-        if(!isCompromised()){
-            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegBRHeight() - getLegBLHeight()));
-            talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegBLHeight() - getLegBRHeight()));
-        }
-    }
-
-    /**
-     * Set the target height of the back legs in meters.
-     * this method doesn't take into consideration the error between both back legs,
-     * and should be used primarily at times where the legs aren't calibrated.
+     * Set the target height of the back left leg in meters.
      *
      * @param height    target height in meters.
      * @param legOffset the error of the leg from its ideal length. set to 0 if no correction is needed.
      */
-    public void setBackLegHeightsOpenLoop(double height, double legOffset) {
-        if(!isCompromised()){
+    public void setLegBLHeight(double height, double legOffset) {
+        SmartDashboard.putNumber("target BL", height);
+        if (!isCompromised())
             talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+    }
+
+    /**
+     * @return height of the back right leg in meters
+     */
+    public void setLegBRHeight(double height, double legOffset) {
+        if (!isCompromised())
             talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
-        }
     }
 
     /**
@@ -152,16 +144,23 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
-     * set the speed of the back legs
+     * set the speed of the back left leg
      *
      * @param speed percent output from -1 to 1
      */
-    public void setBackLegSpeeds(double speed) {
-        if (!isCompromised()) {
-            talonBR.set(ControlMode.PercentOutput, speed);
+    public void setLegBLSpeed(double speed) {
+        if (!isCompromised())
             talonBL.set(ControlMode.PercentOutput, speed);
+    }
 
-        }
+    /**
+     * set the speed of the back left leg
+     *
+     * @param speed percent output from -1 to 1
+     */
+    public void setLegBRSpeed(double speed) {
+        if (!isCompromised())
+            talonBR.set(ControlMode.PercentOutput, speed);
     }
 
     public void setWheelSpeed(double speed) {

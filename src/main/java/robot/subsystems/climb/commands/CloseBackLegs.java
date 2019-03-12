@@ -21,7 +21,8 @@ public class CloseBackLegs extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-       climb.setBackLegHeights(0,0);
+       climb.setLegBLHeight(0,0);
+       climb.setLegBRHeight(0,0);
 
     }
 
@@ -38,7 +39,8 @@ public class CloseBackLegs extends Command {
     // Called once after isFinished returns true
     protected void end() {
 
-        climb.setBackLegSpeeds(-0.08);
+        climb.setLegBLSpeed(-0.1);
+        climb.setLegBRSpeed(-0.1);
     }
 
     // Called when another command which requires one or more of the same

@@ -32,9 +32,9 @@ public class RiseToHeightEncoders extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double minimumLeg = Math.min(climb.getLegBLHeight(), Math.min(climb.getLegBRHeight(), Math.min(climb.getLegFLHeight(), climb.getLegFRHeight()))); //TODO: only rise, not go down?
-        climb.setFrontLegHeights(targetHeight, (minimumLeg-climb.getLegFRHeight())); //TODO: should be get drive height
-        climb.setBackLegHeights(targetHeight+0.01, minimumLeg - (climb.getLegBLHeight()+climb.getLegBRHeight())/2);
+        climb.setLegDriveHeight(targetHeight, 0); //TODO: should be get drive height
+        climb.setLegBLHeight(targetHeight+0.01, 0);
+        climb.setLegBRHeight(targetHeight+0.01, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -47,7 +47,8 @@ public class RiseToHeightEncoders extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        climb.setBackLegSpeeds(0);
+        climb.setLegBLSpeed(0);
+        climb.setLegBRSpeed(0);
         climb.setLegDriveSpeed(0);
 
     }
