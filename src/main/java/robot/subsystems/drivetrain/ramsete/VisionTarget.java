@@ -37,7 +37,7 @@ public class VisionTarget extends Command {
     private boolean reversed = true;
     private boolean generate = true;
     private double distance;
-    private double kP = 0.2;
+    private double kP = 0.14;
 
     public VisionTarget(double distance) {
         this.distance = distance;
@@ -52,7 +52,7 @@ public class VisionTarget extends Command {
         double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
         double field_angle = Robot.visionTable.getEntry("tape_field_angle").getDouble(0);
         last_distance = distance;
-        drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
+        drivetrain.trajectoryTracker.reset(generateTrajectory(0, angle, distance, field_angle));
         generate = true;
     }
 
@@ -62,8 +62,9 @@ public class VisionTarget extends Command {
         double field_angle = Robot.visionTable.getEntry("tape_field_angle").getDouble(0);
 
 //        if (distance > 0 && field_angle != last_field_angle && distance != last_distance && angle != last_angle && distance > 1) {
-        if (distance != 0 && distance < 1.8 && generate) {
-            drivetrain.trajectoryTracker.reset(generateTrajectory(angle, distance, field_angle));
+        System.out.println(last_distance + "|" + distance);
+        if (distance != 0 && distance < 1.5 && distance > 0.7 && generate) {
+//            drivetrain.trajectoryTracker.reset(generateTrajectory(0.5, angle, distance, field_angle));
             last_angle = angle;
             last_distance = distance;
             last_field_angle = field_angle;
@@ -79,8 +80,8 @@ public class VisionTarget extends Command {
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
 
-//        if(distance != 0 && distance > 1) {
-//            angularVelocity = angle * kP;
+//        if(angle != 0 && distance > 0.7) {
+//            angularVelocity = -angle * kP;
 //        }
 
         double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity;
@@ -92,7 +93,7 @@ public class VisionTarget extends Command {
 
     }
 
-    private TimedTrajectory<Pose2dWithCurvature> generateTrajectory(double angle, double distance, double field_angle) {
+    private TimedTrajectory<Pose2dWithCurvature> generateTrajectory(double startingVelocity, double angle, double distance, double field_angle) {
         double angleModifier = 0;
 
         if (reversed) {
@@ -123,8 +124,8 @@ public class VisionTarget extends Command {
                 .generateTrajectory(
                         list,
                         Collections.emptyList(),
-                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(startingVelocity)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(0)),
                         VelocityKt.getVelocity(LengthKt.getMeter(1)),
                         AccelerationKt.getAcceleration(LengthKt.getMeter(1)),
                         reversed,

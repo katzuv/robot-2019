@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
+import org.ghrobotics.lib.mathematics.twodim.control.PurePursuitTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
@@ -42,7 +43,7 @@ public class Drivetrain extends Subsystem {
             () -> LengthKt.getMeter(getRightDistance())
     );
 
-    public TrajectoryTracker trajectoryTracker = new RamseteTracker(2, 0.7);
+    public TrajectoryTracker trajectoryTracker = new RamseteTracker(Constants.kBeta, Constants.kZeta);
 
     public Drivetrain() {
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
@@ -63,18 +64,18 @@ public class Drivetrain extends Subsystem {
         rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
         leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
 
-        leftMaster.configVoltageCompSaturation(12);
-        leftMaster.enableVoltageCompensation(true);
-        leftSlave1.configVoltageCompSaturation(12);
-        leftSlave1.enableVoltageCompensation(true);
-        leftSlave2.configVoltageCompSaturation(12);
-        leftSlave2.enableVoltageCompensation(true);
-        rightMaster.configVoltageCompSaturation(12);
-        rightMaster.enableVoltageCompensation(true);
-        rightSlave2.configVoltageCompSaturation(12);
-        rightSlave2.enableVoltageCompensation(true);
-        rightSlave1.configVoltageCompSaturation(12);
-        rightSlave1.enableVoltageCompensation(true);
+//        leftMaster.configVoltageCompSaturation(12);
+//        leftMaster.enableVoltageCompensation(true);
+//        leftSlave1.configVoltageCompSaturation(12);
+//        leftSlave1.enableVoltageCompensation(true);
+//        leftSlave2.configVoltageCompSaturation(12);
+//        leftSlave2.enableVoltageCompensation(true);
+//        rightMaster.configVoltageCompSaturation(12);
+//        rightMaster.enableVoltageCompensation(true);
+//        rightSlave2.configVoltageCompSaturation(12);
+//        rightSlave2.enableVoltageCompensation(true);
+//        rightSlave1.configVoltageCompSaturation(12);
+//        rightSlave1.enableVoltageCompensation(true);
 
         leftMaster.setInverted(Constants.LEFT_MASTER_REVERSED);
         leftSlave1.setInverted(Constants.LEFT_SLAVE1_REVERSED);
@@ -90,14 +91,15 @@ public class Drivetrain extends Subsystem {
         rightSlave2.setNeutralMode(NeutralMode.Coast);
         rightSlave1.setNeutralMode(NeutralMode.Coast);
 
-        leftMaster.config_kP(0, Constants.PIDF[0], Constants.TALON_TIMEOUT_MS);
-        leftMaster.config_kI(0, Constants.PIDF[1], Constants.TALON_TIMEOUT_MS);
-        leftMaster.config_kD(0, Constants.PIDF[2], Constants.TALON_TIMEOUT_MS);
-        leftMaster.config_kF(0, Constants.PIDF[3], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kP(0, Constants.PIDF[0], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kI(0, Constants.PIDF[1], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kD(0, Constants.PIDF[2], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kF(0, Constants.PIDF[3], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kP(0, Constants.PIDFLeft[0], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kI(0, Constants.PIDFLeft[1], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kD(0, Constants.PIDFLeft[2], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kF(0, Constants.PIDFLeft[3], Constants.TALON_TIMEOUT_MS);
+
+        rightMaster.config_kP(0, Constants.PIDFRight[0], Constants.TALON_TIMEOUT_MS);
+        rightMaster.config_kI(0, Constants.PIDFRight[1], Constants.TALON_TIMEOUT_MS);
+        rightMaster.config_kD(0, Constants.PIDFRight[2], Constants.TALON_TIMEOUT_MS);
+        rightMaster.config_kF(0, Constants.PIDFRight[3], Constants.TALON_TIMEOUT_MS);
     }
 
     @Override
@@ -200,8 +202,13 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        localization.reset(new Pose2d(LengthKt.getFeet(5.194), LengthKt.getFeet(13.587), Rotation2dKt.getDegree(180)));
+        localization.reset(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180)));
     }
+
+    public void resetLocation(Pose2d pose) {
+        localization.reset(pose);
+    }
+
 
     /**
      * Convert distance in meters to ticks of the encoder.

@@ -49,7 +49,7 @@ repositories {
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
-    compile group: 'com.github.5190GreenHopeRobotics', name: 'FalconLibrary', version: '1e985e3f7fa48820f382bbb8c61fd7006fa62299'
+    compile group: 'com.github.5190GreenHopeRobotics', name: 'FalconLibrary', version: 'b4feb6c543050716bb3ef6f51e97c11a53945615'
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)

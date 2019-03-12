@@ -23,8 +23,12 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.ramsete.DriveWithVision;
-import robot.subsystems.drivetrain.ramsete.VisionTarget;
+import robot.subsystems.drivetrain.commands.AngleDrive;
+import robot.subsystems.drivetrain.ramsete.OneHatchRocket;
+import robot.subsystems.drivetrain.ramsete.SandstormCargo;
+import robot.subsystems.drivetrain.ramsete.SandstormRocket;
+import robot.subsystems.drivetrain.ramsete.TalonTest;
+import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
 
@@ -88,7 +92,13 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_oi = new OI();
-        SmartDashboard.putData("Auto mode", m_chooser);
+
+        m_chooser.setDefaultOption("Hatch level 1", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        m_chooser.setDefaultOption("Hatch level 2", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        m_chooser.setDefaultOption("Hatch level 3", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+        m_chooser.addOption("Talon test", new TalonTest());
+        SmartDashboard.putData("Sandstorm", m_chooser);
+
         SmartDashboard.putBoolean("Robot A", isRobotA);
         resetAll();
     }
@@ -145,7 +155,6 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
         }
-        new DriveWithVision().start();
     }
 
     /**
@@ -163,6 +172,7 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        cargoIntake.resetSensors();
     }
 
     /**

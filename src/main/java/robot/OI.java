@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------*/
+
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
@@ -16,18 +16,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import robot.auxiliary.Trigger;
 import robot.subsystems.cargo_intake.Constants;
 import robot.subsystems.cargo_intake.commands.GripperControl;
@@ -35,11 +23,15 @@ import robot.subsystems.cargo_intake.commands.WristTurn;
 import robot.subsystems.commandGroups.CargoScoring;
 import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.ShiftButton;
-import robot.subsystems.drivetrain.ramsete.LoadingStation;
+import robot.subsystems.drivetrain.commands.AngleDrive;
+import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +94,8 @@ public class OI {
     public static Button back_button = new JoystickButton(leftStick, 2);
 
     public static Button nineLeft = new JoystickButton(leftStick, 9);
+    public static Button sixLeft = new JoystickButton(leftStick, 6);
+    public static Button sixRight = new JoystickButton(rightStick, 6);
     public static Button eightLeft = new JoystickButton(leftStick, 8);
     public static Button twelveLeft = new JoystickButton(leftStick, 12);
 
@@ -158,7 +152,9 @@ public class OI {
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
         //TODO: add right stick to control the cargo intake
         select.whenPressed(new CloseBoth());
-        nineLeft.toggleWhenPressed(new LoadingStation(generateLoadingStationTrajectory()));
+
+        sixLeft.toggleWhenPressed(new AngleDrive());
+        sixRight.whenPressed(new SwitchCamera());
         // Place cargo backward
 
         /*
@@ -204,6 +200,10 @@ public class OI {
         return -SLOW_DRIVE * rightStick.getY();
     }
 
+    public double rightSideAxis() {
+        return rightStick.getX();
+    }
+
     public double WristStick() {
         return -xbox.getRawAxis(left_y_stick);
     }
@@ -220,27 +220,5 @@ public class OI {
 
     public boolean enableWrist() {
         return xbox.getRawButton(9);
-    }
-
-    private TimedTrajectory<Pose2dWithCurvature> generateLoadingStationTrajectory() {
-        List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
-        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
-        constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(4), LengthKt.getFeet(7), LengthKt.getFeet(8), LengthKt.getFeet(20)), VelocityKt.getVelocity(LengthKt.getFeet(3))));
-
-
-        List<Pose2d> list = new ArrayList<>();
-        list.add(Robot.drivetrain.getRobotPosition());
-        list.add(new Pose2d(LengthKt.getFeet(11.5), LengthKt.getFeet(23), Rotation2dKt.getDegree(180)));
-        return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
-                .generateTrajectory(
-                        list,
-                        constraints,
-                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(0.5)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(1)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(1)),
-                        true,
-                        true
-                );
     }
 }
