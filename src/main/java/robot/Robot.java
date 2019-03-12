@@ -202,7 +202,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb: Folded", climb.areAllLegsUp());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-        printRunningCommands();
+        //printRunningCommands();
     }
 
     public void printRunningCommands(){
