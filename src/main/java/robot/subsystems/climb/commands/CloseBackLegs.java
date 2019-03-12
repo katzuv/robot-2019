@@ -39,8 +39,8 @@ public class CloseBackLegs extends Command {
     // Called once after isFinished returns true
     protected void end() {
 
-        climb.setLegBLSpeed(-0.08);
-        climb.setLegBRSpeed(-0.08);
+        climb.setLegBLSpeed(-0.1);
+        climb.setLegBRSpeed(-0.1);
     }
 
     // Called when another command which requires one or more of the same
