@@ -198,11 +198,24 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleboard() {
+        SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
+        SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
+        SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
+        SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
+        SmartDashboard.putNumber("Drivetrain: left distance", drivetrain.getLeftDistance());
+        SmartDashboard.putNumber("Drivetrain: right distance", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("Cargo intake: proximity value", cargoIntake.getProximityVoltage());
+        SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
+        SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
+        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
+        SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
+        Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
+        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
+        SmartDashboard.putBoolean("Flower open",hatchIntake.isGripperOpen());
         SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
         SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
-        SmartDashboard.putBoolean("Climb: Folded", climb.areAllLegsUp());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
         //printRunningCommands();
     }

@@ -10,7 +10,6 @@ package robot.subsystems.climb;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Climbing subsystem for the 2019 robot 'GENESIS'
@@ -57,7 +56,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     public void setLegDriveHeight(double height, double additionalLegOffset) {
         if (isCompromised())
             return;
-        SmartDashboard.putNumber("Climb test: FR arbitrary offset", (additionalLegOffset + getLegFRHeight() - getLegFLHeight()));
+
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
                 DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegFRHeight() - getLegFLHeight()));
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height),
