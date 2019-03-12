@@ -32,6 +32,10 @@ import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
 
+import java.lang.reflect.Field;
+import java.util.Hashtable;
+import java.util.Set;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -211,6 +215,18 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
+    }
+
+    public void upUpDownDownLeftRightLeftRightBAStart(){
+        try {
+            Field field = Scheduler.class.getField("m_commandTable");
+            field.setAccessible(true);
+            Hashtable table = ((Hashtable) field.get(Scheduler.getInstance()));
+            Set<Command> commands = table.keySet();
+            commands.forEach(c -> System.out.println(c.getName()));
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
     }
 
     public void resetAll(){
