@@ -215,9 +215,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
+        printRunningCommands();
     }
 
-    public void upUpDownDownLeftRightLeftRightBAStart(){
+    public void printRunningCommands(){
         try {
             Field field = Scheduler.class.getField("m_commandTable");
             field.setAccessible(true);
