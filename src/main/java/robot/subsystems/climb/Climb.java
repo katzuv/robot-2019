@@ -261,10 +261,10 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * reset all four encoder values
      */
     public void resetEncoders() {
-        talonFL.setSelectedSensorPosition(Constants.FRONT_LEFT_STARTING_OFFSET);
-        talonFR.setSelectedSensorPosition(Constants.FRONT_RIGHT_STARTING_OFFSET);
-        talonBL.setSelectedSensorPosition(Constants.BACK_LEFT_STARTING_OFFSET);
-        talonBR.setSelectedSensorPosition(Constants.BACK_RIGHT_STARTING_OFFSET);
+        talonFL.setSelectedSensorPosition(0);
+        talonFR.setSelectedSensorPosition(0);
+        talonBL.setSelectedSensorPosition(0);
+        talonBR.setSelectedSensorPosition(0);
     }
 
     /**
