@@ -47,9 +47,9 @@ public class Constants {
     static final boolean FRONT_RIGHT_REVERSE_HALL_REVERSED = isRobotA ? true : true;
     static final boolean FRONT_RIGHT_FORWARD_HALL_REVERSED = isRobotA ? true : true;
 
-    public static final int BACK_RIGHT_STARTING_OFFSET = -150; //if the leg were to move until the limit switch, what would be its value.
-    public static final int BACK_LEFT_STARTING_OFFSET = -150; //if the leg were to move until the limit switch, what would be its value.
-    public static final int FRONT_RIGHT_STARTING_OFFSET = 0; //if the leg were to move until the limit switch, what would be its value.
-    public static final int FRONT_LEFT_STARTING_OFFSET = 0; //if the leg were to move until the limit switch, what would be its value.
+    public static final double BACK_RIGHT_STARTING_OFFSET = -100/TICKS_PER_METER; //if the leg were to move until the limit switch, what would be its value.
+    public static final double BACK_LEFT_STARTING_OFFSET = -100/TICKS_PER_METER; //if the leg were to move until the limit switch, what would be its value.
+    public static final double FRONT_RIGHT_STARTING_OFFSET = 0; //if the leg were to move until the limit switch, what would be its value.
+    public static final double FRONT_LEFT_STARTING_OFFSET = 0; //if the leg were to move until the limit switch, what would be its value.
 
 }
