@@ -163,8 +163,7 @@ public class Elevator extends Subsystem {
      * @return boolean of the sensor true or false
      */
     public boolean atTop() {
-        //return Math.abs(getHeight()) > Constants.ELEVATOR_MAX_HEIGHT;
-        return masterMotor.getSensorCollection().isFwdLimitSwitchClosed();
+        return masterMotor.getSensorCollection().isFwdLimitSwitchClosed() == !Constants.TOP_HALL_REVERSED;
     }
 
     /**
@@ -173,8 +172,7 @@ public class Elevator extends Subsystem {
      * @return boolean of the sensor true or false
      */
     public boolean atBottom() {
-        //return Math.abs(getHeight()) < 0.05;
-        return masterMotor.getSensorCollection().isRevLimitSwitchClosed();
+        return masterMotor.getSensorCollection().isRevLimitSwitchClosed() == !Constants.BOTTOM_HALL_REVERSED;
     }
 
     /**
@@ -228,6 +226,7 @@ public class Elevator extends Subsystem {
 
     public void resetEncoders() {
         masterMotor.setSelectedSensorPosition(Constants.START_UNIT, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
+        setHeight(0);
     }
 
     @Override

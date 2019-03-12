@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import robot.subsystems.climb.Climb;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.commands.AngleDrive;
@@ -39,13 +40,13 @@ import robot.subsystems.hatch_intake.HatchIntake;
  * project.
  */
 public class Robot extends TimedRobot {
+    public static final Climb climb = new Climb();
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final CargoIntake cargoIntake = new CargoIntake();
     public static final Compressor compressor = new Compressor(1);
-    public final static boolean isRobotA = true;
-    public final static int driveType = 1; //type 1 = rons drive, type 2 = testing drive, type 3 = paulos disabled arm (not yet)
+    public final static boolean isRobotA = false;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
@@ -99,9 +100,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
-        navx.reset();
-        elevator.resetEncoders();
-        cargoIntake.resetSensors();
+        resetAll();
     }
 
     /**
@@ -115,6 +114,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         addToShuffleboard();
+        climb.executePreventBreak();
 
     }
 
@@ -150,14 +150,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        navx.reset();
-        drivetrain.resetLocation();
-//        drivetrain.resetEncoders();
-        elevator.resetEncoders();
-        cargoIntake.resetSensors();
-
-        // String autoSelected = SmartDashboard.getString("Auto Selector","Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
-        // schedule the autonomous command (example)
+        resetAll();
         m_autonomousCommand = m_chooser.getSelected();
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
@@ -176,18 +169,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        // This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-//         // TODO: move to auto init. deal with all resets better
-
-        navx.reset();
-        drivetrain.resetEncoders();
-        navx.reset();
         cargoIntake.resetSensors();
     }
 
@@ -197,8 +181,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-
-
     }
 
     /**
@@ -210,6 +192,7 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleboard() {
+        SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
         SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
         SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
         SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
@@ -222,6 +205,20 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
         Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
-        SmartDashboard.putBoolean("Flower open", hatchIntake.isGripperOpen());
+        SmartDashboard.putBoolean("Flower open",hatchIntake.isGripperOpen());
+        SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
+        SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
+        SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
+        SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
+        SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
+    }
+
+    public void resetAll(){
+        cargoIntake.resetSensors();
+        elevator.resetEncoders();
+        drivetrain.resetEncoders();
+        drivetrain.resetLocation();
+        navx.reset();
+
     }
 }
