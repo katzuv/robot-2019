@@ -100,12 +100,13 @@ public class OI {
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
 
+    public static Button left_joystick_three = new JoystickButton(leftStick, 3);
     public static Button left_joystick_six = new JoystickButton(leftStick, 6);
     public static Button left_joystick_seven = new JoystickButton(leftStick, 7);
     public static Button left_joystick_eight = new JoystickButton(leftStick, 8);
     public static Button left_joystick_nine = new JoystickButton(leftStick, 9);
     public static Button left_joystick_ten = new JoystickButton(leftStick, 10);
-    public static Button left_joystick_eleven = new JoystickButton(leftStick, 10);
+    public static Button left_joystick_eleven = new JoystickButton(leftStick, 11);
 
     public static Button right_joystick_six = new JoystickButton(rightStick, 6);
     public static Button right_joystick_seven = new JoystickButton(rightStick, 7);
@@ -157,6 +158,7 @@ public class OI {
         left_joystick_six.toggleWhenPressed(new AngleDrive());
         right_joystick_six.whenPressed(new SwitchCamera()); //TODO: both buttons are assigned to joystick six, need to talk with ido
 
+        left_joystick_three.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
         left_joystick_ten.whenPressed(new CloseBackLegs());
         left_joystick_nine.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
