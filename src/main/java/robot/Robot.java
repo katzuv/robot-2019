@@ -211,7 +211,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-        SmartDashboard.putBoolean("Vision working", visionTable.containsKey("tape_angle"));
     }
 
     public void resetAll(){
