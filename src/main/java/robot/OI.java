@@ -93,12 +93,6 @@ public class OI {
     public static Button trigger = new JoystickButton(leftStick, 1);
     public static Button back_button = new JoystickButton(leftStick, 2);
 
-    public static Button nineLeft = new JoystickButton(leftStick, 9);
-    public static Button sixLeft = new JoystickButton(leftStick, 6);
-    public static Button sixRight = new JoystickButton(rightStick, 6);
-    public static Button eightLeft = new JoystickButton(leftStick, 8);
-    public static Button twelveLeft = new JoystickButton(leftStick, 12);
-
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -111,6 +105,12 @@ public class OI {
     public static Button left_joystick_eight = new JoystickButton(leftStick, 8);
     public static Button left_joystick_nine = new JoystickButton(leftStick, 9);
     public static Button left_joystick_ten = new JoystickButton(leftStick, 10);
+
+    public static Button right_joystick_six = new JoystickButton(rightStick, 6);
+    public static Button right_joystick_seven = new JoystickButton(rightStick, 7);
+    public static Button right_joystick_eight = new JoystickButton(rightStick, 8);
+    public static Button right_joystick_nine = new JoystickButton(rightStick, 9);
+    public static Button right_joystick_ten = new JoystickButton(rightStick, 10);
 
     public OI() {
         //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
@@ -153,8 +153,14 @@ public class OI {
         //TODO: add right stick to control the cargo intake
         select.whenPressed(new CloseBoth());
 
-        sixLeft.toggleWhenPressed(new AngleDrive());
-        sixRight.whenPressed(new SwitchCamera());
+        left_joystick_six.toggleWhenPressed(new AngleDrive());
+        right_joystick_six.whenPressed(new SwitchCamera()); //TODO: both buttons are assigned to joystick six, need to talk with ido
+
+        right_joystick_six.whenPressed(new CloseForwardLegs());
+        right_joystick_seven.whenPressed(new CloseBackLegs());
+        right_joystick_eight.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
+        right_joystick_nine.whenPressed(new CalibrateLegs());
+        right_joystick_ten.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
         // Place cargo backward
 
         /*
