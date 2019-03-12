@@ -105,6 +105,7 @@ public class OI {
     public static Button left_joystick_eight = new JoystickButton(leftStick, 8);
     public static Button left_joystick_nine = new JoystickButton(leftStick, 9);
     public static Button left_joystick_ten = new JoystickButton(leftStick, 10);
+    public static Button left_joystick_eleven = new JoystickButton(leftStick, 10);
 
     public static Button right_joystick_six = new JoystickButton(rightStick, 6);
     public static Button right_joystick_seven = new JoystickButton(rightStick, 7);
@@ -156,11 +157,10 @@ public class OI {
         left_joystick_six.toggleWhenPressed(new AngleDrive());
         right_joystick_six.whenPressed(new SwitchCamera()); //TODO: both buttons are assigned to joystick six, need to talk with ido
 
-        right_joystick_six.whenPressed(new CloseForwardLegs());
-        right_joystick_seven.whenPressed(new CloseBackLegs());
-        right_joystick_eight.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
-        right_joystick_nine.whenPressed(new CalibrateLegs());
-        right_joystick_ten.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
+        left_joystick_eleven.whenPressed(new CloseForwardLegs());
+        left_joystick_ten.whenPressed(new CloseBackLegs());
+        left_joystick_nine.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
+        left_joystick_eight.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
         // Place cargo backward
 
         /*
