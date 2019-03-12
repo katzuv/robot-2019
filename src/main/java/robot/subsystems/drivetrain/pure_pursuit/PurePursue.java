@@ -286,20 +286,20 @@ public class PurePursue extends Command {
     }
 
     /**
-     * this function round an angle to one of the following angles: 0,30 ,90 ,120 ,180,270
+     * this function rounds an angle to one of the following angles: 0, 30, 90, 120, 180, 270
      *
-     * @param angle the angle you want the round
-     * @return the the one of the angles above which is closest to the input angle
+     * @param angle Angle you want toround
+     * @return One of the angles above which is closest to the input angle
      */
     private int roundAngle(double angle) {
         int[] angles = {0, 30, 90, 120, 180, 270};
-        int closet = 0;
+        int closest = 0;
         for (int i = 0; i < 5; i++) {
-            if (Math.abs(angle - angles[i]) < Math.abs(angle - angles[closet])) {
-                closet = i;
+            if (Math.abs(angle - angles[i]) < Math.abs(angle - angles[closest])) {
+                closest = i;
             }
         }
-        return angles[closet];
+        return angles[closest];
     }
 
 }
