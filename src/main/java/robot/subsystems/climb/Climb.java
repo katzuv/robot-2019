@@ -243,7 +243,8 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
                 (!talonFR.getSensorCollection().isFwdLimitSwitchClosed() && !talonFR.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonBL.getSensorCollection().isFwdLimitSwitchClosed() && !talonBL.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonBR.getSensorCollection().isFwdLimitSwitchClosed() && !talonBR.getSensorCollection().isRevLimitSwitchClosed())) ||
-                Math.abs(getLegFRHeight() - getLegFLHeight()) > Constants.LEG_EMERGENCY_STOP;
+                Math.abs(getLegFRHeight() - getLegFLHeight()) > Constants.LEG_EMERGENCY_STOP ||
+                Math.abs(getLegBRHeight() - getLegBLHeight()) > Constants.LEG_EMERGENCY_STOP;
     }
 
     /**
