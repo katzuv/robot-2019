@@ -13,7 +13,7 @@ public class Constants {
     static final int TALON_TIMEOUT_MS = 20;
     static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0, 0, 7.895, 20} : new double[]{11.567, 0, 0, 7.895, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
 
-    public static final double LEVEL_THREE_LEG_LENGTH = 0.47; //Length of leg in meters when climbing. todo:change
+    public static final double LEVEL_THREE_LEG_LENGTH = 0.50; //Length of leg in meters when climbing. todo:change
     public static final double LEVEL_TWO_LEG_LENGTH = 0.19; //Length of leg in meters when climbing to hab 2. todo:change
     public static final double DRIVE_CLIMB_HEIGHT_THRESH = isRobotA ? 0.1 : 0.1;
     public static final double CLIMB_TOLERANCE = 0.002; //tolerance in meters from the target position, to allow when stopping the code.
