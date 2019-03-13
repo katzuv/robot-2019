@@ -34,12 +34,12 @@ public class OneHatchRocket extends CommandGroup {
         addSequential(new DrivePathVision(driveBack, false, false, 0, 0, false));
 
         List<Pose2d> driveForward = new ArrayList<>();
-        driveForward.add(new Pose2d(LengthKt.getFeet(7.922), LengthKt.getFeet(2.896), Rotation2dKt.getDegree(0)));
+        driveForward.add(new Pose2d(LengthKt.getFeet(7.922), LengthKt.getFeet(3.2), Rotation2dKt.getDegree(0)));
 
         addSequential(new DrivePathVision(driveForward, true, false, 0, 0, false));
 
         List<Pose2d> toLoadingStation = new ArrayList<>();
-        toLoadingStation.add(new Pose2d(LengthKt.getFeet(2.8), LengthKt.getFeet(2.896), Rotation2dKt.getDegree(0)));
+        toLoadingStation.add(new Pose2d(LengthKt.getFeet(2.4), LengthKt.getFeet(3.2), Rotation2dKt.getDegree(0)));
 
         addSequential(new DrivePathVision(toLoadingStation, true, true, 0, 0, false));
 
