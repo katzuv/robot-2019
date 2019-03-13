@@ -108,6 +108,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Robot A", isRobotA);
     }
 
+
     /**
      * This function is called every robot packet, no matter the mode. Use
      * this for items like diagnostics that you want ran during disabled,
@@ -178,7 +179,6 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        cargoIntake.resetSensors();
     }
 
     /**
