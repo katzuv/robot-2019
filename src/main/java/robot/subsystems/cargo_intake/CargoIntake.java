@@ -108,12 +108,11 @@ public class CargoIntake extends Subsystem {
     }
 
     public void resetSensors() {
-        resetProximitySensor();
         resetWristEncoder();
     }
 
     private void resetWristEncoder() {
-        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
+        wrist.setSelectedSensorPosition(0);
     }
 
     public double stallCurrent() {
