@@ -40,7 +40,7 @@ public class Constants {
     public static final double kZeta = 0.7;
     public static final double kBeta = isRobotA ? 2.3 : 2.7;
     public static final double distanceFromEnd = 2;
-    public static final double angleKp = isRobotA ? 1.6 : 0.91;
+    public static final double angleKp = isRobotA ? 1.6 : 1.21;
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
 
