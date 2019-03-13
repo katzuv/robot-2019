@@ -22,8 +22,8 @@ public class OneHatchRocket extends CommandGroup {
         addParallel(new ElevatorCommand(height));
         //Drive to rocket
         List<Pose2d> toRocket = new ArrayList<>();
-        toRocket.add(new Pose2d(LengthKt.getFeet(12.661), LengthKt.getFeet(4.601), Rotation2dKt.getDegree(150)));
-        toRocket.add(new Pose2d(LengthKt.getFeet(16.215), LengthKt.getFeet(2.475), Rotation2dKt.getDegree(150)));
+        toRocket.add(new Pose2d(LengthKt.getFeet(12.839), LengthKt.getFeet(4.929), Rotation2dKt.getDegree(150)));
+        toRocket.add(new Pose2d(LengthKt.getFeet(16.304), LengthKt.getFeet(2.709), Rotation2dKt.getDegree(150)));
         addSequential(new DrivePathVision(toRocket, true, true, 0, 0, false));
 
         //Score hatch
@@ -34,12 +34,12 @@ public class OneHatchRocket extends CommandGroup {
         addSequential(new DrivePathVision(driveBack, false, false, 0, 0, false));
 
         List<Pose2d> driveForward = new ArrayList<>();
-        driveForward.add(new Pose2d(LengthKt.getFeet(7.922), LengthKt.getFeet(2.153), Rotation2dKt.getDegree(0)));
+        driveForward.add(new Pose2d(LengthKt.getFeet(7.922), LengthKt.getFeet(2.808), Rotation2dKt.getDegree(0)));
 
         addSequential(new DrivePathVision(driveForward, true, false, 0, 0, false));
 
         List<Pose2d> toLoadingStation = new ArrayList<>();
-        toLoadingStation.add(new Pose2d(LengthKt.getFeet(2.8), LengthKt.getFeet(2.153), Rotation2dKt.getDegree(0)));
+        toLoadingStation.add(new Pose2d(LengthKt.getFeet(2.8), LengthKt.getFeet(2.808), Rotation2dKt.getDegree(0)));
 
         addSequential(new DrivePathVision(toLoadingStation, true, true, 0, 0, false));
 
