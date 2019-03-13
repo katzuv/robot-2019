@@ -75,8 +75,8 @@ public class JoystickDrive extends Command {
                 Robot.climb.getLegBLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH)) //maybe also lower speeds when back legs are lowered.
         {
             climb.setWheelSpeed(rightOutput*0.8);
-            drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.08,
-                    rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.08);
+            drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.1,
+                    rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.1);
         }
         else {
             drivetrain.setSpeed(leftOutput, rightOutput);
