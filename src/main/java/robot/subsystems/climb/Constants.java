@@ -9,11 +9,11 @@ public class Constants {
     public static final double BACK_LEG_Y_DIMENSION = isRobotA ? 0.09 : 0.09;
     public static final double LEG_EMERGENCY_STOP = 0.035; //delta between each pair of legs which should stop the robots climbing subsystem
     public static final double LEGS_EMERGENCY_OKAY = 0.01; //delta between each pair of legs in which the mechanism could work again
-    public static final double EMERGENCY_FIX_SPEED = 0.1;
+    public static final double EMERGENCY_FIX_SPEED = 0.15;
 
     static final double TICKS_PER_METER = isRobotA ? 10000 : 10000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
-    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0, 0, 7.895, 20} : new double[]{11.567, 0, 0, 7.895, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
+    static final double[] CLIMB_PIDFE = isRobotA ? new double[]{11.567, 0, 0,  7.895, 20} : new double[]{11.567, 0, 0, 7.895, 0}; //Proportional, Intergral, Differential, Feedforward and our own ErrorFix
 
     public static final double LEVEL_THREE_LEG_LENGTH = 0.50; //Length of leg in meters when climbing. todo:change
     public static final double LEVEL_TWO_LEG_LENGTH = 0.19; //Length of leg in meters when climbing to hab 2. todo:change
