@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Climb extends Subsystem { //TODO: only work last 30 seconds
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-
+    private boolean stillDisabled = false;
     private TalonSRX talonFL = new TalonSRX(Ports.frontLeftMotor);
     private TalonSRX talonFR = new TalonSRX(Ports.frontRightMotor);
     private TalonSRX talonBL = new TalonSRX(Ports.backLeftMotor);
@@ -222,8 +222,22 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void executePreventBreak() {
         if (isCompromised()) {
+            stillDisabled = true;
             emergencyStop();
+            if(isCompromisedElectronical())
+                return;
+            /*
+             * after stopping the motors, if the error is electronical, don't attempt to fix the legs.
+             * if the compromise is electronical isCompromised will always be true,
+             * so the code will always reach the return in this case.
+             */
+            attemptCompromisedFix();
+        }
+
+        if(Math.abs(getLegBRHeight() - getLegBLHeight()) < Constants.LEGS_EMERGENCY_OKAY && Math.abs(getLegFRHeight() - getLegFLHeight()) < Constants.LEGS_EMERGENCY_OKAY)
+            stillDisabled = false;
     }
+
     private void attemptCompromisedFix() {
         if(Math.abs(getLegBRHeight() - getLegBLHeight()) >= Constants.LEGS_EMERGENCY_OKAY){
             _setLegBLSpeed(Math.signum(getLegBRHeight() - getLegBLHeight())*Constants.EMERGENCY_FIX_SPEED);
