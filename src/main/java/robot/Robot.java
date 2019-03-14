@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import robot.subsystems.cargo_intake.commands.ResetEncoders;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
@@ -217,6 +218,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
+        SmartDashboard.putData("Reset wrist encoders", new ResetEncoders());
         //printRunningCommands();
     }
 
