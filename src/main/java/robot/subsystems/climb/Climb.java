@@ -138,9 +138,22 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void setLegDriveSpeed(double speed) {
         if (!isCompromised()) {
-            talonFL.set(ControlMode.PercentOutput, speed);
-            talonFR.set(ControlMode.PercentOutput, speed);
+            _setLegFLSpeed(speed);
+            _setLegFRSpeed(speed);
         }
+    }
+
+    /**
+     * don't use unless you are sure of what you are doing.
+     * @param speed
+     */
+    private void _setLegFLSpeed(double speed){
+        talonFL.set(ControlMode.PercentOutput, speed);
+    }
+
+    private void _setLegFRSpeed(double speed){
+        talonFR.set(ControlMode.PercentOutput, speed);
+
     }
 
     /**
