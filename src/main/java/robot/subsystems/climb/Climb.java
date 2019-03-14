@@ -223,6 +223,24 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     public void executePreventBreak() {
         if (isCompromised()) {
             emergencyStop();
+    }
+    private void attemptCompromisedFix() {
+        if(Math.abs(getLegBRHeight() - getLegBLHeight()) >= Constants.LEGS_EMERGENCY_OKAY){
+            _setLegBLSpeed(Math.signum(getLegBRHeight() - getLegBLHeight())*Constants.EMERGENCY_FIX_SPEED);
+            _setLegBRSpeed(Math.signum(getLegBLHeight() - getLegBRHeight())*Constants.EMERGENCY_FIX_SPEED);
+        }
+        else{
+            _setLegBLSpeed(0);
+            _setLegBRSpeed(0);
+        }
+
+        if(Math.abs(getLegFRHeight() - getLegFLHeight()) >= Constants.LEGS_EMERGENCY_OKAY){
+            _setLegFLSpeed(Math.signum(getLegFRHeight() - getLegFLHeight())*Constants.EMERGENCY_FIX_SPEED);
+            _setLegFRSpeed(Math.signum(getLegFLHeight() - getLegFRHeight())*Constants.EMERGENCY_FIX_SPEED);
+        }
+        else{
+            _setLegFLSpeed(0);
+            _setLegFRSpeed(0);
         }
     }
 
