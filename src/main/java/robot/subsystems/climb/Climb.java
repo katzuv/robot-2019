@@ -144,19 +144,6 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
-     * don't use unless you are sure of what you are doing.
-     * @param speed
-     */
-    private void _setLegFLSpeed(double speed){
-        talonFL.set(ControlMode.PercentOutput, speed);
-    }
-
-    private void _setLegFRSpeed(double speed){
-        talonFR.set(ControlMode.PercentOutput, speed);
-
-    }
-
-    /**
      * set the speed of the back left leg
      *
      * @param speed percent output from -1 to 1
@@ -281,6 +268,26 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         wheelDrive.set(ControlMode.PercentOutput, 0);
     }
 
+    /**
+     * don't use unless you are sure of what you are doing.
+     * @param speed
+     */
+    private void _setLegFLSpeed(double speed){
+        talonFL.set(ControlMode.PercentOutput, speed);
+    }
+
+    private void _setLegFRSpeed(double speed){
+        talonFR.set(ControlMode.PercentOutput, speed);
+
+    }
+
+    public void _setLegBLSpeed(double speed) {
+        talonBL.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void _setLegBRSpeed(double speed) {
+        talonBR.set(ControlMode.PercentOutput, speed);
+    }
     /**
      * reset all four encoder values
      */
