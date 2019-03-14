@@ -239,12 +239,22 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @return returns whether the mechanism should be disabled. if the subsystem is fine, returns false.
      */
     public boolean isCompromised() {
+        return stillDisabled || isCompromisedElectronical() ||
+                Math.abs(getLegFRHeight() - getLegFLHeight()) > Constants.LEG_EMERGENCY_STOP ||
+                Math.abs(getLegBRHeight() - getLegBLHeight()) > Constants.LEG_EMERGENCY_STOP;
+    }
+
+    /**
+     * A sub command of isCompromised, only this method only checks whether any of the encoders disconnected.
+     * This method is used to differentiate between what problems we want to try to fix in real time, to the ones we have
+     * to stop until a manual check is done.
+     * @return if any of the climbing sensors is compromised.
+     */
+    private boolean isCompromisedElectronical(){
         return ((!talonFL.getSensorCollection().isFwdLimitSwitchClosed() && !talonFL.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonFR.getSensorCollection().isFwdLimitSwitchClosed() && !talonFR.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonBL.getSensorCollection().isFwdLimitSwitchClosed() && !talonBL.getSensorCollection().isRevLimitSwitchClosed()) ||
-                (!talonBR.getSensorCollection().isFwdLimitSwitchClosed() && !talonBR.getSensorCollection().isRevLimitSwitchClosed())) ||
-                Math.abs(getLegFRHeight() - getLegFLHeight()) > Constants.LEG_EMERGENCY_STOP ||
-                Math.abs(getLegBRHeight() - getLegBLHeight()) > Constants.LEG_EMERGENCY_STOP;
+                (!talonBR.getSensorCollection().isFwdLimitSwitchClosed() && !talonBR.getSensorCollection().isRevLimitSwitchClosed()));
     }
 
     /**
