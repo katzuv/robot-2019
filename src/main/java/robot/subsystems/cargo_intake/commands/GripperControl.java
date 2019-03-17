@@ -20,14 +20,13 @@ public class GripperControl extends Command {
     private boolean useTrigger;
 
     public GripperControl(double speed){
-        requires(cargoIntake);
         this.speed = speed;
     }
 
     public GripperControl(double speed, boolean useTrigger){
         this.useTrigger = useTrigger;
-        requires(cargoIntake);
-        this.speed = speed;
+
+
     }
 
     public GripperControl(GRIPPER_SPEED gripperSpeed, boolean useTrigger) {
