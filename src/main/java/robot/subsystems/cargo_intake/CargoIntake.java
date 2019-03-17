@@ -77,6 +77,10 @@ public class CargoIntake extends Subsystem {
          */
         wrist.configMotionCruiseVelocity(Constants.CRUISE_VELOCITY, Constants.TALON_TIME_OUT);
         wrist.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIME_OUT);
+
+        wrist.configVoltageCompSaturation(12.0);
+        wrist.enableVoltageCompensation(true);
+
         /*
         limit switch config
          */
