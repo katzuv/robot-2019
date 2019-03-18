@@ -20,21 +20,13 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
     // here. Call these from Commands.
     private final DoubleSolenoid gripper = new DoubleSolenoid(1, Ports.gripperForward, Ports.gripperReverse);
     private final DoubleSolenoid gripperPlate = new DoubleSolenoid(1, Ports.gripperPlateForward, Ports.gripperPlateReverse);
-//    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);
 
 
     public HatchIntake() {
-//        hatchSensor.resetAccumulator();
     }
 
 
-    /**
-     * @return the voltage from the sensor
-     */
-    public double getVoltage() {
-//        return hatchSensor.getVoltage();
-        return 2;
-    }
+
 
     /**
      * a command to set the gripper, close it if it is already open and open it if it is already closed
@@ -73,9 +65,6 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
     /**
      * @return if the hatch is inside
      */
-    public boolean isHatchInside() {
-        return getVoltage() <= Constants.HATCH_IN_VOLTAGE;
-    }
 
 
     @Override
