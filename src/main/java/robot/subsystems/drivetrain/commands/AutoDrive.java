@@ -11,30 +11,39 @@ import static robot.Robot.drivetrain;
  *
  */
 public class AutoDrive extends Command {
-    private MiniPID speedPid = new MiniPID(0.25, 0.0005, 1);
-    private MiniPID turnPid = new MiniPID(0.01, 0, 0.5);
+    private MiniPID speedPid = new MiniPID(0.6, 0.0013, 0.9);
+    private MiniPID turnPid = new MiniPID(0.02, 0, 0);
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
     private NetworkTableEntry distanceEntry = Robot.visionTable.getEntry("tape_distance");
+    private boolean stop = false;
 
     public AutoDrive() {
+        speedPid.setOutputLimits(-0.6, 0.6);
         requires(drivetrain);
     }
 
     protected void initialize() {
+        stop = false;
     }
 
     protected void execute() {
         double angle = angleEntry.getDouble(0);
         double distance = distanceEntry.getDouble(0);
+        if (distance < 0.6) {
+            stop = true;
+        }
         double speed = speedPid.getOutput(distance, 0.4);
         double turn = turnPid.getOutput(angle, 0);
-        turn = 0;
+        if (stop) {
+            turn = 0;
+        }
         System.out.println(speed + " | " + distance + " | " + turn);
         drivetrain.setSpeed(speed - turn, speed + turn);
     }
 
     protected boolean isFinished() {
-        return distanceEntry.getDouble(0) == 0;
+        return false;
+//        return distanceEntry.getDouble(0) == 0;
     }
 
     protected void end() {
