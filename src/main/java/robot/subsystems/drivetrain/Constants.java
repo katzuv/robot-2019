@@ -43,6 +43,7 @@ public class Constants {
     public static final double angleKp = isRobotA ? 1.6 : 1.37;
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
+    public static double[] PIDFDrive = new double[]{0.1, 0, 0, 0};
 
     static {
         constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
-import org.ghrobotics.lib.mathematics.twodim.control.PurePursuitTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
@@ -64,18 +63,18 @@ public class Drivetrain extends Subsystem {
         rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
         leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
 
-//        leftMaster.configVoltageCompSaturation(12);
-//        leftMaster.enableVoltageCompensation(true);
-//        leftSlave1.configVoltageCompSaturation(12);
-//        leftSlave1.enableVoltageCompensation(true);
-//        leftSlave2.configVoltageCompSaturation(12);
-//        leftSlave2.enableVoltageCompensation(true);
-//        rightMaster.configVoltageCompSaturation(12);
-//        rightMaster.enableVoltageCompensation(true);
-//        rightSlave2.configVoltageCompSaturation(12);
-//        rightSlave2.enableVoltageCompensation(true);
-//        rightSlave1.configVoltageCompSaturation(12);
-//        rightSlave1.enableVoltageCompensation(true);
+        leftMaster.configVoltageCompSaturation(12);
+        leftMaster.enableVoltageCompensation(true);
+        leftSlave1.configVoltageCompSaturation(12);
+        leftSlave1.enableVoltageCompensation(true);
+        leftSlave2.configVoltageCompSaturation(12);
+        leftSlave2.enableVoltageCompensation(true);
+        rightMaster.configVoltageCompSaturation(12);
+        rightMaster.enableVoltageCompensation(true);
+        rightSlave2.configVoltageCompSaturation(12);
+        rightSlave2.enableVoltageCompensation(true);
+        rightSlave1.configVoltageCompSaturation(12);
+        rightSlave1.enableVoltageCompensation(true);
 
         leftMaster.setInverted(Constants.LEFT_MASTER_REVERSED);
         leftSlave1.setInverted(Constants.LEFT_SLAVE1_REVERSED);
@@ -95,6 +94,17 @@ public class Drivetrain extends Subsystem {
         rightMaster.config_kI(0, Constants.PIDFRight[1], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kD(0, Constants.PIDFRight[2], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kF(0, Constants.PIDFRight[3], Constants.TALON_TIMEOUT_MS);
+
+
+        rightMaster.config_kP(1, Constants.PIDFDrive[0], Constants.TALON_TIMEOUT_MS);
+        rightMaster.config_kI(1, Constants.PIDFDrive[1], Constants.TALON_TIMEOUT_MS);
+        rightMaster.config_kD(1, Constants.PIDFDrive[2], Constants.TALON_TIMEOUT_MS);
+        rightMaster.config_kF(1, Constants.PIDFDrive[3], Constants.TALON_TIMEOUT_MS);
+
+        leftMaster.config_kP(1, Constants.PIDFDrive[0], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kI(1, Constants.PIDFDrive[1], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kD(1, Constants.PIDFDrive[2], Constants.TALON_TIMEOUT_MS);
+        leftMaster.config_kF(1, Constants.PIDFDrive[3], Constants.TALON_TIMEOUT_MS);
     }
 
     @Override
@@ -142,9 +152,7 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the left side
      */
     private void setLeftSpeed(double speed) {
-        if (speed <= 1 && speed >= -1) {
-            leftMaster.set(ControlMode.PercentOutput, speed);
-        }
+        leftMaster.set(ControlMode.PercentOutput, speed);
     }
 
     /**
@@ -160,9 +168,7 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
-        if (speed <= 1 && speed >= -1) {
-            rightMaster.set(ControlMode.PercentOutput, speed);
-        }
+        rightMaster.set(ControlMode.PercentOutput, speed);
     }
 
     /**
@@ -204,7 +210,7 @@ public class Drivetrain extends Subsystem {
         localization.reset(pose);
     }
 
-    public void setMotorsToBrake(){
+    public void setMotorsToBrake() {
         leftMaster.setNeutralMode(NeutralMode.Brake);
         leftSlave1.setNeutralMode(NeutralMode.Brake);
         leftSlave2.setNeutralMode(NeutralMode.Brake);
@@ -213,7 +219,7 @@ public class Drivetrain extends Subsystem {
         rightSlave1.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setMotorsToCoast(){
+    public void setMotorsToCoast() {
         leftMaster.setNeutralMode(NeutralMode.Coast);
         leftSlave1.setNeutralMode(NeutralMode.Coast);
         leftSlave2.setNeutralMode(NeutralMode.Coast);
@@ -286,4 +292,15 @@ public class Drivetrain extends Subsystem {
         return new Point(localization.getRobotPosition().getTranslation().getY().getMeter(), localization.getRobotPosition().getTranslation().getX().getMeter());
     }
 
+    public void driveDistance(double distance) {
+        leftMaster.selectProfileSlot(1, 1);
+        rightMaster.selectProfileSlot(1, 1);
+
+        leftMaster.set(ControlMode.Position, convertDistanceToTicks(-distance) + leftMaster.getSelectedSensorPosition());
+        rightMaster.set(ControlMode.Position, convertDistanceToTicks(-distance) + rightMaster.getSelectedSensorPosition());
+        leftMaster.selectProfileSlot(0, 0);
+
+        rightMaster.selectProfileSlot(0, 0);
+        leftMaster.selectProfileSlot(0, 0);
+    }
 }

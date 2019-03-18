@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.subsystems.drivetrain.commands.TestDrive;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.gripper_wheels.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.WristTurn;
@@ -151,7 +152,7 @@ public class OI {
         select.whenPressed(new CloseBoth());
 
         left_joystick_six.toggleWhenPressed(new AutoDrive());
-        right_joystick_six.whenPressed(new SwitchCamera()); //TODO: both buttons are assigned to joystick six, need to talk with ido
+        right_joystick_six.whenPressed(new TestDrive()); //TODO: both buttons are assigned to joystick six, need to talk with ido
 
         left_joystick_three.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
