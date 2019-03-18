@@ -20,16 +20,15 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
-import robot.subsystems.wrist_control.commands.ResetEncoders;
 import robot.subsystems.climb.Climb;
-import robot.subsystems.gripper_wheels.GripperWheels;
-import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.ramsete.OneHatchRocket;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
+import robot.subsystems.gripper_wheels.GripperWheels;
 import robot.subsystems.hatch_intake.HatchIntake;
+import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
 
 import java.lang.reflect.Field;
@@ -212,18 +211,18 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
         Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
-        SmartDashboard.putBoolean("Flower open",hatchIntake.isGripperOpen());
+        SmartDashboard.putBoolean("Flower open", hatchIntake.isGripperOpen());
         SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
         SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-        SmartDashboard.putData("Reset wrist encoders", new ResetEncoders());
-        SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle());
+        SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
+        SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle(168));
         //printRunningCommands();
     }
 
-    public void printRunningCommands(){
+    public void printRunningCommands() {
         try {
             Field field = Scheduler.class.getField("m_commandTable");
             field.setAccessible(true);
@@ -235,7 +234,7 @@ public class Robot extends TimedRobot {
         }
     }
 
-    public void resetAll(){
+    public void resetAll() {
         wristControl.resetSensors();
         elevator.resetEncoders();
         navx.reset();

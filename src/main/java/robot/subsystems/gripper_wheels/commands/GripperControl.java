@@ -22,8 +22,8 @@ public class GripperControl extends Command {
     }
 
     public GripperControl(double speed, boolean useTrigger){
+        requires(gripperWheels);
         this.useTrigger = useTrigger;
-        requires(wristControl);
         this.speed = speed;
     }
 
