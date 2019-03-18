@@ -1,16 +1,13 @@
 package robot.subsystems.hatch_intake.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import robot.Robot;
-import robot.subsystems.hatch_intake.HatchIntake;
 
 import static robot.Robot.hatchIntake;
 
 /*
 this command controls the flower on the robot
  */
-public class Gripper extends InstantCommand {
+public class Flower extends InstantCommand {
 
     private boolean open;//indicates whether the flower is open or not
 
@@ -21,9 +18,9 @@ public class Gripper extends InstantCommand {
      * empty constructor, sets the wanted state to toggle meaning whenever the command is called it will toggle the current state
      * instead of going to the wanted state
      */
-    public Gripper() {
+    public Flower() {
         requires(hatchIntake);
-        current = gripperState.TOGGLE_GRIPPER;
+        current = gripperState.TOGGLE_FLOWER;
 
     }
 
@@ -32,7 +29,7 @@ public class Gripper extends InstantCommand {
      *
      * @param open if true changes the wanted state to open and otherwise sets the wanted state to cloes
      */
-    public Gripper(boolean open) {
+    public Flower(boolean open) {
         requires(hatchIntake);
         if (open)
             current = gripperState.GRIPPER_GRAB;
@@ -43,7 +40,7 @@ public class Gripper extends InstantCommand {
     @Override
     public void initialize() {
         switch (current) {
-            case TOGGLE_GRIPPER: // Change to the second state
+            case TOGGLE_FLOWER: // Change to the second state
                 hatchIntake.setGripper(!hatchIntake.isGripperOpen());
                 break;
             case GRIPPER_GRAB: // Open the gripper if closed and not do anything otherwise
@@ -79,7 +76,7 @@ public class Gripper extends InstantCommand {
      * enum to indicate the state of the gripper
      */
     public enum gripperState {
-        TOGGLE_GRIPPER,
+        TOGGLE_FLOWER,
         GRIPPER_GRAB,
         GRIPPER_RELEASE
     }

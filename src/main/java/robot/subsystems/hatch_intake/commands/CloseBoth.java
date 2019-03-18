@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class CloseBoth extends CommandGroup {
 
     public CloseBoth() {
-        addSequential(new Gripper(false));
+        addSequential(new Flower(false));
 
         addSequential(new GripperTransportation(false));
         // Add Commands here:
