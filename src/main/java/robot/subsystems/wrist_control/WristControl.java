@@ -117,6 +117,10 @@ public class WristControl extends Subsystem {
         return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
 
+    public void setEncoderAngle(double angle){
+        wrist.setSelectedSensorPosition(convertAngleToTicks(angle));
+    }
+
     /**
      * Convert angle in degrees to ticks of the encoder.
      *
