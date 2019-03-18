@@ -9,13 +9,11 @@ package robot.subsystems.wrist_control;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
-import static robot.Robot.cargoIntake;
+import static robot.Robot.wristControl;
 
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
@@ -111,11 +109,11 @@ public class WristControl extends Subsystem {
     }
 
     public double stallCurrent() {
-        final double wristAngle = cargoIntake.getWristAngle();
+        final double wristAngle = wristControl.getWristAngle();
         if (wristAngle < 6 && setPointAngle < 3) { //TODO: needs to be a constants
             return 0;
         }
-        final double COMCosine = Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle()));
+        final double COMCosine = Math.cos(Math.toRadians(15 + wristControl.getWristAngle()));
         return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
 
@@ -191,7 +189,7 @@ public class WristControl extends Subsystem {
         angle = Math.max(0,angle);
         angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(),angle);
         setPointAngle = angle;
-        cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
+        wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
     }
 
     public int getVelocity() {

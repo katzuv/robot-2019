@@ -3,7 +3,6 @@ package robot.subsystems.elevator.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 
-import static robot.Robot.cargoIntake;
 import static robot.Robot.gripperWheels;
 
 /**

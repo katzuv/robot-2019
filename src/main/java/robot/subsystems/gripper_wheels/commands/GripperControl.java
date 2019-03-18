@@ -3,7 +3,7 @@ package robot.subsystems.gripper_wheels.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
 
-import static robot.Robot.cargoIntake;
+import static robot.Robot.wristControl;
 import static robot.Robot.gripperWheels;
 
 /**
@@ -23,7 +23,7 @@ public class GripperControl extends Command {
 
     public GripperControl(double speed, boolean useTrigger){
         this.useTrigger = useTrigger;
-        requires(cargoIntake);
+        requires(wristControl);
         this.speed = speed;
     }
 
