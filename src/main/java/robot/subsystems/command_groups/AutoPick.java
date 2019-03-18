@@ -1,4 +1,4 @@
-package robot.subsystems.commandGroups;
+package robot.subsystems.command_groups;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import robot.subsystems.commandGroups.HatchScoring;
+import robot.subsystems.command_groups.HatchScoring;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.TakeHatch;
