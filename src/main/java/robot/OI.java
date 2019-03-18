@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import robot.auxiliary.Trigger;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.gripper_wheels.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.WristTurn;
@@ -29,6 +28,7 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
+import robot.utilities.TriggerButton;
 
 import static robot.subsystems.wrist_control.Constants.SLOW_DRIVE;
 
@@ -71,8 +71,8 @@ public class OI {
     public static Button povl = new POVButton(xbox, 270);
     public static Button povu = new POVButton(xbox, 0);
 
-    public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
-    public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
+    public static Button RT = new TriggerButton(xbox, GenericHID.Hand.kRight, 0);
+    public static Button LT = new TriggerButton(xbox, GenericHID.Hand.kLeft, 0);
 
     public static Button lsLeft = new JoystickButton(leftStick, 4);
     public static Button lsRight = new JoystickButton(leftStick, 5);
