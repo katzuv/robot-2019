@@ -20,18 +20,16 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
-import robot.subsystems.cargo_intake.commands.ResetEncoders;
 import robot.subsystems.climb.Climb;
-import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.commands.AngleDrive;
 import robot.subsystems.drivetrain.ramsete.OneHatchRocket;
-import robot.subsystems.drivetrain.ramsete.SandstormCargo;
-import robot.subsystems.drivetrain.ramsete.SandstormRocket;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
+import robot.subsystems.gripper_wheels.GripperWheels;
 import robot.subsystems.hatch_intake.HatchIntake;
+import robot.subsystems.wrist_control.WristControl;
+import robot.subsystems.wrist_control.commands.ResetWristAngle;
 
 import java.lang.reflect.Field;
 import java.util.Hashtable;
@@ -49,9 +47,10 @@ public class Robot extends TimedRobot {
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final HatchIntake hatchIntake = new HatchIntake();
-    public static final CargoIntake cargoIntake = new CargoIntake();
+    public static final WristControl wristControl = new WristControl();
+    public static final GripperWheels gripperWheels = new GripperWheels();
     public static final Compressor compressor = new Compressor(1);
-    public final static boolean isRobotA = false;
+    public final static boolean isRobotA = true;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
@@ -205,24 +204,25 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
         SmartDashboard.putNumber("Drivetrain: left distance", drivetrain.getLeftDistance());
         SmartDashboard.putNumber("Drivetrain: right distance", drivetrain.getRightDistance());
-        SmartDashboard.putNumber("Cargo intake: proximity value", cargoIntake.getProximityVoltage());
-        SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
+        SmartDashboard.putNumber("Cargo intake: proximity value", gripperWheels.getProximityVoltage());
+        SmartDashboard.putNumber("Cargo intake: wrist angle", wristControl.getWristAngle());
         SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
         SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
         Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
-        SmartDashboard.putBoolean("Flower open",hatchIntake.isGripperOpen());
+        SmartDashboard.putBoolean("Flower open", hatchIntake.isGripperOpen());
         SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
         SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-        SmartDashboard.putData("Reset wrist encoders", new ResetEncoders());
+        SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
+        SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle(168));
         //printRunningCommands();
     }
 
-    public void printRunningCommands(){
+    public void printRunningCommands() {
         try {
             Field field = Scheduler.class.getField("m_commandTable");
             field.setAccessible(true);
@@ -234,8 +234,8 @@ public class Robot extends TimedRobot {
         }
     }
 
-    public void resetAll(){
-        cargoIntake.resetSensors();
+    public void resetAll() {
+        wristControl.resetSensors();
         elevator.resetEncoders();
         navx.reset();
         drivetrain.resetLocation();

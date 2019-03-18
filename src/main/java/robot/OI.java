@@ -16,13 +16,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import robot.auxiliary.Trigger;
-import robot.subsystems.cargo_intake.Constants;
-import robot.subsystems.cargo_intake.commands.GripperControl;
-import robot.subsystems.cargo_intake.commands.WristTurn;
-import robot.subsystems.commandGroups.CargoScoring;
-import robot.subsystems.commandGroups.HatchScoring;
-import robot.subsystems.commandGroups.ShiftButton;
+import robot.subsystems.wrist_control.Constants;
+import robot.subsystems.gripper_wheels.commands.GripperControl;
+import robot.subsystems.wrist_control.commands.WristTurn;
+import robot.subsystems.command_groups.CargoScoring;
+import robot.subsystems.command_groups.HatchScoring;
+import robot.subsystems.command_groups.ShiftButton;
 import robot.subsystems.drivetrain.commands.AngleDrive;
 import robot.subsystems.drivetrain.commands.AutoDrive;
 import robot.subsystems.drivetrain.commands.SwitchCamera;
@@ -30,14 +29,9 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
+import robot.utilities.TriggerButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static robot.subsystems.cargo_intake.Constants.SLOW_DRIVE;
+import static robot.subsystems.wrist_control.Constants.SLOW_DRIVE;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -78,8 +72,8 @@ public class OI {
     public static Button povl = new POVButton(xbox, 270);
     public static Button povu = new POVButton(xbox, 0);
 
-    public static Button RT = new Trigger(xbox, GenericHID.Hand.kRight);
-    public static Button LT = new Trigger(xbox, GenericHID.Hand.kLeft);
+    public static Button RT = new TriggerButton(xbox, GenericHID.Hand.kRight, 0);
+    public static Button LT = new TriggerButton(xbox, GenericHID.Hand.kLeft, 0);
 
     public static Button lsLeft = new JoystickButton(leftStick, 4);
     public static Button lsRight = new JoystickButton(leftStick, 5);

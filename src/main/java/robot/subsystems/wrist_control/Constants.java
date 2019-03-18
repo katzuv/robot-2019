@@ -1,7 +1,4 @@
-package robot.subsystems.cargo_intake;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import robot.Robot;
+package robot.subsystems.wrist_control;
 
 import static robot.Robot.isRobotA;
 
@@ -28,7 +25,6 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.64;
     final static boolean SENSOR_PHASE = isRobotA ? false : false;
 
     final static boolean SOFT_LIMIT_OVERRIDE = isRobotA ? true : true;

@@ -1,16 +1,12 @@
-package robot.subsystems.commandGroups;
+package robot.subsystems.command_groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
-import robot.subsystems.cargo_intake.Constants;
-import robot.subsystems.cargo_intake.commands.GripperControl;
-import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.Gripper;
 
 import static robot.subsystems.elevator.Constants.ELEVATOR_STATES;
-import static robot.subsystems.cargo_intake.Constants.WRIST_ANGLES;
-import static robot.subsystems.cargo_intake.Constants.GRIPPER_SPEED;
+import static robot.subsystems.wrist_control.Constants.WRIST_ANGLES;
+import static robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
 
 
 /**

@@ -5,17 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package robot.subsystems.cargo_intake;
+package robot.subsystems.wrist_control;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.Robot;
-import robot.subsystems.cargo_intake.commands.JoystickWristTurn;
+import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
-import static robot.Robot.cargoIntake;
+import static robot.Robot.wristControl;
 
 /**
  * The Cargo Intake subsystem, including the Intake and Wrist.
@@ -23,16 +21,14 @@ import static robot.Robot.cargoIntake;
  *
  * @author lior
  */
-public class CargoIntake extends Subsystem {
+public class WristControl extends Subsystem {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
-    private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
-    private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
     private double setPointAngle;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public CargoIntake() {
+    public WristControl() {
         /*
         config for the feedback sensor
          */
@@ -77,6 +73,10 @@ public class CargoIntake extends Subsystem {
          */
         wrist.configMotionCruiseVelocity(Constants.CRUISE_VELOCITY, Constants.TALON_TIME_OUT);
         wrist.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIME_OUT);
+
+        wrist.configVoltageCompSaturation(12.0);
+        wrist.enableVoltageCompensation(true);
+
         /*
         limit switch config
          */
@@ -91,17 +91,10 @@ public class CargoIntake extends Subsystem {
     }
 
 
-    public double getProximityVoltage() {
-        return proximitySensor.getVoltage();//proximitySensor.getVoltage();
-    }//returns the current voltage in the proximity sensor
 
-    public boolean isCargoInside() {
-        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;
-    }
 
-    public void setGripperSpeed(double speed) {
-        IntakeMotor.set(ControlMode.PercentOutput, speed);
-    }
+
+
 
     public void setWristSpeed(double speed) {
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
@@ -116,12 +109,16 @@ public class CargoIntake extends Subsystem {
     }
 
     public double stallCurrent() {
-        final double wristAngle = cargoIntake.getWristAngle();
+        final double wristAngle = wristControl.getWristAngle();
         if (wristAngle < 6 && setPointAngle < 3) { //TODO: needs to be a constants
             return 0;
         }
-        final double COMCosine = Math.cos(Math.toRadians(15 + cargoIntake.getWristAngle()));
+        final double COMCosine = Math.cos(Math.toRadians(15 + wristControl.getWristAngle()));
         return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
+    }
+
+    public void setEncoderAngle(double angle){
+        wrist.setSelectedSensorPosition(convertAngleToTicks(angle));
     }
 
     /**
@@ -196,7 +193,7 @@ public class CargoIntake extends Subsystem {
         angle = Math.max(0,angle);
         angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(),angle);
         setPointAngle = angle;
-        cargoIntake.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, cargoIntake.stallCurrent());
+        wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
     }
 
     public int getVelocity() {
@@ -210,7 +207,5 @@ public class CargoIntake extends Subsystem {
         setDefaultCommand(new JoystickWristTurn());
     }
 
-    private void resetProximitySensor() {
-        //proximitySensor.resetAccumulator();
-    }
+
 }

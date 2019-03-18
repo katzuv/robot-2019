@@ -1,13 +1,10 @@
-package robot.subsystems.cargo_intake.commands;
+package robot.subsystems.gripper_wheels.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import robot.OI;
-import robot.subsystems.cargo_intake.Constants.GRIPPER_SPEED;
+import robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
 
-import static robot.Robot.cargoIntake;
-import static robot.Robot.m_oi;
+import static robot.Robot.wristControl;
+import static robot.Robot.gripperWheels;
 
 /**
  * Instant Command in charge of controlling the speed of the wrist wheels, the wheels in charge of grabbing and releasing cargo.
@@ -20,13 +17,13 @@ public class GripperControl extends Command {
     private boolean useTrigger;
 
     public GripperControl(double speed){
-        requires(cargoIntake);
+        requires(gripperWheels);
         this.speed = speed;
     }
 
     public GripperControl(double speed, boolean useTrigger){
+        requires(gripperWheels);
         this.useTrigger = useTrigger;
-        requires(cargoIntake);
         this.speed = speed;
     }
 
@@ -55,19 +52,19 @@ public class GripperControl extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (!(cargoIntake.isCargoInside() && speed < 0)){
+        if (!(gripperWheels.isCargoInside() && speed < 0)){
             if(useTrigger)
-                cargoIntake.setGripperSpeed(speed);
+                gripperWheels.setGripperSpeed(speed);
             else
 
-                cargoIntake.setGripperSpeed(speed);
+                gripperWheels.setGripperSpeed(speed);
         }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         if (speed < 0)
-            return cargoIntake.isCargoInside() && speed < 0;
+            return gripperWheels.isCargoInside() && speed < 0;
         else {
             return false;
         }
@@ -75,7 +72,7 @@ public class GripperControl extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        cargoIntake.setGripperSpeed(0);
+        gripperWheels.setGripperSpeed(0);
     }
 
     // Called when another command which requires one or more of the same

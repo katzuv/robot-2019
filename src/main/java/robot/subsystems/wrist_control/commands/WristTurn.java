@@ -1,11 +1,9 @@
-package robot.subsystems.cargo_intake.commands;
+package robot.subsystems.wrist_control.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
-import robot.subsystems.cargo_intake.Constants;
+import robot.subsystems.wrist_control.Constants;
 
-import static robot.Robot.cargoIntake;
-import static robot.Robot.hatchIntake;
+import static robot.Robot.wristControl;
 
 /**
  *
@@ -15,7 +13,7 @@ public class WristTurn extends Command {
 
     public WristTurn(double angle) {
         this.angle = angle;
-        requires(cargoIntake);
+        requires(wristControl);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 
@@ -33,28 +31,28 @@ public class WristTurn extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        cargoIntake.setWristAngle(angle);
+        wristControl.setWristAngle(angle);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        cargoIntake.setWristAngle(angle);
-        cargoIntake.preventOverShoot();
-        if (cargoIntake.getWristAngle() < 5 && angle < 3) {
-            cargoIntake.setWristSpeed(0);
+        wristControl.setWristAngle(angle);
+        wristControl.preventOverShoot();
+        if (wristControl.getWristAngle() < 5 && angle < 3) {
+            wristControl.setWristSpeed(0);
         }
         else
-            cargoIntake.setWristAngle(angle);
+            wristControl.setWristAngle(angle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(cargoIntake.getWristAngle() - angle) < 2;
+        return Math.abs(wristControl.getWristAngle() - angle) < 2;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        cargoIntake.setWristSpeed(0);
+        wristControl.setWristSpeed(0);
     }
 
     // Called when another command which requires one or more of the same

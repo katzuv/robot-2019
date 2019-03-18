@@ -1,10 +1,8 @@
-package robot.subsystems.commandGroups;
+package robot.subsystems.command_groups;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import robot.OI;
-import robot.Robot;
 
 /**
  *
