@@ -24,6 +24,7 @@ import robot.subsystems.commandGroups.CargoScoring;
 import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.ShiftButton;
 import robot.subsystems.drivetrain.commands.AngleDrive;
+import robot.subsystems.drivetrain.commands.AutoDrive;
 import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
@@ -155,7 +156,7 @@ public class OI {
         //TODO: add right stick to control the cargo intake
         select.whenPressed(new CloseBoth());
 
-        left_joystick_six.toggleWhenPressed(new AngleDrive());
+        left_joystick_six.toggleWhenPressed(new AutoDrive());
         right_joystick_six.whenPressed(new SwitchCamera()); //TODO: both buttons are assigned to joystick six, need to talk with ido
 
         left_joystick_three.whenPressed(new CalibrateLegs());
