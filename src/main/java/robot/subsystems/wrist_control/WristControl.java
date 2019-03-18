@@ -75,6 +75,10 @@ public class WristControl extends Subsystem {
          */
         wrist.configMotionCruiseVelocity(Constants.CRUISE_VELOCITY, Constants.TALON_TIME_OUT);
         wrist.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION, Constants.TALON_TIME_OUT);
+
+        wrist.configVoltageCompSaturation(12.0);
+        wrist.enableVoltageCompensation(true);
+
         /*
         limit switch config
          */
@@ -103,7 +107,7 @@ public class WristControl extends Subsystem {
     }
 
     private void resetWristEncoder() {
-        wrist.setSelectedSensorPosition(0, 0, Constants.TALON_TIME_OUT);
+        wrist.setSelectedSensorPosition(0);
     }
 
     public double stallCurrent() {

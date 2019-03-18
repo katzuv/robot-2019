@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Climb extends Subsystem { //TODO: only work last 30 seconds
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-
+    private boolean stillDisabled = false;
     private TalonSRX talonFL = new TalonSRX(Ports.frontLeftMotor);
     private TalonSRX talonFR = new TalonSRX(Ports.frontRightMotor);
     private TalonSRX talonBL = new TalonSRX(Ports.backLeftMotor);
@@ -57,7 +57,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     public void setLegDriveHeight(double height, double additionalLegOffset) {
         if (isCompromised())
             return;
-        SmartDashboard.putNumber("Climb test: FR arbitrary offset", (additionalLegOffset + getLegFRHeight() - getLegFLHeight()));
+
         talonFL.set(ControlMode.MotionMagic, metersToTicks(height),
                 DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * (additionalLegOffset + getLegFRHeight() - getLegFLHeight()));
         talonFR.set(ControlMode.MotionMagic, metersToTicks(height),
@@ -138,8 +138,8 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void setLegDriveSpeed(double speed) {
         if (!isCompromised()) {
-            talonFL.set(ControlMode.PercentOutput, speed);
-            talonFR.set(ControlMode.PercentOutput, speed);
+            _setLegFLSpeed(speed);
+            _setLegFRSpeed(speed);
         }
     }
 
@@ -222,7 +222,39 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void executePreventBreak() {
         if (isCompromised()) {
+            stillDisabled = true;
             emergencyStop();
+            if(isCompromisedElectronical())
+                return;
+            /*
+             * after stopping the motors, if the error is electronical, don't attempt to fix the legs.
+             * if the compromise is electronical isCompromised will always be true,
+             * so the code will always reach the return in this case.
+             */
+            attemptCompromisedFix();
+        }
+
+        if(Math.abs(getLegBRHeight() - getLegBLHeight()) < Constants.LEGS_EMERGENCY_OKAY && Math.abs(getLegFRHeight() - getLegFLHeight()) < Constants.LEGS_EMERGENCY_OKAY)
+            stillDisabled = false;
+    }
+
+    private void attemptCompromisedFix() {
+        if(Math.abs(getLegBRHeight() - getLegBLHeight()) >= Constants.LEGS_EMERGENCY_OKAY){
+            _setLegBLSpeed(Math.signum(getLegBRHeight() - getLegBLHeight())*Constants.EMERGENCY_FIX_SPEED);
+            _setLegBRSpeed(Math.signum(getLegBLHeight() - getLegBRHeight())*Constants.EMERGENCY_FIX_SPEED);
+        }
+        else{
+            _setLegBLSpeed(0);
+            _setLegBRSpeed(0);
+        }
+
+        if(Math.abs(getLegFRHeight() - getLegFLHeight()) >= Constants.LEGS_EMERGENCY_OKAY){
+            _setLegFLSpeed(Math.signum(getLegFRHeight() - getLegFLHeight())*Constants.EMERGENCY_FIX_SPEED);
+            _setLegFRSpeed(Math.signum(getLegFLHeight() - getLegFRHeight())*Constants.EMERGENCY_FIX_SPEED);
+        }
+        else{
+            _setLegFLSpeed(0);
+            _setLegFRSpeed(0);
         }
     }
 
@@ -239,11 +271,22 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * @return returns whether the mechanism should be disabled. if the subsystem is fine, returns false.
      */
     public boolean isCompromised() {
+        return stillDisabled || isCompromisedElectronical() ||
+                Math.abs(getLegFRHeight() - getLegFLHeight()) > Constants.LEG_EMERGENCY_STOP ||
+                Math.abs(getLegBRHeight() - getLegBLHeight()) > Constants.LEG_EMERGENCY_STOP;
+    }
+
+    /**
+     * A sub command of isCompromised, only this method only checks whether any of the encoders disconnected.
+     * This method is used to differentiate between what problems we want to try to fix in real time, to the ones we have
+     * to stop until a manual check is done.
+     * @return if any of the climbing sensors is compromised.
+     */
+    private boolean isCompromisedElectronical(){
         return ((!talonFL.getSensorCollection().isFwdLimitSwitchClosed() && !talonFL.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonFR.getSensorCollection().isFwdLimitSwitchClosed() && !talonFR.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonBL.getSensorCollection().isFwdLimitSwitchClosed() && !talonBL.getSensorCollection().isRevLimitSwitchClosed()) ||
-                (!talonBR.getSensorCollection().isFwdLimitSwitchClosed() && !talonBR.getSensorCollection().isRevLimitSwitchClosed())) ||
-                Math.abs(getLegFRHeight() - getLegFLHeight()) > Constants.LEG_EMERGENCY_STOP;
+                (!talonBR.getSensorCollection().isFwdLimitSwitchClosed() && !talonBR.getSensorCollection().isRevLimitSwitchClosed()));
     }
 
     /**
@@ -258,13 +301,33 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     }
 
     /**
+     * don't use unless you are sure of what you are doing.
+     * @param speed
+     */
+    private void _setLegFLSpeed(double speed){
+        talonFL.set(ControlMode.PercentOutput, speed);
+    }
+
+    private void _setLegFRSpeed(double speed){
+        talonFR.set(ControlMode.PercentOutput, speed);
+
+    }
+
+    public void _setLegBLSpeed(double speed) {
+        talonBL.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void _setLegBRSpeed(double speed) {
+        talonBR.set(ControlMode.PercentOutput, speed);
+    }
+    /**
      * reset all four encoder values
      */
     public void resetEncoders() {
-        talonFL.setSelectedSensorPosition(Constants.FRONT_LEFT_STARTING_OFFSET);
-        talonFR.setSelectedSensorPosition(Constants.FRONT_RIGHT_STARTING_OFFSET);
-        talonBL.setSelectedSensorPosition(Constants.BACK_LEFT_STARTING_OFFSET);
-        talonBR.setSelectedSensorPosition(Constants.BACK_RIGHT_STARTING_OFFSET);
+        talonFL.setSelectedSensorPosition(0);
+        talonFR.setSelectedSensorPosition(0);
+        talonBL.setSelectedSensorPosition(0);
+        talonBR.setSelectedSensorPosition(0);
     }
 
     /**

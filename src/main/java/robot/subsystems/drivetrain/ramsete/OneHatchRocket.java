@@ -7,6 +7,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
+import robot.subsystems.hatch_intake.commands.TakeHatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +22,28 @@ public class OneHatchRocket extends CommandGroup {
         addParallel(new ElevatorCommand(height));
         //Drive to rocket
         List<Pose2d> toRocket = new ArrayList<>();
-        toRocket.add(new Pose2d(LengthKt.getFeet(13.052), LengthKt.getFeet(4.284), Rotation2dKt.getDegree(150)));
-        toRocket.add(new Pose2d(LengthKt.getFeet(16.996), LengthKt.getFeet(1.976), Rotation2dKt.getDegree(150)));
+        toRocket.add(new Pose2d(LengthKt.getFeet(12.973), LengthKt.getFeet(4.789), Rotation2dKt.getDegree(150)));
+        toRocket.add(new Pose2d(LengthKt.getFeet(16.349), LengthKt.getFeet(2.709), Rotation2dKt.getDegree(150)));
         addSequential(new DrivePathVision(toRocket, true, true, 0, 0, false));
+
         //Score hatch
         addSequential(new HatchScoring(height, false));
 
-        //Turn to prepare for loading station path
-//        List<Pose2d> turn = new ArrayList<>();
-//        turn.add(new Pose2d(LengthKt.getFeet(13.416), LengthKt.getFeet(3.847), Rotation2dKt.getDegree(-90)));
-//        addSequential(new DrivePathVision(turn, false, false, 0, 0, false));
+        List<Pose2d> driveBack = new ArrayList<>();
+        driveBack.add(new Pose2d(LengthKt.getFeet(11.677), LengthKt.getFeet(6.412), Rotation2dKt.getDegree(90)));
+        addSequential(new DrivePathVision(driveBack, false, false, 0, 0, false));
+
+        List<Pose2d> driveForward = new ArrayList<>();
+        driveForward.add(new Pose2d(LengthKt.getFeet(7.922), LengthKt.getFeet(2.9), Rotation2dKt.getDegree(0)));
+
+        addSequential(new DrivePathVision(driveForward, true, false, 0, 0, false));
+
+        List<Pose2d> toLoadingStation = new ArrayList<>();
+        toLoadingStation.add(new Pose2d(LengthKt.getFeet(2.25), LengthKt.getFeet(2.947), Rotation2dKt.getDegree(0)));
+
+        addSequential(new DrivePathVision(toLoadingStation, true, true, 0, 0, false));
+
+        addSequential(new TakeHatch());
 
     }
 
