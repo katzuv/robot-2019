@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package robot.subsystems.cargo_intake;
+package robot.subsystems.wrist_control;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -13,7 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import robot.Robot;
-import robot.subsystems.cargo_intake.commands.JoystickWristTurn;
+import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
 import static robot.Robot.cargoIntake;
 
@@ -23,16 +23,14 @@ import static robot.Robot.cargoIntake;
  *
  * @author lior
  */
-public class CargoIntake extends Subsystem {
+public class WristControl extends Subsystem {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
-    private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
-    private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
     private double setPointAngle;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public CargoIntake() {
+    public WristControl() {
         /*
         config for the feedback sensor
          */
@@ -91,24 +89,16 @@ public class CargoIntake extends Subsystem {
     }
 
 
-    public double getProximityVoltage() {
-        return proximitySensor.getVoltage();//proximitySensor.getVoltage();
-    }//returns the current voltage in the proximity sensor
 
-    public boolean isCargoInside() {
-        return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;
-    }
 
-    public void setGripperSpeed(double speed) {
-        IntakeMotor.set(ControlMode.PercentOutput, speed);
-    }
+
+
 
     public void setWristSpeed(double speed) {
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
     public void resetSensors() {
-        resetProximitySensor();
         resetWristEncoder();
     }
 
@@ -211,7 +201,5 @@ public class CargoIntake extends Subsystem {
         setDefaultCommand(new JoystickWristTurn());
     }
 
-    private void resetProximitySensor() {
-        //proximitySensor.resetAccumulator();
-    }
+
 }

@@ -1,4 +1,4 @@
-package robot.subsystems.cargo_intake.commands;
+package robot.subsystems.wrist_control.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.OI;

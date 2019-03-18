@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 
 import static robot.Robot.cargoIntake;
+import static robot.Robot.gripperWheels;
 
 /**
  *
@@ -26,7 +27,7 @@ public class ConditionalElevatorCommand extends ConditionalCommand {
 
     @Override
     protected boolean condition() {
-        return cargoIntake.isCargoInside();
+        return gripperWheels.isCargoInside();
     }
 
     // Make this return true when this Command no longer needs to run execute()

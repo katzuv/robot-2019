@@ -1,11 +1,9 @@
-package robot.subsystems.cargo_intake.commands;
+package robot.subsystems.wrist_control.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
-import robot.subsystems.cargo_intake.Constants;
+import robot.subsystems.wrist_control.Constants;
 
 import static robot.Robot.cargoIntake;
-import static robot.Robot.hatchIntake;
 
 /**
  *

@@ -17,9 +17,9 @@ import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.auxiliary.Trigger;
-import robot.subsystems.cargo_intake.Constants;
-import robot.subsystems.cargo_intake.commands.GripperControl;
-import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.wrist_control.Constants;
+import robot.subsystems.gripper_wheels.commands.GripperControl;
+import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.subsystems.commandGroups.CargoScoring;
 import robot.subsystems.commandGroups.HatchScoring;
 import robot.subsystems.commandGroups.ShiftButton;
@@ -30,13 +30,7 @@ import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Gripper;
 import robot.subsystems.hatch_intake.commands.GripperTransportation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static robot.subsystems.cargo_intake.Constants.SLOW_DRIVE;
+import static robot.subsystems.wrist_control.Constants.SLOW_DRIVE;
 
 /**
  * This class is the glue that binds the controls on the physical operator
