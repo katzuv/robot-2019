@@ -8,8 +8,8 @@ import static robot.Robot.hatchIntake;
 this command controls the flower on the robot
  */
 public class Flower extends InstantCommand {
-    
-    private gripperState current;//enum variable that indicates the current mode of the gripper
+
+    private gripperState current;//enum variable that indicates the current mode of the flower
 
     /**
      * empty constructor, sets the wanted state to toggle meaning whenever the command is called it will toggle the current state
@@ -29,22 +29,22 @@ public class Flower extends InstantCommand {
     public Flower(boolean open) {
         requires(hatchIntake);
         if (open)
-            current = gripperState.GRIPPER_GRAB;
+            current = gripperState.FLOWER_GRAB;
         else
-            current = gripperState.GRIPPER_RELEASE;
+            current = gripperState.FLOWER_RELEASE;
     }
 
     @Override
     public void initialize() {
         switch (current) {
             case TOGGLE_FLOWER: // Change to the second state
-                hatchIntake.setGripper(!hatchIntake.isGripperOpen());
+                hatchIntake.setFlower(!hatchIntake.isFlowerOpen());
                 break;
-            case GRIPPER_GRAB: // Open the gripper if closed and not do anything otherwise
-                hatchIntake.setGripper(true);
+            case FLOWER_GRAB: // Open the gripper if closed and not do anything otherwise
+                hatchIntake.setFlower(true);
                 break;
-            case GRIPPER_RELEASE:// Close the gripper if opened and not do anything otherwise
-                hatchIntake.setGripper(false);
+            case FLOWER_RELEASE:// Close the gripper if opened and not do anything otherwise
+                hatchIntake.setFlower(false);
                 break;
         }
     }
@@ -74,7 +74,7 @@ public class Flower extends InstantCommand {
      */
     public enum gripperState {
         TOGGLE_FLOWER,
-        GRIPPER_GRAB,
-        GRIPPER_RELEASE
+        FLOWER_GRAB,
+        FLOWER_RELEASE
     }
 }

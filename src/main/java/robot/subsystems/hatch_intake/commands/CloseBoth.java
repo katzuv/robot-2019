@@ -9,6 +9,6 @@ public class CloseBoth extends CommandGroup {
 
     public CloseBoth() {
         addParallel(new Flower(false));
-        addSequential(new GripperPlate(false));
+        addSequential(new ExtensionPlate(false));
     }
 }

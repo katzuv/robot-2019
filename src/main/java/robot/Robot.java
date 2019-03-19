@@ -211,7 +211,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
         Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
-        SmartDashboard.putBoolean("Flower open", hatchIntake.isGripperOpen());
+        SmartDashboard.putBoolean("Flower open", hatchIntake.isFlowerOpen());
         SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
         SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());

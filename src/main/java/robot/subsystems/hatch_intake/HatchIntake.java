@@ -20,44 +20,44 @@ import static robot.Robot.elevator;
  */
 public class HatchIntake extends Subsystem {
 
-    private final DoubleSolenoid gripper = new DoubleSolenoid(1, Ports.gripperForward, Ports.gripperReverse);
-    private final DoubleSolenoid gripperPlate = new DoubleSolenoid(1, Ports.gripperPlateForward, Ports.gripperPlateReverse);
+    private final DoubleSolenoid flower = new DoubleSolenoid(1, Ports.flowerForward, Ports.flowerReverse);
+    private final DoubleSolenoid extensionPlate = new DoubleSolenoid(1, Ports.extensionPlateForward, Ports.extensionPlateReverse);
 
     public HatchIntake() {
     }
 
     /**
-     * a command to set the gripper, close it if it is already open and open it if it is already closed
+     * a command to set the flower, close it if it is already open and open it if it is already closed
      */
-    public void setGripper(boolean open) {
+    public void setFlower(boolean open) {
         if (open && !elevator.isSetpointInDangerZone())
-            gripper.set(DoubleSolenoid.Value.kForward);
+            flower.set(DoubleSolenoid.Value.kForward);
         else
-            gripper.set(DoubleSolenoid.Value.kReverse);
+            flower.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
-     * @return returns true if the gripper is open and false otherwise
+     * @return returns true if the flower is open and false otherwise
      */
-    public boolean isGripperOpen() {
-        return gripper.get() == DoubleSolenoid.Value.kForward;
+    public boolean isFlowerOpen() {
+        return flower.get() == DoubleSolenoid.Value.kForward;
     }
 
     /**
      * if true, extend forward
      */
-    public void setGripperPlate(boolean extend) {
+    public void setExtensionPlate(boolean extend) {
         if (extend && !elevator.isSetpointInDangerZone())
-            gripperPlate.set(DoubleSolenoid.Value.kForward);
+            extensionPlate.set(DoubleSolenoid.Value.kForward);
         else
-            gripperPlate.set(DoubleSolenoid.Value.kReverse);
+            extensionPlate.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
-     * @return true if the gripper is extended and false otherwise
+     * @return true if the flower is extended and false otherwise
      */
-    public boolean isGripperPlateExtended() {
-        return gripperPlate.get() == DoubleSolenoid.Value.kForward;
+    public boolean isExtensionPlateExtended() {
+        return extensionPlate.get() == DoubleSolenoid.Value.kForward;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class HatchIntake extends Subsystem {
      * This is called whenever the mechanism is in danger.
      */
     public void emergencyClose() {
-        setGripperPlate(false);
-        setGripper(false);
+        setExtensionPlate(false);
+        setFlower(false);
     }
 }
