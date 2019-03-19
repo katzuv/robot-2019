@@ -32,6 +32,7 @@ public class Constants {
     static final boolean RIGHT_SLAVE1_REVERSED = isRobotA ? true : true;
     static final boolean RIGHT_SLAVE2_REVERSED = isRobotA ? true : true;
 
+    public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
     /*
     Ramsete constants
      */

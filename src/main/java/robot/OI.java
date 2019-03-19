@@ -30,7 +30,7 @@ import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.hatch_intake.commands.GripperPlate;
 import robot.utilities.TriggerButton;
 
-import static robot.subsystems.wrist_control.Constants.SLOW_DRIVE;
+import static robot.subsystems.drivetrain.Constants.SLOW_JOYSTICK_SPEED;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -195,11 +195,11 @@ public class OI {
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
     public double leftDriveStick() { // TODO: might need name refactoring
-        return -SLOW_DRIVE * leftStick.getY();
+        return -SLOW_JOYSTICK_SPEED * leftStick.getY();
     }
 
     public double rightDriveStick() {
-        return -SLOW_DRIVE * rightStick.getY();
+        return -SLOW_JOYSTICK_SPEED * rightStick.getY();
     }
 
     public double rightSideAxis() {

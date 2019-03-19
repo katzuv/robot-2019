@@ -3,12 +3,24 @@ package robot.subsystems.wrist_control;
 import static robot.Robot.isRobotA;
 
 public class Constants {
-    public static final double DROP_WRIST_ANGLE = 6;
     final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.64;
+    final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
+
+
+    final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : false;
+    final static boolean SENSOR_PHASE = isRobotA ? false : false;
+
+    final static boolean SOFT_LIMIT_OVERRIDE = isRobotA ? true : true;
+    final static boolean LIMIT_SWITCH_OVERRIDE = isRobotA ? true : false;
+
+    final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : true;
+    final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : true;
+
+
+    final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 2468;
     public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 4200;
-    public static final double SLOW_DRIVE = 0.9; //TODO: shouldnt be here
 
     final static double kP = isRobotA ? 0.6 : 0.7;
     final static double kD = isRobotA ? 150 : 150;
@@ -17,26 +29,14 @@ public class Constants {
     final static int IZone = isRobotA ? 50 : 50;
     final static double kI = isRobotA ? 0.001 : 0.00197;
 
-
-    final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
-
-    final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : true;
-    final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : true;
-    final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : false;
-
-
-    final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
-
-    final static boolean SENSOR_PHASE = isRobotA ? false : false;
-
-    final static boolean SOFT_LIMIT_OVERRIDE = isRobotA ? true : true;
-    final static boolean LIMIT_SWITCH_OVERRIDE = isRobotA ? true : false;
-
     final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.7 : 0.6;
     final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.7 : -0.6;
 
 
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
+
+
+    public static final double DROP_WRIST_ANGLE = 6;
 
     public enum WRIST_ANGLES {
         INITIAL(0),
@@ -61,7 +61,6 @@ public class Constants {
             return wristAngle;
         }
     }
-
 
     public enum GRIPPER_SPEED {
         INTAKE(-0.75),
