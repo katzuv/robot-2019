@@ -1,9 +1,7 @@
 package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import robot.Robot;
 import robot.subsystems.climb.Constants;
-import robot.subsystems.climb.TiltUtils;
 
 import static robot.Robot.climb;
 
