@@ -50,6 +50,10 @@ public class Drivetrain extends Subsystem {
         leftMaster.setSensorPhase(Constants.LEFT_ENCODER_REVERSED);
         rightMaster.setSensorPhase(Constants.RIGHT_ENCODER_REVERSED);
 
+        leftMaster.configMotionCruiseVelocity(Constants.MOTION_CRUISE_VELOCITY);
+        rightMaster.configMotionCruiseVelocity(Constants.MOTION_CRUISE_VELOCITY);
+        leftMaster.configMotionAcceleration(Constants.MOTION_ACCELERATION);
+        rightMaster.configMotionAcceleration(Constants.MOTION_ACCELERATION);
         if (!Robot.isRobotA) {
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
