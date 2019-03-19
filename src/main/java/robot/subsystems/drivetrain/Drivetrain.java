@@ -95,16 +95,6 @@ public class Drivetrain extends Subsystem {
         rightMaster.config_kD(0, Constants.PIDFRight[2], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kF(0, Constants.PIDFRight[3], Constants.TALON_TIMEOUT_MS);
 
-
-        rightMaster.config_kP(1, Constants.PIDFDrive[0], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kI(1, Constants.PIDFDrive[1], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kD(1, Constants.PIDFDrive[2], Constants.TALON_TIMEOUT_MS);
-        rightMaster.config_kF(1, Constants.PIDFDrive[3], Constants.TALON_TIMEOUT_MS);
-
-        leftMaster.config_kP(1, Constants.PIDFDrive[0], Constants.TALON_TIMEOUT_MS);
-        leftMaster.config_kI(1, Constants.PIDFDrive[1], Constants.TALON_TIMEOUT_MS);
-        leftMaster.config_kD(1, Constants.PIDFDrive[2], Constants.TALON_TIMEOUT_MS);
-        leftMaster.config_kF(1, Constants.PIDFDrive[3], Constants.TALON_TIMEOUT_MS);
     }
 
     @Override
@@ -203,7 +193,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        localization.reset(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180)));
+        localization.reset(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180))); //TODO: make this a constant
     }
 
     public void resetLocation(Pose2d pose) {
@@ -299,14 +289,10 @@ public class Drivetrain extends Subsystem {
     }
 
     public void driveDistance(double distance) {
-        leftMaster.selectProfileSlot(1, 1);
-        rightMaster.selectProfileSlot(1, 1);
-
-        leftMaster.set(ControlMode.Position, convertDistanceToTicks(-distance) + leftMaster.getSelectedSensorPosition());
-        rightMaster.set(ControlMode.Position, convertDistanceToTicks(-distance) + rightMaster.getSelectedSensorPosition());
-        leftMaster.selectProfileSlot(0, 0);
-
-        rightMaster.selectProfileSlot(0, 0);
-        leftMaster.selectProfileSlot(0, 0);
+        leftMaster.set(ControlMode.MotionMagic, convertDistanceToTicks(distance + getLeftDistance()));
+        rightMaster.set(ControlMode.MotionMagic, convertDistanceToTicks(distance + getRightDistance()));
+        System.out.println(getLeftDistance());
+        System.out.println(convertDistanceToTicks(distance + getLeftDistance()));
+        System.out.println(convertDistanceToTicks(getLeftDistance()));
     }
 }
