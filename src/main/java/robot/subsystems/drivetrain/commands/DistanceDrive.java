@@ -8,14 +8,15 @@ import static robot.Robot.drivetrain;
  *
  */
 public class DistanceDrive extends Command {
-
-    public DistanceDrive() {
+    private double distance;
+    public DistanceDrive(double distance) {
         requires(drivetrain);
+        this.distance = distance;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        drivetrain.driveDistance(0.1); //TODO: currently this doesn't use the real values
+        drivetrain.driveDistance(distance); //TODO: currently this doesn't use the real values
     }
 
     // Called repeatedly when this Command is scheduled to run
