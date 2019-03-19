@@ -5,13 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package robot.subsystems.gripper_wheels;
+package robot.subsystems.wrist_control;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import robot.subsystems.gripper_wheels.Constants;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.

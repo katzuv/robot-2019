@@ -26,7 +26,7 @@ import robot.subsystems.drivetrain.ramsete.OneHatchRocket;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
-import robot.subsystems.gripper_wheels.GripperWheels;
+import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.hatch_intake.HatchIntake;
 import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;

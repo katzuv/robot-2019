@@ -1,4 +1,4 @@
-package robot.subsystems.gripper_wheels.commands;
+package robot.subsystems.wrist_control.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
