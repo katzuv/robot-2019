@@ -4,6 +4,7 @@ import com.stormbots.MiniPID;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 
 import static robot.Robot.drivetrain;
@@ -12,10 +13,12 @@ import static robot.Robot.drivetrain;
  *
  */
 public class AutoDrive extends Command {
-    private MiniPID speedPid = new MiniPID(0.6, 0.0013, 0.9);
-    private MiniPID turnPid = new MiniPID(0.02, 0, 0.1);
+    private MiniPID speedPid = new MiniPID(0.35, 0.0013, 0.9); //TODO: move these to constants class
+    private MiniPID turnPid = new MiniPID(0.01, 0, 0.1);
+
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
     private NetworkTableEntry distanceEntry = Robot.visionTable.getEntry("tape_distance");
+
     private boolean stop = false;
     private Timer timer = new Timer();
     private double lastDistance = 0;
