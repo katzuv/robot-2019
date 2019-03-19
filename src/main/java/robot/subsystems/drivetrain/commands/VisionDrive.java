@@ -13,7 +13,7 @@ import static robot.Robot.drivetrain;
 /**
  *
  */
-public class AutoDrive extends Command {
+public class VisionDrive extends Command {
     private MiniPID speedPid = new MiniPID(Constants.PIDVisionSpeed[0], Constants.PIDVisionSpeed[1], Constants.PIDVisionSpeed[2]);
     private MiniPID turnPid = new MiniPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
 
@@ -22,7 +22,7 @@ public class AutoDrive extends Command {
 
     private double visionAngle;
     private double visionDistance;
-    public AutoDrive() {
+    public VisionDrive() {
         speedPid.setOutputLimits(-Constants.PEAK_VISION_SPEED, Constants.PEAK_VISION_SPEED);
         requires(drivetrain);
     }
@@ -44,8 +44,8 @@ public class AutoDrive extends Command {
 
         drivetrain.setSpeed(speed - turn, speed + turn);
 
-        SmartDashboard.putNumber("AutoDrive: Turn value", turn);
-        SmartDashboard.putNumber("AutoDrive: Speed", speed);
+        SmartDashboard.putNumber("VisionDrive: Turn value", turn);
+        SmartDashboard.putNumber("VisionDrive: Speed", speed);
     }
 
 
