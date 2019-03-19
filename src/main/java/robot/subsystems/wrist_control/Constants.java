@@ -3,6 +3,7 @@ package robot.subsystems.wrist_control;
 import static robot.Robot.isRobotA;
 
 public class Constants {
+    public static final double DROP_WRIST_ANGLE = 6;
     final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.64;
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 2468;
