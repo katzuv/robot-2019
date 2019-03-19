@@ -7,7 +7,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.command_groups.HatchScoring;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.TakeHatch;
+import robot.subsystems.command_groups.TakeHatch;
 
 import java.util.ArrayList;
 import java.util.List;

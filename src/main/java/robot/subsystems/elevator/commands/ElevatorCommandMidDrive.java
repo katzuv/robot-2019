@@ -42,7 +42,7 @@ public class ElevatorCommandMidDrive extends Command {
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         NetworkTable table = inst.getTable("vision");
         targetDistanceEntry = table.getEntry("distance");
-        if (targetDistanceEntry.getDouble(0) <= 1 && !lifted && !hatchIntake.isGripperPlateExtended() && !hatchIntake.isGripperOpen()){
+        if (targetDistanceEntry.getDouble(0) <= 1 && !lifted && !hatchIntake.isExtensionPlateExtended() && !hatchIntake.isFlowerOpen()){
             elevator.setHeight(height);
             lifted = true;
         }

@@ -1,12 +1,6 @@
 package robot.subsystems.climb;
 import static robot.Robot.isRobotA;
 public class Constants {
-    //The climbing mechanism dimensions, given from the robot.
-    public static final double LEG_X_DIMENSION = isRobotA ? 0.325 : 0.325;
-    public static final double LEG_Y_DIMENSION = isRobotA ? 0.19 : 0.19;
-
-    public static final double BACK_LEG_X_DIMENSION = isRobotA ? 0.35 : 0.35;
-    public static final double BACK_LEG_Y_DIMENSION = isRobotA ? 0.09 : 0.09;
     public static final double LEG_EMERGENCY_STOP = 0.035; //delta between each pair of legs which should stop the robots climbing subsystem
     public static final double LEGS_EMERGENCY_OKAY = 0.01; //delta between each pair of legs in which the mechanism could work again
     public static final double EMERGENCY_FIX_SPEED = 0.22;
@@ -21,7 +15,6 @@ public class Constants {
     public static final double CLIMB_TOLERANCE = 0.0025; //tolerance in meters from the target position, to allow when stopping the code.
     public static final int MOTION_MAGIC_CRUISE_VELOCITY = (int)(0.16 * TICKS_PER_METER / 10); //in meters per seconds
     public static final int MOTION_MAGIC_ACCELERATION= (int)(0.15 * TICKS_PER_METER / 10); //in meters per second squared
-    public static final double CALIBRATE_SPEED = 0.23;
     public static final double DRIVE_CLIMB_DRIVETRAIN_DIVISOR = 2;
 
     //Reverse motor directions

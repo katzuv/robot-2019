@@ -188,6 +188,10 @@ public class Elevator extends Subsystem {
         return Constants.ELEVATOR_MID_HEIGHT < getHeight();
     }
 
+    /**
+     * checks if the elevator is in range of the genesis profile to make sure the hatch system isn't open when in that zone
+     * @return
+     */
     public boolean isSetpointInDangerZone() {
         return (getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
                 (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE);
@@ -224,6 +228,9 @@ public class Elevator extends Subsystem {
         return ticks / Constants.TICKS_PER_METER;
     }
 
+    /**
+     * resets the encoder of the elevator
+     */
     public void resetEncoders() {
         masterMotor.setSelectedSensorPosition(Constants.START_UNIT, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
         setHeight(0);

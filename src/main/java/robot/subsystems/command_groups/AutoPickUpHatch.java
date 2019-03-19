@@ -10,7 +10,7 @@ public class AutoPickUpHatch extends CommandGroup {
     public AutoPickUpHatch() {
 
         //addSequential(new GamePiecePickup(Constants.DRIVING_TARGETS.HATCH));
-        //addSequential(new Gripper(false));
+        //addSequential(new Flower(false));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

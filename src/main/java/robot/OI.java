@@ -18,7 +18,7 @@ import robot.subsystems.climb.commands.*;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.drivetrain.commands.TestDrive;
 import robot.subsystems.wrist_control.Constants;
-import robot.subsystems.gripper_wheels.commands.GripperControl;
+import robot.subsystems.wrist_control.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.subsystems.command_groups.CargoScoring;
 import robot.subsystems.command_groups.HatchScoring;
@@ -28,11 +28,11 @@ import robot.subsystems.drivetrain.commands.AutoDrive;
 import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
-import robot.subsystems.hatch_intake.commands.Gripper;
-import robot.subsystems.hatch_intake.commands.GripperTransportation;
+import robot.subsystems.hatch_intake.commands.Flower;
+import robot.subsystems.hatch_intake.commands.ExtensionPlate;
 import robot.utilities.TriggerButton;
 
-import static robot.subsystems.wrist_control.Constants.SLOW_DRIVE;
+import static robot.subsystems.drivetrain.Constants.SLOW_JOYSTICK_SPEED;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -142,9 +142,9 @@ public class OI {
         RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
         LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
 
-        a.whenPressed(new Gripper());
-        lb.whenPressed(new GripperTransportation(false));
-        rb.whenPressed(new GripperTransportation(true));
+        a.whenPressed(new Flower());
+        lb.whenPressed(new ExtensionPlate(false));
+        rb.whenPressed(new ExtensionPlate(true));
         //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
@@ -197,11 +197,11 @@ public class OI {
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
     public double leftDriveStick() { // TODO: might need name refactoring
-        return -SLOW_DRIVE * leftStick.getY();
+        return -SLOW_JOYSTICK_SPEED * leftStick.getY();
     }
 
     public double rightDriveStick() {
-        return -SLOW_DRIVE * rightStick.getY();
+        return -SLOW_JOYSTICK_SPEED * rightStick.getY();
     }
 
     public double rightSideAxis() {

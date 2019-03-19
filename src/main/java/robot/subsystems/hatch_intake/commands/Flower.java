@@ -1,29 +1,23 @@
 package robot.subsystems.hatch_intake.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import robot.Robot;
-import robot.subsystems.hatch_intake.HatchIntake;
 
 import static robot.Robot.hatchIntake;
 
 /*
 this command controls the flower on the robot
  */
-public class Gripper extends InstantCommand {
+public class Flower extends InstantCommand {
 
-    private boolean open;//indicates whether the flower is open or not
-
-    private gripperState current;//enum variable that indicates the current mode of the gripper
-
+    private gripperState current;//enum variable that indicates the current mode of the flower
 
     /**
      * empty constructor, sets the wanted state to toggle meaning whenever the command is called it will toggle the current state
      * instead of going to the wanted state
      */
-    public Gripper() {
+    public Flower() {
         requires(hatchIntake);
-        current = gripperState.TOGGLE_GRIPPER;
+        current = gripperState.TOGGLE_FLOWER;
 
     }
 
@@ -32,25 +26,25 @@ public class Gripper extends InstantCommand {
      *
      * @param open if true changes the wanted state to open and otherwise sets the wanted state to cloes
      */
-    public Gripper(boolean open) {
+    public Flower(boolean open) {
         requires(hatchIntake);
         if (open)
-            current = gripperState.GRIPPER_GRAB;
+            current = gripperState.FLOWER_GRAB;
         else
-            current = gripperState.GRIPPER_RELEASE;
+            current = gripperState.FLOWER_RELEASE;
     }
 
     @Override
     public void initialize() {
         switch (current) {
-            case TOGGLE_GRIPPER: // Change to the second state
-                hatchIntake.setGripper(!hatchIntake.isGripperOpen());
+            case TOGGLE_FLOWER: // Change to the second state
+                hatchIntake.setFlower(!hatchIntake.isFlowerOpen());
                 break;
-            case GRIPPER_GRAB: // Open the gripper if closed and not do anything otherwise
-                hatchIntake.setGripper(true);
+            case FLOWER_GRAB: // Open the gripper if closed and not do anything otherwise
+                hatchIntake.setFlower(true);
                 break;
-            case GRIPPER_RELEASE:// Close the gripper if opened and not do anything otherwise
-                hatchIntake.setGripper(false);
+            case FLOWER_RELEASE:// Close the gripper if opened and not do anything otherwise
+                hatchIntake.setFlower(false);
                 break;
         }
     }
@@ -79,8 +73,8 @@ public class Gripper extends InstantCommand {
      * enum to indicate the state of the gripper
      */
     public enum gripperState {
-        TOGGLE_GRIPPER,
-        GRIPPER_GRAB,
-        GRIPPER_RELEASE
+        TOGGLE_FLOWER,
+        FLOWER_GRAB,
+        FLOWER_RELEASE
     }
 }

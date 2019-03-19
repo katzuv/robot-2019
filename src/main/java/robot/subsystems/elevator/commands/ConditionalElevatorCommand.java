@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import static robot.Robot.gripperWheels;
 
 /**
- *
+ *This conditional command checks if there's a cargo inside the system to see if the elevator needs to go to hatch heights or cargo heights
  */
 public class ConditionalElevatorCommand extends ConditionalCommand {
 

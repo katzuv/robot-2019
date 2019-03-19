@@ -210,7 +210,10 @@ public class Drivetrain extends Subsystem {
         localization.reset(pose);
     }
 
-    public void setMotorsToBrake() {
+    /**
+     * Sets all the motors of the drivetrain to a brake neutral mode
+     */
+    public void setMotorsToBrake(){
         leftMaster.setNeutralMode(NeutralMode.Brake);
         leftSlave1.setNeutralMode(NeutralMode.Brake);
         leftSlave2.setNeutralMode(NeutralMode.Brake);
@@ -219,7 +222,10 @@ public class Drivetrain extends Subsystem {
         rightSlave1.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setMotorsToCoast() {
+    /**
+     * Sets all the motors of the drivetrain to a coast neutral mode
+     */
+    public void setMotorsToCoast(){
         leftMaster.setNeutralMode(NeutralMode.Coast);
         leftSlave1.setNeutralMode(NeutralMode.Coast);
         leftSlave2.setNeutralMode(NeutralMode.Coast);

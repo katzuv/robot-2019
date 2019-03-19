@@ -25,9 +25,6 @@ public class WristControl extends Subsystem {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private double setPointAngle;
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
     public WristControl() {
         /*
         config for the feedback sensor
@@ -63,7 +60,7 @@ public class WristControl extends Subsystem {
         wrist.configNominalOutputForward(0., Constants.TALON_TIME_OUT);
         wrist.configNominalOutputReverse(0, Constants.TALON_TIME_OUT);
         wrist.configPeakOutputForward(Constants.PEAK_OUTPUT_FORWARD, Constants.TALON_TIME_OUT);
-        wrist.configPeakOutputReverse(Constants.PEAK_OUTPUT_REVERSE, Constants.TALON_TIME_OUT); //TODO: change back to .5
+        wrist.configPeakOutputReverse(Constants.PEAK_OUTPUT_REVERSE, Constants.TALON_TIME_OUT);
         /*
         profile config
          */
@@ -110,7 +107,7 @@ public class WristControl extends Subsystem {
 
     public double stallCurrent() {
         final double wristAngle = wristControl.getWristAngle();
-        if (wristAngle < 6 && setPointAngle < 3) { //TODO: needs to be a constants
+        if (wristAngle < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2) {
             return 0;
         }
         final double COMCosine = Math.cos(Math.toRadians(15 + wristControl.getWristAngle()));
