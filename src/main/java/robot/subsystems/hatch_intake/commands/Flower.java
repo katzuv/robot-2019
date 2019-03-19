@@ -8,11 +8,8 @@ import static robot.Robot.hatchIntake;
 this command controls the flower on the robot
  */
 public class Flower extends InstantCommand {
-
-    private boolean open;//indicates whether the flower is open or not
-
+    
     private gripperState current;//enum variable that indicates the current mode of the gripper
-
 
     /**
      * empty constructor, sets the wanted state to toggle meaning whenever the command is called it will toggle the current state

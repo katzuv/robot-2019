@@ -27,7 +27,7 @@ import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Flower;
-import robot.subsystems.hatch_intake.commands.GripperTransportation;
+import robot.subsystems.hatch_intake.commands.GripperPlate;
 import robot.utilities.TriggerButton;
 
 import static robot.subsystems.wrist_control.Constants.SLOW_DRIVE;
@@ -141,8 +141,8 @@ public class OI {
         LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
 
         a.whenPressed(new Flower());
-        lb.whenPressed(new GripperTransportation(false));
-        rb.whenPressed(new GripperTransportation(true));
+        lb.whenPressed(new GripperPlate(false));
+        rb.whenPressed(new GripperPlate(true));
         //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));

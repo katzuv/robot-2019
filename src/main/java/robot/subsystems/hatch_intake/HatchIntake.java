@@ -13,20 +13,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import static robot.Robot.elevator;
 
 /**
- * An example subsystem.  You can replace me with your own Subsystem.
+ * Hatch subsystem for the 2019 robot 'GENESIS'
+ * the hatch subsystem uses two pistons, one which grabs the hatch and the other which extends the mechanism forward.
+ *
+ * @author paulo
  */
-public class HatchIntake extends Subsystem { //TODO: needs java-doc
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+public class HatchIntake extends Subsystem {
+
     private final DoubleSolenoid gripper = new DoubleSolenoid(1, Ports.gripperForward, Ports.gripperReverse);
     private final DoubleSolenoid gripperPlate = new DoubleSolenoid(1, Ports.gripperPlateForward, Ports.gripperPlateReverse);
 
-
     public HatchIntake() {
     }
-
-
-
 
     /**
      * a command to set the gripper, close it if it is already open and open it if it is already closed
@@ -62,17 +60,14 @@ public class HatchIntake extends Subsystem { //TODO: needs java-doc
         return gripperPlate.get() == DoubleSolenoid.Value.kForward;
     }
 
-    /**
-     * @return if the hatch is inside
-     */
-
-
     @Override
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
+        // There is no default command for the hatches currently
     }
 
+    /**
+     * This is called whenever the mechanism is in danger.
+     */
     public void emergencyClose() {
         setGripperPlate(false);
         setGripper(false);
