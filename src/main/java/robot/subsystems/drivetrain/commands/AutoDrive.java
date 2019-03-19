@@ -38,7 +38,7 @@ public class AutoDrive extends Command {
     protected void execute() {
         double angle = angleEntry.getDouble(0);
         double distance = distanceEntry.getDouble(0);
-        if (distance == 0) {
+        if (distance < 0.4) { //Stops in cases where the target is too close, or when the target isn't visible(in these cases the distance is 0)
             stop = true;
         }
         double speed = speedPid.getOutput(distance, 0.6);
@@ -56,9 +56,13 @@ public class AutoDrive extends Command {
             }
             drivetrain.setSpeed(speed - turn, speed + turn);
             lastDistance = distance;
+
+            SmartDashboard.putNumber("AutoDrive: Turn value", turn);
+            SmartDashboard.putNumber("AutoDrive: Speed", speed);
         }
 
     }
+
 
     protected boolean isFinished() {
         return false;
