@@ -34,7 +34,7 @@ public class VisionDrive extends Command {
         visionAngle = angleEntry.getDouble(0);
         visionDistance = distanceEntry.getDouble(0);
 
-        double speed = speedPid.getOutput(visionDistance, 0.6);
+        double speed = speedPid.getOutput(visionDistance, 0.4);
         double turn = turnPid.getOutput(visionAngle, 0);
 
         drivetrain.setSpeed(speed - turn, speed + turn);
@@ -44,7 +44,7 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return visionDistance < 0.4;
+        return visionDistance < 0.7 && Math.abs(visionAngle) < 1;
     }
 
     protected void end() {
