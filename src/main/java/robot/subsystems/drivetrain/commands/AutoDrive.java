@@ -2,6 +2,7 @@ package robot.subsystems.drivetrain.commands;
 
 import com.stormbots.MiniPID;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,6 +31,12 @@ public class AutoDrive extends Command {
     }
 
     protected void initialize() {
+        double p = SmartDashboard.getNumber("Speed p value", 0);
+        double i = SmartDashboard.getNumber("speed i value", 0);
+        double d = SmartDashboard.getNumber("speed d value", 0);
+        speedPid.setP(p);
+        speedPid.setI(i);
+        speedPid.setD(d);
         stop = false;
         driven = false;
         timer.reset();
@@ -77,3 +84,5 @@ public class AutoDrive extends Command {
         end();
     }
 }
+
+
