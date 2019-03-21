@@ -25,6 +25,7 @@ public class Constants {
     public static final int TALON_TIMEOUT_MS = isRobotA ? 10 : 10;
     public static final int MOTION_ACCELERATION = (int)(TICKS_PER_METER * 1 / 10);
     public static final int MOTION_CRUISE_VELOCITY = (int)(TICKS_PER_METER * 2.5 / 10);
+    public static final double ENDING_TOLERANCE = 0.05;
 
 
     // (8 inches), the encoder sends 226
@@ -38,10 +39,10 @@ public class Constants {
 
     public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
 
-    public static final double PEAK_VISION_SPEED = 0.75; //greater than zero, maximum meters per second when driving with vision
+    public static final double PEAK_VISION_SPEED = 1; //greater than zero, maximum meters per second when driving with vision
 
-    public static final double[] PIDVisionSpeed = isRobotA ? new double[]{0.35, 0.0013, 0.9} : new double[]{0, 0, 0};
-    public static final double[] PIDVisionTurn = isRobotA ? new double[]{0.01, 0, 0.1} : new double[]{0, 0, 0};
+    public static final double[] PIDVisionSpeed = isRobotA ? new double[]{0.28, 0, 0.5} : new double[]{0, 0, 0};
+    public static final double[] PIDVisionTurn = isRobotA ? new double[]{0.007, 0,0 } : new double[]{0, 0, 0};
     /*
     Ramsete constants
      */
