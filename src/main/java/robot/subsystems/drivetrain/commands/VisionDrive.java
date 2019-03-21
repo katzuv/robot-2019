@@ -37,17 +37,11 @@ public class VisionDrive extends Command {
         double speed = speedPid.getOutput(visionDistance, 0.6);
         double turn = turnPid.getOutput(visionAngle, 0);
 
-        if (visionAngle > 1)
-            turn -= 0.05;
-        else if (visionAngle < -1)
-            turn += 0.05;
-
         drivetrain.setSpeed(speed - turn, speed + turn);
 
         SmartDashboard.putNumber("VisionDrive: Turn value", turn);
         SmartDashboard.putNumber("VisionDrive: Speed", speed);
     }
-
 
     protected boolean isFinished() {
         return visionDistance < 0.4;
