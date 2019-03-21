@@ -2,7 +2,6 @@ package robot.subsystems.drivetrain.commands;
 
 import com.stormbots.MiniPID;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
@@ -16,14 +15,15 @@ import static robot.Robot.drivetrain;
 public class VisionDrive extends Command {
     private MiniPID speedPid = new MiniPID(Constants.PIDVisionSpeed[0], Constants.PIDVisionSpeed[1], Constants.PIDVisionSpeed[2]);
     private MiniPID turnPid = new MiniPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
-
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
     private NetworkTableEntry distanceEntry = Robot.visionTable.getEntry("tape_distance");
-
     private double visionAngle;
     private double visionDistance;
+
     public VisionDrive() {
+
         speedPid.setOutputLimits(-Constants.PEAK_VISION_SPEED, Constants.PEAK_VISION_SPEED);
+        turnPid.setOutputLimits(-1, 1);
         requires(drivetrain);
     }
 
