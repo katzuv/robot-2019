@@ -1,6 +1,7 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.drivetrain.Constants;
 
 import static robot.Robot.drivetrain;
@@ -30,7 +31,7 @@ public class DistanceDrive extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (distance + startDistance) - ((drivetrain.getLeftDistance() + drivetrain.getRightDistance()) / 2) < Constants.ENDING_TOLERANCE;
+        return Math.abs((distance + startDistance) - ((drivetrain.getLeftDistance() + drivetrain.getRightDistance()) / 2)) < Constants.ENDING_TOLERANCE;
     }
 
     // Called once after isFinished returns true
