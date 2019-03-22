@@ -28,6 +28,9 @@ public class VisionDrive extends Command {
     }
 
     protected void initialize() {
+        drivetrain.setMotorsToBrake();
+
+        updateConstants();
     }
 
     protected void execute() {
@@ -44,13 +47,21 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return visionDistance < 0.7 && Math.abs(visionAngle) < 1;
+        return visionDistance < 0.45 && Math.abs(visionAngle) < 1;
     }
 
     protected void end() {
+        drivetrain.setSpeed(0,0);
+        drivetrain.setMotorsToCoast();
+
     }
 
     protected void interrupted() {
         end();
+    }
+
+    public void updateConstants(){
+        speedPid.setPID(Constants.PIDVisionSpeed[0], Constants.PIDVisionSpeed[1], Constants.PIDVisionSpeed[2]);
+        turnPid.setPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
     }
 }
