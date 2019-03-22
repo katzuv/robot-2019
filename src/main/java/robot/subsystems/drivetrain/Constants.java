@@ -39,10 +39,10 @@ public class Constants {
 
     public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
 
-    public static final double PEAK_VISION_SPEED = 1; //greater than zero, maximum meters per second when driving with vision
+    public static final double PEAK_VISION_SPEED = 0.75; //greater than zero, maximum meters per second when driving with vision
 
-    public static final double[] PIDVisionSpeed = isRobotA ? new double[]{0.28, 0, 0.5} : new double[]{0, 0, 0};
-    public static final double[] PIDVisionTurn = isRobotA ? new double[]{0.007, 0,0 } : new double[]{0, 0, 0};
+    public static double[] PIDVisionSpeed = isRobotA ? new double[]{0.28, 0, 0.5} : new double[]{0, 0, 0};
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.0158, 0.000015,0.1 } : new double[]{0, 0, 0};
     /*
     Ramsete constants
      */
@@ -54,7 +54,6 @@ public class Constants {
     public static final double angleKp = isRobotA ? 1.6 : 1.37;
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
-    public static double[] PIDFDrive = new double[]{0.1, 0, 0, 0};
 
     static {
         constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
