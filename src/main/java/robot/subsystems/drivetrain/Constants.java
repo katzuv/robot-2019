@@ -41,7 +41,7 @@ public class Constants {
 
     public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
 
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.017, 0.000017, 0.1} : new double[]{0, 0, 0};
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.012, 0.0001, 0} : new double[]{0, 0, 0};
 
     /*
     Ramsete constants
