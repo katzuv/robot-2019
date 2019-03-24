@@ -16,6 +16,7 @@ public class VisionDrive extends Command {
     private MiniPID turnPid = new MiniPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
     private NetworkTableEntry distanceEntry = Robot.visionTable.getEntry("tape_distance");
+    private NetworkTableEntry seenEntry = Robot.visionTable.getEntry("tape_seen");
     private double visionAngle;
     private double visionDistance;
 
@@ -48,7 +49,7 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return visionDistance < 0.6 && Math.abs(visionAngle) < 1;
+        return (visionDistance < 0.6 && Math.abs(visionAngle) < 1) || !seenEntry.getBoolean(true);
     }
 
     protected void end() {

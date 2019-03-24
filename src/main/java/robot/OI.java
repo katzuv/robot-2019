@@ -16,15 +16,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import robot.subsystems.command_groups.DriveToVisionTarget;
+import robot.subsystems.command_groups.*;
 import robot.subsystems.drivetrain.commands.DistanceDrive;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.WristTurn;
-import robot.subsystems.command_groups.CargoScoring;
-import robot.subsystems.command_groups.HatchScoring;
-import robot.subsystems.command_groups.ShiftButton;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Flower;
@@ -152,9 +149,11 @@ public class OI {
         //TODO: add right stick to control the cargo intake
         select.whenPressed(new CloseBoth());
 
-        left_joystick_six.toggleWhenPressed(new DriveToVisionTarget());
-        left_joystick_two.toggleWhenPressed(new VisionDrive());
+        left_joystick_six.toggleWhenPressed(new VisionDrive());
         right_joystick_six.whenPressed(new DistanceDrive(-0.3)); //TODO: both buttons are assigned to joystick six, need to talk with ido
+
+        right_joystick_eight.toggleWhenPressed(new VisionTakeHatch());
+        right_joystick_nine.toggleWhenPressed(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
 
         left_joystick_three.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
