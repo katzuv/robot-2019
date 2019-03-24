@@ -10,6 +10,7 @@ package robot.subsystems.wrist_control;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
@@ -189,6 +190,7 @@ public class WristControl extends Subsystem {
     public void setWristAngle(double angle) {
         angle = Math.max(0,angle);
         angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(),angle);
+        SmartDashboard.putNumber("Cargo intake: target", angle);
         setPointAngle = angle;
         wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
     }
