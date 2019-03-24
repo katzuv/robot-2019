@@ -302,10 +302,6 @@ public class Drivetrain extends Subsystem {
     }
 
     public void updateConstants() {
-        Constants.PIDVisionSpeed[0] = getConstant("Vision Drive: speed kp", Constants.PIDVisionSpeed[0]);
-        Constants.PIDVisionSpeed[1] = getConstant("Vision Drive: speed ki", Constants.PIDVisionSpeed[1]);
-        Constants.PIDVisionSpeed[2] = getConstant("Vision Drive: speed kd", Constants.PIDVisionSpeed[2]);
-
         Constants.PIDVisionTurn[0] = getConstant("Vision Drive: turn kp", Constants.PIDVisionTurn[0]);
         Constants.PIDVisionTurn[1] = getConstant("Vision Drive: turn ki", Constants.PIDVisionTurn[1]);
         Constants.PIDVisionTurn[2] = getConstant("Vision Drive: turn kd", Constants.PIDVisionTurn[2]);
