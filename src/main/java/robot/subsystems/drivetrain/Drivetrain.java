@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
@@ -298,5 +299,21 @@ public class Drivetrain extends Subsystem {
         System.out.println(getLeftDistance());
         System.out.println(convertDistanceToTicks(distance + getLeftDistance()));
         System.out.println(convertDistanceToTicks(getLeftDistance()));
+    }
+
+    public void updateConstants() {
+        Constants.PIDVisionSpeed[0] = getConstant("Vision Drive: speed kp", Constants.PIDVisionSpeed[0]);
+        Constants.PIDVisionSpeed[1] = getConstant("Vision Drive: speed ki", Constants.PIDVisionSpeed[1]);
+        Constants.PIDVisionSpeed[2] = getConstant("Vision Drive: speed kd", Constants.PIDVisionSpeed[2]);
+
+        Constants.PIDVisionTurn[0] = getConstant("Vision Drive: turn kp", Constants.PIDVisionTurn[0]);
+        Constants.PIDVisionTurn[1] = getConstant("Vision Drive: turn ki", Constants.PIDVisionTurn[1]);
+        Constants.PIDVisionTurn[2] = getConstant("Vision Drive: turn kd", Constants.PIDVisionTurn[2]);
+
+    }
+
+    private double getConstant(String key, double constant){
+        SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
+        return SmartDashboard.getNumber(key, constant);
     }
 }
