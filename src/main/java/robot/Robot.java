@@ -11,10 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -43,6 +40,7 @@ import java.util.Set;
  * project.
  */
 public class Robot extends TimedRobot {
+    public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
     public static final Climb climb = new Climb();
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
@@ -106,6 +104,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
+
     }
 
 
@@ -186,6 +185,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        updateDashboardConstants();
         Scheduler.getInstance().run();
     }
 
@@ -198,6 +198,7 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleboard() {
+        SmartDashboard.putData(pdp);
         SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
         SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
         SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
@@ -222,6 +223,10 @@ public class Robot extends TimedRobot {
         //printRunningCommands();
     }
 
+    public void updateDashboardConstants(){
+        drivetrain.updateConstants();
+    }
+
     public void printRunningCommands() {
         try {
             Field field = Scheduler.class.getField("m_commandTable");
@@ -232,6 +237,10 @@ public class Robot extends TimedRobot {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
+    }
+
+    public void printAllCommands(){
+        SmartDashboard.putString("RunningCommand", drivetrain.getCurrentCommandName());
     }
 
     public void resetAll() {
