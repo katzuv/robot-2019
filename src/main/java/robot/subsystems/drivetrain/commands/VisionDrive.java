@@ -48,7 +48,7 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return visionDistance < 0.45 && Math.abs(visionAngle) < 1;
+        return visionDistance < 0.6 && Math.abs(visionAngle) < 1;
     }
 
     protected void end() {
