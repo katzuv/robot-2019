@@ -9,7 +9,7 @@ import robot.subsystems.hatch_intake.commands.ExtensionPlate;
 
 public class HatchScoring extends CommandGroup {
 
-    public HatchScoring(Constants.ELEVATOR_STATES height, boolean atAuto) {
+    public HatchScoring(Constants.ELEVATOR_STATES height, boolean retract) {
 
         addSequential(new ElevatorCommand(height));
         addSequential(new WaitCommand(0.1));
@@ -24,7 +24,7 @@ public class HatchScoring extends CommandGroup {
         addSequential(new ExtensionPlate(false));
 
         //If not at auto wait and close gripper
-        if (!atAuto) {
+        if (!retract) {
             addSequential(new WaitCommand(0.5));
             addSequential(new Flower(false));
         }
