@@ -107,6 +107,7 @@ public class OI {
     public static Button right_joystick_eight = new JoystickButton(rightStick, 8);
     public static Button right_joystick_nine = new JoystickButton(rightStick, 9);
     public static Button right_joystick_ten = new JoystickButton(rightStick, 10);
+    public static Button right_joystick_eleven = new JoystickButton(rightStick, 11);
 
     public OI() {
         //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
@@ -152,8 +153,8 @@ public class OI {
         left_joystick_six.toggleWhenPressed(new VisionDrive());
         right_joystick_six.whenPressed(new DistanceDrive(-0.3)); //TODO: both buttons are assigned to joystick six, need to talk with ido
 
-        right_joystick_eight.toggleWhenPressed(new VisionTakeHatch());
-        right_joystick_nine.toggleWhenPressed(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        right_joystick_ten.toggleWhenPressed(new VisionTakeHatch());
+        right_joystick_eleven.toggleWhenPressed(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
 
         left_joystick_three.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
