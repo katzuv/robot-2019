@@ -20,14 +20,15 @@ public class Constants {
     public static final double DISTANCE_PER_PULSE = isRobotA ? (0.2032 * Math.PI) / 231 : (0.2032 * Math.PI) / 231;  //diameter of the wheel is 0.2032 meters (8 inches), the encoder sends 226 pulses every 360 degree turn
     public static final boolean LEFT_ENCODER_REVERSED = isRobotA ? false : false;
     public static final boolean RIGHT_ENCODER_REVERSED = isRobotA ? false : false;
-    public static final double TICKS_PER_METER = isRobotA ? 2138.7750882690398 : 2138.7750882690398; // [1m / (diameter=0.1524 * pi)] * (ticks_per_meter=1024s)
+    public static final double LEFT_TICKS_PER_METER = isRobotA ? 2138.7750882690398 : 2138.7750882690398; // measured average distance (robot a), [1m / (diameter=0.1524 * pi)] * (ticks_per_meter=1024s) (robot b)
+    public static final double RIGHT_TICKS_PER_METER = isRobotA ? 1864 : 2138.7750882690398;
     public static final int TALON_RUNNING_TIMEOUT_MS = isRobotA ? 0 : 0;
     public static final int TALON_TIMEOUT_MS = isRobotA ? 10 : 10;
-    public static final int MOTION_ACCELERATION = (int)(TICKS_PER_METER * 1 / 10);
-    public static final int MOTION_CRUISE_VELOCITY = (int)(TICKS_PER_METER * 2.5 / 10);
+    public static final double MOTION_ACCELERATION =  1; //Motion acceleration in M/S^2
+    public static final double MOTION_CRUISE_VELOCITY = 2.5; //Motion acceleration in M/S
     public static final double ENDING_TOLERANCE = 0.05;
-    public static final double START_SPEED = -0.32;
-    public static final double END_SPEED = -0.254;
+    public static final double START_VELOCITY = -1.18;
+    public static final double END_VELOCITY = -0.82;
     public static final double MIN_AIM = 0;
 
     // (8 inches), the encoder sends 226
@@ -41,13 +42,13 @@ public class Constants {
 
     public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
 
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.012, 0.0001, 0} : new double[]{0, 0, 0};
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.045, 0.0002, 0} : new double[]{0, 0, 0};
 
     /*
     Ramsete constants
      */
-    public static final double[] PIDFLeft = isRobotA ? new double[]{1.9, 0.002, 10, 1.45} : new double[]{1.5, 0, 10, 1.3};
-    public static final double[] PIDFRight = isRobotA ? new double[]{1.55, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
+    public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0.002, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
+    public static final double[] PIDFRight = isRobotA ? new double[]{1.85, 0.002, 10, 1.45} : new double[]{1.5, 0, 10, 1.3};
     public static final double kZeta = 0.7;
     public static final double kBeta = isRobotA ? 2.3 : 2.7;
     public static final double distanceFromEnd = 2;

@@ -51,10 +51,11 @@ public class Drivetrain extends Subsystem {
         leftMaster.setSensorPhase(Constants.LEFT_ENCODER_REVERSED);
         rightMaster.setSensorPhase(Constants.RIGHT_ENCODER_REVERSED);
 
-        leftMaster.configMotionCruiseVelocity(Constants.MOTION_CRUISE_VELOCITY);
-        rightMaster.configMotionCruiseVelocity(Constants.MOTION_CRUISE_VELOCITY);
-        leftMaster.configMotionAcceleration(Constants.MOTION_ACCELERATION);
-        rightMaster.configMotionAcceleration(Constants.MOTION_ACCELERATION);
+        leftMaster.configMotionCruiseVelocity(convertLeftDistanceToTicks(Constants.MOTION_CRUISE_VELOCITY) / 10);
+        rightMaster.configMotionCruiseVelocity(convertRightDistanceToTicks(Constants.MOTION_CRUISE_VELOCITY) / 10);
+        leftMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
+        rightMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
+
         if (!Robot.isRobotA) {
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
@@ -119,26 +120,31 @@ public class Drivetrain extends Subsystem {
     }
 
     public double getLeftVelocity() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity()) * 10;
+        return convertLeftTicksToDistance(leftMaster.getSelectedSensorVelocity()) * 10;
     }
 
     public void setLeftVelocity(double velocity) {
-        leftMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) / 10.0);
+        leftMaster.set(ControlMode.Velocity, convertLeftDistanceToTicks(velocity) / 10.0);
     }
 
     public double getRightVelocity() {
-        return convertTicksToDistance(rightMaster.getSelectedSensorVelocity()) * 10;
+        return convertRightTicksToDistance(rightMaster.getSelectedSensorVelocity()) * 10;
     }
 
     public void setRightVelocity(double velocity) {
-        rightMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) / 10.0);
+        rightMaster.set(ControlMode.Velocity, convertRightDistanceToTicks(velocity) / 10.0);
+    }
+
+    public void setVelocity(double left, double right) {
+        setLeftVelocity(left);
+        setRightVelocity(right);
     }
 
     /**
      * @return the speed of the left side of the Drivetrain
      */
     public double getLeftSpeed() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0)) * 10;
+        return convertLeftTicksToDistance(leftMaster.getSelectedSensorVelocity(0)) * 10;
     }
 
     /**
@@ -154,7 +160,7 @@ public class Drivetrain extends Subsystem {
      * @return the speed of the right side of the Drivetrain
      */
     public double getRightSpeed() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0)) * 10;
+        return convertRightTicksToDistance(leftMaster.getSelectedSensorVelocity(0)) * 10;
     }
 
     /**
@@ -171,7 +177,7 @@ public class Drivetrain extends Subsystem {
      * reset
      */
     public double getLeftDistance() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorPosition(0));
+        return convertLeftTicksToDistance(leftMaster.getSelectedSensorPosition(0));
     }
 
     /**
@@ -179,7 +185,7 @@ public class Drivetrain extends Subsystem {
      * reset
      */
     public double getRightDistance() {
-        return convertTicksToDistance(rightMaster.getSelectedSensorPosition(0));
+        return convertRightTicksToDistance(rightMaster.getSelectedSensorPosition(0));
     }
 
     public void resetEncoders() {
@@ -236,8 +242,12 @@ public class Drivetrain extends Subsystem {
      * @param distance height in meters
      * @return ticks of the encoder
      */
-    private int convertDistanceToTicks(double distance) {
-        return (int) (distance * Constants.TICKS_PER_METER);
+    private int convertLeftDistanceToTicks(double distance) {
+        return (int) (distance * Constants.LEFT_TICKS_PER_METER);
+    }
+
+    private int convertRightDistanceToTicks(double distance) {
+        return (int) (distance * Constants.RIGHT_TICKS_PER_METER);
     }
 
     /**
@@ -246,10 +256,13 @@ public class Drivetrain extends Subsystem {
      * @param ticks ticks of the encoder
      * @return height in meters
      */
-    private double convertTicksToDistance(int ticks) {
-        return ticks / Constants.TICKS_PER_METER;
+    private double convertLeftTicksToDistance(int ticks) {
+        return ticks / Constants.LEFT_TICKS_PER_METER;
     }
 
+    private double convertRightTicksToDistance(int ticks){
+        return ticks / Constants.RIGHT_TICKS_PER_METER;
+    }
     /**
      * returns the robot NAVX yaw angle
      *
@@ -294,11 +307,11 @@ public class Drivetrain extends Subsystem {
     }
 
     public void driveDistance(double distance) {
-        leftMaster.set(ControlMode.MotionMagic, convertDistanceToTicks(distance + getLeftDistance()));
-        rightMaster.set(ControlMode.MotionMagic, convertDistanceToTicks(distance + getRightDistance()));
+        leftMaster.set(ControlMode.MotionMagic, convertLeftDistanceToTicks(distance + getLeftDistance()));
+        rightMaster.set(ControlMode.MotionMagic, convertRightDistanceToTicks(distance + getRightDistance()));
         System.out.println(getLeftDistance());
-        System.out.println(convertDistanceToTicks(distance + getLeftDistance()));
-        System.out.println(convertDistanceToTicks(getLeftDistance()));
+        System.out.println(convertLeftDistanceToTicks(distance + getLeftDistance()));
+        System.out.println(convertRightDistanceToTicks(getLeftDistance()));
     }
 
     public void updateConstants() {
