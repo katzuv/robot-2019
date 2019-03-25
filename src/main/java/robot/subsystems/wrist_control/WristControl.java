@@ -10,6 +10,7 @@ package robot.subsystems.wrist_control;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
@@ -78,20 +79,14 @@ public class WristControl extends Subsystem {
         limit switch config
          */
         wrist.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-         Constants.FORWARD_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-         Constants.TALON_TIME_OUT);
-         wrist.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-         Constants.REVERSE_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-         Constants.TALON_TIME_OUT);
+                Constants.FORWARD_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIME_OUT);
+        wrist.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                Constants.REVERSE_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIME_OUT);
 
 
     }
-
-
-
-
-
-
 
     public void setWristSpeed(double speed) {
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
@@ -114,7 +109,7 @@ public class WristControl extends Subsystem {
         return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
 
-    public void setEncoderAngle(double angle){
+    public void setEncoderAngle(double angle) {
         wrist.setSelectedSensorPosition(convertAngleToTicks(angle));
     }
 
@@ -145,6 +140,14 @@ public class WristControl extends Subsystem {
         return convertTicksToAngle(wrist.getSelectedSensorPosition());
 
     }
+
+    public void setWristAngle(double angle) {
+        angle = Math.max(0, angle);
+        angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(), angle);
+        SmartDashboard.putNumber("Cargo intake: target", angle);
+        setPointAngle = angle;
+    }
+
     /**
      * Beyond preventing the motors from going above a certain height, this method prevents them from moving higher or
      * lower once one of the limit switches/hall effects is pressed.
@@ -186,13 +189,6 @@ public class WristControl extends Subsystem {
         return false;
     }
 
-    public void setWristAngle(double angle) {
-        angle = Math.max(0,angle);
-        angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(),angle);
-        setPointAngle = angle;
-        wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
-    }
-
     public int getVelocity() {
 
         return wrist.getSelectedSensorVelocity();
@@ -204,5 +200,16 @@ public class WristControl extends Subsystem {
         setDefaultCommand(new JoystickWristTurn());
     }
 
+    /**
+     * This method makes sure the wrist stallCurrent gets updated
+     */
+    public void update() {
+        wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
+    }
+
+    @Override
+    public void periodic() {
+        update();
+    }
 
 }
