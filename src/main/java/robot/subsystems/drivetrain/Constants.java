@@ -24,7 +24,7 @@ public class Constants {
     public static final double RIGHT_TICKS_PER_METER = isRobotA ? 1864 : 2138.7750882690398;
     public static final int TALON_RUNNING_TIMEOUT_MS = isRobotA ? 0 : 0;
     public static final int TALON_TIMEOUT_MS = isRobotA ? 10 : 10;
-    public static final double MOTION_ACCELERATION =  1; //Motion acceleration in M/S^2
+    public static final double MOTION_ACCELERATION =  2; //Motion acceleration in M/S^2
     public static final double MOTION_CRUISE_VELOCITY = 2.5; //Motion acceleration in M/S
     public static final double ENDING_TOLERANCE = 0.05;
     public static final double START_VELOCITY = -1.18;
@@ -49,15 +49,15 @@ public class Constants {
      */
     public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0.002, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
     public static final double[] PIDFRight = isRobotA ? new double[]{2, 0.007, 20, 1.45} : new double[]{1.5, 0, 10, 1.3};
-    public static final double kZeta = 0.7;
-    public static final double kBeta = isRobotA ? 10 : 2.7;
+    public static final double kZeta = 0.8;
+    public static final double kBeta = isRobotA ? 2 : 2;
     public static final double distanceFromEnd = 2;
     public static final double angleKp = isRobotA ? 1.6 : 1.37;
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
 
     static {
-        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.2192))));
+        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.5))));
         constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(4), LengthKt.getFeet(7), LengthKt.getFeet(8), LengthKt.getFeet(20)), VelocityKt.getVelocity(LengthKt.getFeet(3))));
     }
 }
