@@ -204,7 +204,10 @@ public class WristControl extends Subsystem {
      * This method makes sure the wrist stallCurrent gets updated
      */
     public void update() {
-        wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
+        if (getWristAngle() < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2)
+            wristControl.wrist.set(ControlMode.PercentOutput, 0);
+        else
+            wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
     }
 
     @Override

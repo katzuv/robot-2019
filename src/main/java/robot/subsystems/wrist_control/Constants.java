@@ -36,7 +36,7 @@ public class Constants {
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
 
 
-    public static final double DROP_WRIST_ANGLE = 6;
+    public static final double DROP_WRIST_ANGLE = 7.5;
 
     public enum WRIST_ANGLES {
         INITIAL(0),
@@ -49,7 +49,7 @@ public class Constants {
         LEVEL_1_BACKWARD(0),
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
-        INTAKE(168),//173
+        INTAKE(160),//173
         MAXIMAL(178);
         private final double wristAngle;
 
@@ -83,4 +83,3 @@ public class Constants {
         }
     }
 }
-
