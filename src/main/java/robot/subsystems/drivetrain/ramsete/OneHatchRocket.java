@@ -1,10 +1,12 @@
 package robot.subsystems.drivetrain.ramsete;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.command_groups.HatchScoring;
+import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.command_groups.TakeHatch;
@@ -23,11 +25,13 @@ public class OneHatchRocket extends CommandGroup {
         //Drive to rocket
         List<Pose2d> toRocket = new ArrayList<>();
         toRocket.add(new Pose2d(LengthKt.getFeet(12.973), LengthKt.getFeet(4.789), Rotation2dKt.getDegree(150)));
-        toRocket.add(new Pose2d(LengthKt.getFeet(16.349), LengthKt.getFeet(2.709), Rotation2dKt.getDegree(150)));
-        addSequential(new DrivePathVision(toRocket, true, true, 0, 0, false));
+//        toRocket.add(new Pose2d(LengthKt.getFeet(16.349), LengthKt.getFeet(2.709), Rotation2dKt.getDegree(150)));
+        addSequential(new DrivePathVision(toRocket, true, false, 0, 0, false));
 
+        addSequential(new VisionDrive());
+        addSequential(new WaitCommand(0.5));
         //Score hatch
-        addSequential(new HatchScoring(height, false));
+//        addSequential(new HatchScoring(height, false));
 
         List<Pose2d> driveBack = new ArrayList<>();
         driveBack.add(new Pose2d(LengthKt.getFeet(11.677), LengthKt.getFeet(6.412), Rotation2dKt.getDegree(90)));
@@ -38,12 +42,13 @@ public class OneHatchRocket extends CommandGroup {
 
         addSequential(new DrivePathVision(driveForward, true, false, 0, 0, false));
 
-        List<Pose2d> toLoadingStation = new ArrayList<>();
-        toLoadingStation.add(new Pose2d(LengthKt.getFeet(2.25), LengthKt.getFeet(2.947), Rotation2dKt.getDegree(0)));
+        addSequential(new VisionDrive());
+//        List<Pose2d> toLoadingStation = new ArrayList<>();
+//        toLoadingStation.add(new Pose2d(LengthKt.getFeet(2.25), LengthKt.getFeet(2.947), Rotation2dKt.getDegree(0)));
 
-        addSequential(new DrivePathVision(toLoadingStation, true, true, 0, 0, false));
+//        addSequential(new DrivePathVision(toLoadingStation, true, false, 0, 0, false));
 
-        addSequential(new TakeHatch());
+//        addSequential(new TakeHatch());
 
     }
 
