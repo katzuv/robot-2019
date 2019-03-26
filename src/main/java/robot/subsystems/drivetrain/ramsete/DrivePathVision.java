@@ -53,6 +53,7 @@ public class DrivePathVision extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        drivetrain.setMotorsToBrake();
         List<Pose2d> points = new ArrayList<>(waypoints);
         if (!includesStartingPoint) {
             points.add(0, drivetrain.getRobotPosition());
@@ -63,8 +64,8 @@ public class DrivePathVision extends Command {
                         Constants.constraints,
                         VelocityKt.getVelocity(LengthKt.getMeter(startingVelocity)),
                         VelocityKt.getVelocity(LengthKt.getMeter(endingVelocity)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(2.7)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(2.7)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(2.5)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(2)),
                         reversed,
                         true
                 );
@@ -119,6 +120,7 @@ public class DrivePathVision extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+        drivetrain.setMotorsToCoast();
         LiveDashboard.INSTANCE.setFollowingPath(false);
     }
 
