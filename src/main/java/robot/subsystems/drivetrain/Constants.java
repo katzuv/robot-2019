@@ -28,8 +28,8 @@ public class Constants {
     public static final double MOTION_CRUISE_VELOCITY = 2.5; //Motion acceleration in M/S
     public static final double ENDING_TOLERANCE = 0.05;
     public static final double START_VELOCITY = -1.18;
-    public static final double END_VELOCITY = -0.9;
-    public static final double MIN_AIM = 0;
+    public static final double END_VELOCITY = -1.18;
+    public static final double MIN_AIM = 0.05;
 
     // (8 inches), the encoder sends 226
     // pulses every 360 degree turn
@@ -42,15 +42,15 @@ public class Constants {
 
     public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
 
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.04, 0.0006, 0.07} : new double[]{0, 0, 0};
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0.0006, 0.1} : new double[]{0, 0, 0};
 
     /*
     Ramsete constants
      */
     public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0.002, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
-    public static final double[] PIDFRight = isRobotA ? new double[]{1.85, 0.002, 10, 1.45} : new double[]{1.5, 0, 10, 1.3};
+    public static final double[] PIDFRight = isRobotA ? new double[]{2, 0.007, 20, 1.45} : new double[]{1.5, 0, 10, 1.3};
     public static final double kZeta = 0.7;
-    public static final double kBeta = isRobotA ? 5 : 2.7;
+    public static final double kBeta = isRobotA ? 10 : 2.7;
     public static final double distanceFromEnd = 2;
     public static final double angleKp = isRobotA ? 1.6 : 1.37;
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
