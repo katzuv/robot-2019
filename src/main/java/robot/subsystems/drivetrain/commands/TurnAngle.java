@@ -26,7 +26,8 @@ public class TurnAngle extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        drivetrain.setVelocity(2.5, -2.5);
+        double velocity = map(Math.abs(this.setpoint - navx.getAngle()), 0, angle, 0.3, 2.5); //Have the value start at 2.5 and end at a slower speed
+        drivetrain.setVelocity(velocity, -velocity);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -45,4 +46,9 @@ public class TurnAngle extends Command {
     protected void interrupted() {
         end();
     }
+
+    private double map(double x, double in_min, double in_max, double out_min, double out_max){
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
 }
