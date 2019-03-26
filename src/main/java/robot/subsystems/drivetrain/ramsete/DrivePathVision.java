@@ -63,8 +63,8 @@ public class DrivePathVision extends Command {
                         Constants.constraints,
                         VelocityKt.getVelocity(LengthKt.getMeter(startingVelocity)),
                         VelocityKt.getVelocity(LengthKt.getMeter(endingVelocity)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(2)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(2)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(2.7)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(2.7)),
                         reversed,
                         true
                 );
