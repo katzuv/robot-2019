@@ -35,17 +35,17 @@ class Paths {
 
         NEAR_ROCKET_TO_LOADING = Utils.generateTrajectory(
                 Arrays.asList(
-                        new Pose2d(LengthKt.getFeet(15.502), LengthKt.getFeet(2.738), Rotation2dKt.getDegree(0)),
+                        new Pose2d(LengthKt.getFeet(13.148), LengthKt.getFeet(2.738), Rotation2dKt.getDegree(0)),
                         new Pose2d(LengthKt.getFeet(7.769), LengthKt.getFeet(2.187), Rotation2dKt.getDegree(0))
                 ),0,1,false
         );
 
         LOADING_TO_FAR_ROCKET =Utils.generateTrajectory(
                 Arrays.asList(
-                        new Pose2d(LengthKt.getFeet(2.04), LengthKt.getFeet(2.187), Rotation2dKt.getDegree(0)),
-                        new Pose2d(LengthKt.getFeet(18.883), LengthKt.getFeet(5.496), Rotation2dKt.getDegree(0)),
-                        new Pose2d(LengthKt.getFeet(25.526), LengthKt.getFeet(4.373), Rotation2dKt.getDegree(30))
-                ),0,1,false
+                        new Pose2d(LengthKt.getFeet(1.8), LengthKt.getFeet(2.0), Rotation2dKt.getDegree(0)),
+                        new Pose2d(LengthKt.getFeet(15.462), LengthKt.getFeet(4.616), Rotation2dKt.getDegree(21)),
+                        new Pose2d(LengthKt.getFeet(22.571), LengthKt.getFeet(2.885), Rotation2dKt.getDegree(-90))
+                ),0,0,false
         );
 
     }
