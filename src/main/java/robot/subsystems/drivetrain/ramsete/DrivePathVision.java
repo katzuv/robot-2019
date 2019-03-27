@@ -28,7 +28,6 @@ import static robot.Robot.drivetrain;
 public class DrivePathVision extends Command {
 
     private final boolean reversed;
-    private final List<Pose2d> waypoints;
     private final boolean vision;
     private final double startingVelocity;
     private final double endingVelocity;
@@ -39,33 +38,25 @@ public class DrivePathVision extends Command {
     /**
      * Robot takes its current location and drives through waypoints in the list
      *
-     * @param waypoints Target waypoints
+     * @param trajectory Target waypoints
      * @param reversed  Negative velocities
      */
-    public DrivePathVision(List<Pose2d> waypoints, boolean reversed, boolean vision, double startingVelocity, double endingVelocity, boolean includesStartingPoint) {
+    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reversed, boolean vision, double startingVelocity, double endingVelocity, boolean includesStartingPoint) {
         this.reversed = reversed;
-        this.waypoints = waypoints;
+        this.trajectory = trajectory;
         this.vision = vision;
         this.startingVelocity = startingVelocity;
         this.endingVelocity = endingVelocity;
         this.includesStartingPoint = includesStartingPoint;
         requires(drivetrain);
     }
-    
+
     public void setTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory) {
         this.trajectory = trajectory;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if (trajectory == null) {
-            List<Pose2d> points = new ArrayList<>(waypoints);
-            if (!includesStartingPoint) {
-                points.add(0, drivetrain.getRobotPosition());
-            }
-            this.trajectory = Utils.generateTrajectory(points, startingVelocity, endingVelocity, reversed);
-            stop = false;
-        }
         drivetrain.trajectoryTracker.reset(trajectory);
         LiveDashboard.INSTANCE.setFollowingPath(true);
     }
