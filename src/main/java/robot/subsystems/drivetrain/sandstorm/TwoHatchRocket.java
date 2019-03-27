@@ -71,8 +71,8 @@ public class TwoHatchRocket extends CommandGroup {
         addSequential(new WaitCommand(0.1));
 
         List<Pose2d> driveWithHatch = new ArrayList<>();
-        driveWithHatch.add(new Pose2d(LengthKt.getFeet(19.015), LengthKt.getFeet(4.768), Rotation2dKt.getDegree(0)));
-        driveWithHatch.add(new Pose2d(LengthKt.getFeet(25.563), LengthKt.getFeet(4.055), Rotation2dKt.getDegree(30)));
+        driveWithHatch.add(new Pose2d(LengthKt.getFeet(18.883), LengthKt.getFeet(5.496), Rotation2dKt.getDegree(0)));
+        driveWithHatch.add(new Pose2d(LengthKt.getFeet(25.926), LengthKt.getFeet(4.373), Rotation2dKt.getDegree(30)));
         addSequential(new DrivePathVision(driveWithHatch, false, false, 0, 1, false));
 
         addParallel(new ExtensionPlate(true));
