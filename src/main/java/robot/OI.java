@@ -94,6 +94,7 @@ public class OI {
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
 
+    public static Button left_joystick_two = new JoystickButton(leftStick, 2);
     public static Button left_joystick_three = new JoystickButton(leftStick, 3);
     public static Button left_joystick_six = new JoystickButton(leftStick, 6);
     public static Button left_joystick_seven = new JoystickButton(leftStick, 7);
@@ -137,8 +138,8 @@ public class OI {
                                 new CargoScoring(3, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)))));
 
-        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
-        LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
+        //RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
+        //LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
 
         a.whenPressed(new Flower());
         lb.whenPressed(new ExtensionPlate(false));
@@ -152,7 +153,7 @@ public class OI {
         left_joystick_six.toggleWhenPressed(new AngleDrive());
         right_joystick_six.whenPressed(new SwitchCamera()); //TODO: both buttons are assigned to joystick six, need to talk with ido
 
-        left_joystick_three.whenPressed(new CalibrateLegs());
+        left_joystick_two.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
         left_joystick_ten.whenPressed(new SafeCloseBackLegs());
         left_joystick_nine.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
