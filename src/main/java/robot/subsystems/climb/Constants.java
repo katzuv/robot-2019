@@ -2,8 +2,8 @@ package robot.subsystems.climb;
 import static robot.Robot.isRobotA;
 public class Constants {
     public static final double LEG_EMERGENCY_STOP = 0.035; //delta between each pair of legs which should stop the robots climbing subsystem
-    public static final double LEGS_EMERGENCY_OKAY = 0.01; //delta between each pair of legs in which the mechanism could work again
-    public static final double EMERGENCY_FIX_SPEED = 0.22;
+    public static final double LEGS_EMERGENCY_OKAY = 0.0025; //delta between each pair of legs in which the mechanism could work again
+    public static final double EMERGENCY_FIX_SPEED = 0.25;
 
     static final double TICKS_PER_METER = isRobotA ? 10000 : 10000; //Should take into account spiral pitch and diameter. todo:change
     static final int TALON_TIMEOUT_MS = 20;
