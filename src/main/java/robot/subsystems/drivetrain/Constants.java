@@ -29,6 +29,9 @@ public class Constants {
     public static final double END_VELOCITY = -1.18;
     public static final double MIN_AIM = 0.05;
 
+    public static final double RAMSETE_PEAK_VELOCITY = 3;
+    public static final double RAMSETE_PEAK_ACCELERATION = 2;
+
     // (8 inches), the encoder sends 226
     // pulses every 360 degree turn
     static final boolean LEFT_MASTER_REVERSED = isRobotA ? false : false;
