@@ -18,6 +18,7 @@ import robot.subsystems.climb.commands.*;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.command_groups.*;
 import robot.subsystems.drivetrain.commands.DistanceDrive;
+import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.GripperControl;
@@ -119,21 +120,21 @@ public class OI {
         povr.whenPressed(new ShiftButton(xbox, 7,
                 new CargoScoring(1, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH, false),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(1, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)))));
         povl.whenPressed(new ShiftButton(xbox, 7,
                 new CargoScoring(2, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH, false),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(2, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)))));
         povu.whenPressed(new ShiftButton(xbox, 7,
                 new CargoScoring(3, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH, false),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(3, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)))));
@@ -153,6 +154,7 @@ public class OI {
         left_joystick_six.toggleWhenPressed(new VisionDrive());
         right_joystick_six.whenPressed(new DistanceDrive(-0.3)); //TODO: both buttons are assigned to joystick six, need to talk with ido
 
+        right_joystick_eight.toggleWhenPressed(new TurnAngle(90));
         right_joystick_ten.toggleWhenPressed(new VisionTakeHatch());
         right_joystick_eleven.toggleWhenPressed(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
 

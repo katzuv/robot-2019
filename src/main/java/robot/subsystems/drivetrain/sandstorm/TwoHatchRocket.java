@@ -6,6 +6,8 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.command_groups.HatchScoring;
+import robot.subsystems.command_groups.PlaceHatch;
+import robot.subsystems.command_groups.RetractHatch;
 import robot.subsystems.drivetrain.commands.DistanceDrive;
 import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
@@ -32,16 +34,17 @@ public class TwoHatchRocket extends CommandGroup {
         toRocket.add(new Pose2d(LengthKt.getFeet(11.68), LengthKt.getFeet(4.789), Rotation2dKt.getDegree(150)));
         addSequential(new DrivePathVision(toRocket, true, false, 1, 1.7, false));
 
-        addParallel(new ExtensionPlate(true));
+//        addParallel(new ExtensionPlate(true));
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
 
         //Score hatch
-        addSequential(new HatchScoring(height, false));
+        addSequential(new PlaceHatch(height));
 
         addSequential(new DistanceDrive(0.5));
+        addParallel(new RetractHatch());
 
-        addSequential(new TurnAngle(90));
+        addSequential(new TurnAngle(120));
 
         addSequential(new WaitCommand(0.5));
 
@@ -57,16 +60,11 @@ public class TwoHatchRocket extends CommandGroup {
         addSequential(new WaitCommand(0.1));
 
         List<Pose2d> driveWithHatch = new ArrayList<>();
-        driveWithHatch.add(new Pose2d(LengthKt.getFeet(12.552), LengthKt.getFeet(5.861), Rotation2dKt.getDegree(0)));
-        driveWithHatch.add(new Pose2d(LengthKt.getFeet(19.751), LengthKt.getFeet(5.861), Rotation2dKt.getDegree(0)));
-        driveWithHatch.add(new Pose2d(LengthKt.getFeet(25.504), LengthKt.getFeet(4.602), Rotation2dKt.getDegree(30)));
+        driveWithHatch.add(new Pose2d(LengthKt.getFeet(19.015), LengthKt.getFeet(4.768), Rotation2dKt.getDegree(0)));
+        driveWithHatch.add(new Pose2d(LengthKt.getFeet(25.563), LengthKt.getFeet(4.055), Rotation2dKt.getDegree(30)));
         addSequential(new DrivePathVision(driveWithHatch, false, false, 0, 1, false));
 
-//        List<Pose2d> driveToSecondRocket = new ArrayList<>();
-
-//        addSequential(new DrivePathVision(driveToSecondRocket, false, false, 1, 0, false));
-
-        addParallel(new ExtensionPlate(true));
+//        addParallel(new ExtensionPlate(true));
         addSequential(new WaitCommand(0.4));
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
