@@ -155,7 +155,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        drivetrain.setMotorsToBrake();
         resetAll();
         m_autonomousCommand = m_chooser.getSelected();
         if (m_autonomousCommand != null) {

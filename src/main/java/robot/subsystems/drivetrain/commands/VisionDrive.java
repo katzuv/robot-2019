@@ -26,7 +26,6 @@ public class VisionDrive extends Command {
     }
 
     protected void initialize() {
-        drivetrain.setMotorsToBrake();
         updateConstants();
     }
 
@@ -54,7 +53,6 @@ public class VisionDrive extends Command {
 
     protected void end() {
         drivetrain.setSpeed(0, 0);
-        drivetrain.setMotorsToCoast();
     }
 
     protected void interrupted() {
