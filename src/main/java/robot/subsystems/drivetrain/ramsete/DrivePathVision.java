@@ -27,7 +27,7 @@ import static robot.Robot.drivetrain;
  */
 public class DrivePathVision extends Command {
 
-    private final boolean reversed; //currently not in use
+    private boolean reversed; //currently not in use
     private final boolean vision;
     private TimedTrajectory<Pose2dWithCurvature> trajectory;
     private boolean stop = false;
@@ -38,9 +38,8 @@ public class DrivePathVision extends Command {
      * @param trajectory Target waypoints
      * @param reversed  Negative velocities
      */
-    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reversed, boolean vision){
+    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean vision){
         requires(drivetrain);
-        this.reversed = reversed;
         this.trajectory = trajectory;
         this.vision = vision;
     }
