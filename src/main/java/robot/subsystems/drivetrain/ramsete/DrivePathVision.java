@@ -27,11 +27,8 @@ import static robot.Robot.drivetrain;
  */
 public class DrivePathVision extends Command {
 
-    private final boolean reversed;
+    private final boolean reversed; //currently not in use
     private final boolean vision;
-    private final double startingVelocity;
-    private final double endingVelocity;
-    private final boolean includesStartingPoint;
     private TimedTrajectory<Pose2dWithCurvature> trajectory;
     private boolean stop = false;
 
@@ -41,14 +38,11 @@ public class DrivePathVision extends Command {
      * @param trajectory Target waypoints
      * @param reversed  Negative velocities
      */
-    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reversed, boolean vision, double startingVelocity, double endingVelocity, boolean includesStartingPoint) {
+    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reversed, boolean vision){
+        requires(drivetrain);
         this.reversed = reversed;
         this.trajectory = trajectory;
         this.vision = vision;
-        this.startingVelocity = startingVelocity;
-        this.endingVelocity = endingVelocity;
-        this.includesStartingPoint = includesStartingPoint;
-        requires(drivetrain);
     }
 
     public void setTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory) {
