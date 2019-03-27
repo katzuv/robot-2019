@@ -15,6 +15,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
+import robot.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +27,14 @@ import static robot.Robot.drivetrain;
  */
 public class DrivePathVision extends Command {
 
-    private TimedTrajectory<Pose2dWithCurvature> trajectory;
-    private boolean stop = false;
     private final boolean reversed;
     private final List<Pose2d> waypoints;
     private final boolean vision;
     private final double startingVelocity;
     private final double endingVelocity;
     private final boolean includesStartingPoint;
+    private TimedTrajectory<Pose2dWithCurvature> trajectory;
+    private boolean stop = false;
 
     /**
      * Robot takes its current location and drives through waypoints in the list
@@ -50,26 +51,21 @@ public class DrivePathVision extends Command {
         this.includesStartingPoint = includesStartingPoint;
         requires(drivetrain);
     }
+    
+    public void setTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory) {
+        this.trajectory = trajectory;
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        drivetrain.setMotorsToBrake();
-        List<Pose2d> points = new ArrayList<>(waypoints);
-        if (!includesStartingPoint) {
-            points.add(0, drivetrain.getRobotPosition());
+        if (trajectory == null) {
+            List<Pose2d> points = new ArrayList<>(waypoints);
+            if (!includesStartingPoint) {
+                points.add(0, drivetrain.getRobotPosition());
+            }
+            this.trajectory = Utils.generateTrajectory(points, startingVelocity, endingVelocity, reversed);
+            stop = false;
         }
-        this.trajectory = TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
-                .generateTrajectory(
-                        points,
-                        Constants.constraints,
-                        VelocityKt.getVelocity(LengthKt.getMeter(startingVelocity)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(endingVelocity)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(2.5)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(2)),
-                        reversed,
-                        true
-                );
-        stop = false;
         drivetrain.trajectoryTracker.reset(trajectory);
         LiveDashboard.INSTANCE.setFollowingPath(true);
     }
@@ -120,7 +116,6 @@ public class DrivePathVision extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        drivetrain.setMotorsToCoast();
         LiveDashboard.INSTANCE.setFollowingPath(false);
     }
 
