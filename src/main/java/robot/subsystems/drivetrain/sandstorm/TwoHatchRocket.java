@@ -31,46 +31,32 @@ public class TwoHatchRocket extends CommandGroup {
     public TwoHatchRocket(Constants.ELEVATOR_STATES height) {
         //Lift elevator before time
         //addParallel(new ElevatorCommand(height));
-
         //Drive to rocket
-        addSequential(new DrivePathVision(Paths.RIGHT_HAB_TO_NEAR_ROCKET, true, false, 1, 1.7, false));
-
+        addSequential(new DrivePathVision(Paths.RIGHT_HAB_TO_NEAR_ROCKET, false));
         //addParallel(new ExtensionPlate(true));
-
-        //addSequential(new VisionDrive());
+        addSequential(new VisionDrive());
         //addSequential(new WaitCommand(0.2));
-
         //Score hatch
         //addSequential(new PlaceHatch(height));
         addSequential(new WaitCommand(0.5));
-
         //addParallel(new RetractHatch());
         addSequential(new DistanceDrive(0.5));
 
-        addSequential(new TurnAngle(120));
-
         addSequential(new WaitCommand(0.5));
+        ////addSequential(new DrivePathVision(Paths.NEAR_ROCKET_TO_LOADING, false));
 
-        List<Pose2d> toLoadingStation = new ArrayList<>();
-        toLoadingStation.add(new Pose2d(LengthKt.getFeet(7.769), LengthKt.getFeet(2.187), Rotation2dKt.getDegree(0)));
-        addSequential(new DrivePathVision(toLoadingStation, true, false, 0, 1, false));
-
+        addSequential(new DistanceDrive(-0.5));
         //addSequential(new ExtensionPlate(true));
         //addSequential(new Flower(true));
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
-
         //addSequential(new TakeHatch());
+        addSequential(new WaitCommand(0.1));
+        addSequential(new DrivePathVision(Paths.LOADING_TO_FAR_ROCKET, false));
 
         addSequential(new WaitCommand(0.1));
 
-        List<Pose2d> driveWithHatch = new ArrayList<>();
-        driveWithHatch.add(new Pose2d(LengthKt.getFeet(18.883), LengthKt.getFeet(5.496), Rotation2dKt.getDegree(0)));
-        driveWithHatch.add(new Pose2d(LengthKt.getFeet(25.926), LengthKt.getFeet(4.373), Rotation2dKt.getDegree(30)));
-        addSequential(new DrivePathVision(driveWithHatch, false, false, 0, 1, false));
-
         //addParallel(new ExtensionPlate(true));
-
         addSequential(new WaitCommand(0.4));
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
