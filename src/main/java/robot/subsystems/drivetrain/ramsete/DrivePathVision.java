@@ -36,7 +36,7 @@ public class DrivePathVision extends Command {
      * Robot takes its current location and drives through waypoints in the list
      *
      * @param trajectory Target waypoints
-     * @param reversed  Negative velocities
+     * @param vision  Negative velocities
      */
     public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean vision){
         requires(drivetrain);
