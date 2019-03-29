@@ -18,7 +18,6 @@ import robot.subsystems.climb.commands.*;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.GripperControl;
-import robot.subsystems.wrist_control.commands.RawJoystickWristTurn;
 import robot.subsystems.wrist_control.commands.RawWristTurn;
 import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.subsystems.command_groups.CargoScoring;
