@@ -52,19 +52,26 @@ public class Constants {
 
     public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0.0006, 0.1} : new double[]{0.02, 0.0006, 0.1};
 
-    /*
-    Ramsete constants
-     */
     public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
     public static final double[] PIDFRight = isRobotA ? new double[]{2, 0.007, 20, 1.45} : new double[]{1.5, 0, 10, 1.3};
+
     public static final double kZeta = 0.8;
     public static final double kBeta = isRobotA ? 2 : 2;
     public static final double angleKp = isRobotA ? 1.6 : 1.37;
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
+
+    private static final double ACCELERATION_CONSTRAINT = 1.7;
+    private static final double VELOCITY_CONSTRAINT = 3;
+    private static final double RECTANGLE_1=4;
+    private static final double RECTANGLE_2=7;
+    private static final double RECTANGLE_3=8;
+    private static final double RECTANGLE_4=20;
+
+
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
 
     static {
-        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(1.7))));
-        constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(4), LengthKt.getFeet(7), LengthKt.getFeet(8), LengthKt.getFeet(20)), VelocityKt.getVelocity(LengthKt.getFeet(3))));
+        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(ACCELERATION_CONSTRAINT))));
+        constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(RECTANGLE_1), LengthKt.getFeet(RECTANGLE_2), LengthKt.getFeet(RECTANGLE_3), LengthKt.getFeet(RECTANGLE_4)), VelocityKt.getVelocity(LengthKt.getFeet(VELOCITY_CONSTRAINT))));
     }
 }
