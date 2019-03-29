@@ -16,12 +16,16 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
     public final static double ROBOT_WIDTH = 0.74; //the distance between the left and right wheels on the robot
+
     public static final boolean LEFT_ENCODER_REVERSED = isRobotA ? false : false;
     public static final boolean RIGHT_ENCODER_REVERSED = isRobotA ? false : false;
+
     public static final double LEFT_TICKS_PER_METER = isRobotA ? 2138.7750882690398 : 2138.7750882690398; // measured average distance (robot a), [1m / (diameter=0.1524 * pi)] * (ticks_per_meter=1024s) (robot b)
     public static final double RIGHT_TICKS_PER_METER = isRobotA ?  1864 :2138.7750882690398 ;
+
     public static final int TALON_RUNNING_TIMEOUT_MS = isRobotA ? 0 : 0;
     public static final int TALON_TIMEOUT_MS = isRobotA ? 10 : 10;
+
     public static final double MOTION_ACCELERATION =  2; //Motion acceleration in M/S^2
     public static final double MOTION_CRUISE_VELOCITY = 2.5; //Motion acceleration in M/S
     public static final double ENDING_TOLERANCE = 0.05;

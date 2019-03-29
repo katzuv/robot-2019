@@ -20,8 +20,8 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
-import robot.subsystems.drivetrain.pure_pursuit.Point;
-import robot.subsystems.drivetrain.pure_pursuit.Vector;
+import robot.utilities.Point;
+import robot.utilities.Vector;
 
 import java.util.ArrayList;
 import java.util.Collections;

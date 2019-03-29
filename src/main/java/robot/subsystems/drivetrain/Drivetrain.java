@@ -22,7 +22,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
-import robot.subsystems.drivetrain.pure_pursuit.Point;
+import robot.utilities.Point;
 
 /**
  * Add your docs here.
