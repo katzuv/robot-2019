@@ -54,24 +54,24 @@ public class DrivePathVision extends Command {
         LiveDashboard.INSTANCE.setFollowingPath(true);
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        //Get values from the smart dashboard
         double angle = Robot.visionTable.getEntry("tape_angle").getDouble(0);
         double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
 
         TrajectoryTrackerOutput trackerOutput = drivetrain.trajectoryTracker.nextState(drivetrain.getRobotPosition(), TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
 
-        LiveDashboard.INSTANCE.setPathX(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getX().getFeet());
-        LiveDashboard.INSTANCE.setPathY(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getY().getFeet());
-        LiveDashboard.INSTANCE.setPathHeading(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getRotation().getRadian());
+        drivetrain.updateLiveDashboard();
 
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
 
         double distanceFromLast = drivetrain.getRobotPosition().getTranslation().distance(trajectory.getLastState().getState().getPose().getTranslation());
 
+        //Debugging printing variables
         SmartDashboard.putBoolean("using vision", angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && vision);
         SmartDashboard.putNumber("Distance from last", distanceFromLast);
+
         if (distance != 0 && distance < 0.75 && vision) {
             stop = true;
         }
