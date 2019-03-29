@@ -3,8 +3,7 @@ package robot.subsystems.wrist_control.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
 
-import static robot.Robot.wristControl;
-import static robot.Robot.gripperWheels;
+import static robot.Robot.*;
 
 /**
  * Instant Command in charge of controlling the speed of the wrist wheels, the wheels in charge of grabbing and releasing cargo.
@@ -52,17 +51,21 @@ public class GripperControl extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if (!(gripperWheels.isCargoInside() && speed < 0)){
-            if(useTrigger)
-                gripperWheels.setGripperSpeed(speed);
-            else
+        if(!climb.isClimbing()) {
+            if (!(gripperWheels.isCargoInside() && speed < 0)) {
+                if (useTrigger)
+                    gripperWheels.setGripperSpeed(speed);
+                else
 
-                gripperWheels.setGripperSpeed(speed);
+                    gripperWheels.setGripperSpeed(speed);
+            }
         }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        if(climb.isClimbing())
+            return true;
         if (speed < 0)
             return gripperWheels.isCargoInside() && speed < 0;
         else {
