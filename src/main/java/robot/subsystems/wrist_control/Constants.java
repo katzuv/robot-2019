@@ -41,7 +41,7 @@ public class Constants {
     public enum WRIST_ANGLES {
         INITIAL(0),
         UP(82.75),
-        SHIP(142),
+        SHIP(137),
         SHIP_BACKWARD(0),
         LEVEL_1(135),
         LEVEL_2(118),
