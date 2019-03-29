@@ -71,6 +71,7 @@ public class JoystickDrive extends Command {
         } //TODO: put this in subsystem
         if(climb.isClimbing()) //maybe also lower speeds when back legs are lowered.
         {
+            gripperWheels.setGripperSpeed(rightOutput*0.8); //TODO: not good, no requires
             climb.setWheelSpeed(rightOutput*0.8);
             drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.1,
                     rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.1);
