@@ -44,10 +44,6 @@ public class DrivePathVision extends Command {
         this.vision = vision;
     }
 
-    public void setTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory) {
-        this.trajectory = trajectory;
-    }
-
     // Called just before this Command runs the first time
     protected void initialize() {
         drivetrain.trajectoryTracker.reset(trajectory);
@@ -68,9 +64,6 @@ public class DrivePathVision extends Command {
 
         double distanceFromLast = drivetrain.getRobotPosition().getTranslation().distance(trajectory.getLastState().getState().getPose().getTranslation());
 
-        //Debugging printing variables
-        SmartDashboard.putBoolean("using vision", angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && vision);
-        SmartDashboard.putNumber("Distance from last", distanceFromLast);
 
         if (distance != 0 && distance < 0.75 && vision) {
             stop = true;
@@ -79,17 +72,20 @@ public class DrivePathVision extends Command {
         if (angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && vision) {
             angularVelocity = -Math.toRadians(angle) * Constants.pathAngleKp;
         }
-        SmartDashboard.putBoolean("Stop", stop);
+
+        //Debugging printing variables
+        SmartDashboard.putBoolean("Debug: using vision", angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && vision);
+        SmartDashboard.putNumber("Debug: Distance from last", distanceFromLast);
+        SmartDashboard.putBoolean("Debug: Stop", stop);
+
         if (stop) {
             angularVelocity = 0;
         }
 
-        double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity;
+        double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity; //Multiply angular velocity by the robot radius to get the tangential velocity
 
-        double leftVelocity = linearVelocity - tangentialVelocity;
-        double rightVelocity = linearVelocity + tangentialVelocity;
-        drivetrain.setLeftVelocity(leftVelocity);
-        drivetrain.setRightVelocity(rightVelocity);
+        drivetrain.setLeftVelocity(linearVelocity - tangentialVelocity);
+        drivetrain.setRightVelocity(linearVelocity + tangentialVelocity);
 
     }
 
