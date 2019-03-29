@@ -142,8 +142,8 @@ public class OI {
                                 new CargoScoring(3, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)))));
 
-        //RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
-        //LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
+        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
+        LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
 
         a.whenPressed(new Flower());
         lb.whenPressed(new ExtensionPlate(false));
