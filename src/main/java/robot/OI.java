@@ -109,6 +109,7 @@ public class OI {
     public static Button right_joystick_nine = new JoystickButton(rightStick, 9);
     public static Button right_joystick_ten = new JoystickButton(rightStick, 10);
 
+    public static ButtonCombination manual_wrist = new ButtonCombination(xbox, 7,8,9);
     public OI() {
         //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
         povd.whenPressed(new ShiftButton(xbox, 7,
@@ -158,6 +159,8 @@ public class OI {
         left_joystick_ten.whenPressed(new SafeCloseBackLegs());
         left_joystick_nine.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
         left_joystick_eight.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
+
+        manual_wrist.toggleWhenPressed(new RawWristTurn(0.45, 1));
         // Place cargo backward
 
         /*
