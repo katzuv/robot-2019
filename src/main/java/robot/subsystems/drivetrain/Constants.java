@@ -50,8 +50,8 @@ public class Constants {
 
     public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
 
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0.0006, 0.1} : new double[]{0.02, 0.0006, 0.1};
-
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.01, 0.0006, 0.1} : new double[]{0.02, 0.0006, 0.1};
+    
     public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
     public static final double[] PIDFRight = isRobotA ? new double[]{2, 0.007, 20, 1.45} : new double[]{1.5, 0, 10, 1.3};
 
