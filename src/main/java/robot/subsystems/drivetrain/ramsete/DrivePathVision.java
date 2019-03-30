@@ -36,16 +36,12 @@ public class DrivePathVision extends Command {
      * Robot takes its current location and drives through waypoints in the list
      *
      * @param trajectory Target waypoints
-     * @param reversed  Negative velocities
+     * @param vision  Negative velocities
      */
     public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean vision){
         requires(drivetrain);
         this.trajectory = trajectory;
         this.vision = vision;
-    }
-
-    public void setTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory) {
-        this.trajectory = trajectory;
     }
 
     // Called just before this Command runs the first time
@@ -54,24 +50,21 @@ public class DrivePathVision extends Command {
         LiveDashboard.INSTANCE.setFollowingPath(true);
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        //Get values from the smart dashboard
         double angle = Robot.visionTable.getEntry("tape_angle").getDouble(0);
         double distance = Robot.visionTable.getEntry("tape_distance").getDouble(0);
 
         TrajectoryTrackerOutput trackerOutput = drivetrain.trajectoryTracker.nextState(drivetrain.getRobotPosition(), TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
 
-        LiveDashboard.INSTANCE.setPathX(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getX().getFeet());
-        LiveDashboard.INSTANCE.setPathY(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getY().getFeet());
-        LiveDashboard.INSTANCE.setPathHeading(drivetrain.trajectoryTracker.getReferencePoint().getState().getState().getPose().getRotation().getRadian());
+        drivetrain.updateLiveDashboard();
 
         double linearVelocity = trackerOutput.getLinearVelocity().getValue(); // m/s
         double angularVelocity = trackerOutput.getAngularVelocity().getValue(); // rad/s
 
         double distanceFromLast = drivetrain.getRobotPosition().getTranslation().distance(trajectory.getLastState().getState().getPose().getTranslation());
 
-        SmartDashboard.putBoolean("using vision", angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && vision);
-        SmartDashboard.putNumber("Distance from last", distanceFromLast);
+
         if (distance != 0 && distance < 0.75 && vision) {
             stop = true;
         }
@@ -79,17 +72,20 @@ public class DrivePathVision extends Command {
         if (angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && vision) {
             angularVelocity = -Math.toRadians(angle) * Constants.pathAngleKp;
         }
-        SmartDashboard.putBoolean("Stop", stop);
+
+        //Debugging printing variables
+        SmartDashboard.putBoolean("Debug: using vision", angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && vision);
+        SmartDashboard.putNumber("Debug: Distance from last", distanceFromLast);
+        SmartDashboard.putBoolean("Debug: Stop", stop);
+
         if (stop) {
             angularVelocity = 0;
         }
 
-        double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity;
+        double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity; //Multiply angular velocity by the robot radius to get the tangential velocity
 
-        double leftVelocity = linearVelocity - tangentialVelocity;
-        double rightVelocity = linearVelocity + tangentialVelocity;
-        drivetrain.setLeftVelocity(leftVelocity);
-        drivetrain.setRightVelocity(rightVelocity);
+        drivetrain.setLeftVelocity(linearVelocity - tangentialVelocity);
+        drivetrain.setRightVelocity(linearVelocity + tangentialVelocity);
 
     }
 

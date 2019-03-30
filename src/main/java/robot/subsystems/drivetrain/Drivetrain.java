@@ -24,6 +24,8 @@ import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
 import robot.utilities.Point;
 
+import static robot.Robot.drivetrain;
+
 /**
  * Add your docs here.
  */
@@ -324,5 +326,12 @@ public class Drivetrain extends Subsystem {
     private double getConstant(String key, double constant){
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
         return SmartDashboard.getNumber(key, constant);
+    }
+
+    public void updateLiveDashboard() {
+        LiveDashboard.INSTANCE.setPathX(trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getX().getFeet());
+        LiveDashboard.INSTANCE.setPathY(trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getY().getFeet());
+        LiveDashboard.INSTANCE.setPathHeading(trajectoryTracker.getReferencePoint().getState().getState().getPose().getRotation().getRadian());
+
     }
 }
