@@ -35,7 +35,7 @@ public class VisionDrive extends Command {
 
         double turn = turnPid.getOutput(visionAngle, 0);
 
-        double velocity = visionDistance > 0.85 ? Constants.START_VELOCITY : Constants.END_VELOCITY;
+        double velocity = Constants.VISION_VELOCITY;
 
         if (visionAngle > 1)
             turn -= Constants.MIN_AIM;
@@ -48,7 +48,7 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return (visionDistance < 0.8 && Math.abs(visionAngle) < 1.5) || !seenEntry.getBoolean(true) || visionDistance < 0.5;
+        return !seenEntry.getBoolean(true);
     }
 
     protected void end() {

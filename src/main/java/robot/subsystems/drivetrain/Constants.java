@@ -26,18 +26,16 @@ public class Constants {
     public static final int TALON_RUNNING_TIMEOUT_MS = isRobotA ? 0 : 0;
     public static final int TALON_TIMEOUT_MS = isRobotA ? 10 : 10;
 
-    public static final double START_VELOCITY = -1.18;
-    public static final double END_VELOCITY = -1.18;
-
     public static final double distanceFromEnd = 2;
     public static final double ENDING_TOLERANCE = 0.05;
-    public static final double MIN_AIM = 0.05;
+    public static final double MIN_AIM = 0.06;
 
     public static final double MOTION_CRUISE_VELOCITY = 2.5; //Motion acceleration in M/S
     public static final double MOTION_ACCELERATION =  2; //Motion acceleration in M/S^2
 
     public static final double RAMSETE_PEAK_VELOCITY = 3;
     public static final double RAMSETE_PEAK_ACCELERATION = 2;
+    public static final double VISION_VELOCITY = -0.75;
 
     // (8 inches), the encoder sends 226
     // pulses every 360 degree turn
@@ -50,8 +48,8 @@ public class Constants {
 
     public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
 
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.01, 0.0006, 0.1} : new double[]{0.02, 0.0006, 0.1};
-    
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0.0005, 0} : new double[]{0.02, 0.0006, 0.1};
+
     public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
     public static final double[] PIDFRight = isRobotA ? new double[]{2, 0.007, 20, 1.45} : new double[]{1.5, 0, 10, 1.3};
 
