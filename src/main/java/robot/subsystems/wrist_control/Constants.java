@@ -6,7 +6,6 @@ public class Constants {
     final static double CARGO_IN_VOLTAGE = isRobotA ? 1.2 : 0.64;
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
-
     final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : false;
     final static boolean SENSOR_PHASE = isRobotA ? false : false;
 
@@ -16,6 +15,7 @@ public class Constants {
     final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : true;
     final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : true;
 
+    final static double TRIGGER_MINIMAL_VALUE = 0.2;
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
