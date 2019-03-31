@@ -35,7 +35,6 @@ public class GripperWheels extends Subsystem {
         IntakeMotor.set(ControlMode.PercentOutput, speed);
     }
 
-
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

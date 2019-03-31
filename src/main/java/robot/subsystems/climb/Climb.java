@@ -235,8 +235,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
             attemptCompromisedFix();
         }
 
-        if(Math.abs(getLegBRHeight() - getLegBLHeight()) < Constants.LEGS_EMERGENCY_OKAY && Math.abs(getLegFRHeight() - getLegFLHeight()) < Constants.LEGS_EMERGENCY_OKAY)
-            stillDisabled = false;
+        if(stillDisabled)
+            if(Math.abs(getLegBRHeight() - getLegBLHeight()) < Constants.LEGS_EMERGENCY_OKAY && Math.abs(getLegFRHeight() - getLegFLHeight()) < Constants.LEGS_EMERGENCY_OKAY)
+                stillDisabled = false;
     }
 
     private void attemptCompromisedFix() {
