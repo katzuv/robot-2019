@@ -17,6 +17,7 @@ import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.wrist_control.Constants;
+import robot.subsystems.wrist_control.commands.FullWristClimb;
 import robot.subsystems.wrist_control.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.RawWristTurn;
 import robot.subsystems.wrist_control.commands.WristTurn;
@@ -141,8 +142,8 @@ public class OI {
                                 new CargoScoring(3, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)))));
 
-        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
-        LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
+        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
+        LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
         a.whenPressed(new Flower());
         lb.whenPressed(new ExtensionPlate(false));
@@ -162,7 +163,7 @@ public class OI {
         left_joystick_nine.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
         left_joystick_eight.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
 
-        manual_wrist.toggleWhenPressed(new RawWristTurn(0.45, 1));
+        manual_wrist.toggleWhenPressed(new FullWristClimb());
         // Place cargo backward
 
         /*

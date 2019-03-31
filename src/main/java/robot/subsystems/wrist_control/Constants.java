@@ -15,7 +15,7 @@ public class Constants {
     final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : true;
     final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : true;
 
-    final static double TRIGGER_MINIMAL_VALUE = 0.2;
+    public final static double TRIGGER_MINIMAL_VALUE = 0.2;
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 

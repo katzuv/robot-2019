@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.OI;
 import robot.Robot;
+import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
 
 import static robot.Robot.*;
@@ -55,7 +56,7 @@ public class GripperControl extends Command {
 
             if (!(gripperWheels.isCargoInside() && speed < 0)) {
                 if (useTrigger)
-                    gripperWheels.setGripperSpeed(speed * OI.xbox.getTriggerAxis(hand));
+                    gripperWheels.setGripperSpeed(speed * (Constants.TRIGGER_MINIMAL_VALUE + (1 - Constants.TRIGGER_MINIMAL_VALUE) * OI.xbox.getTriggerAxis(hand))); //scale the trigger with its value, starting from the constant starting value, with the maximum speed being the parameter
                 else
                     gripperWheels.setGripperSpeed(speed);
             }
