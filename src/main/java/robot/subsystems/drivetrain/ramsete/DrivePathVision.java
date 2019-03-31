@@ -6,12 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
@@ -27,8 +23,11 @@ import static robot.Robot.drivetrain;
  */
 public class DrivePathVision extends Command {
 
-    private boolean reversed; //currently not in use
     private final boolean vision;
+    private boolean reversed;
+    private List<Pose2d> waypoints;
+    private double startingVelocity;
+    private double endingVelocity;
     private TimedTrajectory<Pose2dWithCurvature> trajectory;
     private boolean stop = false;
 
@@ -36,16 +35,31 @@ public class DrivePathVision extends Command {
      * Robot takes its current location and drives through waypoints in the list
      *
      * @param trajectory Target waypoints
-     * @param vision  Negative velocities
+     * @param vision     Negative velocities
      */
-    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean vision){
+    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean vision) {
         requires(drivetrain);
         this.trajectory = trajectory;
         this.vision = vision;
     }
 
+    public DrivePathVision(List<Pose2d> points, double startingVelocity, double endingVelocity, boolean reversed, boolean vision) {
+        this.vision = vision;
+        this.reversed = reversed;
+        this.waypoints = points;
+        this.startingVelocity = startingVelocity;
+        this.endingVelocity = endingVelocity;
+    }
+
     // Called just before this Command runs the first time
     protected void initialize() {
+        if (waypoints != null) {
+            List<Pose2d> points = new ArrayList<>(waypoints);
+            points.add(0, drivetrain.getRobotPosition());
+            this.trajectory = Utils.generateTrajectory(
+                    points, startingVelocity, endingVelocity, reversed
+            );
+        }
         drivetrain.trajectoryTracker.reset(trajectory);
         LiveDashboard.INSTANCE.setFollowingPath(true);
     }

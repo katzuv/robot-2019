@@ -30,10 +30,10 @@ public class Constants {
     public static final double ENDING_TOLERANCE = 0.05;
     public static final double MIN_AIM = 0.06;
 
-    public static final double MOTION_CRUISE_VELOCITY = 2.5; //Motion acceleration in M/S
+    public static final double MOTION_CRUISE_VELOCITY = 2; //Motion acceleration in M/S
     public static final double MOTION_ACCELERATION =  2; //Motion acceleration in M/S^2
 
-    public static final double RAMSETE_PEAK_VELOCITY = 3;
+    public static final double RAMSETE_PEAK_VELOCITY = 2.5;
     public static final double RAMSETE_PEAK_ACCELERATION = 2;
     public static final double VISION_VELOCITY = -0.75;
 
@@ -58,7 +58,7 @@ public class Constants {
     public static final double angleKp = isRobotA ? 1.6 : 1.37;
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
 
-    private static final double ACCELERATION_CONSTRAINT = 1.7;
+    private static final double ACCELERATION_CONSTRAINT = 1.2;
     private static final double VELOCITY_CONSTRAINT = 3;
     private static final double RECTANGLE_1=4;
     private static final double RECTANGLE_2=7;
