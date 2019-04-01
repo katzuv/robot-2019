@@ -22,14 +22,19 @@ public class Utils {
     }
 
     public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> points, double startingVelocity, double endingVelocity, boolean reversed) {
+       return generateTrajectory(points, startingVelocity, endingVelocity, Constants.RAMSETE_PEAK_VELOCITY, Constants.RAMSETE_PEAK_ACCELERATION, reversed);
+    }
+
+
+    public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> points, double startingVelocity, double endingVelocity, double maxVelocity, double maxAcceleration, boolean reversed) {
         return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator()
                 .generateTrajectory(
                         points,
                         Constants.constraints,
                         VelocityKt.getVelocity(LengthKt.getMeter(startingVelocity)),
                         VelocityKt.getVelocity(LengthKt.getMeter(endingVelocity)),
-                        VelocityKt.getVelocity(LengthKt.getMeter(Constants.RAMSETE_PEAK_VELOCITY)),
-                        AccelerationKt.getAcceleration(LengthKt.getMeter(Constants.RAMSETE_PEAK_ACCELERATION)),
+                        VelocityKt.getVelocity(LengthKt.getMeter(maxVelocity)),
+                        AccelerationKt.getAcceleration(LengthKt.getMeter(maxAcceleration)),
                         reversed,
                         true
                 );

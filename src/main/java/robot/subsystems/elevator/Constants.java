@@ -61,7 +61,7 @@ public class Constants {
     static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (4 * TICKS_PER_METER / 10) : (int) (4 * TICKS_PER_METER / 10);
     public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
-    static double ROBOT_A_HATCH_DIFFERENCE = 0; //Difference in the hatch placing heights between robot A and robot B
+    static double ROBOT_A_HATCH_DIFFERENCE = 0.12; //Difference in the hatch placing heights between robot A and robot B
 
     /**
      * enum storing all height values assigned to their respective height.

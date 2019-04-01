@@ -12,16 +12,24 @@ import static robot.Robot.navx;
 public class TurnAngle extends Command {
     private double angle;
     private double setpoint;
-
+    private boolean absolute; //if the angle is relative or absolute
     public TurnAngle(double angle) {
         this.angle = angle;
+        absolute = false;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
+    public TurnAngle(double absoluteAngle, boolean isAbsolute){
+         absolute = isAbsolute;
+         angle = absoluteAngle;
+    }
     // Called just before this Command runs the first time
     protected void initialize() {
-        this.setpoint = navx.getAngle() + angle;
+        if(!absolute)
+            this.setpoint = navx.getAngle() + angle;
+        else
+            this.setpoint = angle;
         drivetrain.setMotorsToBrake();
     }
 

@@ -48,7 +48,7 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return !seenEntry.getBoolean(true);
+        return !seenEntry.getBoolean(false);
     }
 
     protected void end() {

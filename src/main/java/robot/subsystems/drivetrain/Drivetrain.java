@@ -10,6 +10,7 @@ package robot.subsystems.drivetrain;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.team254.lib.physics.DifferentialDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.debug.LiveDashboard;
@@ -20,11 +21,10 @@ import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
 import robot.utilities.Point;
-
-import static robot.Robot.drivetrain;
 
 /**
  * Add your docs here.
@@ -216,7 +216,7 @@ public class Drivetrain extends Subsystem {
     /**
      * Sets all the motors of the drivetrain to a brake neutral mode
      */
-    public void setMotorsToBrake(){
+    public void setMotorsToBrake() {
         leftMaster.setNeutralMode(NeutralMode.Brake);
         leftSlave1.setNeutralMode(NeutralMode.Brake);
         leftSlave2.setNeutralMode(NeutralMode.Brake);
@@ -228,7 +228,7 @@ public class Drivetrain extends Subsystem {
     /**
      * Sets all the motors of the drivetrain to a coast neutral mode
      */
-    public void setMotorsToCoast(){
+    public void setMotorsToCoast() {
         leftMaster.setNeutralMode(NeutralMode.Coast);
         leftSlave1.setNeutralMode(NeutralMode.Coast);
         leftSlave2.setNeutralMode(NeutralMode.Coast);
@@ -262,9 +262,10 @@ public class Drivetrain extends Subsystem {
         return ticks / Constants.LEFT_TICKS_PER_METER;
     }
 
-    private double convertRightTicksToDistance(int ticks){
+    private double convertRightTicksToDistance(int ticks) {
         return ticks / Constants.RIGHT_TICKS_PER_METER;
     }
+
     /**
      * returns the robot NAVX yaw angle
      *
@@ -323,7 +324,7 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    private double getConstant(String key, double constant){
+    private double getConstant(String key, double constant) {
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
         return SmartDashboard.getNumber(key, constant);
     }
@@ -333,5 +334,28 @@ public class Drivetrain extends Subsystem {
         LiveDashboard.INSTANCE.setPathY(trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getY().getFeet());
         LiveDashboard.INSTANCE.setPathHeading(trajectoryTracker.getReferencePoint().getState().getState().getPose().getRotation().getRadian());
 
+    }
+
+    public void setOutput(TrajectoryTrackerOutput output) {
+        setOutputFromDynamics(output.getDifferentialDriveVelocity(), output.getDifferentialDriveAcceleration());
+    }
+
+    public void setOutputFromDynamics(DifferentialDrive.ChassisState chassisVelocity, DifferentialDrive.ChassisState chassisAcceleration) {
+        DifferentialDrive.DriveDynamics dynamics = Constants.driveModel.solveInverseDynamics(chassisVelocity, chassisAcceleration);
+        setOutput(dynamics.getWheelVelocity(), dynamics.getVoltage());
+    }
+
+    public void setOutput(DifferentialDrive.WheelState wheelVelocities, DifferentialDrive.WheelState wheelVoltages) {
+        leftMaster.set(
+                ControlMode.Velocity, convertRightDistanceToTicks(wheelVelocities.getLeft() * Constants.driveModel.getWheelRadius()) / 10.0,
+                DemandType.ArbitraryFeedForward,
+                wheelVoltages.getLeft() / 12
+        );
+
+        rightMaster.set(
+                ControlMode.Velocity, convertRightDistanceToTicks(wheelVelocities.getRight() * Constants.driveModel.getWheelRadius()) / 10.0,
+                DemandType.ArbitraryFeedForward,
+                wheelVoltages.getRight() / 12
+        );
     }
 }

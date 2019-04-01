@@ -24,6 +24,8 @@ import static robot.Robot.drivetrain;
 public class DrivePathVision extends Command {
 
     private final boolean vision;
+    private double maxAcceleration;
+    private double maxVelocity;
     private boolean reversed;
     private List<Pose2d> waypoints;
     private double startingVelocity;
@@ -49,6 +51,19 @@ public class DrivePathVision extends Command {
         this.waypoints = points;
         this.startingVelocity = startingVelocity;
         this.endingVelocity = endingVelocity;
+        this.maxVelocity = Constants.RAMSETE_PEAK_VELOCITY;
+        this.maxAcceleration = Constants.RAMSETE_PEAK_ACCELERATION;
+    }
+
+
+    public DrivePathVision(List<Pose2d> points, double startingVelocity, double endingVelocity, double maxVelocity, double maxAcceleration, boolean reversed, boolean vision) {
+        this.vision = vision;
+        this.reversed = reversed;
+        this.waypoints = points;
+        this.startingVelocity = startingVelocity;
+        this.endingVelocity = endingVelocity;
+        this.maxVelocity = maxVelocity;
+        this.maxAcceleration = maxAcceleration;
     }
 
     // Called just before this Command runs the first time
@@ -97,6 +112,8 @@ public class DrivePathVision extends Command {
         }
 
         double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity; //Multiply angular velocity by the robot radius to get the tangential velocity
+
+//        drivetrain.setOutput(trackerOutput);
 
         drivetrain.setLeftVelocity(linearVelocity - tangentialVelocity);
         drivetrain.setRightVelocity(linearVelocity + tangentialVelocity);

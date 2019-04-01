@@ -19,12 +19,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.sandstorm.TwoHatchRocket;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
+import robot.subsystems.drivetrain.sandstorm.OneHatchCargo;
+import robot.subsystems.drivetrain.sandstorm.TwoHatchRocket;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
-import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.hatch_intake.HatchIntake;
+import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
 
@@ -95,9 +96,12 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Hatch level 2", new TwoHatchRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        m_chooser.addOption("Hatch level 1", new TwoHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        m_chooser.addOption("Hatch level 3", new TwoHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+        m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        m_chooser.addOption("Right Rocket level 2", new TwoHatchRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        m_chooser.addOption("Right Rocket level 3", new TwoHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+
+        m_chooser.addOption("Cargo ship", new OneHatchCargo(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+
         m_chooser.addOption("Do nothing", null);
 
         m_chooser.addOption("Talon test", new TalonTest());
@@ -120,7 +124,6 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         addToShuffleboard();
         climb.executePreventBreak();
-
     }
 
     /**
@@ -168,7 +171,6 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-
     }
 
     @Override
@@ -219,10 +221,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
         SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
         SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle(168));
-        //printRunningCommands();
+        printAllCommands();
     }
 
-    public void updateDashboardConstants(){
+    public void updateDashboardConstants() {
         drivetrain.updateConstants();
     }
 
@@ -238,7 +240,7 @@ public class Robot extends TimedRobot {
         }
     }
 
-    public void printAllCommands(){
+    public void printAllCommands() {
         SmartDashboard.putString("RunningCommand", drivetrain.getCurrentCommandName());
     }
 

@@ -46,39 +46,36 @@ public class TwoHatchRocket extends CommandGroup {
         addSequential(new WaitCommand(0.5));
 
         List<Pose2d> toLoadingStation = new ArrayList<>();
-        toLoadingStation.add(new Pose2d(LengthKt.getFeet(7.769), LengthKt.getFeet(2.187), Rotation2dKt.getDegree(180)));
+        toLoadingStation.add(new Pose2d(LengthKt.getFeet(7.769), LengthKt.getFeet(2.982), Rotation2dKt.getDegree(180)));
         addSequential(new DrivePathVision(toLoadingStation, 0, 1, false, false));
 
-        addSequential(new TurnAngle(140));
+        addSequential(new TurnAngle(175));
 
-        addSequential(new WaitCommand(0.5));
+        addSequential(new WaitCommand(0.4));
 
         addSequential(new ExtensionPlate(true));
         addSequential(new Flower(true));
         addSequential(new VisionDrive());
+
         addSequential(new WaitCommand(0.2));
 
         addSequential(new TakeHatch());
 
         addSequential(new DistanceDrive(0.5));
 
-        addSequential(new TurnAngle(180));
-
         addSequential(new WaitCommand(0.3));
+        List<Pose2d> driveWithHatch = new ArrayList<>();
+        driveWithHatch.add(new Pose2d(LengthKt.getFeet(19.015), LengthKt.getFeet(5.283), Rotation2dKt.getDegree(0)));
+        driveWithHatch.add(new Pose2d(LengthKt.getFeet(25.563), LengthKt.getFeet(4.055), Rotation2dKt.getDegree(30)));
 
-        //Drive to rocket
-        List<Pose2d> toRocket2nd = new ArrayList<>();
-        toRocket2nd.add(new Pose2d(LengthKt.getFeet(15.559), LengthKt.getFeet(3.011), Rotation2dKt.getDegree(150)));
+        addSequential(new DrivePathVision(driveWithHatch, 0, 0, false, false));
 
-        addSequential(new DrivePathVision(toRocket2nd, 0, 1, true, false));
-
+        addSequential(new WaitCommand(0.5));
         addParallel(new ExtensionPlate(true));
-
-        addSequential(new WaitCommand(0.4));
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
 
-        addSequential(new HatchScoring(height, false));
+        addSequential(new HatchScoring(height));
     }
 
 }
