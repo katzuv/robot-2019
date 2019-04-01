@@ -17,11 +17,8 @@ import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.command_groups.*;
-import robot.subsystems.drivetrain.commands.DistanceDrive;
-import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.wrist_control.Constants;
-import robot.subsystems.wrist_control.commands.FullWristClimb;
 import robot.subsystems.wrist_control.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.RawWristTurn;
 import robot.subsystems.wrist_control.commands.WristTurn;
@@ -30,6 +27,7 @@ import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.hatch_intake.commands.ExtensionPlate;
 import robot.utilities.ButtonCombination;
+import robot.utilities.ShiftButton;
 import robot.utilities.TriggerButton;
 
 import static robot.subsystems.drivetrain.Constants.SLOW_JOYSTICK_SPEED;
