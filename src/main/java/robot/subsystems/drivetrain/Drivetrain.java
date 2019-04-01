@@ -10,19 +10,21 @@ package robot.subsystems.drivetrain;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.team254.lib.physics.DifferentialDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
-import org.ghrobotics.lib.mathematics.twodim.control.PurePursuitTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
-import robot.subsystems.drivetrain.pure_pursuit.Point;
+import robot.utilities.Point;
 
 /**
  * Add your docs here.
@@ -51,6 +53,11 @@ public class Drivetrain extends Subsystem {
         leftMaster.setSensorPhase(Constants.LEFT_ENCODER_REVERSED);
         rightMaster.setSensorPhase(Constants.RIGHT_ENCODER_REVERSED);
 
+        leftMaster.configMotionCruiseVelocity(convertLeftDistanceToTicks(Constants.MOTION_CRUISE_VELOCITY) / 10);
+        rightMaster.configMotionCruiseVelocity(convertRightDistanceToTicks(Constants.MOTION_CRUISE_VELOCITY) / 10);
+        leftMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
+        rightMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
+
         if (!Robot.isRobotA) {
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
@@ -64,18 +71,18 @@ public class Drivetrain extends Subsystem {
         rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
         leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
 
-//        leftMaster.configVoltageCompSaturation(12);
-//        leftMaster.enableVoltageCompensation(true);
-//        leftSlave1.configVoltageCompSaturation(12);
-//        leftSlave1.enableVoltageCompensation(true);
-//        leftSlave2.configVoltageCompSaturation(12);
-//        leftSlave2.enableVoltageCompensation(true);
-//        rightMaster.configVoltageCompSaturation(12);
-//        rightMaster.enableVoltageCompensation(true);
-//        rightSlave2.configVoltageCompSaturation(12);
-//        rightSlave2.enableVoltageCompensation(true);
-//        rightSlave1.configVoltageCompSaturation(12);
-//        rightSlave1.enableVoltageCompensation(true);
+        leftMaster.configVoltageCompSaturation(12);
+        leftMaster.enableVoltageCompensation(true);
+        leftSlave1.configVoltageCompSaturation(12);
+        leftSlave1.enableVoltageCompensation(true);
+        leftSlave2.configVoltageCompSaturation(12);
+        leftSlave2.enableVoltageCompensation(true);
+        rightMaster.configVoltageCompSaturation(12);
+        rightMaster.enableVoltageCompensation(true);
+        rightSlave2.configVoltageCompSaturation(12);
+        rightSlave2.enableVoltageCompensation(true);
+        rightSlave1.configVoltageCompSaturation(12);
+        rightSlave1.enableVoltageCompensation(true);
 
         leftMaster.setInverted(Constants.LEFT_MASTER_REVERSED);
         leftSlave1.setInverted(Constants.LEFT_SLAVE1_REVERSED);
@@ -95,6 +102,7 @@ public class Drivetrain extends Subsystem {
         rightMaster.config_kI(0, Constants.PIDFRight[1], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kD(0, Constants.PIDFRight[2], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kF(0, Constants.PIDFRight[3], Constants.TALON_TIMEOUT_MS);
+
     }
 
     @Override
@@ -114,26 +122,31 @@ public class Drivetrain extends Subsystem {
     }
 
     public double getLeftVelocity() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity()) * 10;
+        return convertLeftTicksToDistance(leftMaster.getSelectedSensorVelocity()) * 10;
     }
 
     public void setLeftVelocity(double velocity) {
-        leftMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) / 10.0);
+        leftMaster.set(ControlMode.Velocity, convertLeftDistanceToTicks(velocity) / 10.0);
     }
 
     public double getRightVelocity() {
-        return convertTicksToDistance(rightMaster.getSelectedSensorVelocity()) * 10;
+        return convertRightTicksToDistance(rightMaster.getSelectedSensorVelocity()) * 10;
     }
 
     public void setRightVelocity(double velocity) {
-        rightMaster.set(ControlMode.Velocity, convertDistanceToTicks(velocity) / 10.0);
+        rightMaster.set(ControlMode.Velocity, convertRightDistanceToTicks(velocity) / 10.0);
+    }
+
+    public void setVelocity(double left, double right) {
+        setLeftVelocity(left);
+        setRightVelocity(right);
     }
 
     /**
      * @return the speed of the left side of the Drivetrain
      */
     public double getLeftSpeed() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0)) * 10;
+        return convertLeftTicksToDistance(leftMaster.getSelectedSensorVelocity(0)) * 10;
     }
 
     /**
@@ -142,16 +155,14 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the left side
      */
     private void setLeftSpeed(double speed) {
-        if (speed <= 1 && speed >= -1) {
-            leftMaster.set(ControlMode.PercentOutput, speed);
-        }
+        leftMaster.set(ControlMode.PercentOutput, speed);
     }
 
     /**
      * @return the speed of the right side of the Drivetrain
      */
     public double getRightSpeed() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorVelocity(0)) * 10;
+        return convertRightTicksToDistance(leftMaster.getSelectedSensorVelocity(0)) * 10;
     }
 
     /**
@@ -160,9 +171,7 @@ public class Drivetrain extends Subsystem {
      * @param speed speed for the motors of the right side
      */
     private void setRightSpeed(double speed) {
-        if (speed <= 1 && speed >= -1) {
-            rightMaster.set(ControlMode.PercentOutput, speed);
-        }
+        rightMaster.set(ControlMode.PercentOutput, speed);
     }
 
     /**
@@ -170,7 +179,7 @@ public class Drivetrain extends Subsystem {
      * reset
      */
     public double getLeftDistance() {
-        return convertTicksToDistance(leftMaster.getSelectedSensorPosition(0));
+        return convertLeftTicksToDistance(leftMaster.getSelectedSensorPosition(0));
     }
 
     /**
@@ -178,7 +187,7 @@ public class Drivetrain extends Subsystem {
      * reset
      */
     public double getRightDistance() {
-        return convertTicksToDistance(rightMaster.getSelectedSensorPosition(0));
+        return convertRightTicksToDistance(rightMaster.getSelectedSensorPosition(0));
     }
 
     public void resetEncoders() {
@@ -197,18 +206,17 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        localization.reset(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180)));
+        localization.reset(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180))); //TODO: make this a constant
     }
 
     public void resetLocation(Pose2d pose) {
         localization.reset(pose);
     }
 
-
     /**
      * Sets all the motors of the drivetrain to a brake neutral mode
      */
-    public void setMotorsToBrake(){
+    public void setMotorsToBrake() {
         leftMaster.setNeutralMode(NeutralMode.Brake);
         leftSlave1.setNeutralMode(NeutralMode.Brake);
         leftSlave2.setNeutralMode(NeutralMode.Brake);
@@ -220,7 +228,7 @@ public class Drivetrain extends Subsystem {
     /**
      * Sets all the motors of the drivetrain to a coast neutral mode
      */
-    public void setMotorsToCoast(){
+    public void setMotorsToCoast() {
         leftMaster.setNeutralMode(NeutralMode.Coast);
         leftSlave1.setNeutralMode(NeutralMode.Coast);
         leftSlave2.setNeutralMode(NeutralMode.Coast);
@@ -236,8 +244,12 @@ public class Drivetrain extends Subsystem {
      * @param distance height in meters
      * @return ticks of the encoder
      */
-    private int convertDistanceToTicks(double distance) {
-        return (int) (distance * Constants.TICKS_PER_METER);
+    private int convertLeftDistanceToTicks(double distance) {
+        return (int) (distance * Constants.LEFT_TICKS_PER_METER);
+    }
+
+    private int convertRightDistanceToTicks(double distance) {
+        return (int) (distance * Constants.RIGHT_TICKS_PER_METER);
     }
 
     /**
@@ -246,8 +258,12 @@ public class Drivetrain extends Subsystem {
      * @param ticks ticks of the encoder
      * @return height in meters
      */
-    private double convertTicksToDistance(int ticks) {
-        return ticks / Constants.TICKS_PER_METER;
+    private double convertLeftTicksToDistance(int ticks) {
+        return ticks / Constants.LEFT_TICKS_PER_METER;
+    }
+
+    private double convertRightTicksToDistance(int ticks) {
+        return ticks / Constants.RIGHT_TICKS_PER_METER;
     }
 
     /**
@@ -293,4 +309,53 @@ public class Drivetrain extends Subsystem {
         return new Point(localization.getRobotPosition().getTranslation().getY().getMeter(), localization.getRobotPosition().getTranslation().getX().getMeter());
     }
 
+    public void driveDistance(double distance) {
+        leftMaster.set(ControlMode.MotionMagic, convertLeftDistanceToTicks(distance + getLeftDistance()));
+        rightMaster.set(ControlMode.MotionMagic, convertRightDistanceToTicks(distance + getRightDistance()));
+        System.out.println(getLeftDistance());
+        System.out.println(convertLeftDistanceToTicks(distance + getLeftDistance()));
+        System.out.println(convertRightDistanceToTicks(getLeftDistance()));
+    }
+
+    public void updateConstants() {
+        Constants.PIDVisionTurn[0] = getConstant("Vision Drive: turn kp", Constants.PIDVisionTurn[0]);
+        Constants.PIDVisionTurn[1] = getConstant("Vision Drive: turn ki", Constants.PIDVisionTurn[1]);
+        Constants.PIDVisionTurn[2] = getConstant("Vision Drive: turn kd", Constants.PIDVisionTurn[2]);
+
+    }
+
+    private double getConstant(String key, double constant) {
+        SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
+        return SmartDashboard.getNumber(key, constant);
+    }
+
+    public void updateLiveDashboard() {
+        LiveDashboard.INSTANCE.setPathX(trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getX().getFeet());
+        LiveDashboard.INSTANCE.setPathY(trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getY().getFeet());
+        LiveDashboard.INSTANCE.setPathHeading(trajectoryTracker.getReferencePoint().getState().getState().getPose().getRotation().getRadian());
+
+    }
+
+    public void setOutput(TrajectoryTrackerOutput output) {
+        setOutputFromDynamics(output.getDifferentialDriveVelocity(), output.getDifferentialDriveAcceleration());
+    }
+
+    public void setOutputFromDynamics(DifferentialDrive.ChassisState chassisVelocity, DifferentialDrive.ChassisState chassisAcceleration) {
+        DifferentialDrive.DriveDynamics dynamics = Constants.driveModel.solveInverseDynamics(chassisVelocity, chassisAcceleration);
+        setOutput(dynamics.getWheelVelocity(), dynamics.getVoltage());
+    }
+
+    public void setOutput(DifferentialDrive.WheelState wheelVelocities, DifferentialDrive.WheelState wheelVoltages) {
+        leftMaster.set(
+                ControlMode.Velocity, convertRightDistanceToTicks(wheelVelocities.getLeft() * Constants.driveModel.getWheelRadius()) / 10.0,
+                DemandType.ArbitraryFeedForward,
+                wheelVoltages.getLeft() / 12
+        );
+
+        rightMaster.set(
+                ControlMode.Velocity, convertRightDistanceToTicks(wheelVelocities.getRight() * Constants.driveModel.getWheelRadius()) / 10.0,
+                DemandType.ArbitraryFeedForward,
+                wheelVoltages.getRight() / 12
+        );
+    }
 }

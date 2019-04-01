@@ -16,16 +16,15 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.subsystems.command_groups.*;
+import robot.subsystems.drivetrain.commands.DistanceDrive;
+import robot.subsystems.drivetrain.commands.TurnAngle;
+import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.FullWristClimb;
 import robot.subsystems.wrist_control.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.RawWristTurn;
 import robot.subsystems.wrist_control.commands.WristTurn;
-import robot.subsystems.command_groups.CargoScoring;
-import robot.subsystems.command_groups.HatchScoring;
-import robot.subsystems.command_groups.ShiftButton;
-import robot.subsystems.drivetrain.commands.AngleDrive;
-import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Flower;
@@ -96,7 +95,8 @@ public class OI {
     public static int right_trigger = 3;
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
-
+  
+  
     public static Button left_joystick_two = new JoystickButton(leftStick, 2);
     public static Button left_joystick_three = new JoystickButton(leftStick, 3);
     public static Button left_joystick_six = new JoystickButton(leftStick, 6);
@@ -111,6 +111,7 @@ public class OI {
     public static Button right_joystick_eight = new JoystickButton(rightStick, 8);
     public static Button right_joystick_nine = new JoystickButton(rightStick, 9);
     public static Button right_joystick_ten = new JoystickButton(rightStick, 10);
+    public static Button right_joystick_eleven = new JoystickButton(rightStick, 11);
 
     public static ButtonCombination manual_wrist = new ButtonCombination(xbox, 7,8,9);
     public OI() {
@@ -123,21 +124,21 @@ public class OI {
         povr.whenPressed(new ShiftButton(xbox, 7,
                 new CargoScoring(1, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH, false),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(1, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)))));
         povl.whenPressed(new ShiftButton(xbox, 7,
                 new CargoScoring(2, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH, false),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(2, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)))));
         povu.whenPressed(new ShiftButton(xbox, 7,
                 new CargoScoring(3, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH, false),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(3, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)))));
@@ -154,8 +155,7 @@ public class OI {
         //TODO: add right stick to control the cargo intake
         select.whenPressed(new CloseBoth());
 
-        left_joystick_six.toggleWhenPressed(new AngleDrive());
-        right_joystick_six.whenPressed(new SwitchCamera()); //TODO: both buttons are assigned to joystick six, need to talk with ido
+        left_joystick_six.toggleWhenPressed(new VisionDrive());
 
         left_joystick_two.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());

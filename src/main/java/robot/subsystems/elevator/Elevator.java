@@ -76,6 +76,9 @@ public class Elevator extends Subsystem {
         );
         masterMotor.overrideLimitSwitchesEnable(false);
         masterMotor.overrideSoftLimitsEnable(false);
+
+        masterMotor.configVoltageCompSaturation(12);
+        masterMotor.enableVoltageCompensation(true);
     }
 
     /**

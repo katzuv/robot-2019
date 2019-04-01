@@ -12,6 +12,7 @@ public class ResetWristAngle extends InstantCommand {
 
     public ResetWristAngle(double angle) {
         this.angle = angle;
+        setRunWhenDisabled(true);
     }
 
     // Called just before this Command runs the first time

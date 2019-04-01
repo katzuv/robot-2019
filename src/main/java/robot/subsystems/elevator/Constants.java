@@ -4,7 +4,7 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
 
-    public static final int START_UNIT = isRobotA ? -720 : -720;
+    public static final int START_UNIT = isRobotA ? -1500 : -720;
     public static final double LOWER_DANGER_ZONE = 0.32;
     public static final double UPPER_DANGER_ZONE = 0.84;
 
@@ -61,6 +61,8 @@ public class Constants {
     static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (4 * TICKS_PER_METER / 10) : (int) (4 * TICKS_PER_METER / 10);
     public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
+    static double ROBOT_A_HATCH_DIFFERENCE = 0.12; //Difference in the hatch placing heights between robot A and robot B
+
     /**
      * enum storing all height values assigned to their respective height.
      * There are separate heights for hatch, cargo, and cargo backwards.
@@ -69,7 +71,7 @@ public class Constants {
         LEVEL1_HATCH(0.11),
         LEVEL2_HATCH(0.977),
         LEVEL3_HATCH(1.59),
-        SHIP_CARGO(0.63),
+        SHIP_CARGO(0.70),
         LEVEL1_CARGO(0.165),
         LEVEL2_CARGO(0.9),
         LEVEL3_CARGO(1.56),
@@ -85,7 +87,7 @@ public class Constants {
         }
 
         public double getLevelHeight() {
-            return levelHeight;
+            return isRobotA ? levelHeight + ROBOT_A_HATCH_DIFFERENCE : levelHeight;
         }
     }
 
