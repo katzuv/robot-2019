@@ -30,7 +30,7 @@ class Paths {
         RIGHT_HAB_TO_NEAR_ROCKET = Utils.generateTrajectory(
                 Arrays.asList(
                         new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180)),
-                        new Pose2d(LengthKt.getFeet(13.196), LengthKt.getFeet(12.583), Rotation2dKt.getDegree(150))
+                        new Pose2d(LengthKt.getFeet(14.222), LengthKt.getFeet(3.739), Rotation2dKt.getDegree(150))
                 ), 0, 0, true
         );
 
