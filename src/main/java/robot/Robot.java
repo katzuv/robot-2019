@@ -20,6 +20,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
+import robot.subsystems.drivetrain.sandstorm.LeftRocket;
 import robot.subsystems.drivetrain.sandstorm.OneHatchCargo;
 import robot.subsystems.drivetrain.sandstorm.TwoHatchRocket;
 import robot.subsystems.elevator.Constants;
@@ -99,7 +100,7 @@ public class Robot extends TimedRobot {
         m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         m_chooser.addOption("Right Rocket level 2", new TwoHatchRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
         m_chooser.addOption("Right Rocket level 3", new TwoHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
-
+        m_chooser.addOption("left rocket level 1", new LeftRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         m_chooser.addOption("Cargo ship", new OneHatchCargo(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
 
         m_chooser.addOption("Do nothing", null);
