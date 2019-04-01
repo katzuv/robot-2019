@@ -6,7 +6,6 @@ public class Constants {
     final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.64;
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
-
     final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : false;
     final static boolean SENSOR_PHASE = isRobotA ? false : false;
 
@@ -16,6 +15,7 @@ public class Constants {
     final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : true;
     final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : true;
 
+    public final static double TRIGGER_MINIMAL_VALUE = 0.2;
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
@@ -41,7 +41,7 @@ public class Constants {
     public enum WRIST_ANGLES {
         INITIAL(0),
         UP(82.75),
-        SHIP(142),
+        SHIP(137),
         SHIP_BACKWARD(0),
         LEVEL_1(135),
         LEVEL_2(118),

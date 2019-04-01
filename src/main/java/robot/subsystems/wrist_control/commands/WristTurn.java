@@ -38,7 +38,7 @@ public class WristTurn extends Command {
     protected void execute() {
         wristControl.setWristAngle(angle);
         wristControl.preventOverShoot();
-        if (wristControl.getWristAngle() < 5 && angle < 3) {
+        if (wristControl.getWristAngle() < 5 && angle < 3) { //TODO: this is done in the code, is it necessary?
             wristControl.setWristSpeed(0);
         }
         else

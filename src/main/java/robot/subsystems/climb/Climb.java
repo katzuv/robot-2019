@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.Robot;
 
 /**
  * Climbing subsystem for the 2019 robot 'GENESIS'
@@ -90,7 +91,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     public void setLegBLHeight(double height, double legOffset) {
         SmartDashboard.putNumber("target BL", height);
         if (!isCompromised())
-            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, 13 * (legOffset + getLegBRHeight() - getLegBLHeight()));
     }
 
     /**
@@ -98,7 +99,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void setLegBRHeight(double height, double legOffset) {
         if (!isCompromised())
-            talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+            talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, 13 * (legOffset + getLegBLHeight() - getLegBRHeight()));
     }
 
     /**
@@ -234,8 +235,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
             attemptCompromisedFix();
         }
 
-        if(Math.abs(getLegBRHeight() - getLegBLHeight()) < Constants.LEGS_EMERGENCY_OKAY && Math.abs(getLegFRHeight() - getLegFLHeight()) < Constants.LEGS_EMERGENCY_OKAY)
-            stillDisabled = false;
+        if(stillDisabled)
+            if(Math.abs(getLegBRHeight() - getLegBLHeight()) < Constants.LEGS_EMERGENCY_OKAY && Math.abs(getLegFRHeight() - getLegFLHeight()) < Constants.LEGS_EMERGENCY_OKAY)
+                stillDisabled = false;
     }
 
     private void attemptCompromisedFix() {
@@ -392,6 +394,12 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         motorController.config_kF(0, pidfConstants[3], timeout);
         motorController.configMotionCruiseVelocity(cruise);
         motorController.configMotionAcceleration(acceleration);
+    }
+
+    public boolean isClimbing() {
+        return (Robot.climb.getLegFRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
+                Robot.climb.getLegFLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH) || (Robot.climb.getLegBRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
+                Robot.climb.getLegBLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH);
     }
 
     //TODO: move this enum to the Constants class.

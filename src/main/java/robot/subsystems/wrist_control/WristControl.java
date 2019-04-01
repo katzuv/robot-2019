@@ -25,7 +25,7 @@ import static robot.Robot.wristControl;
 public class WristControl extends Subsystem {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private double setPointAngle;
-
+    private boolean raw = false;
     public WristControl() {
         /*
         config for the feedback sensor
@@ -89,6 +89,7 @@ public class WristControl extends Subsystem {
     }
 
     public void setWristSpeed(double speed) {
+        raw = true;
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
@@ -142,6 +143,7 @@ public class WristControl extends Subsystem {
     }
 
     public void setWristAngle(double angle) {
+        raw = false;
         angle = Math.max(0, angle);
         angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(), angle);
         SmartDashboard.putNumber("Cargo intake: target", angle);
@@ -204,10 +206,12 @@ public class WristControl extends Subsystem {
      * This method makes sure the wrist stallCurrent gets updated
      */
     public void update() {
-        if (getWristAngle() < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2)
-            wristControl.wrist.set(ControlMode.PercentOutput, 0);
-        else
-            wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
+        if(!raw) {
+            if (getWristAngle() < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2)
+                wristControl.wrist.set(ControlMode.PercentOutput, 0);
+            else
+                wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
+        }
     }
 
     @Override

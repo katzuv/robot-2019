@@ -12,8 +12,7 @@ import robot.OI;
 import robot.Robot;
 import robot.subsystems.climb.Constants;
 
-import static robot.Robot.climb;
-import static robot.Robot.drivetrain;
+import static robot.Robot.*;
 
 public class JoystickDrive extends Command {
     public  JoystickDrive() {
@@ -70,10 +69,9 @@ public class JoystickDrive extends Command {
             default:
                 throw new IllegalArgumentException("Number must be 1-4");
         } //TODO: put this in subsystem
-        if((Robot.climb.getLegFRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
-                Robot.climb.getLegFLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH) || (Robot.climb.getLegBRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
-                Robot.climb.getLegBLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH)) //maybe also lower speeds when back legs are lowered.
+        if(climb.isClimbing()) //maybe also lower speeds when back legs are lowered.
         {
+            gripperWheels.setGripperSpeed(Math.min(0.9,Math.max(0,rightOutput))); //TODO: not good, no requires
             climb.setWheelSpeed(rightOutput*0.8);
             drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.1,
                     rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.1);
@@ -81,7 +79,6 @@ public class JoystickDrive extends Command {
         else {
             drivetrain.setSpeed(leftOutput, rightOutput);
             climb.setWheelSpeed((rightOutput+leftOutput) *(0.8/2));
-
         }
     }
 
