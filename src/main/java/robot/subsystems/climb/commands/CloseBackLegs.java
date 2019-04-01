@@ -24,8 +24,8 @@ public class CloseBackLegs extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        climb.setLegBLHeight(0,0);
-        climb.setLegBRHeight(0,0);
+        climb.setLegBLHeight(0,-0.002);
+        climb.setLegBRHeight(0,-0.0016);
     }
 
     // Make this return true when this Command no longer needs to run execute()

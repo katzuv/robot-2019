@@ -2,6 +2,7 @@ package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import robot.subsystems.climb.Climb;
+import robot.subsystems.climb.Constants;
 
 /**
  * Essentially the same as RiseToHeight, but makes sure the back legs start more out, to prevent tipping.
@@ -9,7 +10,7 @@ import robot.subsystems.climb.Climb;
 public class TiltRiseToHeightEncoders extends CommandGroup {
 
     public TiltRiseToHeightEncoders(double targetHeight) {
-        addSequential(new MoveBackLegs(0.0015));
+        addSequential(new MoveBackLegs(-0.9*Constants.BACK_LEFT_STARTING_OFFSET));
         addSequential(new RiseToHeightEncoders(targetHeight));
     }
 
