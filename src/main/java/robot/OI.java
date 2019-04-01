@@ -156,11 +156,6 @@ public class OI {
         select.whenPressed(new CloseBoth());
 
         left_joystick_six.toggleWhenPressed(new VisionDrive());
-        right_joystick_six.whenPressed(new DistanceDrive(-0.3)); //TODO: both buttons are assigned to joystick six, need to talk with ido
-
-        right_joystick_eight.toggleWhenPressed(new TurnAngle(90));
-        right_joystick_ten.toggleWhenPressed(new VisionTakeHatch());
-        right_joystick_eleven.toggleWhenPressed(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH));
 
         left_joystick_two.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
