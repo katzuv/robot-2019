@@ -163,7 +163,7 @@ public class OI {
         left_joystick_nine.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
         left_joystick_eight.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
 
-        manual_wrist.toggleWhenPressed(new FullWristClimb());
+        manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190,1));
         // Place cargo backward
 
         /*
