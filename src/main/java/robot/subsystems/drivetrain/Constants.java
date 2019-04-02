@@ -68,7 +68,7 @@ public class Constants {
     private static final double RECTANGLE_2 = 7;
     private static final double RECTANGLE_3 = 8;
     private static final double RECTANGLE_4 = 20;
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0.0005, 0} : new double[]{0.02, 0.0006, 0.1};
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0.0005, 0} : new double[]{0.02, 0.0005, 0};
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
 
     public static double kDriveLeftKv = 0.7256;
