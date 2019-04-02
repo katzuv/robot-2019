@@ -49,8 +49,8 @@ public class Constants {
         LEVEL_1_BACKWARD(0),
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
-        INTAKE(160),//173
-        MAXIMAL(178);
+        INTAKE(187),//173
+        MAXIMAL(190);
         private final double wristAngle;
 
         WRIST_ANGLES(double height) {
