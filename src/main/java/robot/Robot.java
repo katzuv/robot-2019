@@ -100,9 +100,10 @@ public class Robot extends TimedRobot {
         m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchRightRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         m_chooser.addOption("Right Rocket level 2", new TwoHatchRightRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
         m_chooser.addOption("Right Rocket level 3", new TwoHatchRightRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
-        m_chooser.addOption("left rocket level 1", new TwoHatchLeftRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        m_chooser.addOption("left rocket level 2", new TwoHatchLeftRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        m_chooser.addOption("left rocket level 3", new TwoHatchLeftRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+
+        m_chooser.addOption("Left rocket level 1", new TwoHatchLeftRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        m_chooser.addOption("Left rocket level 2", new TwoHatchLeftRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        m_chooser.addOption("Left rocket level 3", new TwoHatchLeftRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
 
         m_chooser.addOption("Cargo ship", new OneHatchCargo(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
 
