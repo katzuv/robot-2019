@@ -21,10 +21,7 @@ import robot.subsystems.drivetrain.commands.DistanceDrive;
 import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.wrist_control.Constants;
-import robot.subsystems.wrist_control.commands.FullWristClimb;
-import robot.subsystems.wrist_control.commands.GripperControl;
-import robot.subsystems.wrist_control.commands.RawWristTurn;
-import robot.subsystems.wrist_control.commands.WristTurn;
+import robot.subsystems.wrist_control.commands.*;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.Flower;
@@ -151,7 +148,7 @@ public class OI {
         rb.whenPressed(new ExtensionPlate(true));
         //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        x.whenPressed(new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), 0.19));
         //TODO: add right stick to control the cargo intake
         select.whenPressed(new CloseBoth());
 
