@@ -3,7 +3,6 @@ package robot.subsystems.drivetrain.commands;
 import com.stormbots.MiniPID;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
 
@@ -43,8 +42,6 @@ public class VisionDrive extends Command {
             turn += Constants.MIN_AIM;
 
         drivetrain.setVelocity(velocity - turn, velocity + turn);
-
-        SmartDashboard.putNumber("VisionDrive: Turn value", turn);
     }
 
     protected boolean isFinished() {

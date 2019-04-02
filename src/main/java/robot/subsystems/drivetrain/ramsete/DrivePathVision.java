@@ -102,11 +102,6 @@ public class DrivePathVision extends Command {
             angularVelocity = -Math.toRadians(angle) * Constants.pathAngleKp;
         }
 
-        //Debugging printing variables
-        SmartDashboard.putBoolean("Debug: using vision", angle != 0.0 && distanceFromLast < Constants.distanceFromEnd && vision);
-        SmartDashboard.putNumber("Debug: Distance from last", distanceFromLast);
-        SmartDashboard.putBoolean("Debug: Stop", stop);
-
         if (stop) {
             angularVelocity = 0;
         }

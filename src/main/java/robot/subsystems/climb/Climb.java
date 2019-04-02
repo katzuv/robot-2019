@@ -284,7 +284,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * to stop until a manual check is done.
      * @return if any of the climbing sensors is compromised.
      */
-    private boolean isCompromisedElectronical(){
+    public boolean isCompromisedElectronical(){
         return ((!talonFL.getSensorCollection().isFwdLimitSwitchClosed() && !talonFL.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonFR.getSensorCollection().isFwdLimitSwitchClosed() && !talonFR.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonBL.getSensorCollection().isFwdLimitSwitchClosed() && !talonBL.getSensorCollection().isRevLimitSwitchClosed()) ||
