@@ -38,7 +38,7 @@ public class Constants {
 
     public static final double RAMSETE_PEAK_VELOCITY = 2.5;
     public static final double RAMSETE_PEAK_ACCELERATION = 2.5;
-    public static final double VISION_VELOCITY = -0.75;
+    public static final double VISION_VELOCITY = -0.92;
     public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
     public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
     public static final double[] PIDFRight = isRobotA ? new double[]{2, 0.007, 20, 1.45} : new double[]{1.5, 0, 10, 1.3};

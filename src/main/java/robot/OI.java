@@ -18,6 +18,7 @@ import robot.subsystems.climb.commands.*;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.command_groups.*;
 import robot.subsystems.drivetrain.commands.DistanceDrive;
+import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.wrist_control.Constants;
@@ -153,14 +154,15 @@ public class OI {
         select.whenPressed(new CloseBoth());
 
         left_joystick_six.toggleWhenPressed(new VisionDrive());
+        right_joystick_six.whenPressed(new SwitchCamera());
 
-        left_joystick_two.whenPressed(new CalibrateLegs());
-        left_joystick_eleven.whenPressed(new CloseForwardLegs());
-        left_joystick_ten.whenPressed(new SafeCloseBackLegs());
-        left_joystick_nine.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
-        left_joystick_eight.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
-
-        manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190,1));
+//        left_joystick_two.whenPressed(new CalibrateLegs());
+//        left_joystick_eleven.whenPressed(new CloseForwardLegs());
+//        left_joystick_ten.whenPressed(new SafeCloseBackLegs());
+//        left_joystick_nine.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
+//        left_joystick_eight.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
+//
+//        manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190,1));
         // Place cargo backward
 
         /*
