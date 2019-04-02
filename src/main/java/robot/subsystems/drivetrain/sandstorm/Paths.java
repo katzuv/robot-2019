@@ -18,6 +18,8 @@ class Paths {
 
     static final TimedTrajectory<Pose2dWithCurvature> RIGHT_HAB_TO_FAR_ROCKET;
 
+    static final TimedTrajectory<Pose2dWithCurvature> LEFT_HAB_TO_NEAR_ROCKET;
+
     static {
         RIGHT_HAB_TO_FAR_ROCKET = Utils.generateTrajectory(
                 Arrays.asList(
@@ -31,6 +33,13 @@ class Paths {
                 Arrays.asList(
                         new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180)),
                         new Pose2d(LengthKt.getFeet(14.222), LengthKt.getFeet(3.739), Rotation2dKt.getDegree(150))
+                ), 0, 0, true
+        );
+
+        LEFT_HAB_TO_NEAR_ROCKET = Utils.generateTrajectory(
+                Arrays.asList(
+                        new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(17.543), Rotation2dKt.getDegree(180)),
+                        new Pose2d(LengthKt.getFeet(14.222), LengthKt.getFeet(20.954), Rotation2dKt.getDegree(-150))
                 ), 0, 0, true
         );
 
