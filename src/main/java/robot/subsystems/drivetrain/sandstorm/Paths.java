@@ -46,7 +46,7 @@ class Paths {
         MIDDLE_HAB_TO_RIGHT_CARGO = Utils.generateTrajectory(
                 Arrays.asList(
                         new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(13.565), Rotation2dKt.getDegree(180)),
-                        new Pose2d(LengthKt.getFeet(14.868), LengthKt.getFeet(14.501), Rotation2dKt.getDegree(180))
+                        new Pose2d(LengthKt.getFeet(13.7), LengthKt.getFeet(12.208), Rotation2dKt.getDegree(180))
                 ), 1, 0, true
         );
 
