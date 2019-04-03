@@ -38,7 +38,7 @@ public class Constants {
 
     public static final double RAMSETE_PEAK_VELOCITY = 2.5;
     public static final double RAMSETE_PEAK_ACCELERATION = 2.5;
-    public static final double VISION_VELOCITY = -0.75;
+    public static final double VISION_VELOCITY = -0.9;
     public static final double SLOW_JOYSTICK_SPEED = 0.9; //multiplied by joystick value, keep at 1 for no changes.
     public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
     public static final double[] PIDFRight = isRobotA ? new double[]{2, 0.007, 20, 1.45} : new double[]{1.5, 0, 10, 1.3};
@@ -68,7 +68,7 @@ public class Constants {
     private static final double RECTANGLE_2 = 7;
     private static final double RECTANGLE_3 = 8;
     private static final double RECTANGLE_4 = 20;
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0.0005, 0} : new double[]{0.02, 0.0005, 0};
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0.0005, 0} : new double[]{0.025, 0, 0.1};
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
 
     public static double kDriveLeftKv = 0.7256;
