@@ -191,7 +191,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        updateDashboardConstants();
+        //updateDashboardConstants();
         Scheduler.getInstance().run();
     }
 
@@ -206,20 +206,18 @@ public class Robot extends TimedRobot {
     public void addToShuffleboard() {
         SmartDashboard.putData(pdp);
         SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
-        SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
-        SmartDashboard.putNumber("Elevator: height - centimeters", 100 * elevator.getHeight());
-        SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
+        SmartDashboard.putNumber("Elevator: height - centimeters", elevator.getHeight());
         SmartDashboard.putNumber("Cargo intake: proximity value", gripperWheels.getProximityVoltage());
         SmartDashboard.putNumber("Cargo intake: wrist angle", wristControl.getWristAngle());
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
         SmartDashboard.putBoolean("Flower open", hatchIntake.isFlowerOpen());
-        SmartDashboard.putNumber("Climb: BL height", 100 * climb.getLegBLHeight());
-        SmartDashboard.putNumber("Climb: BR height", 100 * climb.getLegBRHeight());
-        SmartDashboard.putNumber("Climb: FL height", 100 * climb.getLegFLHeight());
-        SmartDashboard.putNumber("Climb: FR height", 100 * climb.getLegFRHeight());
+        SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
+        SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
+        SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
+        SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
         SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());
-        SmartDashboard.putData(navx);
+        SmartDashboard.putData("navx", navx);
         SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
         SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle(168));
         printAllCommands();
@@ -240,9 +238,10 @@ public class Robot extends TimedRobot {
             e.printStackTrace();
         }
     }
-
     public void printAllCommands() {
-        SmartDashboard.putString("RunningCommand", drivetrain.getCurrentCommandName());
+        SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
+        SmartDashboard.putString("Wrist command", wristControl.getCurrentCommandName());
+        SmartDashboard.putString("Cargo wheels command", gripperWheels.getCurrentCommandName());
     }
 
     public void resetAll() {
