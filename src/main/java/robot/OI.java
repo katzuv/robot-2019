@@ -116,7 +116,12 @@ public class OI {
     public static ButtonCombination manual_wrist = new ButtonCombination(xbox, 7, 8, 9);
 
     public OI() {
-        //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
+        /*
+        Select (7) + POV = reverse cargo
+        Y (4) + POV = front cargo
+        Start (8) + POV = Hatch scoring
+         */
+
         povd.whenPressed(new ShiftButton(xbox, 7,
                 new CargoScoring(0, true),
                 new ShiftButton(xbox, 4,
