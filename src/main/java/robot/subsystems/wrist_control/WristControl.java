@@ -106,8 +106,9 @@ public class WristControl extends Subsystem {
         if (wristAngle < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2) {
             return 0;
         }
+
         final double COMCosine = Math.cos(Math.toRadians(15 + wristControl.getWristAngle()));
-        return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
+        return 1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
 
     public void setEncoderAngle(double angle) {
