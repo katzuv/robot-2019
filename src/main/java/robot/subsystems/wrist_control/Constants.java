@@ -49,6 +49,7 @@ public class Constants {
         LEVEL_1_BACKWARD(0),
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
+        CLIMB(168),
         INTAKE(187),//173
         MAXIMAL(190);
         private final double wristAngle;
