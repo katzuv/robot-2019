@@ -150,6 +150,7 @@ public class OI {
         //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         x.whenPressed(new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), 0.19));
+
         //TODO: add right stick to control the cargo intake
         select.whenPressed(new CloseBoth());
 
@@ -160,9 +161,9 @@ public class OI {
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
         left_joystick_ten.whenPressed(new SafeCloseBackLegs());
         left_joystick_nine.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
-        left_joystick_eight.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
+        left_joystick_eight.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
 
-//        manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190,1));
+        manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190,1));
         // Place cargo backward
 
         /*
