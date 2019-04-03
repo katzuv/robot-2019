@@ -220,6 +220,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("navx", navx);
         SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
         SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle(168));
+        SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
         printAllCommands();
     }
 
