@@ -27,6 +27,7 @@ public class WristControl extends Subsystem {
     private double setPointAngle;
     private boolean raw = false;
     private double lastWristAngle = 0;
+
     public WristControl() {
         /*
         config for the feedback sensor
@@ -110,7 +111,11 @@ public class WristControl extends Subsystem {
         }
 
         final double COMCosine = Math.cos(Math.toRadians(15 + wristControl.getWristAngle()));
-        return 1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
+        double multiplier = 1;
+        if (Robot.gripperWheels.isCargoInside()) {
+            multiplier = 1.2;
+        }
+        return multiplier * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
 
     public void setEncoderAngle(double angle) {
@@ -209,14 +214,15 @@ public class WristControl extends Subsystem {
     /**
      *
      */
-    public boolean preventEncoderJumps(){
-        if(Math.abs(lastWristAngle - getWristAngle()) > Constants.WRIST_JUMP_ANGLE){
+    public boolean preventEncoderJumps() {
+        if (Math.abs(lastWristAngle - getWristAngle()) > Constants.WRIST_JUMP_ANGLE) {
             setEncoderAngle(lastWristAngle);
             return true;
         }
         lastWristAngle = getWristAngle();
         return false;
     }
+
     /**
      * This method makes sure the wrist stallCurrent gets updated
      */
