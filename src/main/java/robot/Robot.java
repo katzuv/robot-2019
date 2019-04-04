@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
@@ -128,7 +129,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         addToShuffleboard();
-        climb.executePreventBreak();
+        SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
     }
 
     /**

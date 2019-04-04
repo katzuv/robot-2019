@@ -111,8 +111,8 @@ public class OI {
     public static Button right_joystick_eleven = new JoystickButton(rightStick, 11);
 
     public static ButtonCombination manual_wrist = new ButtonCombination(xbox, 7, 8, 6);
-    public static Button left_joystick_four = new JoystickButton(xbox, 4);
-    public static Button left_joystick_five = new JoystickButton(xbox, 5);
+    public static Button left_joystick_four = new JoystickButton(leftStick, 4);
+    public static Button left_joystick_five = new JoystickButton(leftStick, 5);
     public OI() {
         /*
         Select (7) + POV = reverse cargo

@@ -51,7 +51,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
         toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(24.064), Rotation2dKt.getDegree(180)));
         addSequential(new DrivePathVision(toLoadingStation, 0, 1, false, false));
 
-        addSequential(new TurnAngle(180));
+        addSequential(new TurnAngle(185));
 
         addSequential(new WaitCommand(0.4));
 

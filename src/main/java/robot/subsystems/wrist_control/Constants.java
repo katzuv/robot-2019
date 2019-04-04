@@ -3,7 +3,8 @@ package robot.subsystems.wrist_control;
 import static robot.Robot.isRobotA;
 
 public class Constants {
-    final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.64;
+    public static final double WRIST_JUMP_ANGLE = 50;
+    final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.77;
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
     final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : false;
@@ -20,7 +21,7 @@ public class Constants {
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 2468;
-    public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 4200;
+    public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 3000;
 
     final static double kP = isRobotA ? 0.6 : 0.7;
     final static double kD = isRobotA ? 150 : 150;

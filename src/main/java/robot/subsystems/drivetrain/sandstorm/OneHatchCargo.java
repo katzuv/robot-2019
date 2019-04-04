@@ -46,7 +46,7 @@ public class OneHatchCargo extends CommandGroup {
         addSequential(new DrivePathVision(toLoadingStation, 1, 1, 3, 2.5, false, false));
         addSequential(new WaitCommand(0.2));
 
-        addSequential(new TurnAngle(180));
+        addSequential(new TurnAngle(185));
 
         addSequential(new WaitCommand(0.5));
 

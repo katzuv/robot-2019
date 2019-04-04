@@ -26,6 +26,7 @@ public class WristControl extends Subsystem {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private double setPointAngle;
     private boolean raw = false;
+    private double lastWristAngle = 0;
     public WristControl() {
         /*
         config for the feedback sensor
@@ -112,6 +113,7 @@ public class WristControl extends Subsystem {
     }
 
     public void setEncoderAngle(double angle) {
+        lastWristAngle = angle;
         wrist.setSelectedSensorPosition(convertAngleToTicks(angle));
     }
 
@@ -203,6 +205,17 @@ public class WristControl extends Subsystem {
         setDefaultCommand(new JoystickWristTurn());
     }
 
+    /**
+     *
+     */
+    public boolean preventEncoderJumps(){
+        if(Math.abs(lastWristAngle - getWristAngle()) > Constants.WRIST_JUMP_ANGLE){
+            setEncoderAngle(lastWristAngle);
+            return true;
+        }
+        lastWristAngle = getWristAngle();
+        return false;
+    }
     /**
      * This method makes sure the wrist stallCurrent gets updated
      */
