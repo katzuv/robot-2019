@@ -13,6 +13,6 @@ public class WristAndElevatorCommand extends CommandGroup {
 
     public WristAndElevatorCommand(double angle, double height) {
         addSequential(new ElevatorCommand(height));
-        addSequential(new WristTurn(angle));
+        addSequential(new WristTurn(angle,1.5));
     }
 }

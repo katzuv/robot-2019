@@ -9,7 +9,7 @@ import robot.subsystems.wrist_control.Constants;
 public class FullWristClimb extends CommandGroup {
 
     public FullWristClimb() {
-        addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE),1.5);
         addSequential(new RawWristTurn(0.5190,1));
         // Add Commands here:
         // e.g. addSequential(new Command1());

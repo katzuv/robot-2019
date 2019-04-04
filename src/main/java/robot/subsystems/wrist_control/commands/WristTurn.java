@@ -1,5 +1,6 @@
 package robot.subsystems.wrist_control.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.wrist_control.Constants;
 
@@ -10,16 +11,20 @@ import static robot.Robot.wristControl;
  */
 public class WristTurn extends Command {
     private double angle;
-
+    private boolean usingTimer;
+    private double timeout;
+    private Timer timer = new Timer();
     public WristTurn(double angle) {
         this.angle = angle;
+        usingTimer=false;
         requires(wristControl);
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-
     }
 
-
+    public WristTurn(double angle, double timeout){
+        this(angle);
+        this.timeout = timeout;
+        usingTimer=true;
+    }
     /**
      * Use the pre-defined angles to rotate the wrist.
      *
@@ -29,8 +34,14 @@ public class WristTurn extends Command {
         this(wristState.getValue());
     }
 
+    public WristTurn(Constants.WRIST_ANGLES wristState, double timeout){
+        this(wristState.getValue(), timeout);
+    }
+
     // Called just before this Command runs the first time
     protected void initialize() {
+        timer.reset();
+        timer.start();
         wristControl.setWristAngle(angle);
     }
 
@@ -46,7 +57,10 @@ public class WristTurn extends Command {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    protected boolean isFinished()
+    {
+        if(usingTimer)
+            return timer.get() > timeout || Math.abs(wristControl.getWristAngle() - angle) < 2;
         return Math.abs(wristControl.getWristAngle() - angle) < 2;
     }
 

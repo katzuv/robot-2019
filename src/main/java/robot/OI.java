@@ -157,10 +157,10 @@ public class OI {
         lb.whenPressed(new ExtensionPlate(false));
         rb.whenPressed(new ShiftButton(xbox, 8 , new ShiftButton(xbox, 7,new RawWristTurn(0.5190, 1), new ExtensionPlate(true)), new ExtensionPlate(true)));
         //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL,1.5));
         x.whenPressed(new ClimbConditionalCommand(
                 new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), 0.13),
-                new WristTurn(Constants.WRIST_ANGLES.CLIMB)
+                new WristTurn(Constants.WRIST_ANGLES.CLIMB,1.5)
         ));
 
         //TODO: add right stick to control the cargo intake
