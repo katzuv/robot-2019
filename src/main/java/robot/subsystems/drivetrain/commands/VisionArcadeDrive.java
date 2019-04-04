@@ -1,36 +1,60 @@
 package robot.subsystems.drivetrain.commands;
 
+import com.stormbots.MiniPID;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
+import robot.Robot;
+import robot.subsystems.drivetrain.Constants;
+import robot.utilities.Utils;
+
+import static robot.Robot.drivetrain;
 
 /**
  *
  */
 public class VisionArcadeDrive extends Command {
+    private MiniPID turnPid = new MiniPID(Constants.PIDVisionArcade[0], Constants.PIDVisionArcade[1], Constants.PIDVisionArcade[2]);
+    private MiniPID distancePid = new MiniPID(0.1, 0, 0);
+    private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
+    private NetworkTableEntry distanceEntry = Robot.visionTable.getEntry("tape_distance");
+    private NetworkTableEntry seenEntry = Robot.visionTable.getEntry("tape_seen");
+    private double visionAngle;
+    private double visionDistance;
 
     public VisionArcadeDrive() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        turnPid.setOutputLimits(-1, 1);
+        distancePid.setOutputLimits(-1, 1);
+        requires(drivetrain);
     }
 
-    // Called just before this Command runs the first time
     protected void initialize() {
+        updateConstants();
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        visionAngle = angleEntry.getDouble(0);
+        visionDistance = distanceEntry.getDouble(0);
+        double distanceOutput = distancePid.getOutput(visionDistance, 0.2);
+        double turnOutput = turnPid.getOutput(visionAngle, 0);
+        System.out.println(distanceOutput + " | " + -turnOutput);
+        double[] arcade = Utils.arcadeDrive(distanceOutput, -turnOutput, false);
+        drivetrain.setSpeed(arcade[0], arcade[1]);
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return !seenEntry.getBoolean(false);
     }
 
-    // Called once after isFinished returns true
     protected void end() {
+        drivetrain.setSpeed(0, 0);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     protected void interrupted() {
+        end();
+    }
+
+    public void updateConstants() {
+        turnPid.setPID(Constants.PIDVisionTurn[0], Constants.PIDVisionArcade[1], Constants.PIDVisionArcade[2]);
+        distancePid.setPID(Constants.PIDVision[0], Constants.PIDVision[1], Constants.PIDVision[2]);
     }
 }

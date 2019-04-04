@@ -10,7 +10,10 @@ package robot.subsystems.drivetrain;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.team254.lib.physics.DifferentialDrive;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.debug.LiveDashboard;
@@ -37,6 +40,7 @@ public class Drivetrain extends Subsystem {
     private final TalonSRX rightMaster = new TalonSRX(Ports.rightMaster);
     private final VictorSPX rightSlave1 = new VictorSPX(Ports.rightSlave1);
     private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
+
     public Point currentLocation = new Point(0, 0);
 
     public Localization localization = new TankEncoderLocalization(
@@ -318,9 +322,13 @@ public class Drivetrain extends Subsystem {
     }
 
     public void updateConstants() {
-        Constants.PIDVisionTurn[0] = getConstant("Vision Drive: turn kp", Constants.PIDVisionTurn[0]);
-        Constants.PIDVisionTurn[1] = getConstant("Vision Drive: turn ki", Constants.PIDVisionTurn[1]);
-        Constants.PIDVisionTurn[2] = getConstant("Vision Drive: turn kd", Constants.PIDVisionTurn[2]);
+        Constants.PIDVisionArcade[0] = getConstant("Vision Drive: turn kp", Constants.PIDVisionTurn[0]);
+        Constants.PIDVisionArcade[1] = getConstant("Vision Drive: turn ki", Constants.PIDVisionTurn[1]);
+        Constants.PIDVisionArcade[2] = getConstant("Vision Drive: turn kd", Constants.PIDVisionTurn[2]);
+
+        Constants.PIDVision[0] = getConstant("Vision Drive: distance kp", Constants.PIDVision[0]);
+        Constants.PIDVision[1] = getConstant("Vision Drive: distance ki", Constants.PIDVision[1]);
+        Constants.PIDVision[2] = getConstant("Vision Drive: distance kd", Constants.PIDVision[2]);
 
     }
 

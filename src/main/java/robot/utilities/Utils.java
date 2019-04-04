@@ -39,4 +39,47 @@ public class Utils {
                         true
                 );
     }
+    /**
+     * Arcade drive method for differential drive platform.
+     *  @param xSpeed        The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+     * @param zRotation     The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
+     *                      positive.
+     * @param squareInputs If set, decreases the input sensitivity at low speeds.
+     */
+    public static double[] arcadeDrive(double xSpeed, double zRotation, boolean squareInputs) {
+
+        // Square the inputs (while preserving the sign) to increase fine control
+        // while permitting full power.
+        if (squareInputs) {
+            xSpeed = Math.copySign(xSpeed * xSpeed, xSpeed);
+            zRotation = Math.copySign(zRotation * zRotation, zRotation);
+        }
+
+        double leftMotorOutput;
+        double rightMotorOutput;
+
+        double maxInput = Math.copySign(Math.max(Math.abs(xSpeed), Math.abs(zRotation)), xSpeed);
+
+        if (xSpeed >= 0.0) {
+            // First quadrant, else second quadrant
+            if (zRotation >= 0.0) {
+                leftMotorOutput = maxInput;
+                rightMotorOutput = xSpeed - zRotation;
+            } else {
+                leftMotorOutput = xSpeed + zRotation;
+                rightMotorOutput = maxInput;
+            }
+        } else {
+            // Third quadrant, else fourth quadrant
+            if (zRotation >= 0.0) {
+                leftMotorOutput = xSpeed + zRotation;
+                rightMotorOutput = maxInput;
+            } else {
+                leftMotorOutput = maxInput;
+                rightMotorOutput = xSpeed - zRotation;
+            }
+        }
+
+        return new double[]{leftMotorOutput, rightMotorOutput};
+    }
 }
