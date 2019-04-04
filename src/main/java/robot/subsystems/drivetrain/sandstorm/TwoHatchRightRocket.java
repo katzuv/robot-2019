@@ -46,7 +46,7 @@ public class TwoHatchRightRocket extends CommandGroup {
         addSequential(new WaitCommand(0.5));
 
         List<Pose2d> toLoadingStation = new ArrayList<>();
-        toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(2.936), Rotation2dKt.getDegree(180)));
+        toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(3.3), Rotation2dKt.getDegree(180)));
         addSequential(new DrivePathVision(toLoadingStation, 0, 1, false, false));
 
         addSequential(new TurnAngle(185));
