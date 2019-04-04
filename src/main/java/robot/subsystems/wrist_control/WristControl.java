@@ -90,7 +90,8 @@ public class WristControl extends Subsystem {
     }
 
     public void setWristSpeed(double speed) {
-        raw = true;
+        if (speed != 0)
+            raw = true;
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
@@ -220,7 +221,7 @@ public class WristControl extends Subsystem {
      * This method makes sure the wrist stallCurrent gets updated
      */
     public void update() {
-        if(!raw) {
+        if (!raw) {
             if (getWristAngle() < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2)
                 wristControl.wrist.set(ControlMode.PercentOutput, 0);
             else
