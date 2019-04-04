@@ -4,6 +4,7 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
     public static final double WRIST_JUMP_ANGLE = 50;
+    public static final double DEFAULT_TIMEOUT = 1.5; //If no default is specified, and if its not disabled, set to this default
     final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.77;
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 

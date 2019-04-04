@@ -16,14 +16,23 @@ public class WristTurn extends Command {
     private Timer timer = new Timer();
     public WristTurn(double angle) {
         this.angle = angle;
-        usingTimer=false;
+        usingTimer=true;
+        this.timeout = Constants.DEFAULT_TIMEOUT;
         requires(wristControl);
     }
 
+    /**
+     * @param angle angle in degrees to turn to, in relation to the robots zeroing
+     * @param timeout timeout in seconds until the command will move on. this is mainly used for drivers, use a negative number to disable.
+     */
     public WristTurn(double angle, double timeout){
         this(angle);
-        this.timeout = timeout;
-        usingTimer=true;
+        if(timeout < 0)
+            usingTimer = false;
+        else {
+            this.timeout = timeout;
+            usingTimer = true;
+        }
     }
     /**
      * Use the pre-defined angles to rotate the wrist.
