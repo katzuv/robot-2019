@@ -32,7 +32,7 @@ class Paths {
         RIGHT_HAB_TO_NEAR_ROCKET = Utils.generateTrajectory(
                 Arrays.asList(
                         new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180)),
-                        new Pose2d(LengthKt.getFeet(14), LengthKt.getFeet(4.921), Rotation2dKt.getDegree(150))
+                        new Pose2d(LengthKt.getFeet(12.707), LengthKt.getFeet(4.78), Rotation2dKt.getDegree(150))
                 ), 0, 0, true
         );
 
@@ -46,7 +46,7 @@ class Paths {
         MIDDLE_HAB_TO_RIGHT_CARGO = Utils.generateTrajectory(
                 Arrays.asList(
                         new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(13.565), Rotation2dKt.getDegree(180)),
-                        new Pose2d(LengthKt.getFeet(13.7), LengthKt.getFeet(12.208), Rotation2dKt.getDegree(180))
+                        new Pose2d(LengthKt.getFeet(13.5), LengthKt.getFeet(12.255), Rotation2dKt.getDegree(180))
                 ), 1, 0, true
         );
 

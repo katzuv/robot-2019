@@ -42,7 +42,7 @@ public class OneHatchCargo extends CommandGroup {
         addSequential(new WaitCommand(0.3));
 
         List<Pose2d> toLoadingStation = new ArrayList<>();
-        toLoadingStation.add(new Pose2d(LengthKt.getFeet(8.8), LengthKt.getFeet(3.135), Rotation2dKt.getDegree(180)));
+        toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(2.936), Rotation2dKt.getDegree(180)));
         addSequential(new DrivePathVision(toLoadingStation, 1, 1, 3, 2.5, false, false));
         addSequential(new WaitCommand(0.2));
 
