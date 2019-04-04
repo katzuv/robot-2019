@@ -111,8 +111,8 @@ public class OI {
     public static Button right_joystick_eleven = new JoystickButton(rightStick, 11);
 
     public static ButtonCombination manual_wrist = new ButtonCombination(xbox, 7, 8, 6);
-    static ButtonCombination right_joystick_eightnine = new ButtonCombination(rightStick, 8, 9);
-    static ButtonCombination right_joystick_teneleven = new ButtonCombination(rightStick, 10, 11);
+    public static Button left_joystick_four = new JoystickButton(xbox, 4);
+    public static Button left_joystick_five = new JoystickButton(xbox, 5);
     public OI() {
         /*
         Select (7) + POV = reverse cargo
@@ -177,9 +177,8 @@ public class OI {
 
         manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190, 1));
 
-        right_joystick_eightnine.whenPressed(new ResetWristAngle(0));
-        right_joystick_teneleven.whenPressed(new ResetWristAngle(168));
-
+        left_joystick_four.whenPressed(new ResetWristAngle(0));
+        left_joystick_five.whenPressed(new ResetWristAngle(168));
 
         // Place cargo backward
 
