@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     public static final WristControl wristControl = new WristControl();
     public static final GripperWheels gripperWheels = new GripperWheels();
     public static final Compressor compressor = new Compressor(0);
-    public final static boolean isRobotA = false;
+    public final static boolean isRobotA = true;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
