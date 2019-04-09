@@ -14,10 +14,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
@@ -150,6 +148,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        wristControl.disabledPeriodic();
         Scheduler.getInstance().run();
         sendMatchInformation();
     }

@@ -240,4 +240,7 @@ public class WristControl extends Subsystem {
         update();
     }
 
+    public void disabledPeriodic() {
+        setPointAngle = getWristAngle();
+    }
 }
