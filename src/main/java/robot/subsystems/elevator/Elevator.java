@@ -244,4 +244,9 @@ public class Elevator extends Subsystem {
         //setDefaultCommand(new ElevatorCommand(1.2));
         setDefaultCommand(new JoystickElevatorCommand());
     }
+
+    public void onDisabled() {
+        setpoint = 0;
+        masterMotor.set(ControlMode.PercentOutput, 0);
+    }
 }
