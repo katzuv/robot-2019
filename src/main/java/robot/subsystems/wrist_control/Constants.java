@@ -21,18 +21,18 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 2468;
-    public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 3000;
+    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 2468 : 2468;
+    public static final int CRUISE_VELOCITY  = isRobotA ? 3000 : 3000;
 
-    final static double kP = isRobotA ? 0.6 : 0.7;
+    final static double kP = isRobotA ? 0.7 : 0.7;
     final static double kD = isRobotA ? 150 : 150;
-    final static double kF = isRobotA ? 0.48 : 0.52;
+    final static double kF = isRobotA ? 0.52 : 0.52;
 
     final static int IZone = isRobotA ? 50 : 50;
-    final static double kI = isRobotA ? 0.001 : 0.00197;
+    final static double kI = isRobotA ? 0.00197 : 0.00197;
 
-    final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.7 : 0.6;
-    final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.7 : -0.6;
+    final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.6 : 0.6;
+    final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.6 : -0.6;
 
 
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
