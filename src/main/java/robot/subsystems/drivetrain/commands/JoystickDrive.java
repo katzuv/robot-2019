@@ -35,7 +35,7 @@ public class JoystickDrive extends Command {
         // 2: bell
         // 3: x^3
         // 4: e^C(x - 1)
-        int option = 1;
+        int option = 6;
         final int C = 5;
         double leftInput = -Robot.m_oi.leftStick.getY();
         double rightInput = -Robot.m_oi.rightStick.getY();
@@ -64,6 +64,16 @@ public class JoystickDrive extends Command {
                     rightOutput = Math.pow(Math.E, C * (rightInput - 1));
                 } else {
                     rightOutput = -Math.pow(Math.E, C * (-rightInput - 1));
+                }
+                break;
+            case 6:
+                leftOutput = curve(leftInput);
+                rightOutput = curve(rightInput);
+                if(Math.abs(leftInput) < 0.05) {
+                    leftOutput = 0;
+                }
+                if(Math.abs(rightInput) < 0.05) {
+                    rightOutput = 0;
                 }
                 break;
             default:
@@ -102,4 +112,9 @@ public class JoystickDrive extends Command {
     @Override
     protected void interrupted() {
     }
+
+    private static double curve(double x) {
+        return 0.08 + 0.5 * x+ 0.2 * Math.pow(x, 3) + 0.25 * Math.pow(x, 5);
+    }
+
 }
