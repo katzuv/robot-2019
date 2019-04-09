@@ -70,8 +70,8 @@ public class OI {
     public static Button povl = new POVButton(xbox, 270);
     public static Button povu = new POVButton(xbox, 0);
 
-    public static Button RT = new TriggerButton(xbox, GenericHID.Hand.kRight, 0);
-    public static Button LT = new TriggerButton(xbox, GenericHID.Hand.kLeft, 0);
+    public static Button RT = new TriggerButton(xbox, GenericHID.Hand.kRight, 0.1);
+    public static Button LT = new TriggerButton(xbox, GenericHID.Hand.kLeft, 0.1);
 
     public static Button lsLeft = new JoystickButton(leftStick, 4);
     public static Button lsRight = new JoystickButton(leftStick, 5);
