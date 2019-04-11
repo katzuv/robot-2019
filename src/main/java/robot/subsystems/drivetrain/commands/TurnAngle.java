@@ -7,12 +7,15 @@ import static robot.Robot.drivetrain;
 import static robot.Robot.navx;
 
 /**
+ * Rotate the Drivetrain by a given angle.
  *
  */
 public class TurnAngle extends Command {
     private double angle;
     private double setpoint;
     private boolean absolute; //if the angle is relative or absolute
+
+
     public TurnAngle(double angle) {
         this.angle = angle;
         absolute = false;

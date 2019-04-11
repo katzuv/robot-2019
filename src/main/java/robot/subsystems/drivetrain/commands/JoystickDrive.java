@@ -14,6 +14,9 @@ import robot.subsystems.climb.Constants;
 
 import static robot.Robot.*;
 
+/**
+ * Control the Drivetrain via the joysticks.
+ */
 public class JoystickDrive extends Command {
     public  JoystickDrive() {
         requires(drivetrain);

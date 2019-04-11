@@ -9,7 +9,7 @@ import robot.subsystems.drivetrain.Constants;
 import static robot.Robot.drivetrain;
 
 /**
- *
+ * Autonomously drive to a vision target.
  */
 public class VisionDrive extends Command {
     private MiniPID turnPid = new MiniPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);

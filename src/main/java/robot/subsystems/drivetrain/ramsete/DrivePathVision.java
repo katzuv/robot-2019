@@ -19,7 +19,7 @@ import java.util.List;
 import static robot.Robot.drivetrain;
 
 /**
- *
+ * Follow a path with Ramsete and, optionally, finish the driving with vision alignment.
  */
 public class DrivePathVision extends Command {
 
@@ -106,7 +106,7 @@ public class DrivePathVision extends Command {
             angularVelocity = 0;
         }
 
-        double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity; //Multiply angular velocity by the robot radius to get the tangential velocity
+        double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity; // Multiply angular velocity by the robot radius to get the tangential velocity TODO: Note you might be dividing by zero if "stop" is zero
 
 //        drivetrain.setOutput(trackerOutput);
 
