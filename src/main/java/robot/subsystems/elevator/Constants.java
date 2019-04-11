@@ -68,7 +68,7 @@ public class Constants {
      * There are separate heights for hatch, cargo, and cargo backwards.
      */
     public enum ELEVATOR_STATES {
-        LEVEL1_HATCH(isRobotA ? 0.23 : 0.11),
+        LEVEL1_HATCH(isRobotA ? 0.13 : 0.11),
         LEVEL2_HATCH(0.977),
         LEVEL3_HATCH(1.575),
         SHIP_CARGO(0.70),
