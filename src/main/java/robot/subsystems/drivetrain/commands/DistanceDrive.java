@@ -7,7 +7,7 @@ import robot.subsystems.drivetrain.Constants;
 import static robot.Robot.drivetrain;
 
 /**
- *
+ * This command drives a specified distance using motion magic.
  */
 public class DistanceDrive extends Command {
     private double distance;
@@ -18,7 +18,6 @@ public class DistanceDrive extends Command {
         this.distance = distance;
     }
 
-    // Called just before this Command runs the first time
     protected void initialize() {
         startDistance = (drivetrain.getLeftDistance() + drivetrain.getRightDistance()) / 2;
         drivetrain.driveDistance(distance); //TODO: currently this doesn't use the real values
