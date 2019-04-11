@@ -33,8 +33,6 @@ public class TwoHatchLeftRocket extends CommandGroup {
         DrivePathVision toRocketCommand = new DrivePathVision(Paths.LEFT_HAB_TO_NEAR_ROCKET, false);
         addSequential(toRocketCommand);
 
-        addParallel(new Fangs(true));
-
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
 
@@ -53,13 +51,12 @@ public class TwoHatchLeftRocket extends CommandGroup {
 
         addSequential(new WaitCommand(0.4));
 
-        addSequential(new Fangs(true));
         addSequential(new Flower(true));
         addSequential(new VisionDrive());
 
         addSequential(new WaitCommand(0.2));
 
-        addSequential(new TakeHatch());
+        addSequential(new Flower(false));
 
         addSequential(new DistanceDrive(0.5));
 
