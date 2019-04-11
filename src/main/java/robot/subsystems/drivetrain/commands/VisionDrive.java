@@ -34,14 +34,14 @@ public class VisionDrive extends Command {
 
         double turn = turnPid.getOutput(visionAngle, 0);
 
-        double velocity = Constants.VISION_VELOCITY;
+        double speed = Constants.VISION_SPEED;
 
         if (visionAngle > 1)
             turn -= Constants.MIN_AIM;
         else if (visionAngle < -1)
             turn += Constants.MIN_AIM;
 
-        drivetrain.setVelocity(velocity - turn, velocity + turn);
+        drivetrain.setSpeed(speed - turn, speed + turn);
     }
 
     protected boolean isFinished() {
