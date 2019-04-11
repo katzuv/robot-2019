@@ -103,6 +103,7 @@ public class OI {
     public static Button left_joystick_ten = new JoystickButton(leftStick, 10);
     public static Button left_joystick_eleven = new JoystickButton(leftStick, 11);
 
+    public static Button right_joystick_two = new JoystickButton(rightStick, 2);
     public static Button right_joystick_six = new JoystickButton(rightStick, 6);
     public static Button right_joystick_seven = new JoystickButton(rightStick, 7);
     public static Button right_joystick_eight = new JoystickButton(rightStick, 8);
