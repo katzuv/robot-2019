@@ -20,6 +20,5 @@ public class PlaceHatch extends CommandGroup {
         addSequential(new WaitCommand(0.02));
         addSequential(new Pusher(true));//extend
         addSequential(new WaitCommand(0.5));
-        addSequential(new ElevatorCommand(height.getLevelHeight() - 0.06));
     }
 }
