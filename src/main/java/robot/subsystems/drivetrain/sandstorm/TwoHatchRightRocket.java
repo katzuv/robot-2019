@@ -53,6 +53,7 @@ public class TwoHatchRightRocket extends CommandGroup {
 
         addSequential(new WaitCommand(0.5));
 
+        addParallel(new ElevatorCommand(height));
         addSequential(new ExtensionPlate(true));
         addSequential(new Flower(true));
         addSequential(new VisionDrive());
