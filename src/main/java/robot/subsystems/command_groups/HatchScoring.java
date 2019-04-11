@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.elevator.Constants;
 
 public class HatchScoring extends CommandGroup {
+    
 
     public HatchScoring(Constants.ELEVATOR_STATES height, boolean retract) {
         addSequential(new PlaceHatch(height));

@@ -14,7 +14,7 @@ import static robot.Robot.elevator;
 
 /**
  * Hatch subsystem for the 2019 robot 'GENESIS'
- * the hatch subsystem uses two pistons, one which grabs the hatch and the other which extends the mechanism forward.
+ * the hatch subsystem uses two pistons, one which grabs the hatch and the other which extends to push the hatch onto the field pieces.
  *
  * @author paulo
  */
@@ -54,7 +54,7 @@ public class HatchIntake extends Subsystem {
     }
 
     /**
-     * @return true if the flower is extended and false otherwise
+     * @return true if the pusher is extended and false otherwise
      */
     public boolean isPusherExtended() {
         return pusher.get() == DoubleSolenoid.Value.kForward;
