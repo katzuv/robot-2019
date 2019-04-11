@@ -5,10 +5,8 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import robot.subsystems.command_groups.HatchScoring;
 import robot.subsystems.command_groups.PlaceHatch;
 import robot.subsystems.command_groups.RetractHatch;
-import robot.subsystems.command_groups.TakeHatch;
 import robot.subsystems.drivetrain.commands.DistanceDrive;
 import robot.subsystems.drivetrain.commands.ResetLocation;
 import robot.subsystems.drivetrain.commands.TurnAngle;
@@ -16,7 +14,7 @@ import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.ExtensionPlate;
+import robot.subsystems.hatch_intake.commands.Pusher;
 import robot.subsystems.hatch_intake.commands.Flower;
 
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
         DrivePathVision toRocketCommand = new DrivePathVision(Paths.LEFT_HAB_TO_NEAR_ROCKET, false);
         addSequential(toRocketCommand);
 
-        addParallel(new ExtensionPlate(true));
+        addParallel(new Pusher(true));
 
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
@@ -55,7 +53,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
 
         addSequential(new WaitCommand(0.4));
 
-        addSequential(new ExtensionPlate(true));
+        addSequential(new Pusher(true));
         addSequential(new Flower(true));
         addSequential(new VisionDrive());
 
@@ -73,7 +71,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
         addSequential(new DrivePathVision(driveWithHatch, 0, 0, false, false));
 
 //        addSequential(new WaitCommand(0.5));
-//        addParallel(new ExtensionPlate(true));
+//        addParallel(new Pusher(true));
 //        addSequential(new VisionDrive());
 //        addSequential(new WaitCommand(0.2));
 //

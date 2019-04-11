@@ -3,10 +3,10 @@ package robot.subsystems.hatch_intake.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
-public class ExtensionPlate extends InstantCommand { //TODO: Refactor transportation to a better name
+public class Pusher extends InstantCommand { //TODO: Refactor transportation to a better name
     private extensionPlateState current;//enum variable that indicates the current mode of the extensionPlate
 
-    public ExtensionPlate(boolean extend) {
+    public Pusher(boolean extend) {
         requires(Robot.hatchIntake);
         if (extend)
             current = extensionPlateState.EXTENSION_PLATE_EXTEND;
@@ -14,7 +14,7 @@ public class ExtensionPlate extends InstantCommand { //TODO: Refactor transporta
             current = extensionPlateState.EXTENSION_PLATE_PULL;
     }
 
-    public ExtensionPlate() {
+    public Pusher() {
         requires(Robot.hatchIntake);
         current = extensionPlateState.TOGGLE_EXTENSION_PLATE;
     }
