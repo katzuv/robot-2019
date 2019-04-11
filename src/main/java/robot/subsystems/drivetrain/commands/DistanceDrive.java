@@ -7,7 +7,7 @@ import robot.subsystems.drivetrain.Constants;
 import static robot.Robot.drivetrain;
 
 /**
- *
+ * Drive a given distance on both sides of the Drivetrain.
  */
 public class DistanceDrive extends Command {
     private double distance;
@@ -37,7 +37,7 @@ public class DistanceDrive extends Command {
     // Called once after isFinished returns true
     protected void end() {
         drivetrain.setSpeed(0, 0);
-
+        drivetrain.setMotorsToCoast();
     }
 
     // Called when another command which requires one or more of the same
