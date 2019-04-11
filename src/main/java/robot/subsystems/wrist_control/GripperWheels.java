@@ -30,7 +30,7 @@ public class GripperWheels extends Subsystem {
      * @return
      */
     public double getProximityVoltage() {
-        return proximitySensor.getVoltage();
+        return !Constants.PROXIMITY_DISABLED ? proximitySensor.getVoltage() : 0;
     }
 
     /**
