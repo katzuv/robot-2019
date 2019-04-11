@@ -8,7 +8,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.command_groups.HatchScoring;
 import robot.subsystems.command_groups.TakeHatch;
 import robot.subsystems.drivetrain.commands.DistanceDrive;
-import robot.subsystems.drivetrain.commands.ResetLocation;
+import robot.subsystems.drivetrain.commands.SetLocation;
 import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
@@ -26,7 +26,7 @@ import java.util.List;
 public class OneHatchCargo extends CommandGroup {
 
     public OneHatchCargo(Constants.ELEVATOR_STATES height) {
-        addSequential(new ResetLocation(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(13.565), Rotation2dKt.getDegree(180))));
+        addSequential(new SetLocation(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(13.565), Rotation2dKt.getDegree(180))));
 
         addParallel(new ElevatorCommand(height));
 

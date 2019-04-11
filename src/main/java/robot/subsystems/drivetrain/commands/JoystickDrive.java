@@ -14,6 +14,9 @@ import robot.subsystems.climb.Constants;
 
 import static robot.Robot.*;
 
+/**
+ * Control the Drivetrain via the joysticks.
+ */
 public class JoystickDrive extends Command {
     public  JoystickDrive() {
         requires(drivetrain);
@@ -82,7 +85,6 @@ public class JoystickDrive extends Command {
         if(climb.isClimbing()) //maybe also lower speeds when back legs are lowered.
         {
             gripperWheels.setGripperSpeed(Math.min(0.9,Math.max(0,rightOutput))); //TODO: not good, no requires
-            climb.setWheelSpeed(rightOutput*0.8);
             drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.1,
                     rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.1);
         }

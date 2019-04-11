@@ -5,12 +5,11 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import robot.subsystems.command_groups.HatchScoring;
 import robot.subsystems.command_groups.PlaceHatch;
 import robot.subsystems.command_groups.RetractHatch;
 import robot.subsystems.command_groups.TakeHatch;
 import robot.subsystems.drivetrain.commands.DistanceDrive;
-import robot.subsystems.drivetrain.commands.ResetLocation;
+import robot.subsystems.drivetrain.commands.SetLocation;
 import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
@@ -28,7 +27,7 @@ import java.util.List;
 public class TwoHatchLeftRocket extends CommandGroup {
 
     public TwoHatchLeftRocket(Constants.ELEVATOR_STATES height) {
-        addSequential(new ResetLocation(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(17.645), Rotation2dKt.getDegree(180))));
+        addSequential(new SetLocation(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(17.645), Rotation2dKt.getDegree(180))));
 
         addParallel(new ElevatorCommand(height));
 
