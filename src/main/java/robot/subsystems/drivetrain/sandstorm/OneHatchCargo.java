@@ -13,7 +13,7 @@ import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.Pusher;
+import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class OneHatchCargo extends CommandGroup {
 
         addSequential(new WaitCommand(0.2));
 
-        addParallel(new Pusher(true));
+        addParallel(new Fangs(true));
         addSequential(new VisionDrive());
 
         addSequential(new HatchScoring(height));
@@ -50,7 +50,7 @@ public class OneHatchCargo extends CommandGroup {
         addSequential(new WaitCommand(0.5));
 
         addSequential(new VisionDrive());
-        addParallel(new Pusher(true));
+        addParallel(new Fangs(true));
         addParallel(new Flower(true));
         addSequential(new TakeHatch());
 

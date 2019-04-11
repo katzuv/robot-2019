@@ -13,7 +13,7 @@ import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.drivetrain.ramsete.DrivePathVision;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.Pusher;
+import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class TwoHatchRightRocket extends CommandGroup {
         DrivePathVision toRocketCommand = new DrivePathVision(Paths.RIGHT_HAB_TO_NEAR_ROCKET, false);
         addSequential(toRocketCommand);
 
-        addParallel(new Pusher(true));
+        addParallel(new Fangs(true));
 
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
@@ -51,7 +51,7 @@ public class TwoHatchRightRocket extends CommandGroup {
 
         addSequential(new WaitCommand(0.5));
 
-        addSequential(new Pusher(true));
+        addSequential(new Fangs(true));
         addSequential(new Flower(true));
         addSequential(new VisionDrive());
 
@@ -69,7 +69,7 @@ public class TwoHatchRightRocket extends CommandGroup {
         addSequential(new DrivePathVision(driveWithHatch, 0, 0, false, false));
 
 //        addSequential(new WaitCommand(0.5));
-//        addParallel(new Pusher(true));
+//        addParallel(new Fangs(true));
 //        addSequential(new VisionDrive());
 //        addSequential(new WaitCommand(0.2));
 //

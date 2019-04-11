@@ -21,7 +21,7 @@ import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
-import robot.subsystems.hatch_intake.commands.Pusher;
+import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.*;
@@ -154,8 +154,8 @@ public class OI {
         LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
         a.whenPressed(new Flower());
-        lb.whenPressed(new Pusher(false));
-        rb.whenPressed(new ShiftButton(xbox, 8 , new ShiftButton(xbox, 7,new RawWristTurn(0.5190, 1), new Pusher(true)), new Pusher(true)));
+        lb.whenPressed(new Fangs(false));
+        rb.whenPressed(new ShiftButton(xbox, 8 , new ShiftButton(xbox, 7,new RawWristTurn(0.5190, 1), new Fangs(true)), new Fangs(true)));
         //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL,1.5));
         x.whenPressed(new ClimbConditionalCommand(

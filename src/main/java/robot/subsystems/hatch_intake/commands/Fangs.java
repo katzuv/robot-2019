@@ -3,41 +3,41 @@ package robot.subsystems.hatch_intake.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
-public class Pusher extends InstantCommand { //TODO: Refactor transportation to a better name
-    private pusherState current;//enum variable that indicates the current mode of the pusher
+public class Fangs extends InstantCommand { //TODO: Refactor transportation to a better name
+    private fangState current;//enum variable that indicates the current mode of the pusher
 
     /**
      * this command is used to either extend or retract the pusher
      * @param extend if true the pusher will extend and if false it will retract
      */
 
-    public Pusher(boolean extend) {
+    public Fangs(boolean extend) {
         requires(Robot.hatchIntake);
         if (extend)
-            current = pusherState.EXTENSION_PUSHER;
+            current = fangState.EXTEND_FANGS;
         else
-            current = pusherState.RETRACT_PUSHER;
+            current = fangState.RETRACT_FANGS;
     }
 
     /**
      * empty constructor, will toggle if used
      */
 
-    public Pusher() {
+    public Fangs() {
         requires(Robot.hatchIntake);
-        current = pusherState.TOGGLE_PUSHER;
+        current = fangState.TOGGLE_FANGS;
     }
 
     @Override
     public void initialize() {
         switch (current) {
-            case TOGGLE_PUSHER: // Change to the second state
+            case TOGGLE_FANGS: // Change to the second state
                 Robot.hatchIntake.setPusher(!Robot.hatchIntake.isPusherExtended());
                 break;
-            case EXTENSION_PUSHER: // extend the pusher if closed and not do anything otherwise
+            case EXTEND_FANGS: // extend the pusher if closed and not do anything otherwise
                 Robot.hatchIntake.setPusher(true);
                 break;
-            case RETRACT_PUSHER:// pull the pusher back if extended and not do anything otherwise
+            case RETRACT_FANGS:// pull the pusher back if extended and not do anything otherwise
                 Robot.hatchIntake.setPusher(false);
                 break;
         }
@@ -64,10 +64,10 @@ public class Pusher extends InstantCommand { //TODO: Refactor transportation to 
     protected void interrupted() {
     }
 
-    public enum pusherState {
-        TOGGLE_PUSHER,
-        EXTENSION_PUSHER,
-        RETRACT_PUSHER
+    public enum fangState {
+        TOGGLE_FANGS,
+        EXTEND_FANGS,
+        RETRACT_FANGS
     }
 
 }
