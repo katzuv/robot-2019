@@ -85,10 +85,8 @@ public class Drivetrain extends Subsystem {
         leftMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
         rightMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
 
-        if (!Robot.isRobotA) {
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
-        }
 
         leftSlave1.follow(leftMaster);
         leftSlave2.follow(leftMaster);
@@ -238,10 +236,6 @@ public class Drivetrain extends Subsystem {
 
     public Pose2d getRobotPosition() {
         return localization.getRobotPosition();
-    }
-
-    public boolean isDrivingForward() {
-        return getLeftSpeed() >= 0 || getRightSpeed() >= 0;
     }
 
     public void resetLocation() {
