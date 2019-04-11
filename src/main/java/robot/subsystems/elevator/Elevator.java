@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
-import robot.subsystems.hatch_intake.HatchIntake;
 
 /**
  * Elevator subsystem for the 2019 robot 'GENESIS'
@@ -122,7 +121,7 @@ public class Elevator extends Subsystem {
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
-        if (isSetpointInDangerZone())
+        if (isSetpointInDangerZone() && Robot.wristControl.getWristAngle() <= 60)
             Robot.hatchIntake.emergencyClose();
 
     }
