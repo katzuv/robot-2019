@@ -24,7 +24,7 @@ public class GripperWheels extends Subsystem {
         IntakeMotor.setNeutralMode(NeutralMode.Brake);
     }
     public double getProximityVoltage() {
-        return proximitySensor.getVoltage();
+        return !Constants.PROXIMITY_DISABLED ? proximitySensor.getVoltage() : 0;
     }
 
     public void resetProximity(){

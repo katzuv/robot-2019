@@ -17,7 +17,8 @@ public class Constants {
     final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : false;
     final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : false;
 
-    public final static double TRIGGER_MINIMAL_VALUE = 0.2;
+    static boolean PROXIMITY_DISABLED = false;
+
     public final static double TRIGGER_MINIMAL_VALUE = 0.2; //Minimal value when using triggers. sort of like a deadband
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
@@ -62,7 +63,7 @@ public class Constants {
         LEVEL_3_BACKWARD(0),
         CLIMB(168),
         INTAKE(187),//173
-        MAXIMAL(200);
+        MAXIMAL(180);
         private final double wristAngle;
 
         WRIST_ANGLES(double height) {
