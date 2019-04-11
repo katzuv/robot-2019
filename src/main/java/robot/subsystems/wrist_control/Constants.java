@@ -3,21 +3,22 @@ package robot.subsystems.wrist_control;
 import static robot.Robot.isRobotA;
 
 public class Constants {
-    public static final double WRIST_JUMP_ANGLE = 50;
-    public static final double DEFAULT_TIMEOUT = 1.5; //If no default is specified, and if its not disabled, set to this default
-    final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.77;
+    public static final double WRIST_JUMP_ANGLE = 30;
+    public static final double DEFAULT_TIMEOUT = 1.5; //If no default is specified, and if its not disabled, set to this default timeout when trying to reach a setpoint
+    final static double CARGO_IN_VOLTAGE = isRobotA ? 1.2 : 1.2; //TODO: change
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
     final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : false;
     final static boolean SENSOR_PHASE = isRobotA ? false : false;
 
-    final static boolean SOFT_LIMIT_OVERRIDE = isRobotA ? true : true;
-    final static boolean LIMIT_SWITCH_OVERRIDE = isRobotA ? true : false;
+    final static boolean SOFT_LIMIT_OVERRIDE = isRobotA ? false : false;
+    final static boolean LIMIT_SWITCH_OVERRIDE = isRobotA ? false : false;
 
-    final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : true;
-    final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : true;
+    final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : false;
+    final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : false;
 
     public final static double TRIGGER_MINIMAL_VALUE = 0.2;
+    public final static double TRIGGER_MINIMAL_VALUE = 0.2; //Minimal value when using triggers. sort of like a deadband
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
