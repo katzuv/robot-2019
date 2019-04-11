@@ -17,7 +17,7 @@ import static robot.Robot.*;
 public class GripperControl extends Command {
     private double speed;//speed of the gripper
     private double timeout = 0;
-    private boolean useTrigger = false;
+    private boolean useTrigger;
     private GenericHID.Hand hand;
     public GripperControl(double speed){
         requires(gripperWheels);

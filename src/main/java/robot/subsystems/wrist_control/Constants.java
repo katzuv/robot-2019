@@ -3,7 +3,9 @@ package robot.subsystems.wrist_control;
 import static robot.Robot.isRobotA;
 
 public class Constants {
-    final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.64;
+    public static final double WRIST_JUMP_ANGLE = 50;
+    public static final double DEFAULT_TIMEOUT = 1.5; //If no default is specified, and if its not disabled, set to this default
+    final static double CARGO_IN_VOLTAGE = isRobotA ? 5 : 0.77;
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
     final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : false;
@@ -19,18 +21,18 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1000 : 2468;
-    public static final int CRUISE_VELOCITY  = isRobotA ? 2300 : 4200;
+    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 2468 : 2468;
+    public static final int CRUISE_VELOCITY  = isRobotA ? 3000 : 3000;
 
-    final static double kP = isRobotA ? 0.6 : 0.7;
+    final static double kP = isRobotA ? 0.7 : 0.7;
     final static double kD = isRobotA ? 150 : 150;
-    final static double kF = isRobotA ? 0.48 : 0.52;
+    final static double kF = isRobotA ? 0.52 : 0.52;
 
     final static int IZone = isRobotA ? 50 : 50;
-    final static double kI = isRobotA ? 0.001 : 0.00197;
+    final static double kI = isRobotA ? 0.00197 : 0.00197;
 
-    final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.7 : 0.6;
-    final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.7 : -0.6;
+    final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.6 : 0.6;
+    final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.6 : -0.6;
 
 
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
@@ -49,8 +51,9 @@ public class Constants {
         LEVEL_1_BACKWARD(0),
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
-        INTAKE(160),//173
-        MAXIMAL(178);
+        CLIMB(168),
+        INTAKE(187),//173
+        MAXIMAL(200);
         private final double wristAngle;
 
         WRIST_ANGLES(double height) {

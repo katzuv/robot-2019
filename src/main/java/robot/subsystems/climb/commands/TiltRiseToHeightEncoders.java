@@ -10,8 +10,9 @@ import robot.subsystems.climb.Constants;
 public class TiltRiseToHeightEncoders extends CommandGroup {
 
     public TiltRiseToHeightEncoders(double targetHeight) {
-        addSequential(new MoveBackLegs(-0.9*Constants.BACK_LEFT_STARTING_OFFSET));
+        addSequential(new MoveBackLegs(-0.35*Constants.BACK_LEFT_STARTING_OFFSET));
         addSequential(new RiseToHeightEncoders(targetHeight));
+
     }
 
     public TiltRiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS height_state){

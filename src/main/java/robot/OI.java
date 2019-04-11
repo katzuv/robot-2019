@@ -12,11 +12,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
+import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.climb.commands.*;
 
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.command_groups.*;
+import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.GripperControl;
@@ -24,9 +25,12 @@ import robot.subsystems.wrist_control.commands.RawWristTurn;
 import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
-import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.hatch_intake.commands.ExtensionPlate;
+import robot.subsystems.hatch_intake.commands.Flower;
+import robot.subsystems.wrist_control.Constants;
+import robot.subsystems.wrist_control.commands.*;
 import robot.utilities.ButtonCombination;
+import robot.utilities.ClimbConditionalCommand;
 import robot.utilities.ShiftButton;
 import robot.utilities.TriggerButton;
 
@@ -71,8 +75,8 @@ public class OI {
     public static Button povl = new POVButton(xbox, 270);
     public static Button povu = new POVButton(xbox, 0);
 
-    public static Button RT = new TriggerButton(xbox, GenericHID.Hand.kRight, 0);
-    public static Button LT = new TriggerButton(xbox, GenericHID.Hand.kLeft, 0);
+    public static Button RT = new TriggerButton(xbox, GenericHID.Hand.kRight, 0.1);
+    public static Button LT = new TriggerButton(xbox, GenericHID.Hand.kLeft, 0.1);
 
     public static Button lsLeft = new JoystickButton(leftStick, 4);
     public static Button lsRight = new JoystickButton(leftStick, 5);
@@ -93,8 +97,8 @@ public class OI {
     public static int right_trigger = 3;
     public static int right_x_stick = 4;
     public static int right_y_stick = 5;
-  
-  
+
+
     public static Button left_joystick_two = new JoystickButton(leftStick, 2);
     public static Button left_joystick_three = new JoystickButton(leftStick, 3);
     public static Button left_joystick_six = new JoystickButton(leftStick, 6);
@@ -111,57 +115,76 @@ public class OI {
     public static Button right_joystick_ten = new JoystickButton(rightStick, 10);
     public static Button right_joystick_eleven = new JoystickButton(rightStick, 11);
 
-    public static ButtonCombination manual_wrist = new ButtonCombination(xbox, 7,8,9);
+    public static ButtonCombination manual_wrist = new ButtonCombination(xbox, 7, 8, 6);
+    public static Button left_joystick_four = new JoystickButton(leftStick, 4);
+    public static Button left_joystick_five = new JoystickButton(leftStick, 5);
     public OI() {
-        //REMOVED COMMAND GROUP CARGO SCORING AND HATCH SCORING, THEY STUCK THE CODE
+        /*
+        Select (7) + POV = reverse cargo
+        Y (4) + POV = front cargo
+        Start (8) + POV = Hatch scoring
+         */
+
         povd.whenPressed(new ShiftButton(xbox, 7,
                 new CargoScoring(0, true),
                 new ShiftButton(xbox, 4,
                         new CargoScoring(0, false),
                         new ElevatorCommand(0))));
-        povr.whenPressed(new ShiftButton(xbox, 7,
+
+        povr.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
                 new CargoScoring(1, true),
                 new ShiftButton(xbox, 8,
                         new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(1, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)))));
-        povl.whenPressed(new ShiftButton(xbox, 7,
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH))))));
+
+        povl.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
                 new CargoScoring(2, true),
                 new ShiftButton(xbox, 8,
                         new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(2, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH)))));
-        povu.whenPressed(new ShiftButton(xbox, 7,
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH))))));
+
+        povu.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
                 new CargoScoring(3, true),
                 new ShiftButton(xbox, 8,
                         new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(3, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO)))));
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO))))));
 
         RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
         LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
         a.whenPressed(new Flower());
         lb.whenPressed(new ExtensionPlate(false));
-        rb.whenPressed(new ExtensionPlate(true));
+        rb.whenPressed(new ShiftButton(xbox, 8 , new ShiftButton(xbox, 7,new RawWristTurn(0.5190, 1), new ExtensionPlate(true)), new ExtensionPlate(true)));
         //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL,1.5));
+        x.whenPressed(new ClimbConditionalCommand(
+                new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), Robot.isRobotA ? 0.093 : 0.13),
+                new WristTurn(Constants.WRIST_ANGLES.CLIMB,1.5)
+        ));
+
         //TODO: add right stick to control the cargo intake
         select.whenPressed(new CloseBoth());
 
         left_joystick_six.toggleWhenPressed(new VisionDrive());
+        right_joystick_six.whenPressed(new SwitchCamera());
 
         left_joystick_two.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
         left_joystick_ten.whenPressed(new SafeCloseBackLegs());
-        left_joystick_nine.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
-        left_joystick_eight.whenPressed(new TiltRiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
+        left_joystick_nine.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
+        left_joystick_eight.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
 
-        manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190,1));
+        manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190, 1));
+
+        left_joystick_four.whenPressed(new ResetWristAngle(0));
+        left_joystick_five.whenPressed(new ResetWristAngle(168));
+
         // Place cargo backward
 
         /*

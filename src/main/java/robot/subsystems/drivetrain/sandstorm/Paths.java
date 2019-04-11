@@ -18,6 +18,8 @@ class Paths {
 
     static final TimedTrajectory<Pose2dWithCurvature> RIGHT_HAB_TO_FAR_ROCKET;
 
+    static final TimedTrajectory<Pose2dWithCurvature> LEFT_HAB_TO_NEAR_ROCKET;
+
     static {
         RIGHT_HAB_TO_FAR_ROCKET = Utils.generateTrajectory(
                 Arrays.asList(
@@ -30,14 +32,21 @@ class Paths {
         RIGHT_HAB_TO_NEAR_ROCKET = Utils.generateTrajectory(
                 Arrays.asList(
                         new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180)),
-                        new Pose2d(LengthKt.getFeet(14.222), LengthKt.getFeet(3.739), Rotation2dKt.getDegree(150))
+                        new Pose2d(LengthKt.getFeet(12.707), LengthKt.getFeet(4.78), Rotation2dKt.getDegree(150))
+                ), 0, 0, true
+        );
+
+        LEFT_HAB_TO_NEAR_ROCKET = Utils.generateTrajectory(
+                Arrays.asList(
+                        new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(17.543), Rotation2dKt.getDegree(180)),
+                        new Pose2d(LengthKt.getFeet(12.707), LengthKt.getFeet(22.22), Rotation2dKt.getDegree(-155))
                 ), 0, 0, true
         );
 
         MIDDLE_HAB_TO_RIGHT_CARGO = Utils.generateTrajectory(
                 Arrays.asList(
                         new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(13.565), Rotation2dKt.getDegree(180)),
-                        new Pose2d(LengthKt.getFeet(14.868), LengthKt.getFeet(14.501), Rotation2dKt.getDegree(180))
+                        new Pose2d(LengthKt.getFeet(13.5), LengthKt.getFeet(12.255), Rotation2dKt.getDegree(180))
                 ), 1, 0, true
         );
 

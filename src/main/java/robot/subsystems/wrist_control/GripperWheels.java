@@ -8,6 +8,7 @@
 package robot.subsystems.wrist_control;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,6 +20,9 @@ public class GripperWheels extends Subsystem {
     private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
 
+    public GripperWheels(){
+        IntakeMotor.setNeutralMode(NeutralMode.Brake);
+    }
     public double getProximityVoltage() {
         return proximitySensor.getVoltage();
     }

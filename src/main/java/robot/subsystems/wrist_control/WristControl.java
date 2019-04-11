@@ -26,6 +26,8 @@ public class WristControl extends Subsystem {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private double setPointAngle;
     private boolean raw = false;
+    private double lastWristAngle = 0;
+
     public WristControl() {
         /*
         config for the feedback sensor
@@ -89,7 +91,8 @@ public class WristControl extends Subsystem {
     }
 
     public void setWristSpeed(double speed) {
-        raw = true;
+        if (speed != 0)
+            raw = true;
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
@@ -106,11 +109,17 @@ public class WristControl extends Subsystem {
         if (wristAngle < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2) {
             return 0;
         }
+
         final double COMCosine = Math.cos(Math.toRadians(15 + wristControl.getWristAngle()));
-        return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
+        double multiplier = 1;
+        if (Robot.gripperWheels.isCargoInside()) {
+            multiplier = 1.2;
+        }
+        return multiplier * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
 
     public void setEncoderAngle(double angle) {
+        lastWristAngle = angle;
         wrist.setSelectedSensorPosition(convertAngleToTicks(angle));
     }
 
@@ -203,10 +212,22 @@ public class WristControl extends Subsystem {
     }
 
     /**
+     *
+     */
+    public boolean preventEncoderJumps() {
+        if (Math.abs(lastWristAngle - getWristAngle()) > Constants.WRIST_JUMP_ANGLE) {
+            setEncoderAngle(lastWristAngle);
+            return true;
+        }
+        lastWristAngle = getWristAngle();
+        return false;
+    }
+
+    /**
      * This method makes sure the wrist stallCurrent gets updated
      */
     public void update() {
-        if(!raw) {
+        if (!raw) {
             if (getWristAngle() < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2)
                 wristControl.wrist.set(ControlMode.PercentOutput, 0);
             else
@@ -219,4 +240,7 @@ public class WristControl extends Subsystem {
         update();
     }
 
+    public void disabledPeriodic() {
+        setPointAngle = getWristAngle();
+    }
 }

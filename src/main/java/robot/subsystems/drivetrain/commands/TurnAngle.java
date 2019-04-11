@@ -36,13 +36,13 @@ public class TurnAngle extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         double direction = Math.signum(this.setpoint - navx.getAngle()); //If the target is on the robots right, turn accordingly
-        double velocity = Utils.constrainedMap(Math.abs(this.setpoint - navx.getAngle()), 0, angle, 0.3, 2.5); //Have the value start at 2.5 and end at a slower speed
+        double velocity = Utils.constrainedMap(Math.abs(this.setpoint - navx.getAngle()), 0, angle, 0.4, 2.5); //Have the value start at 2.5 and end at a slower speed
         drivetrain.setVelocity(direction * velocity, -direction * velocity);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(this.setpoint - navx.getAngle()) < 2;
+        return Math.abs(this.setpoint - navx.getAngle()) < 5;
     }
 
     // Called once after isFinished returns true
