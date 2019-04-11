@@ -23,13 +23,13 @@ public class ExtensionPlate extends InstantCommand { //TODO: Refactor transporta
     public void initialize() {
         switch (current) {
             case TOGGLE_EXTENSION_PLATE: // Change to the second state
-                Robot.hatchIntake.setExtensionPlate(!Robot.hatchIntake.isExtensionPlateExtended());
+                Robot.hatchIntake.setPusher(!Robot.hatchIntake.isPusherExtended());
                 break;
             case EXTENSION_PLATE_EXTEND: // extend the extensionPlate if closed and not do anything otherwise
-                Robot.hatchIntake.setExtensionPlate(true);
+                Robot.hatchIntake.setPusher(true);
                 break;
             case EXTENSION_PLATE_PULL:// pull the extensionPlate back if extended and not do anything otherwise
-                Robot.hatchIntake.setExtensionPlate(false);
+                Robot.hatchIntake.setPusher(false);
                 break;
         }
 

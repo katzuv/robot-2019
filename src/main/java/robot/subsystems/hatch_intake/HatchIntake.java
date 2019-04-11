@@ -21,7 +21,7 @@ import static robot.Robot.elevator;
 public class HatchIntake extends Subsystem {
 
     private final DoubleSolenoid flower = new DoubleSolenoid(1, Ports.flowerForward, Ports.flowerReverse);
-    private final DoubleSolenoid extensionPlate = new DoubleSolenoid(1, Ports.extensionPlateForward, Ports.extensionPlateReverse);
+    private final DoubleSolenoid pusher = new DoubleSolenoid(1, Ports.pusherForward, Ports.pusherReverse);
 
     public HatchIntake() {
     }
@@ -46,18 +46,18 @@ public class HatchIntake extends Subsystem {
     /**
      * if true, extend forward
      */
-    public void setExtensionPlate(boolean extend) {
+    public void setPusher(boolean extend) {
         if (extend && !elevator.isSetpointInDangerZone())
-            extensionPlate.set(DoubleSolenoid.Value.kForward);
+            pusher.set(DoubleSolenoid.Value.kForward);
         else
-            extensionPlate.set(DoubleSolenoid.Value.kReverse);
+            pusher.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
      * @return true if the flower is extended and false otherwise
      */
-    public boolean isExtensionPlateExtended() {
-        return extensionPlate.get() == DoubleSolenoid.Value.kForward;
+    public boolean isPusherExtended() {
+        return pusher.get() == DoubleSolenoid.Value.kForward;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class HatchIntake extends Subsystem {
      * This is called whenever the mechanism is in danger.
      */
     public void emergencyClose() {
-        setExtensionPlate(false);
+        setPusher(false);
         setFlower(false);
     }
 }
