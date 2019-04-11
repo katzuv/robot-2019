@@ -110,12 +110,9 @@ public class WristControl extends Subsystem {
             return 0;
         }
 
-        final double COMCosine = Math.cos(Math.toRadians(15 + wristControl.getWristAngle()));
-        double multiplier = 1;
-        if (Robot.gripperWheels.isCargoInside()) {
-            multiplier = 1.2;
-        }
-        return multiplier * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
+        double multiplier = Robot.gripperWheels.isCargoInside() ? Constants.CARGO_MULTIPLIER : 1; //TODO: add hatch comp aswell
+        return multiplier * Constants.PEAK_PERCENT_COMPENSATION * Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle));
+        
     }
 
     public void setEncoderAngle(double angle) {
