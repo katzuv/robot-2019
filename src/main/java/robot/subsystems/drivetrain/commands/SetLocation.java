@@ -5,13 +5,13 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import robot.Robot;
 
 /**
- *
+ * Set the location of the Drivetrain.
  */
-public class ResetLocation extends InstantCommand {
+public class SetLocation extends InstantCommand {
 
     private final Pose2d location;
 
-    public ResetLocation(Pose2d location) {
+    public SetLocation(Pose2d location) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         this.location = location;
