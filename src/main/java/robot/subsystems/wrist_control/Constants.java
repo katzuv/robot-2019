@@ -37,10 +37,18 @@ public class Constants {
 
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
 
-
+    /* Stall current constants */
     public static final double DROP_WRIST_ANGLE = 7.5;
+    static final double COM_ANGLE = 15; //the angle of the center of mass at the initial angle of the wrist.//TODO: CHANGE
+    static final double PEAK_PERCENT_COMPENSATION = 0.2; //The percent output that is given to the wrist to hold it in place at its peak.
+    //idea for a stall current calculation when hatches are inside.
+    private final static double WRIST_WEIGHT = 1;
+    private final static double HATCH_WEIGHT = 0.1;
+    private final static double CARGO_WEIGHT = 0.05;
 
-    public enum WRIST_ANGLES {
+    final static double HATCH_MULTIPLIER = (WRIST_WEIGHT + HATCH_WEIGHT) / WRIST_WEIGHT;
+    final static double CARGO_MULTIPLIER = (WRIST_WEIGHT + CARGO_WEIGHT) / WRIST_WEIGHT;
+    public enum WRIST_ANGLES {//TODO: remove useless angles for new wrist.
         INITIAL(0),
         UP(82.75),
         SHIP(137),
