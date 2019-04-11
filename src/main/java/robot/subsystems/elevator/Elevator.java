@@ -97,6 +97,11 @@ public class Elevator extends Subsystem {
         this.setpoint = convertHeightToTicks(Math.min(Constants.ELEVATOR_MAX_HEIGHT, Math.max(0, height)));
     }
 
+    /**
+     * Get the raw ticks from the encoder of the elevator.
+     *
+     * @return raw ticks in native units.
+     */
     public double getTicks() {
         return masterMotor.getSelectedSensorPosition(0);
     }
@@ -131,11 +136,9 @@ public class Elevator extends Subsystem {
      */
     private void preventOverShoot() {
         if (atTop()) {
-            //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
             masterMotor.setSelectedSensorPosition((int) (Constants.ELEVATOR_MAX_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
         }
         if (atBottom()) {
-            //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
             masterMotor.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the encoder position to the bottom
         }
     }
@@ -243,7 +246,10 @@ public class Elevator extends Subsystem {
         setDefaultCommand(new JoystickElevatorCommand());
     }
 
-    public void onDisabled() {
+    /**
+     * turns off the motors, and sets the setpoint to the bottom of the
+     */
+    public void ResetSetpoint() {
         setpoint = 0;
         masterMotor.set(ControlMode.PercentOutput, 0);
     }
