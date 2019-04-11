@@ -17,8 +17,7 @@ import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 import static robot.Robot.wristControl;
 
 /**
- * The Cargo Intake subsystem, including the Intake and Wrist.
- * first the gripper
+ * New wrist subsystem for the 2019 robot 'GENESIS', after the district championships.
  *
  * @author lior
  */
@@ -90,20 +89,32 @@ public class WristControl extends Subsystem {
 
     }
 
+    /**
+     * Control the wrist manually
+     * @param speed
+     */
     public void setWristSpeed(double speed) {
-        if (speed != 0)
+        if (speed != 0) //in cases where we set speed 0, we usually still want the wrist to hold itself in place.
             raw = true;
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
+    /**
+     * Reset the wrist encoders.
+     */
     public void resetSensors() {
         resetWristEncoder();
     }
 
     private void resetWristEncoder() {
+        lastWristAngle = 0;
         wrist.setSelectedSensorPosition(0);
     }
 
+    /**
+     * The wrist voltage which holds it in place
+     * @return
+     */
     public double stallCurrent() {
         final double wristAngle = wristControl.getWristAngle(); //for readability
         if ((wristAngle < Constants.DROP_WRIST_ANGLE &&
@@ -115,7 +126,7 @@ public class WristControl extends Subsystem {
 
         double multiplier = Robot.gripperWheels.isCargoInside() ? Constants.CARGO_MULTIPLIER : 1; //TODO: add hatch comp aswell
         return multiplier * Constants.PEAK_PERCENT_COMPENSATION * Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle));
-        
+
     }
 
     public void setEncoderAngle(double angle) {
@@ -212,7 +223,8 @@ public class WristControl extends Subsystem {
     }
 
     /**
-     *
+     * Detects if the difference in wrist angle from the last loop is higher than a constant. if so, the encoder jumped.
+     * @return returns true, if there was a detected jump.
      */
     public boolean preventEncoderJumps() {
         if (Math.abs(lastWristAngle - getWristAngle()) > Constants.WRIST_JUMP_ANGLE) {
