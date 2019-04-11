@@ -105,8 +105,11 @@ public class WristControl extends Subsystem {
     }
 
     public double stallCurrent() {
-        final double wristAngle = wristControl.getWristAngle();
-        if (wristAngle < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2) {
+        final double wristAngle = wristControl.getWristAngle(); //for readability
+        if ((wristAngle < Constants.DROP_WRIST_ANGLE &&
+                setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
+            (wristAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
+                    setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2)) {
             return 0;
         }
 
@@ -225,7 +228,11 @@ public class WristControl extends Subsystem {
      */
     public void update() {
         if (!raw) {
-            if (getWristAngle() < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2)
+            final double wristAngle = wristControl.getWristAngle(); //for readability
+            if ((wristAngle < Constants.DROP_WRIST_ANGLE &&
+                    setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
+                    (wristAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
+                            setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2))
                 wristControl.wrist.set(ControlMode.PercentOutput, 0);
             else
                 wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
