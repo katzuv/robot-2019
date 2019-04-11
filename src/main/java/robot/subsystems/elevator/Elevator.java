@@ -22,9 +22,7 @@ import robot.subsystems.hatch_intake.HatchIntake;
  * @author paulo
  */
 public class Elevator extends Subsystem {
-
-    /* pid slots for the four states: up and down on the first level and up and down on the second level of the cascade*/
-    private final int TALON_LOW_UP_PID_SLOT = 0;
+    
     private final VictorSPX slaveMotor = new VictorSPX(Ports.victorPort);
     private final TalonSRX masterMotor = new TalonSRX(Ports.talonPort);
     private int setpoint;
@@ -38,10 +36,10 @@ public class Elevator extends Subsystem {
         masterMotor.setNeutralMode(NeutralMode.Brake);
 
         /* set closed loop gains in slot0 */
-        masterMotor.config_kP(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        masterMotor.config_kI(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        masterMotor.config_kD(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        masterMotor.config_kF(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kP(0, Constants.LIFT_LOW_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kI(0, Constants.LIFT_LOW_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kD(0, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kF(0, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
 
         masterMotor.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_SPEED);
         masterMotor.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION);
