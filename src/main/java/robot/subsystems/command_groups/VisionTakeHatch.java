@@ -13,7 +13,9 @@ public class VisionTakeHatch extends CommandGroup {
 
     public VisionTakeHatch() {
         addParallel(new ElevatorCommand(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
-        addSequential(new VisionDrive());
         addSequential(new Flower(true));
+        addSequential(new VisionDrive());
+        addSequential(new Flower(false));
+
     }
 }
