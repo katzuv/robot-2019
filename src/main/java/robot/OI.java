@@ -164,7 +164,7 @@ public class OI {
         //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL,1.5));
         x.whenPressed(new ClimbConditionalCommand(
-                new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), Robot.isRobotA ? 0.093 : 0.13),
+                new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_STATES.INTAKE_CARGO),
                 new WristTurn(Constants.WRIST_ANGLES.CLIMB,1.5)
         ));
 
