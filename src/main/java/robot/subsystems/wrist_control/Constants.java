@@ -55,7 +55,7 @@ public class Constants {
     public enum WRIST_ANGLES {//TODO: remove useless angles for new wrist.
         INITIAL(0),
         UP(90 - COM_ANGLE),
-        FORWARD(172),
+        FORWARD(166),
         SHIP(137),
         SHIP_BACKWARD(0),
         LEVEL_1(135),
@@ -64,8 +64,8 @@ public class Constants {
         LEVEL_1_BACKWARD(0),
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
-        INTAKE(172),
-        MAXIMAL(    172);
+        INTAKE(166),
+        MAXIMAL(    166);
         private final double wristAngle;
 
         WRIST_ANGLES(double angle) {
