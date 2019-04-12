@@ -54,7 +54,8 @@ public class Constants {
     final static double CARGO_MULTIPLIER = (WRIST_WEIGHT + CARGO_WEIGHT) / WRIST_WEIGHT;
     public enum WRIST_ANGLES {//TODO: remove useless angles for new wrist.
         INITIAL(0),
-        UP(82.75),
+        UP(90 - COM_ANGLE),
+        FORWARD(172),
         SHIP(137),
         SHIP_BACKWARD(0),
         LEVEL_1(135),
@@ -63,13 +64,12 @@ public class Constants {
         LEVEL_1_BACKWARD(0),
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
-        CLIMB(168),
-        INTAKE(168),//173
-        MAXIMAL(200);
+        INTAKE(172),
+        MAXIMAL(    172);
         private final double wristAngle;
 
-        WRIST_ANGLES(double height) {
-            this.wristAngle = height;
+        WRIST_ANGLES(double angle) {
+            this.wristAngle = angle;
         }
 
         public double getValue() {
