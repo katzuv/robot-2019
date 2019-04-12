@@ -1,39 +1,40 @@
 package robot.subsystems.hatch_intake.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 
-public class Fangs extends InstantCommand { //TODO: Refactor transportation to a better name
+public class Fangs extends Command {
+    private final double timeout;
+    private Timer timer = new Timer();
     private fangState current;//enum variable that indicates the current mode of the pusher
 
     /**
      * this command is used to either extend or retract the pusher
+     *
      * @param extend if true the pusher will extend and if false it will retract
      */
-
-    public Fangs(boolean extend) {
+    public Fangs(boolean extend, double timeout) {
         requires(Robot.hatchIntake);
         if (extend)
             current = fangState.EXTEND_FANGS;
         else
             current = fangState.RETRACT_FANGS;
+        this.timeout = timeout;
     }
 
     /**
-     * empty constructor, will toggle if used
+     * push out fangs if used.
      */
-
     public Fangs() {
-        requires(Robot.hatchIntake);
-        current = fangState.TOGGLE_FANGS;
+        this(true, 0);
     }
 
     @Override
     public void initialize() {
+        timer.reset();
+        timer.start();
         switch (current) {
-            case TOGGLE_FANGS: // Change to the second state
-                Robot.hatchIntake.setPusher(!Robot.hatchIntake.isPusherExtended());
-                break;
             case EXTEND_FANGS: // extend the pusher if closed and not do anything otherwise
                 Robot.hatchIntake.setFangs(true);
                 break;
@@ -51,11 +52,12 @@ public class Fangs extends InstantCommand { //TODO: Refactor transportation to a
 
     @Override
     protected void end() {
+        Robot.hatchIntake.setFangs(false);
     }
 
     @Override
     public boolean isFinished() {
-        return true;
+        return timer.get() > timeout;
     }
 
     // Called when another command which requires one or more of the same
@@ -65,7 +67,6 @@ public class Fangs extends InstantCommand { //TODO: Refactor transportation to a
     }
 
     public enum fangState {
-        TOGGLE_FANGS,
         EXTEND_FANGS,
         RETRACT_FANGS
     }
