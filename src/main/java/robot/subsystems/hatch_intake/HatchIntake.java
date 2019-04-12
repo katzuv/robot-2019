@@ -48,7 +48,7 @@ public class HatchIntake extends Subsystem {
      * if true, extend forward
      */
     public void setFangs(boolean extend) {
-        if (extend && !elevator.isHatchMechanismInDanger() && !isFlowerOpen())
+        if (extend && !elevator.isHatchMechanismInDanger() && isFlowerOpen())
             fangs.set(DoubleSolenoid.Value.kForward);
         else
             fangs.set(DoubleSolenoid.Value.kReverse);
