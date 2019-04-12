@@ -157,7 +157,8 @@ public class OI {
         LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
         a.whenPressed(new Flower());
-        lb.whileHeld(new Fangs(true,5));
+        lb.whenPressed(new Fangs(true,0.5));
+        //lb.whileHeld(new(Fangs(true,255)); while held fangs command
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL,1.5));
         x.whenPressed(new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()));
 
