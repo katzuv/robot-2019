@@ -54,6 +54,10 @@ public class Elevator extends Subsystem {
         masterMotor.configNominalOutputReverse(Constants.NOMINAL_OUT_REV, Constants.TALON_TIMEOUT_MS);
         masterMotor.configPeakOutputReverse(Constants.PEAK_OUT_REV, Constants.TALON_TIMEOUT_MS);
 
+        masterMotor.configContinuousCurrentLimit(15);
+        masterMotor.configPeakCurrentLimit(30);
+        masterMotor.configPeakCurrentDuration(1000);
+
         masterMotor.setSensorPhase(Constants.ENCODER_REVERSED);
         /* Configure the encoder */
         masterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.TALON_TIMEOUT_MS);
