@@ -14,11 +14,15 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.climb.commands.*;
-import robot.subsystems.command_groups.CargoScoring;
-import robot.subsystems.command_groups.HatchScoring;
-import robot.subsystems.command_groups.ShiftButton;
+
+import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.subsystems.command_groups.*;
 import robot.subsystems.drivetrain.commands.SwitchCamera;
 import robot.subsystems.drivetrain.commands.VisionDrive;
+import robot.subsystems.wrist_control.Constants;
+import robot.subsystems.wrist_control.commands.GripperControl;
+import robot.subsystems.wrist_control.commands.RawWristTurn;
+import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.CloseBoth;
 import robot.subsystems.hatch_intake.commands.ExtensionPlate;
@@ -27,6 +31,7 @@ import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.*;
 import robot.utilities.ButtonCombination;
 import robot.utilities.ClimbConditionalCommand;
+import robot.utilities.ShiftButton;
 import robot.utilities.TriggerButton;
 
 import static robot.subsystems.drivetrain.Constants.SLOW_JOYSTICK_SPEED;
@@ -159,7 +164,7 @@ public class OI {
         //y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHIP));
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL,1.5));
         x.whenPressed(new ClimbConditionalCommand(
-                new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), Robot.isRobotA ? 0.14 : 0.13),
+                new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), Robot.isRobotA ? 0.093 : 0.13),
                 new WristTurn(Constants.WRIST_ANGLES.CLIMB,1.5)
         ));
 

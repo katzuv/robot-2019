@@ -1,4 +1,4 @@
-package robot.subsystems.command_groups;
+package robot.utilities;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;

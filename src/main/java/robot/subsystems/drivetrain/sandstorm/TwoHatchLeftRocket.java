@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import robot.subsystems.command_groups.HatchScoring;
 import robot.subsystems.command_groups.PlaceHatch;
 import robot.subsystems.command_groups.RetractHatch;
 import robot.subsystems.command_groups.TakeHatch;
@@ -13,7 +12,7 @@ import robot.subsystems.drivetrain.commands.DistanceDrive;
 import robot.subsystems.drivetrain.commands.ResetLocation;
 import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
-import robot.subsystems.drivetrain.ramsete.DrivePathVision;
+import robot.subsystems.drivetrain.ramsete.TrajectoryTracker;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.ExtensionPlate;
@@ -23,7 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Autonomous command group for the sandstorm period.
+ * puts a hatch in the left rocket
+ * takes another from the loading station
+ * put a second hatch on the far side of the left rocket.
  */
 public class TwoHatchLeftRocket extends CommandGroup {
 
@@ -32,7 +34,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
 
         addParallel(new ElevatorCommand(height));
 
-        DrivePathVision toRocketCommand = new DrivePathVision(Paths.LEFT_HAB_TO_NEAR_ROCKET, false);
+        TrajectoryTracker toRocketCommand = new TrajectoryTracker(Paths.LEFT_HAB_TO_NEAR_ROCKET, false);
         addSequential(toRocketCommand);
 
         addParallel(new ExtensionPlate(true));
@@ -49,7 +51,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
 
         List<Pose2d> toLoadingStation = new ArrayList<>();
         toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(23.7), Rotation2dKt.getDegree(180)));
-        addSequential(new DrivePathVision(toLoadingStation, 0, 1, false, false));
+        addSequential(new TrajectoryTracker(toLoadingStation, 0, 1, false, false));
 
         addSequential(new TurnAngle(185));
 
@@ -70,7 +72,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
         driveWithHatch.add(new Pose2d(LengthKt.getFeet(19.015), LengthKt.getFeet(21), Rotation2dKt.getDegree(0)));
         driveWithHatch.add(new Pose2d(LengthKt.getFeet(25.563), LengthKt.getFeet(23.397), Rotation2dKt.getDegree(30)));
 
-        addSequential(new DrivePathVision(driveWithHatch, 0, 0, false, false));
+        addSequential(new TrajectoryTracker(driveWithHatch, 0, 0, false, false));
 
 //        addSequential(new WaitCommand(0.5));
 //        addParallel(new ExtensionPlate(true));
