@@ -41,9 +41,10 @@ public class Constants {
 
     /* Stall current constants */
     public static final double DROP_WRIST_ANGLE = 7.5;
-    static final double COM_ANGLE = 15; //the angle of the center of mass at the initial angle of the wrist.//TODO: CHANGE
-    static final double PEAK_PERCENT_COMPENSATION = 0.2; //The percent output that is given to the wrist to hold it in place at its peak.
+    public static final double COM_ANGLE = 7.77 + (isRobotA ? (353 - 338) : 0); //the angle of the center of mass at the initial angle of the wrist. ~ in robot A the starting angle was calculated.
+    static final double PEAK_PERCENT_COMPENSATION = 0.38; //The percent output that is given to the wrist to hold it in place at its peak.
     public static final double ZERO_ANGLE_COMPENSATION = 0.025;
+
     //idea for a stall current calculation when hatches are inside.
     private final static double WRIST_WEIGHT = 1;
     private final static double HATCH_WEIGHT = 0.1;
