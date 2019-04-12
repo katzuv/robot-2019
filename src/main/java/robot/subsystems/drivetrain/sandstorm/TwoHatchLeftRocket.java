@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import robot.subsystems.command_groups.PlaceHatch;
-import robot.subsystems.command_groups.RetractHatch;
 import robot.subsystems.drivetrain.commands.DistanceDrive;
 import robot.subsystems.drivetrain.commands.ResetLocation;
 import robot.subsystems.drivetrain.commands.TurnAngle;
@@ -36,16 +34,16 @@ public class TwoHatchLeftRocket extends CommandGroup {
         TrajectoryTracker toRocketCommand = new TrajectoryTracker(Paths.LEFT_HAB_TO_NEAR_ROCKET, false);
         addSequential(toRocketCommand);
 
-        addParallel(new Fangs(true));
+//        addParallel(new Fangs(true));
 
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
 
         //Score hatch
-        addSequential(new PlaceHatch(height));
+        //addSequential(new PlaceHatch(height));
         addSequential(new WaitCommand(0.5));
 
-        addParallel(new RetractHatch());
+        //addParallel(new RetractHatch());
         addSequential(new WaitCommand(0.5));
 
         List<Pose2d> toLoadingStation = new ArrayList<>();
@@ -56,13 +54,13 @@ public class TwoHatchLeftRocket extends CommandGroup {
 
         addSequential(new WaitCommand(0.4));
 
-        addSequential(new Fangs(true));
+//        addSequential(new Fangs(true));
         addSequential(new Flower(true));
         addSequential(new VisionDrive());
 
         addSequential(new WaitCommand(0.2));
 
-        addSequential(new TakeHatch());
+//        addSequential(new TakeHatch());
 
         addSequential(new DistanceDrive(0.5));
 

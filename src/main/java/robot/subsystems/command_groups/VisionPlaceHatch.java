@@ -13,6 +13,6 @@ public class VisionPlaceHatch extends CommandGroup {
     public VisionPlaceHatch(Constants.ELEVATOR_HEIGHTS height) {
         addParallel(new ElevatorCommand(height));
         addSequential(new VisionDrive());
-        addSequential(new HatchScoring(height, false));
+//        addSequential(new HatchScoring(height, false));
     }
 }
