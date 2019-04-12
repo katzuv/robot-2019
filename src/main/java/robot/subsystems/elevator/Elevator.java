@@ -124,7 +124,7 @@ public class Elevator extends Subsystem {
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
-        if (isSetpointInDangerZone() && Robot.wristControl.getWristAngle() <= 70)
+        if (isHatchMechanismInDanger() && Robot.wristControl.getWristAngle() <= 70)
             Robot.hatchIntake.emergencyClose();
 
     }
@@ -195,7 +195,7 @@ public class Elevator extends Subsystem {
      * checks if the elevator is in range of the genesis profile to make sure the hatch system isn't open when in that zone
      * @return
      */
-    public boolean isSetpointInDangerZone() {
+    public boolean isHatchMechanismInDanger() {
         return (getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
                 (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE);
 
