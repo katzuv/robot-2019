@@ -46,7 +46,7 @@ public class HatchIntake extends Subsystem {
     /**
      * if true, extend forward
      */
-    public void setPusher(boolean extend) {
+    public void setFangs(boolean extend) {
         if (extend && !elevator.isSetpointInDangerZone())
             pusher.set(DoubleSolenoid.Value.kForward);
         else
@@ -69,7 +69,7 @@ public class HatchIntake extends Subsystem {
      * This is called whenever the mechanism is in danger.
      */
     public void emergencyClose() {
-        setPusher(false);
+        setFangs(false);
         setFlower(false);
     }
 }

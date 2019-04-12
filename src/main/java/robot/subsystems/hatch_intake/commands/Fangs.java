@@ -35,10 +35,10 @@ public class Fangs extends InstantCommand { //TODO: Refactor transportation to a
                 Robot.hatchIntake.setPusher(!Robot.hatchIntake.isPusherExtended());
                 break;
             case EXTEND_FANGS: // extend the pusher if closed and not do anything otherwise
-                Robot.hatchIntake.setPusher(true);
+                Robot.hatchIntake.setFangs(true);
                 break;
             case RETRACT_FANGS:// pull the pusher back if extended and not do anything otherwise
-                Robot.hatchIntake.setPusher(false);
+                Robot.hatchIntake.setFangs(false);
                 break;
         }
 
