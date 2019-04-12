@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
+import java.util.concurrent.TimeUnit;
+
 import static robot.Robot.wristControl;
 
 /**
@@ -41,7 +43,9 @@ public class WristControl extends Subsystem {
         wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
         wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
 
-
+        wrist.configContinuousCurrentLimit(15, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentLimit(30, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentDuration(1000, Constants.TALON_TIME_OUT);
 
         /*
         PIDF config
