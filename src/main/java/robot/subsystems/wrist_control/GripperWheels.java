@@ -19,22 +19,39 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class GripperWheels extends Subsystem {
     private final AnalogInput proximitySensor = new AnalogInput(Ports.proximitySensor);
     private final VictorSPX IntakeMotor = new VictorSPX(Ports.IntakeMotor);
-
+    
     public GripperWheels(){
+
         IntakeMotor.setNeutralMode(NeutralMode.Brake);
     }
+
+    /**
+     * this method returns the current voltage of the proximity sensor that is located on the wrist
+     * @return
+     */
     public double getProximityVoltage() {
         return !Constants.PROXIMITY_DISABLED ? proximitySensor.getVoltage() : 0;
     }
 
+    /**
+     * this method resets the proximity sensor
+     */
     public void resetProximity(){
         proximitySensor.resetAccumulator();
     }
 
+    /**
+     *
+     * @return whether there's a cargo inside the system or not based on the proximity sensor
+     */
     public boolean isCargoInside() {
         return getProximityVoltage() > Constants.CARGO_IN_VOLTAGE;
     }
 
+    /**
+     * this method sets the speed of the gripper wheels
+     * @param speed
+     */
     public void setGripperSpeed(double speed) {
         IntakeMotor.set(ControlMode.PercentOutput, speed);
     }

@@ -23,8 +23,8 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 2468 : 2468;
-    public static final int CRUISE_VELOCITY  = isRobotA ? 3000 : 3000;
+    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 3252 : 2468;
+    public static final int CRUISE_VELOCITY  = isRobotA ? 6000 : 3000;
 
     final static double kP = isRobotA ? 0.7 : 0.7;
     final static double kD = isRobotA ? 150 : 150;
@@ -41,8 +41,10 @@ public class Constants {
 
     /* Stall current constants */
     public static final double DROP_WRIST_ANGLE = 7.5;
-    static final double COM_ANGLE = 15; //the angle of the center of mass at the initial angle of the wrist.//TODO: CHANGE
-    static final double PEAK_PERCENT_COMPENSATION = 0.2; //The percent output that is given to the wrist to hold it in place at its peak.
+    public static final double COM_ANGLE = 7.77 + (isRobotA ? (353 - 338) : 0); //the angle of the center of mass at the initial angle of the wrist. ~ in robot A the starting angle was calculated.
+    static final double PEAK_PERCENT_COMPENSATION = 0.38; //The percent output that is given to the wrist to hold it in place at its peak.
+    public static final double ZERO_ANGLE_COMPENSATION = 0.025;
+
     //idea for a stall current calculation when hatches are inside.
     private final static double WRIST_WEIGHT = 1;
     private final static double HATCH_WEIGHT = 0.1;
@@ -62,8 +64,8 @@ public class Constants {
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
         CLIMB(168),
-        INTAKE(187),//173
-        MAXIMAL(180);
+        INTAKE(168),//173
+        MAXIMAL(200);
         private final double wristAngle;
 
         WRIST_ANGLES(double height) {

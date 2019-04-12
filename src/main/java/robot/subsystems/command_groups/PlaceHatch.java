@@ -12,7 +12,7 @@ import robot.subsystems.hatch_intake.commands.Flower;
  */
 public class PlaceHatch extends CommandGroup {
 
-    public PlaceHatch(Constants.ELEVATOR_STATES height) {
+    public PlaceHatch(Constants.ELEVATOR_HEIGHTS height) {
         addSequential(new ElevatorCommand(height));
         addSequential(new WaitCommand(0.1));
         addSequential(new Flower(true));// release hatch;

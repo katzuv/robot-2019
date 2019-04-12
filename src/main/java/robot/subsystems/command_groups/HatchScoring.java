@@ -7,7 +7,7 @@ import robot.subsystems.elevator.Constants;
 public class HatchScoring extends CommandGroup {
     
 
-    public HatchScoring(Constants.ELEVATOR_STATES height, boolean retract) {
+    public HatchScoring(Constants.ELEVATOR_HEIGHTS height, boolean retract) {
         addSequential(new PlaceHatch(height));
 
         if (retract) {
@@ -16,7 +16,7 @@ public class HatchScoring extends CommandGroup {
         }
     }
 
-    public HatchScoring(Constants.ELEVATOR_STATES height) {
+    public HatchScoring(Constants.ELEVATOR_HEIGHTS height) {
         addSequential(new PlaceHatch(height));
         addSequential(new WaitCommand(0.3));
         addSequential(new RetractHatch());

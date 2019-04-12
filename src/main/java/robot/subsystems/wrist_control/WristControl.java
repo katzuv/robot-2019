@@ -129,7 +129,9 @@ public class WristControl extends Subsystem {
         }
 
         double multiplier = Robot.gripperWheels.isCargoInside() ? Constants.CARGO_MULTIPLIER : 1; //TODO: add hatch comp aswell
-        return multiplier * Constants.PEAK_PERCENT_COMPENSATION * Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle));
+        return multiplier * (
+                (Constants.PEAK_PERCENT_COMPENSATION - Constants.ZERO_ANGLE_COMPENSATION) * Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle))
+                        + Constants.ZERO_ANGLE_COMPENSATION * Math.signum(Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle))));
 
     }
 
