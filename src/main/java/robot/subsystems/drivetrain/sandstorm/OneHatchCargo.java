@@ -35,7 +35,7 @@ public class OneHatchCargo extends CommandGroup {
 
         addSequential(new WaitCommand(0.2));
 
-        addParallel(new Fangs(true));
+//        addParallel(new Fangs(true));
         addSequential(new VisionDrive());
 
         addSequential(new HatchScoring(height));
@@ -52,9 +52,9 @@ public class OneHatchCargo extends CommandGroup {
         addSequential(new WaitCommand(0.5));
 
         addSequential(new VisionDrive());
-        addParallel(new Fangs(true));
+//        addParallel(new Fangs(true));
         addParallel(new Flower(true));
-        addSequential(new TakeHatch());
+//        addSequential(new TakeHatch());
 
         addSequential(new DistanceDrive(0.5));
     }
