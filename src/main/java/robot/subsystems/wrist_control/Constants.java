@@ -23,8 +23,8 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 2468 : 2468;
-    public static final int CRUISE_VELOCITY  = isRobotA ? 3000 : 3000;
+    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 3252 : 2468;
+    public static final int CRUISE_VELOCITY  = isRobotA ? 6000 : 3000;
 
     final static double kP = isRobotA ? 0.7 : 0.7;
     final static double kD = isRobotA ? 150 : 150;
@@ -64,8 +64,8 @@ public class Constants {
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
         CLIMB(168),
-        INTAKE(187),//173
-        MAXIMAL(180);
+        INTAKE(168),//173
+        MAXIMAL(200);
         private final double wristAngle;
 
         WRIST_ANGLES(double height) {
