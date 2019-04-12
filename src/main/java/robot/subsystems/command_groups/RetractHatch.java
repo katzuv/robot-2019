@@ -6,7 +6,7 @@ import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
 
 /**
- *
+ * Used for when placing a hatch automatically, closes the hatch when placing
  */
 public class RetractHatch extends CommandGroup {
 

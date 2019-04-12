@@ -11,7 +11,7 @@ import robot.subsystems.drivetrain.commands.DistanceDrive;
 import robot.subsystems.drivetrain.commands.ResetLocation;
 import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
-import robot.subsystems.drivetrain.ramsete.DrivePathVision;
+import robot.subsystems.drivetrain.ramsete.TrajectoryTracker;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Fangs;
@@ -21,16 +21,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Autonomous command group for the sandstorm period.
+ * puts a hatch in the left rocket
+ * takes another from the loading station
+ * put a second hatch on the far side of the left rocket.
  */
 public class TwoHatchLeftRocket extends CommandGroup {
 
-    public TwoHatchLeftRocket(Constants.ELEVATOR_STATES height) {
+    public TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS height) {
         addSequential(new ResetLocation(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(17.645), Rotation2dKt.getDegree(180))));
 
         addParallel(new ElevatorCommand(height));
 
-        DrivePathVision toRocketCommand = new DrivePathVision(Paths.LEFT_HAB_TO_NEAR_ROCKET, false);
+        TrajectoryTracker toRocketCommand = new TrajectoryTracker(Paths.LEFT_HAB_TO_NEAR_ROCKET, false);
         addSequential(toRocketCommand);
 
         addParallel(new Fangs(true));
@@ -47,7 +50,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
 
         List<Pose2d> toLoadingStation = new ArrayList<>();
         toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(23.7), Rotation2dKt.getDegree(180)));
-        addSequential(new DrivePathVision(toLoadingStation, 0, 1, false, false));
+        addSequential(new TrajectoryTracker(toLoadingStation, 0, 1, false, false));
 
         addSequential(new TurnAngle(185));
 
@@ -68,7 +71,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
         driveWithHatch.add(new Pose2d(LengthKt.getFeet(19.015), LengthKt.getFeet(21), Rotation2dKt.getDegree(0)));
         driveWithHatch.add(new Pose2d(LengthKt.getFeet(25.563), LengthKt.getFeet(23.397), Rotation2dKt.getDegree(30)));
 
-        addSequential(new DrivePathVision(driveWithHatch, 0, 0, false, false));
+        addSequential(new TrajectoryTracker(driveWithHatch, 0, 0, false, false));
 
 //        addSequential(new WaitCommand(0.5));
 //        addParallel(new Fangs(true));

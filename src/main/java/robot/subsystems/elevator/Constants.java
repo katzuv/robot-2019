@@ -61,14 +61,13 @@ public class Constants {
     static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (4 * TICKS_PER_METER / 10) : (int) (4 * TICKS_PER_METER / 10);
     public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
-    static double ROBOT_A_HATCH_DIFFERENCE = 0; //Difference in the hatch placing heights between robot A and robot B
-
     /**
      * enum storing all height values assigned to their respective height.
      * There are separate heights for hatch, cargo, and cargo backwards.
      */
-    public enum ELEVATOR_STATES {
-        LEVEL1_HATCH(isRobotA ? 0.23 : 0.11),
+    public enum ELEVATOR_HEIGHTS {
+        INTAKE_CARGO(0.085),
+        LEVEL1_HATCH(0.11),
         LEVEL2_HATCH(0.977),
         LEVEL3_HATCH(1.575),
         SHIP_CARGO(0.70),
@@ -82,12 +81,12 @@ public class Constants {
 
         private final double levelHeight;
 
-        ELEVATOR_STATES(double height) {
+        ELEVATOR_HEIGHTS(double height) {
             this.levelHeight = height;
         }
 
         public double getLevelHeight() {
-            return isRobotA ? levelHeight + ROBOT_A_HATCH_DIFFERENCE : levelHeight;
+            return isRobotA ? levelHeight : levelHeight;
         }
     }
 

@@ -12,7 +12,7 @@ import static robot.Robot.wristControl;
 public class WristAndElevatorCommand extends CommandGroup {
 
     public WristAndElevatorCommand(double angle, double height) {
-        addSequential(new ElevatorCommand(height));
+        addParallel(new ElevatorCommand(height));
         addSequential(new WristTurn(angle,1.5));
     }
 }
