@@ -45,7 +45,8 @@ public class WristControl extends Subsystem {
 
         wrist.configContinuousCurrentLimit(15, Constants.TALON_TIME_OUT);
         wrist.configPeakCurrentLimit(30, Constants.TALON_TIME_OUT);
-        wrist.configPeakCurrentDuration(1000, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentDuration(900, Constants.TALON_TIME_OUT);
+        wrist.enableCurrentLimit(true);
 
         /*
         PIDF config

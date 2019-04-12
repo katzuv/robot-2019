@@ -57,6 +57,7 @@ public class Elevator extends Subsystem {
         masterMotor.configContinuousCurrentLimit(15);
         masterMotor.configPeakCurrentLimit(30);
         masterMotor.configPeakCurrentDuration(1000);
+        masterMotor.enableCurrentLimit(true);
 
         masterMotor.setSensorPhase(Constants.ENCODER_REVERSED);
         /* Configure the encoder */
