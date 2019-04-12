@@ -11,7 +11,7 @@ public class TakeHatch extends CommandGroup {
 
     public TakeHatch() {
 
-        addSequential(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        addSequential(new ElevatorCommand(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
         addSequential(new Flower(true)); //open flower
         addSequential(new ExtensionPlate(true));//extend
         addSequential(new WaitCommand(0.7));

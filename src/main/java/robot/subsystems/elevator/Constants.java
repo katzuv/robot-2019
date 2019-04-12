@@ -65,7 +65,7 @@ public class Constants {
      * enum storing all height values assigned to their respective height.
      * There are separate heights for hatch, cargo, and cargo backwards.
      */
-    public enum ELEVATOR_STATES {
+    public enum ELEVATOR_HEIGHTS {
         INTAKE_CARGO(0.085),
         LEVEL1_HATCH(0.11),
         LEVEL2_HATCH(0.977),
@@ -81,7 +81,7 @@ public class Constants {
 
         private final double levelHeight;
 
-        ELEVATOR_STATES(double height) {
+        ELEVATOR_HEIGHTS(double height) {
             this.levelHeight = height;
         }
 
