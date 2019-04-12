@@ -12,11 +12,19 @@ import robot.subsystems.wrist_control.commands.WristTurn;
  * Hatch scoring command group, new to the wrist hatch mechanism.
  */
 public class HatchScoring extends CommandGroup {
+
     public HatchScoring(double height) {
-        addSequential(new ElevatorCommand(height));
-        addSequential(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
+        addSequential(
+                new CommandGroup() {
+                    {
+                        addParallel(new ElevatorCommand(height));
+                        addParallel(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
+                    }
+                }
+        );
         addSequential(new Flower(true));
-        addSequential(new Fangs(true,0.4));
+        addSequential(new WaitCommand(0.2));
+        addSequential(new Fangs(true, 0.5));
     }
 
     public HatchScoring(Constants.ELEVATOR_HEIGHTS height) {
