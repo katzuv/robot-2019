@@ -22,7 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Autonomous command group for the sandstorm period.
+ * puts a hatch in the left rocket
+ * takes another from the loading station
+ * put a second hatch on the far side of the left rocket.
  */
 public class TwoHatchLeftRocket extends CommandGroup {
 
@@ -69,7 +72,7 @@ public class TwoHatchLeftRocket extends CommandGroup {
         driveWithHatch.add(new Pose2d(LengthKt.getFeet(19.015), LengthKt.getFeet(21), Rotation2dKt.getDegree(0)));
         driveWithHatch.add(new Pose2d(LengthKt.getFeet(25.563), LengthKt.getFeet(23.397), Rotation2dKt.getDegree(30)));
 
-        addSequential(new DrivePathVision(driveWithHatch, 0, 0, false, false));
+        addSequential(new TrajectoryTracker(driveWithHatch, 0, 0, false, false));
 
 //        addSequential(new WaitCommand(0.5));
 //        addParallel(new ExtensionPlate(true));

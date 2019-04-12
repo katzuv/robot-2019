@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Autonomous command group for the sandstorm period.
+ * puts a hatch in cargo bay
+ * takes another from the loading station
  */
 public class OneHatchCargo extends CommandGroup {
 

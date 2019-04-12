@@ -21,13 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Autonomous command group for the sandstorm period.
+ * puts a hatch in the right rocket
+ * takes another from the loading station
+ * put a second hatch on the far side of the right rocket.
  */
 public class TwoHatchRightRocket extends CommandGroup {
 
     public TwoHatchRightRocket(Constants.ELEVATOR_STATES height) {
-        //Lift elevator before time
-        addParallel(new ElevatorCommand(height));
+
+        addParallel(new ElevatorCommand(height)); //Raise the elevator
 
         addSequential(new TrajectoryTracker(Paths.RIGHT_HAB_TO_NEAR_ROCKET, false)); //drive on a specified path.
 
