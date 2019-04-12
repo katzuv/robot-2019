@@ -5,7 +5,7 @@ import static robot.Robot.isRobotA;
 public class Constants {
 
     public static final int START_UNIT = isRobotA ? 0 : -720; //at what units to start
-    public static final double LOWER_DANGER_ZONE = 0.5;
+    public static final double LOWER_DANGER_ZONE = 0.445;
     public static final double UPPER_DANGER_ZONE = 1;
 
     public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
