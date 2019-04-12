@@ -4,11 +4,12 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
 
-    public static final int START_UNIT = isRobotA ? -1500 : -720;
-    public static final double LOWER_DANGER_ZONE = 0.32;
-    public static final double UPPER_DANGER_ZONE = 0.84;
+    public static final int START_UNIT = isRobotA ? -3000 : -720;
+    public static final double LOWER_DANGER_ZONE = 0.5;
+    public static final double UPPER_DANGER_ZONE = 1;
 
     public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
+    public static final int TALON_TIME_OUT = 10;
 
     //Encoder constants:
     static final double TICKS_PER_METER = isRobotA ? 25993 : 25993;
