@@ -169,6 +169,7 @@ public class OI {
         left_joystick_six.toggleWhenPressed(new VisionDrive());
         right_joystick_six.whenPressed(new SwitchCamera());
 
+        /*
         left_joystick_two.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
         left_joystick_ten.whenPressed(new SafeCloseBackLegs());
@@ -179,6 +180,7 @@ public class OI {
 
         left_joystick_four.whenPressed(new ResetWristAngle(0));
         left_joystick_five.whenPressed(new ResetWristAngle(168));
+        */
 
         // Place cargo backward
 
