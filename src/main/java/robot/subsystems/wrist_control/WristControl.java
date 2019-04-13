@@ -43,9 +43,9 @@ public class WristControl extends Subsystem {
         wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
         wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
 
-        wrist.configContinuousCurrentLimit(15, Constants.TALON_TIME_OUT);
+        wrist.configContinuousCurrentLimit(10, Constants.TALON_TIME_OUT);
         wrist.configPeakCurrentLimit(30, Constants.TALON_TIME_OUT);
-        wrist.configPeakCurrentDuration(900, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentDuration(300, Constants.TALON_TIME_OUT);
         wrist.enableCurrentLimit(true);
 
         /*
