@@ -42,7 +42,7 @@ public class Constants {
 
     /* Stall current constants */
     public static final double DROP_WRIST_ANGLE = 7.5;
-    public static final double COM_ANGLE = 7.77 + (isRobotA ? (353 - 338) : 0); //the angle of the center of mass at the initial angle of the wrist. ~ in robot A the starting angle was calculated.
+    public static final double COM_ANGLE = 7.77 + 30; //the angle of the center of mass at the initial angle of the wrist. ~ in robot A the starting angle was calculated.
     static final double PEAK_PERCENT_COMPENSATION = 0.38; //The percent output that is given to the wrist to hold it in place at its peak.
     public static final double ZERO_ANGLE_COMPENSATION = 0.025;
 
@@ -51,24 +51,24 @@ public class Constants {
     private final static double HATCH_WEIGHT = 0.1;
     private final static double CARGO_WEIGHT = 0.05;
 
-    public static final double WRIST_DANGER_ANGLE = 60;
+    public static final double WRIST_DANGER_ANGLE = 30;
 
     final static double HATCH_MULTIPLIER = (WRIST_WEIGHT + HATCH_WEIGHT) / WRIST_WEIGHT;
     final static double CARGO_MULTIPLIER = (WRIST_WEIGHT + CARGO_WEIGHT) / WRIST_WEIGHT;
     public enum WRIST_ANGLES {//TODO: remove useless angles for new wrist.
         INITIAL(0),
         UP(90 - COM_ANGLE),
-        FORWARD(170),
+        FORWARD(150),
         SHIP(137),
-        SHIP_BACKWARD(22),
+        SHIP_BACKWARD(0),
         LEVEL_1(135),
         LEVEL_2(118),
         LEVEL_3(113),
         LEVEL_1_BACKWARD(0),
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
-        INTAKE(166),
-        MAXIMAL(166);
+        INTAKE(150),
+        MAXIMAL(150);
         private final double wristAngle;
 
         WRIST_ANGLES(double angle) {
