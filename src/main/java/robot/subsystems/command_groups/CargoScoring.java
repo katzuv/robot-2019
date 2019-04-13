@@ -111,9 +111,9 @@ public class CargoScoring extends CommandGroup {
                 case 0:
                     return WRIST_ANGLES.FORWARD;
                 case 1:
-                    return WRIST_ANGLES.FORWARD;
+                    return WRIST_ANGLES.LEVEL_1;
                 case 2:
-                    return WRIST_ANGLES.FORWARD;
+                    return WRIST_ANGLES.LEVEL_2;
                 case 3:
                     return WRIST_ANGLES.LEVEL_3;
 

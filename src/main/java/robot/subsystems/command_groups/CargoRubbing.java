@@ -13,7 +13,7 @@ public class CargoRubbing extends CommandGroup {
 
         robot.subsystems.wrist_control.Constants.GRIPPER_SPEED speed = getSpeed(state, isBackward);
 
-        addParallel(new GripperControl(speed), 0.5);
+        addParallel(new GripperControl(0.3), 0.5);
         addSequential(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
 
     }
