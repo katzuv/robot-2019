@@ -277,7 +277,7 @@ public class WristControl extends Subsystem {
         return SmartDashboard.getNumber(key, constant);
     }
     private boolean getConstant(String key, boolean constant) {
-        SmartDashboard.putBoolean(key, SmartDashboard.getNumber(key, constant));
+        SmartDashboard.putBoolean(key, SmartDashboard.getBoolean(key, constant));
         return SmartDashboard.getBoolean(key, constant);
     }
 }
