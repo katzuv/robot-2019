@@ -25,7 +25,6 @@ public class HatchScoring extends CommandGroup {
         addSequential(new Flower(true));
         addSequential(new WaitCommand(0.2));
         addSequential(new Fangs(true, 0.5));
-        addSequential(new Flower(false));
     }
 
     public HatchScoring(Constants.ELEVATOR_HEIGHTS height) {

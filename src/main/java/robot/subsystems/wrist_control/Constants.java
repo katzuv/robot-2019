@@ -50,6 +50,8 @@ public class Constants {
     private final static double HATCH_WEIGHT = 0.1;
     private final static double CARGO_WEIGHT = 0.05;
 
+    public static final double WRIST_DANGER_ANGLE = 60;
+
     final static double HATCH_MULTIPLIER = (WRIST_WEIGHT + HATCH_WEIGHT) / WRIST_WEIGHT;
     final static double CARGO_MULTIPLIER = (WRIST_WEIGHT + CARGO_WEIGHT) / WRIST_WEIGHT;
     public enum WRIST_ANGLES {//TODO: remove useless angles for new wrist.
