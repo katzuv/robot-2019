@@ -158,6 +158,14 @@ public class Drivetrain extends Subsystem {
         setRightSpeed(rightSpeed);
     }
 
+    public void setLeftDistanceAndFeedForward(double speed, double feedForward) {
+        leftMaster.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, feedForward);
+    }
+
+    public void setRightDistanceAndFeedForward(double speed, double feedForward) {
+        rightMaster.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, feedForward);
+    }
+
     public double getLeftVelocity() {
         return convertLeftTicksToDistance(leftMaster.getSelectedSensorVelocity()) * 10;
     }

@@ -21,6 +21,7 @@ public class VisionDrive extends Command {
 
     public VisionDrive() {
         turnPid.setOutputLimits(-1, 1);
+
         requires(drivetrain);
     }
 
@@ -34,14 +35,13 @@ public class VisionDrive extends Command {
 
         double turn = turnPid.getOutput(visionAngle, 0);
 
-        double speed = Constants.VISION_SPEED;
-
         if (visionAngle > 1)
-            turn -= Constants.MIN_AIM;
-        else if (visionAngle < -1)
             turn += Constants.MIN_AIM;
+        else if (visionAngle < -1)
+            turn -= Constants.MIN_AIM;
 
-        drivetrain.setSpeed(speed - turn, speed + turn);
+        drivetrain.setLeftDistanceAndFeedForward(visionDistance - Constants.visionOffset, turn);
+        drivetrain.setRightDistanceAndFeedForward(visionDistance - Constants.visionOffset, -turn);
     }
 
     protected boolean isFinished() {
