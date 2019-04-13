@@ -76,7 +76,7 @@ public class Constants {
         LEVEL1_CARGO(0.68),
         LEVEL2_CARGO(1.36),
         LEVEL3_CARGO(1.57),
-        SHIP_CARGO_BACKWARD(0.78),
+        SHIP_CARGO_BACKWARD(0.7),
         LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_CARGO_BACKWARD(0.83),
         LEVEL3_CARGO_BACKWARD(1.45);

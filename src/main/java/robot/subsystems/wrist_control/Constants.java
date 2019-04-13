@@ -60,7 +60,7 @@ public class Constants {
         UP(90 - COM_ANGLE),
         FORWARD(170),
         SHIP(137),
-        SHIP_BACKWARD(0),
+        SHIP_BACKWARD(22),
         LEVEL_1(135),
         LEVEL_2(118),
         LEVEL_3(113),
