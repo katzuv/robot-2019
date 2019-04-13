@@ -63,7 +63,7 @@ public class Constants {
         SHIP_BACKWARD(0),
         LEVEL_1(106),
         LEVEL_2(106),
-        LEVEL_3(113),
+        LEVEL_3(85),
         LEVEL_1_BACKWARD(0),
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
