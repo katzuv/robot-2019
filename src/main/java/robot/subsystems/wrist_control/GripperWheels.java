@@ -26,7 +26,8 @@ public class GripperWheels extends Subsystem {
     }
 
     /**
-     * this method returns the current voltage of the proximity sensor that is located on the wrist
+     * this method returns the current voltage of the proximity sensor that is located on the wrist.
+     * If the proximity is disabled, this will always return 0.
      * @return
      */
     public double getProximityVoltage() {
