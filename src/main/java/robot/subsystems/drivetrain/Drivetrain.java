@@ -158,14 +158,6 @@ public class Drivetrain extends Subsystem {
         setRightSpeed(rightSpeed);
     }
 
-    public void setLeftDistanceAndFeedForward(double speed, double feedForward) {
-        leftMaster.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, feedForward);
-    }
-
-    public void setRightDistanceAndFeedForward(double speed, double feedForward) {
-        rightMaster.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, feedForward);
-    }
-
     public double getLeftVelocity() {
         return convertLeftTicksToDistance(leftMaster.getSelectedSensorVelocity()) * 10;
     }
@@ -342,9 +334,9 @@ public class Drivetrain extends Subsystem {
      * Update constants from the shuffleboard directly. useful for debugging
      */
     public void updateConstants() {
-        Constants.PIDVisionTurn[0] = getConstant("Vision Drive: turn kp", Constants.PIDVisionTurn[0]);
-        Constants.PIDVisionTurn[1] = getConstant("Vision Drive: turn ki", Constants.PIDVisionTurn[1]);
-        Constants.PIDVisionTurn[2] = getConstant("Vision Drive: turn kd", Constants.PIDVisionTurn[2]);
+        Constants.PIDAngularVelocity[0] = getConstant("Vision Drive: turn kp", Constants.PIDAngularVelocity[0]);
+        Constants.PIDAngularVelocity[1] = getConstant("Vision Drive: turn ki", Constants.PIDAngularVelocity[1]);
+        Constants.PIDAngularVelocity[2] = getConstant("Vision Drive: turn kd", Constants.PIDAngularVelocity[2]);
     }
     private double getConstant(String key, double constant) {
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));

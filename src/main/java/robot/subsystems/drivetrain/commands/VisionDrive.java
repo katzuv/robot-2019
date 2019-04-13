@@ -12,16 +12,20 @@ import static robot.Robot.drivetrain;
  * Autonomously drive to a vision target.
  */
 public class VisionDrive extends Command {
-    private MiniPID turnPid = new MiniPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
+    /*
+        For now have all the constants here for testing, when done move to constants file
+     */
+    private double TARGET_VISION_DISTANCE = 1.2;
+
+    private MiniPID angularVelocityPid = new MiniPID(Constants.PIDAngularVelocity[0], Constants.PIDAngularVelocity[1], Constants.PIDAngularVelocity[2]);
+    private MiniPID linearVelocityPid = new MiniPID(Constants.PIDLinearVelocity[0], Constants.PIDLinearVelocity[1], Constants.PIDLinearVelocity[2]);
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
     private NetworkTableEntry distanceEntry = Robot.visionTable.getEntry("tape_distance");
     private NetworkTableEntry seenEntry = Robot.visionTable.getEntry("tape_seen");
-    private double visionAngle;
-    private double visionDistance;
 
     public VisionDrive() {
-        turnPid.setOutputLimits(-1, 1);
-
+        angularVelocityPid.setOutputLimits(-3, 3);
+        linearVelocityPid.setOutputLimits(-2, 2);
         requires(drivetrain);
     }
 
@@ -30,22 +34,17 @@ public class VisionDrive extends Command {
     }
 
     protected void execute() {
-        visionAngle = angleEntry.getDouble(0);
-        visionDistance = distanceEntry.getDouble(0);
+        double visionAngle = angleEntry.getDouble(0);
+        double visionDistance = distanceEntry.getDouble(0);
 
-        double turn = turnPid.getOutput(visionAngle, 0);
+        double tangentVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocityPid.getOutput(visionAngle, 0);
+        double linearVelocity = linearVelocityPid.getOutput(visionDistance, TARGET_VISION_DISTANCE);
 
-        if (visionAngle > 1)
-            turn += Constants.MIN_AIM;
-        else if (visionAngle < -1)
-            turn -= Constants.MIN_AIM;
-
-        drivetrain.setLeftDistanceAndFeedForward(visionDistance - Constants.visionOffset, turn);
-        drivetrain.setRightDistanceAndFeedForward(visionDistance - Constants.visionOffset, -turn);
+        drivetrain.setVelocity(linearVelocity + tangentVelocity, linearVelocity - tangentVelocity);
     }
 
     protected boolean isFinished() {
-        return !seenEntry.getBoolean(false);
+        return !seenEntry.getBoolean(false) || distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE;
     }
 
     protected void end() {
@@ -57,6 +56,6 @@ public class VisionDrive extends Command {
     }
 
     public void updateConstants() {
-        turnPid.setPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
+        angularVelocityPid.setPID(Constants.PIDAngularVelocity[0], Constants.PIDAngularVelocity[1], Constants.PIDAngularVelocity[2]);
     }
 }
