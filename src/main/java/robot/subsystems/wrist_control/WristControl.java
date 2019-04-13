@@ -14,11 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
+import java.util.concurrent.TimeUnit;
+
 import static robot.Robot.wristControl;
 
 /**
- * The Cargo Intake subsystem, including the Intake and Wrist.
- * first the gripper
+ * New wrist subsystem for the 2019 robot 'GENESIS', after the district championships.
  *
  * @author lior
  */
@@ -42,7 +43,10 @@ public class WristControl extends Subsystem {
         wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
         wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
 
-
+        wrist.configContinuousCurrentLimit(15, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentLimit(30, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentDuration(900, Constants.TALON_TIME_OUT);
+        wrist.enableCurrentLimit(true);
 
         /*
         PIDF config
@@ -90,32 +94,41 @@ public class WristControl extends Subsystem {
 
     }
 
+    /**
+     * Control the wrist manually
+     * @param speed
+     */
     public void setWristSpeed(double speed) {
-        if (speed != 0)
+        if (speed != 0) //in cases where we set speed 0, we usually still want the wrist to hold itself in place.
             raw = true;
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
+    /**
+     * Reset the wrist encoders.
+     */
     public void resetSensors() {
         resetWristEncoder();
     }
 
     private void resetWristEncoder() {
+        lastWristAngle = 0;
         wrist.setSelectedSensorPosition(0);
     }
 
+    /**
+     * The wrist voltage which holds it in place
+     * @return
+     */
     public double stallCurrent() {
-        final double wristAngle = wristControl.getWristAngle();
-        if (wristAngle < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2) {
+        final double wristAngle = wristControl.getWristAngle(); //for readability
+        if (dropWrist())
             return 0;
-        }
+        double multiplier = Robot.gripperWheels.isCargoInside() ? Constants.CARGO_MULTIPLIER : 1; //TODO: add hatch comp aswell
+        return multiplier * (
+                (Constants.PEAK_PERCENT_COMPENSATION - Constants.ZERO_ANGLE_COMPENSATION) * Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle))
+                        + Constants.ZERO_ANGLE_COMPENSATION * Math.signum(Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle))));
 
-        final double COMCosine = Math.cos(Math.toRadians(15 + wristControl.getWristAngle()));
-        double multiplier = 1;
-        if (Robot.gripperWheels.isCargoInside()) {
-            multiplier = 1.2;
-        }
-        return multiplier * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
     }
 
     public void setEncoderAngle(double angle) {
@@ -212,7 +225,8 @@ public class WristControl extends Subsystem {
     }
 
     /**
-     *
+     * Detects if the difference in wrist angle from the last loop is higher than a constant. if so, the encoder jumped.
+     * @return returns true, if there was a detected jump.
      */
     public boolean preventEncoderJumps() {
         if (Math.abs(lastWristAngle - getWristAngle()) > Constants.WRIST_JUMP_ANGLE) {
@@ -228,11 +242,18 @@ public class WristControl extends Subsystem {
      */
     public void update() {
         if (!raw) {
-            if (getWristAngle() < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2)
+            if (dropWrist())
                 wristControl.wrist.set(ControlMode.PercentOutput, 0);
             else
                 wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
         }
+    }
+
+    public boolean dropWrist(){
+        return (wristControl.getWristAngle() < Constants.DROP_WRIST_ANGLE &&
+                setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
+                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
+                        setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2));
     }
 
     @Override
@@ -242,5 +263,21 @@ public class WristControl extends Subsystem {
 
     public void disabledPeriodic() {
         setPointAngle = getWristAngle();
+    }
+
+    /**
+     * Update constants from the shuffleboard directly. useful for debugging
+     */
+    public void updateConstants() {
+        Constants.WRIST_FORWARD_DROP_DISABLED = getConstant("Disable: wrist forward drop", Constants.WRIST_FORWARD_DROP_DISABLED);
+        Constants.PROXIMITY_DISABLED = getConstant("Disable: Cargo proximity", Constants.PROXIMITY_DISABLED);
+    }
+    private double getConstant(String key, double constant) {
+        SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
+        return SmartDashboard.getNumber(key, constant);
+    }
+    private boolean getConstant(String key, boolean constant) {
+        SmartDashboard.putBoolean(key, SmartDashboard.getBoolean(key, constant));
+        return SmartDashboard.getBoolean(key, constant);
     }
 }

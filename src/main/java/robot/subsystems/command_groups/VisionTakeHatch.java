@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
+import robot.subsystems.hatch_intake.commands.Flower;
 
 /**
  *
@@ -11,8 +12,10 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
 public class VisionTakeHatch extends CommandGroup {
 
     public VisionTakeHatch() {
-        addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        addParallel(new ElevatorCommand(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
+        addSequential(new Flower(true));
         addSequential(new VisionDrive());
-        addSequential(new TakeHatch());
+        addSequential(new Flower(false));
+
     }
 }

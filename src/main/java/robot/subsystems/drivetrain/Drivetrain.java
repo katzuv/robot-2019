@@ -34,7 +34,9 @@ import robot.subsystems.drivetrain.commands.JoystickDrive;
 import robot.utilities.Point;
 
 /**
- * Add your docs here.
+ * Drivetrain subsystem for the 2019 robot 'GENESIS'
+ *
+ * this subsystem holds most of the code for the falcon 5190 kotlin library and its implementation.
  */
 
 public class Drivetrain extends Subsystem {
@@ -46,12 +48,29 @@ public class Drivetrain extends Subsystem {
     private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
     public Point currentLocation = new Point(0, 0);
 
+    /**
+     * Falcon class. can be called to read the robots position, it stores the robot angle, location and previous location.
+     * this class can do many things, and for the full list of methods see the documentation HERE []
+     *
+     * some of the methods in this kotlin class:
+     * .reset(location) ~ sets the robot location (location is a kotlin class aswell)
+     * .getRobotPosition() ~ returns a kotlin point, storing all the robots position values.
+     * .setRobotX(),.setRobotY(),.setRobotHeading() ~ update the robots position and rotation.
+     *
+     */
     public Localization localization = new TankEncoderLocalization(
-            () -> Rotation2dKt.getDegree(180 + getAngle()),
+            () -> Rotation2dKt.getDegree(getAngle()),
             () -> LengthKt.getMeter(getLeftDistance()),
             () -> LengthKt.getMeter(getRightDistance())
     );
 
+    /**
+     * Falcon class. is in charge of the trajectory following, using the constants defined beforehand.
+     * Full documentation HERE []
+     *
+     * i actually have no idea what this does, but by feeding it a robot position in the vision class,
+     * the trajectory is fed to the falcon dashboard, and to the vision path drive.
+     */
     public TrajectoryTracker trajectoryTracker = new RamseteTracker(Constants.kBeta, Constants.kZeta);
 
     public Drivetrain() {
@@ -60,15 +79,14 @@ public class Drivetrain extends Subsystem {
         leftMaster.setSensorPhase(Constants.LEFT_ENCODER_REVERSED);
         rightMaster.setSensorPhase(Constants.RIGHT_ENCODER_REVERSED);
 
+        /* config the motion magic speeds of the drivetrain */
         leftMaster.configMotionCruiseVelocity(convertLeftDistanceToTicks(Constants.MOTION_CRUISE_VELOCITY) / 10);
         rightMaster.configMotionCruiseVelocity(convertRightDistanceToTicks(Constants.MOTION_CRUISE_VELOCITY) / 10);
         leftMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
         rightMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
 
-        if (!Robot.isRobotA) {
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
             rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
-        }
 
         leftSlave1.follow(leftMaster);
         leftSlave2.follow(leftMaster);
@@ -78,6 +96,7 @@ public class Drivetrain extends Subsystem {
         rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
         leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
 
+        /* make sure the drivetrain always runs at the same amount of volts, even if the battery voltage changes */
         leftMaster.configVoltageCompSaturation(12);
         leftMaster.enableVoltageCompensation(true);
         leftSlave1.configVoltageCompSaturation(12);
@@ -110,12 +129,17 @@ public class Drivetrain extends Subsystem {
         rightMaster.config_kD(0, Constants.PIDFRight[2], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kF(0, Constants.PIDFRight[3], Constants.TALON_TIMEOUT_MS);
 
-
+        /**
+         * WPILIB class. makes the localization update run in periodically
+         * documentation for those interested:
+         * http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/Notifier.html
+         */
         Notifier localizationNotifier = new Notifier(
                 () -> localization.update()
         );
 
-        localizationNotifier.startPeriodic(1d / 100d);
+        //Set the delay between each update of the method
+        localizationNotifier.startPeriodic(1.0 / 100.0); //TODO: isn't 100Hz very load intensive? most roborio loops run at 50Hz
     }
 
     @Override
@@ -204,7 +228,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetEncoders() {
-        Pose2d robotLocationBeforeReset = localization.getRobotPosition();
+        Pose2d robotLocationBeforeReset = localization.getRobotPosition(); //make sure the robots position doesn't move because of the reset encoders.
         leftMaster.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
         rightMaster.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
         localization.reset(robotLocationBeforeReset);
@@ -212,10 +236,6 @@ public class Drivetrain extends Subsystem {
 
     public Pose2d getRobotPosition() {
         return localization.getRobotPosition();
-    }
-
-    public boolean isDrivingForward() {
-        return getLeftSpeed() >= 0 || getRightSpeed() >= 0;
     }
 
     public void resetLocation() {
@@ -310,51 +330,78 @@ public class Drivetrain extends Subsystem {
         return Robot.navx.getYaw();
     }
 
-    @Override
-    public void periodic() {
-        LiveDashboard.INSTANCE.setRobotX(localization.getRobotPosition().getTranslation().getX().getFeet());
-        LiveDashboard.INSTANCE.setRobotY(localization.getRobotPosition().getTranslation().getY().getFeet());
-        LiveDashboard.INSTANCE.setRobotHeading(localization.getRobotPosition().getRotation().getRadian());
-    }
-
-    public Point getCurrentLocation() {
-        return new Point(localization.getRobotPosition().getTranslation().getY().getMeter(), localization.getRobotPosition().getTranslation().getX().getMeter());
-    }
-
-    public void driveDistance(double distance) {
-        leftMaster.set(ControlMode.MotionMagic, convertLeftDistanceToTicks(distance + getLeftDistance()));
-        rightMaster.set(ControlMode.MotionMagic, convertRightDistanceToTicks(distance + getRightDistance()));
-        System.out.println(getLeftDistance());
-        System.out.println(convertLeftDistanceToTicks(distance + getLeftDistance()));
-        System.out.println(convertRightDistanceToTicks(getLeftDistance()));
-    }
-
+    /**
+     * Update constants from the shuffleboard directly. useful for debugging
+     */
     public void updateConstants() {
         Constants.PIDVisionTurn[0] = getConstant("Vision Drive: turn kp", Constants.PIDVisionTurn[0]);
         Constants.PIDVisionTurn[1] = getConstant("Vision Drive: turn ki", Constants.PIDVisionTurn[1]);
         Constants.PIDVisionTurn[2] = getConstant("Vision Drive: turn kd", Constants.PIDVisionTurn[2]);
     }
-
     private double getConstant(String key, double constant) {
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
         return SmartDashboard.getNumber(key, constant);
     }
 
+    /**
+     * Sends robot position to the falcon dashboard.
+     */
+    private void updateFalconDashboard(){
+        LiveDashboard.INSTANCE.setRobotX(localization.getRobotPosition().getTranslation().getX().getFeet());
+        LiveDashboard.INSTANCE.setRobotY(localization.getRobotPosition().getTranslation().getY().getFeet());
+        LiveDashboard.INSTANCE.setRobotHeading(localization.getRobotPosition().getRotation().getRadian());
+    }
+
+    /**
+     * Sends current path to the falcon dashboard
+     */
     public void updateLiveDashboard() {
         LiveDashboard.INSTANCE.setPathX(trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getX().getFeet());
         LiveDashboard.INSTANCE.setPathY(trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getY().getFeet());
         LiveDashboard.INSTANCE.setPathHeading(trajectoryTracker.getReferencePoint().getState().getState().getPose().getRotation().getRadian());
     }
 
+    @Override
+    public void periodic() {
+        updateFalconDashboard();
+    }
+
+    /**
+     * Drive with motion magic to a set position.
+     *
+     * @param distance distance in meters
+     */
+    public void driveDistance(double distance) {
+        leftMaster.set(ControlMode.MotionMagic, convertLeftDistanceToTicks(distance + getLeftDistance()));
+        rightMaster.set(ControlMode.MotionMagic, convertRightDistanceToTicks(distance + getRightDistance()));
+    }
+
+    /* Unused as of now */
+
+    /**
+     * Use the trajectory output directly.
+     * @param output
+     */
     public void setOutput(TrajectoryTrackerOutput output) {
         setOutputFromDynamics(output.getDifferentialDriveVelocity(), output.getDifferentialDriveAcceleration());
     }
 
+    /**
+     * Robot characterization.
+     * @param chassisVelocity
+     * @param chassisAcceleration
+     */
     public void setOutputFromDynamics(DifferentialDrive.ChassisState chassisVelocity, DifferentialDrive.ChassisState chassisAcceleration) {
         DifferentialDrive.DriveDynamics dynamics = Constants.driveModel.solveInverseDynamics(chassisVelocity, chassisAcceleration);
         setOutput(dynamics.getWheelVelocity(), dynamics.getVoltage());
     }
 
+    /**
+     * Robot characterization. no idea what this does, but it internal calculations based on the robots characteristics
+     * to determine what voltage to give each motor.
+     * @param wheelVelocities
+     * @param wheelVoltages
+     */
     public void setOutput(DifferentialDrive.WheelState wheelVelocities, DifferentialDrive.WheelState wheelVoltages) {
         leftMaster.set(
                 ControlMode.Velocity, convertRightDistanceToTicks(wheelVelocities.getLeft() * Constants.driveModel.getWheelRadius()) / 10.0,

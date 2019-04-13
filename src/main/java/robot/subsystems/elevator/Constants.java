@@ -4,11 +4,12 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
 
-    public static final int START_UNIT = isRobotA ? -1500 : -720;
-    public static final double LOWER_DANGER_ZONE = 0.32;
-    public static final double UPPER_DANGER_ZONE = 0.84;
+    public static final int START_UNIT = isRobotA ? -1000 : -720; //at what units to start
+    public static final double LOWER_DANGER_ZONE = 0.445;
+    public static final double UPPER_DANGER_ZONE = 0.82;
 
     public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
+    public static final int TALON_TIME_OUT = 10;
 
     //Encoder constants:
     static final double TICKS_PER_METER = isRobotA ? 25993 : 25993;
@@ -61,33 +62,33 @@ public class Constants {
     static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (4 * TICKS_PER_METER / 10) : (int) (4 * TICKS_PER_METER / 10);
     public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.
 
-    static double ROBOT_A_HATCH_DIFFERENCE = 0; //Difference in the hatch placing heights between robot A and robot B
-
     /**
      * enum storing all height values assigned to their respective height.
      * There are separate heights for hatch, cargo, and cargo backwards.
      */
-    public enum ELEVATOR_STATES {
-        LEVEL1_HATCH(isRobotA ? 0.13 : 0.11),
-        LEVEL2_HATCH(0.977),
+    public enum ELEVATOR_HEIGHTS {
+        INTAKE_CARGO(0.085),
+        LOADING_STATION(0.12),
+        LEVEL1_HATCH(0.3),
+        LEVEL2_HATCH(1),
         LEVEL3_HATCH(1.575),
         SHIP_CARGO(0.70),
-        LEVEL1_CARGO(0.165),
-        LEVEL2_CARGO(0.9),
-        LEVEL3_CARGO(1.56),
-        SHIP_CARGO_BACKWARD(0.78),
+        LEVEL1_CARGO(0.68),
+        LEVEL2_CARGO(1.36),
+        LEVEL3_CARGO(1.57),
+        SHIP_CARGO_BACKWARD(0.7),
         LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_CARGO_BACKWARD(0.83),
         LEVEL3_CARGO_BACKWARD(1.45);
 
         private final double levelHeight;
 
-        ELEVATOR_STATES(double height) {
+        ELEVATOR_HEIGHTS(double height) {
             this.levelHeight = height;
         }
 
         public double getLevelHeight() {
-            return isRobotA ? levelHeight + ROBOT_A_HATCH_DIFFERENCE : levelHeight;
+            return isRobotA ? levelHeight : levelHeight;
         }
     }
 

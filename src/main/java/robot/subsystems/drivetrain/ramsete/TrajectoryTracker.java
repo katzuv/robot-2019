@@ -19,9 +19,10 @@ import java.util.List;
 import static robot.Robot.drivetrain;
 
 /**
- * Follow a path with Ramsete and, optionally, finish the driving with vision alignment.
+ * Drives on a trajectory.
+ * Has the option to use vision in the last segment of the driving.
  */
-public class DrivePathVision extends Command {
+public class TrajectoryTracker extends Command {
 
     private final boolean vision;
     private double maxAcceleration;
@@ -39,13 +40,13 @@ public class DrivePathVision extends Command {
      * @param trajectory Target waypoints
      * @param vision     Negative velocities
      */
-    public DrivePathVision(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean vision) {
+    public TrajectoryTracker(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean vision) {
         requires(drivetrain);
         this.trajectory = trajectory;
         this.vision = vision;
     }
 
-    public DrivePathVision(List<Pose2d> points, double startingVelocity, double endingVelocity, boolean reversed, boolean vision) {
+    public TrajectoryTracker(List<Pose2d> points, double startingVelocity, double endingVelocity, boolean reversed, boolean vision) {
         this.vision = vision;
         this.reversed = reversed;
         this.waypoints = points;
@@ -56,7 +57,7 @@ public class DrivePathVision extends Command {
     }
 
 
-    public DrivePathVision(List<Pose2d> points, double startingVelocity, double endingVelocity, double maxVelocity, double maxAcceleration, boolean reversed, boolean vision) {
+    public TrajectoryTracker(List<Pose2d> points, double startingVelocity, double endingVelocity, double maxVelocity, double maxAcceleration, boolean reversed, boolean vision) {
         this.vision = vision;
         this.reversed = reversed;
         this.waypoints = points;
@@ -106,7 +107,7 @@ public class DrivePathVision extends Command {
             angularVelocity = 0;
         }
 
-        double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity; // Multiply angular velocity by the robot radius to get the tangential velocity TODO: Note you might be dividing by zero if "stop" is zero
+        double tangentialVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocity; //Multiply angular velocity by the robot radius to get the tangential velocity
 
 //        drivetrain.setOutput(trackerOutput);
 
