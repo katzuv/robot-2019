@@ -129,6 +129,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         addToShuffleboard();
+        updateDashboardConstants();
         SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
     }
 
@@ -230,6 +231,8 @@ public class Robot extends TimedRobot {
 
     public void updateDashboardConstants() {
         drivetrain.updateConstants();
+        wristControl.updateConstants();
+
     }
 
     public void printRunningCommands() {

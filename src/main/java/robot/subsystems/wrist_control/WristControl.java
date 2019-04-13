@@ -264,4 +264,20 @@ public class WristControl extends Subsystem {
     public void disabledPeriodic() {
         setPointAngle = getWristAngle();
     }
+
+    /**
+     * Update constants from the shuffleboard directly. useful for debugging
+     */
+    public void updateConstants() {
+        Constants.WRIST_FORWARD_DROP_DISABLED = getConstant("Disable: wrist forward drop", Constants.WRIST_FORWARD_DROP_DISABLED);
+        Constants.PROXIMITY_DISABLED = getConstant("Disable: Cargo proximity", Constants.PROXIMITY_DISABLED);
+    }
+    private double getConstant(String key, double constant) {
+        SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
+        return SmartDashboard.getNumber(key, constant);
+    }
+    private boolean getConstant(String key, boolean constant) {
+        SmartDashboard.putBoolean(key, SmartDashboard.getNumber(key, constant));
+        return SmartDashboard.getBoolean(key, constant);
+    }
 }

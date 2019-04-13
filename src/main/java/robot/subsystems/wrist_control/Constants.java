@@ -17,7 +17,8 @@ public class Constants {
     final static boolean REVERSE_NORMALLY_CLOSED = isRobotA ? false : false;
     final static boolean FORWARD_NORMALLY_CLOSED = isRobotA ? false : false;
 
-    static boolean PROXIMITY_DISABLED = false;
+    static boolean PROXIMITY_DISABLED = false; //When true, the proximity value is hard set to 0
+    static boolean WRIST_FORWARD_DROP_DISABLED = false; //When true, the wrist doesn't drop when forward
 
     public final static double TRIGGER_MINIMAL_VALUE = 0.2; //Minimal value when using triggers. sort of like a deadband
 
