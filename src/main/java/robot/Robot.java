@@ -223,7 +223,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());*/
         SmartDashboard.putData("navx", navx);
         SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
-        SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle(168));
+        SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(150));
         SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
         SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
         SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
