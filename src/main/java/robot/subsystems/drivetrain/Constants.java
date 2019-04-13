@@ -46,6 +46,8 @@ public class Constants {
     public static final double kBeta = isRobotA ? 2 : 2;
     public static final double angleKp = isRobotA ? 1.6 : 1.37;
 
+    public static final double visionOffset = 1.2;
+
     //Model constants
     public static final double kRobotMass = 55;
     public static final double kRobotAngularDrag = 12;
