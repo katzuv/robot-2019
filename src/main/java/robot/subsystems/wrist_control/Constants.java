@@ -24,11 +24,11 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 3100 : 2468;
+    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 3500 : 2468;
     public static final int CRUISE_VELOCITY  = isRobotA ? 6000 : 3000;
 
     final static double kP = isRobotA ? 0.9 : 0.7;
-    final static double kD = isRobotA ? 130 : 150;
+    final static double kD = isRobotA ? 70 : 150;
     final static double kF = isRobotA ? 0.52 : 0.52;
 
     final static int IZone = isRobotA ? 200 : 50;
@@ -41,7 +41,7 @@ public class Constants {
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
 
     /* Stall current constants */
-    public static final double DROP_WRIST_ANGLE = 7.5;
+    public static final double DROP_WRIST_ANGLE = 3;
     public static final double COM_ANGLE = 7.77 + 30; //the angle of the center of mass at the initial angle of the wrist. ~ in robot A the starting angle was calculated.
     static final double PEAK_PERCENT_COMPENSATION = 0.38; //The percent output that is given to the wrist to hold it in place at its peak.
     public static final double ZERO_ANGLE_COMPENSATION = 0.025;
