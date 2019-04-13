@@ -135,7 +135,7 @@ public class OI {
                         new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(1, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH))))));
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LOADING_STATION))))));
 
         povl.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
                 new CargoScoring(2, true),

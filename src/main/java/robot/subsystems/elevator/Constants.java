@@ -6,7 +6,7 @@ public class Constants {
 
     public static final int START_UNIT = isRobotA ? -1000 : -720; //at what units to start
     public static final double LOWER_DANGER_ZONE = 0.445;
-    public static final double UPPER_DANGER_ZONE = 1;
+    public static final double UPPER_DANGER_ZONE = 0.82;
 
     public static final double FLOOR_FEEDFORWARD = 0.04; //The feedforward value when the elevator is at the complete bottom. this is only used to put tension on the strings
     public static final int TALON_TIME_OUT = 10;
@@ -68,13 +68,14 @@ public class Constants {
      */
     public enum ELEVATOR_HEIGHTS {
         INTAKE_CARGO(0.085),
-        LEVEL1_HATCH(0.11),
-        LEVEL2_HATCH(0.977),
+        LOADING_STATION(0.12),
+        LEVEL1_HATCH(0.3),
+        LEVEL2_HATCH(1),
         LEVEL3_HATCH(1.575),
         SHIP_CARGO(0.70),
-        LEVEL1_CARGO(0.165),
-        LEVEL2_CARGO(0.9),
-        LEVEL3_CARGO(1.56),
+        LEVEL1_CARGO(0.68),
+        LEVEL2_CARGO(1.36),
+        LEVEL3_CARGO(1.57),
         SHIP_CARGO_BACKWARD(0.78),
         LEVEL1_CARGO_BACKWARD(0.1),
         LEVEL2_CARGO_BACKWARD(0.83),

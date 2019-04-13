@@ -204,7 +204,7 @@ public class Elevator extends Subsystem {
      */
     public boolean isHatchMechanismInDanger() {
         return ((getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
-                (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE)) && wristControl.getWristAngle() <= 60 ;
+                (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE)) && wristControl.getWristAngle() <= robot.subsystems.wrist_control.Constants.WRIST_DANGER_ANGLE;
 
     }
 
