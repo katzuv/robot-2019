@@ -211,22 +211,23 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData(pdp);
         SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
         SmartDashboard.putNumber("Elevator: height - centimeters", elevator.getHeight());
-        SmartDashboard.putNumber("Cargo intake: proximity value", gripperWheels.getProximityVoltage());
-        SmartDashboard.putNumber("Cargo intake: wrist angle", wristControl.getWristAngle());
+        SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
+        SmartDashboard.putNumber("Wrist: wrist angle", wristControl.getWristAngle());
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
         SmartDashboard.putBoolean("Flower open", hatchIntake.isFlowerOpen());
-        SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
+        /*SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
         SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-        SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());
+        SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());*/
         SmartDashboard.putData("navx", navx);
         SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
         SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle(168));
         SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
-        SmartDashboard.putBoolean("Cargo intake: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
+        SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
         SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
+        //printAllCommands();
     }
 
     public void updateDashboardConstants() {
