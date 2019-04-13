@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
+import static robot.Robot.wristControl;
+
 /**
  * Elevator subsystem for the 2019 robot 'GENESIS'
  *
@@ -129,7 +131,7 @@ public class Elevator extends Subsystem {
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
-        if (isHatchMechanismInDanger() && Robot.wristControl.getWristAngle() <= 70)
+        if (isHatchMechanismInDanger() && wristControl.getWristAngle() <= 70)
             Robot.hatchIntake.emergencyClose();
 
     }
@@ -201,8 +203,8 @@ public class Elevator extends Subsystem {
      * @return
      */
     public boolean isHatchMechanismInDanger() {
-        return (getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
-                (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE);
+        return ((getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
+                (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE)) && wristControl.getWristAngle() <= 60 ;
 
     }
 
