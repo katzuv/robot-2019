@@ -31,17 +31,17 @@ public class Constants {
 
     public static final double distanceFromEnd = 2;
     public static final double ENDING_TOLERANCE = 0.05;
-    public static final double MIN_AIM = 0.06;
+    public static final double MIN_AIM = 0.03;
 
     public static final double MOTION_CRUISE_VELOCITY = 2; //Motion acceleration in M/S
     public static final double MOTION_ACCELERATION = 2; //Motion acceleration in M/S^2
 
     public static final double RAMSETE_PEAK_VELOCITY = 2.5;
     public static final double RAMSETE_PEAK_ACCELERATION = 2.5;
-    public static final double VISION_VELOCITY = -0.9;
+    public static final double VISION_SPEED = -0.26;
     public static final double SLOW_JOYSTICK_SPEED = 1; //multiplied by joystick value, keep at 1 for no changes.
-    public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
-    public static final double[] PIDFRight = isRobotA ? new double[]{2, 0.007, 20, 1.45} : new double[]{1.5, 0, 10, 1.3};
+    public static final double[] PIDFLeft = isRobotA ? new double[]{6, 0.0042, 2, 0} : new double[]{1.5, 0, 10, 1.3};
+    public static final double[] PIDFRight = isRobotA ? new double[]{6, 0.0042, 2, 0} : new double[]{1.5, 0, 10, 1.3};
     public static final double kZeta = 0.8;
     public static final double kBeta = isRobotA ? 2 : 2;
     public static final double angleKp = isRobotA ? 1.6 : 1.37;
@@ -68,15 +68,17 @@ public class Constants {
     private static final double RECTANGLE_2 = 7;
     private static final double RECTANGLE_3 = 8;
     private static final double RECTANGLE_4 = 20;
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0.0005, 0} : new double[]{0.025, 0, 0.1};
+
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.03, 0, 0.06} : new double[]{0.025, 0, 0.1};
+
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
 
-    public static double kDriveLeftKv = 0.7256;
-    public static double kDriveLeftKa = 0.2766;
-    public static double kDriveLeftKs = 0.8616;
-    public static double kDriveRightKv = 0.7340;
-    public static double kDriveRightKa = 0.2865;
-    public static double kDriveRightKs = 0.8486;
+    public static double kDriveLeftKv = 0.7256 /3.28;
+    public static double kDriveLeftKa = 0.2766 /3.28;
+    public static double kDriveLeftKs = 0.8616 /3.28;
+    public static double kDriveRightKv = 0.7340 /3.28;
+    public static double kDriveRightKa = 0.2865 /3.28;
+    public static double kDriveRightKs = 0.8486/3.28;
 
     public static DCMotorTransmission leftTransmission = new DCMotorTransmission(
             1 / kDriveLeftKv,

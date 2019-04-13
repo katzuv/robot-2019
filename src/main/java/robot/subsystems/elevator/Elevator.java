@@ -21,9 +21,7 @@ import robot.subsystems.elevator.commands.JoystickElevatorCommand;
  * @author paulo
  */
 public class Elevator extends Subsystem {
-
-    /* pid slots for the four states: up and down on the first level and up and down on the second level of the cascade*/
-    private final int TALON_LOW_UP_PID_SLOT = 0;
+    
     private final VictorSPX slaveMotor = new VictorSPX(Ports.victorPort);
     private final TalonSRX masterMotor = new TalonSRX(Ports.talonPort);
     private int setpoint;
@@ -37,10 +35,10 @@ public class Elevator extends Subsystem {
         masterMotor.setNeutralMode(NeutralMode.Brake);
 
         /* set closed loop gains in slot0 */
-        masterMotor.config_kP(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        masterMotor.config_kI(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        masterMotor.config_kD(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        masterMotor.config_kF(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kP(0, Constants.LIFT_LOW_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kI(0, Constants.LIFT_LOW_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kD(0, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kF(0, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
 
         masterMotor.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_SPEED);
         masterMotor.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION);
@@ -55,6 +53,11 @@ public class Elevator extends Subsystem {
         masterMotor.configPeakOutputForward(Constants.PEAK_OUT_FWD, Constants.TALON_TIMEOUT_MS);
         masterMotor.configNominalOutputReverse(Constants.NOMINAL_OUT_REV, Constants.TALON_TIMEOUT_MS);
         masterMotor.configPeakOutputReverse(Constants.PEAK_OUT_REV, Constants.TALON_TIMEOUT_MS);
+
+        masterMotor.configContinuousCurrentLimit(15);
+        masterMotor.configPeakCurrentLimit(30);
+        masterMotor.configPeakCurrentDuration(1000);
+        masterMotor.enableCurrentLimit(true);
 
         masterMotor.setSensorPhase(Constants.ENCODER_REVERSED);
         /* Configure the encoder */
@@ -98,6 +101,11 @@ public class Elevator extends Subsystem {
         this.setpoint = convertHeightToTicks(Math.min(Constants.ELEVATOR_MAX_HEIGHT, Math.max(0, height)));
     }
 
+    /**
+     * Get the raw ticks from the encoder of the elevator.
+     *
+     * @return raw ticks in native units.
+     */
     public double getTicks() {
         return masterMotor.getSelectedSensorPosition(0);
     }
@@ -121,7 +129,7 @@ public class Elevator extends Subsystem {
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
-        if (isSetpointInDangerZone() && Robot.wristControl.getWristAngle() <= 70)
+        if (isHatchMechanismInDanger() && Robot.wristControl.getWristAngle() <= 70)
             Robot.hatchIntake.emergencyClose();
 
     }
@@ -132,11 +140,9 @@ public class Elevator extends Subsystem {
      */
     private void preventOverShoot() {
         if (atTop()) {
-            //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
             masterMotor.setSelectedSensorPosition((int) (Constants.ELEVATOR_MAX_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
         }
         if (atBottom()) {
-            //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
             masterMotor.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the encoder position to the bottom
         }
     }
@@ -194,7 +200,7 @@ public class Elevator extends Subsystem {
      * checks if the elevator is in range of the genesis profile to make sure the hatch system isn't open when in that zone
      * @return
      */
-    public boolean isSetpointInDangerZone() {
+    public boolean isHatchMechanismInDanger() {
         return (getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
                 (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE);
 
@@ -244,7 +250,10 @@ public class Elevator extends Subsystem {
         setDefaultCommand(new JoystickElevatorCommand());
     }
 
-    public void onDisabled() {
+    /**
+     * turns off the motors, and sets the setpoint to the bottom of the
+     */
+    public void ResetSetpoint() {
         setpoint = 0;
         masterMotor.set(ControlMode.PercentOutput, 0);
     }

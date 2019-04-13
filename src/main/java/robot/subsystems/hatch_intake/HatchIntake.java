@@ -21,7 +21,7 @@ import static robot.Robot.elevator;
 public class HatchIntake extends Subsystem {
 
     private final DoubleSolenoid flower = new DoubleSolenoid(1, Ports.flowerForward, Ports.flowerReverse);
-    private final DoubleSolenoid pusher = new DoubleSolenoid(1, Ports.pusherForward, Ports.pusherReverse);
+    private final DoubleSolenoid fangs = new DoubleSolenoid(1, Ports.pusherForward, Ports.pusherReverse);
 
     public HatchIntake() {
     }
@@ -30,10 +30,11 @@ public class HatchIntake extends Subsystem {
      * a command to set the flower, close it if it is already open and open it if it is already closed
      */
     public void setFlower(boolean open) {
-        if (open && !elevator.isSetpointInDangerZone())
+        if (open && !elevator.isHatchMechanismInDanger())
             flower.set(DoubleSolenoid.Value.kForward);
         else
-            flower.set(DoubleSolenoid.Value.kReverse);
+            if(!areFangsExtended())
+                flower.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
@@ -46,18 +47,18 @@ public class HatchIntake extends Subsystem {
     /**
      * if true, extend forward
      */
-    public void setPusher(boolean extend) {
-        if (extend && !elevator.isSetpointInDangerZone())
-            pusher.set(DoubleSolenoid.Value.kForward);
+    public void setFangs(boolean extend) {
+        if (extend && !elevator.isHatchMechanismInDanger() && isFlowerOpen())
+            fangs.set(DoubleSolenoid.Value.kForward);
         else
-            pusher.set(DoubleSolenoid.Value.kReverse);
+            fangs.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
-     * @return true if the pusher is extended and false otherwise
+     * @return true if the fangs is extended and false otherwise
      */
-    public boolean isPusherExtended() {
-        return pusher.get() == DoubleSolenoid.Value.kForward;
+    public boolean areFangsExtended() {
+        return fangs.get() == DoubleSolenoid.Value.kForward;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class HatchIntake extends Subsystem {
      * This is called whenever the mechanism is in danger.
      */
     public void emergencyClose() {
-        setPusher(false);
+        setFangs(false);
         setFlower(false);
     }
 }

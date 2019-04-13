@@ -10,7 +10,7 @@ import robot.subsystems.drivetrain.commands.DistanceDrive;
 import robot.subsystems.drivetrain.commands.ResetLocation;
 import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.commands.VisionDrive;
-import robot.subsystems.drivetrain.ramsete.DrivePathVision;
+import robot.subsystems.drivetrain.ramsete.TrajectoryTracker;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Fangs;
@@ -20,20 +20,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Autonomous command group for the sandstorm period.
+ * puts a hatch in cargo bay
+ * takes another from the loading station
  */
 public class OneHatchCargo extends CommandGroup {
 
-    public OneHatchCargo(Constants.ELEVATOR_STATES height) {
+    public OneHatchCargo(Constants.ELEVATOR_HEIGHTS height) {
         addSequential(new ResetLocation(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(13.565), Rotation2dKt.getDegree(180))));
 
         addParallel(new ElevatorCommand(height));
 
-        addSequential(new DrivePathVision(Paths.MIDDLE_HAB_TO_RIGHT_CARGO, false));
+        addSequential(new TrajectoryTracker(Paths.MIDDLE_HAB_TO_RIGHT_CARGO, false));
 
         addSequential(new WaitCommand(0.2));
 
-        addParallel(new Fangs(true));
+//        addParallel(new Fangs(true));
         addSequential(new VisionDrive());
 
         addSequential(new HatchScoring(height));
@@ -42,7 +44,7 @@ public class OneHatchCargo extends CommandGroup {
 
         List<Pose2d> toLoadingStation = new ArrayList<>();
         toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(23.7), Rotation2dKt.getDegree(180)));
-        addSequential(new DrivePathVision(toLoadingStation, 1, 1, 3, 2.5, false, false));
+        addSequential(new TrajectoryTracker(toLoadingStation, 1, 1, 3, 2.5, false, false));
         addSequential(new WaitCommand(0.2));
 
         addSequential(new TurnAngle(185));
@@ -50,9 +52,9 @@ public class OneHatchCargo extends CommandGroup {
         addSequential(new WaitCommand(0.5));
 
         addSequential(new VisionDrive());
-        addParallel(new Fangs(true));
+//        addParallel(new Fangs(true));
         addParallel(new Flower(true));
-        addSequential(new TakeHatch());
+//        addSequential(new TakeHatch());
 
         addSequential(new DistanceDrive(0.5));
     }

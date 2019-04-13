@@ -12,8 +12,10 @@ import robot.subsystems.hatch_intake.commands.Flower;
 public class VisionTakeHatch extends CommandGroup {
 
     public VisionTakeHatch() {
-        addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        addSequential(new VisionDrive());
+        addParallel(new ElevatorCommand(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
         addSequential(new Flower(true));
+        addSequential(new VisionDrive());
+        addSequential(new Flower(false));
+
     }
 }
