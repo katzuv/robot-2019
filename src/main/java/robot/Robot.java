@@ -225,7 +225,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle(168));
         SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
         SmartDashboard.putBoolean("Cargo intake: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
-    //printAllCommands();
+        SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
     }
 
     public void updateDashboardConstants() {

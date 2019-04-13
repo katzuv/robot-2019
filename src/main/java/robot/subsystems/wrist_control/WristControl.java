@@ -122,13 +122,8 @@ public class WristControl extends Subsystem {
      */
     public double stallCurrent() {
         final double wristAngle = wristControl.getWristAngle(); //for readability
-        if ((wristAngle < Constants.DROP_WRIST_ANGLE &&
-                setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
-            (wristAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
-                    setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2)) {
+        if (dropWrist())
             return 0;
-        }
-
         double multiplier = Robot.gripperWheels.isCargoInside() ? Constants.CARGO_MULTIPLIER : 1; //TODO: add hatch comp aswell
         return multiplier * (
                 (Constants.PEAK_PERCENT_COMPENSATION - Constants.ZERO_ANGLE_COMPENSATION) * Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle))
@@ -247,15 +242,18 @@ public class WristControl extends Subsystem {
      */
     public void update() {
         if (!raw) {
-            final double wristAngle = wristControl.getWristAngle(); //for readability
-            if ((wristAngle < Constants.DROP_WRIST_ANGLE &&
-                    setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
-                    (wristAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
-                            setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2))
+            if (dropWrist())
                 wristControl.wrist.set(ControlMode.PercentOutput, 0);
             else
                 wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
         }
+    }
+
+    public boolean dropWrist(){
+        return (wristControl.getWristAngle() < Constants.DROP_WRIST_ANGLE &&
+                setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
+                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
+                        setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2));
     }
 
     @Override
