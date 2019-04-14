@@ -118,7 +118,7 @@ public class OI {
         povr.whenPressed(new ShiftButton(xbox, 7,
                 new CargoScoring(1, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH, false),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH, false),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(1, false),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH)))));

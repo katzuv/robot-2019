@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.ramsete.OneHatchRocket;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
@@ -97,9 +96,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Hatch level 2", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        m_chooser.addOption("Hatch level 1", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        m_chooser.addOption("Hatch level 3", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+
         m_chooser.addOption("Do nothing", null);
 
         m_chooser.addOption("Talon test", new TalonTest());
