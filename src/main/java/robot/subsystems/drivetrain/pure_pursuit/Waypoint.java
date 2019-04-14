@@ -1,5 +1,8 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
+
+import robot.utilities.Point;
+
 public class Waypoint extends Point {
     private double distance, speed, curvature;
 

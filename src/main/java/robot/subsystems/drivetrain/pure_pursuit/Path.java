@@ -1,5 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
+import robot.utilities.Point;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 

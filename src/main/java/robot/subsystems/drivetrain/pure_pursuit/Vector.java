@@ -1,6 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
 import edu.wpi.first.wpilibj.drive.Vector2d;
+import robot.utilities.Point;
 
 public class Vector extends Vector2d {
     public Vector() {

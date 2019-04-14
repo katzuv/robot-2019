@@ -3,6 +3,7 @@ package robot.subsystems.drivetrain.pure_pursuit;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.utilities.Point;
 
 import static robot.Robot.drivetrain;
 
