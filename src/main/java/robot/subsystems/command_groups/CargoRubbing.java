@@ -1,52 +1,26 @@
 package robot.subsystems.command_groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import robot.Robot;
+import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.WristTurn;
 
 /**
- *
+ * Shoot the cargo a short distance whilst also turning the wrist, similarly to the movement team 179 does in their robot reveal
  */
 public class CargoRubbing extends CommandGroup {
 
-    public CargoRubbing(int state, boolean isBackward) {
+    /**
+     * Command group. shoots the cargo and moves the wrist down
+     * @param relative should the angle the wrist turns be relative, or absolute.
+     */
+    public CargoRubbing(boolean relative) {
+        addParallel(new GripperControl(Constants.GRIPPER_SPEED.RUBBING), 0.5);
+        if(!relative)
+            addSequential(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
+        else
+            addSequential(new WristTurn(Robot.wristControl.getWristAngle() + Constants.WRIST_ANGLES.RELATIVE_RUBBING.getValue()));
 
-        robot.subsystems.wrist_control.Constants.GRIPPER_SPEED speed = getSpeed(state, isBackward);
-
-        addParallel(new GripperControl(0.3), 0.5);
-        addSequential(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
-
-    }
-
-    public robot.subsystems.wrist_control.Constants.GRIPPER_SPEED getSpeed(int state, boolean isBackward) {
-
-        if (isBackward) {
-
-            switch (state) {
-                case 0:
-                    return robot.subsystems.wrist_control.Constants.GRIPPER_SPEED.SHIP_BACKWARD;
-                case 1:
-                    return robot.subsystems.wrist_control.Constants.GRIPPER_SPEED.LEVEL_1_BACKWARD;
-                case 2:
-                    return robot.subsystems.wrist_control.Constants.GRIPPER_SPEED.LEVEL_2_BACKWARD;
-                case 3:
-                    return robot.subsystems.wrist_control.Constants.GRIPPER_SPEED.LEVEL_3_BACKWARD;
-            }
-
-        } else {
-            switch (state) {
-                case 0:
-                    return robot.subsystems.wrist_control.Constants.GRIPPER_SPEED.SHIP;
-                case 1:
-                    return robot.subsystems.wrist_control.Constants.GRIPPER_SPEED.LEVEL_1;
-                case 2:
-                    return robot.subsystems.wrist_control.Constants.GRIPPER_SPEED.LEVEL_2;
-                case 3:
-                    return robot.subsystems.wrist_control.Constants.GRIPPER_SPEED.LEVEL_3;
-
-            }
-
-        }
-        return null;
     }
 }

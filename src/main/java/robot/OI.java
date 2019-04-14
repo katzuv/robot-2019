@@ -140,6 +140,7 @@ public class OI {
         RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true));
         LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE, false));
 
+        lb.whenPressed(new CargoRubbing(false));
         a.whenPressed(new Flower());
         lb.whenPressed(new Flower(false));
         rb.whenPressed(new Flower(true));
