@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------*/
+
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
@@ -7,33 +7,48 @@
 
 package robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import robot.subsystems.cargo_intake.Constants;
-import robot.subsystems.cargo_intake.commands.GripperControl;
-import robot.subsystems.cargo_intake.commands.WristTurn;
-import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.Gripper;
-import robot.subsystems.hatch_intake.commands.GripperTransportation;
+import robot.subsystems.climb.commands.*;
 
+import robot.subsystems.command_groups.*;
+import robot.subsystems.drivetrain.commands.SwitchCamera;
+import robot.subsystems.drivetrain.commands.VisionDrive;
+import robot.subsystems.wrist_control.Constants;
+import robot.subsystems.wrist_control.commands.GripperControl;
+import robot.subsystems.wrist_control.commands.RawWristTurn;
+import robot.subsystems.wrist_control.commands.WristTurn;
+import robot.subsystems.elevator.commands.ElevatorCommand;
+import robot.subsystems.hatch_intake.commands.CloseBoth;
+import robot.subsystems.hatch_intake.commands.Fangs;
+import robot.subsystems.hatch_intake.commands.Flower;
+import robot.subsystems.wrist_control.commands.*;
+import robot.utilities.ButtonCombination;
+import robot.utilities.ClimbConditionalCommand;
+import robot.utilities.ShiftButton;
+import robot.utilities.TriggerButton;
+
+import static robot.subsystems.drivetrain.Constants.SLOW_JOYSTICK_SPEED;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-    public static final double WRIST_ROTATE_RATE = 5;
+
+    public static final double WRIST_ROTATE_RATE = 20;
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
-    public static final double DOWN_SPEED_RATE = 0.08;
+    public static final double DOWN_SPEED_RATE = 0.05;
     /**
      * The rate at which the lift will goes up with the xbox joystick.
      */
-    public static final double UP_SPEED_RATE = 0.08;
+    public static final double UP_SPEED_RATE = 0.05;
     /**
      * The Y value area in which the xbox joystick won't make the lift move.
      */
@@ -52,12 +67,28 @@ public class OI {
     public static Button start = new JoystickButton(xbox, 8);
     public static Button ls = new JoystickButton(xbox, 9);
     public static Button rs = new JoystickButton(xbox, 10);
+
     public static Button povd = new POVButton(xbox, 180);
     public static Button povr = new POVButton(xbox, 90);
     public static Button povl = new POVButton(xbox, 270);
+    public static Button povu = new POVButton(xbox, 0);
 
+    public static Button RT = new TriggerButton(xbox, GenericHID.Hand.kRight, 0.1);
+    public static Button LT = new TriggerButton(xbox, GenericHID.Hand.kLeft, 0.1);
+
+    public static Button lsLeft = new JoystickButton(leftStick, 4);
+    public static Button lsRight = new JoystickButton(leftStick, 5);
     public static Button lsMid = new JoystickButton(leftStick, 3);
     public static Button lsBottom = new JoystickButton(leftStick, 2);
+
+    public static Button ul = new JoystickButton(leftStick, 5);
+    public static Button dl = new JoystickButton(leftStick, 3);
+    public static Button ur = new JoystickButton(leftStick, 6);
+    public static Button dr = new JoystickButton(leftStick, 4);
+
+    public static Button trigger = new JoystickButton(leftStick, 1);
+    public static Button back_button = new JoystickButton(leftStick, 2);
+
     public static int left_x_stick = 0;
     public static int left_y_stick = 1;
     public static int left_trigger = 2;
@@ -66,72 +97,159 @@ public class OI {
     public static int right_y_stick = 5;
 
 
+    public static Button left_joystick_two = new JoystickButton(leftStick, 2);
+    public static Button left_joystick_three = new JoystickButton(leftStick, 3);
+    public static Button left_joystick_six = new JoystickButton(leftStick, 6);
+    public static Button left_joystick_seven = new JoystickButton(leftStick, 7);
+    public static Button left_joystick_eight = new JoystickButton(leftStick, 8);
+    public static Button left_joystick_nine = new JoystickButton(leftStick, 9);
+    public static Button left_joystick_ten = new JoystickButton(leftStick, 10);
+    public static Button left_joystick_eleven = new JoystickButton(leftStick, 11);
+
+    public static Button right_joystick_six = new JoystickButton(rightStick, 6);
+    public static Button right_joystick_seven = new JoystickButton(rightStick, 7);
+    public static Button right_joystick_eight = new JoystickButton(rightStick, 8);
+    public static Button right_joystick_nine = new JoystickButton(rightStick, 9);
+    public static Button right_joystick_ten = new JoystickButton(rightStick, 10);
+    public static Button right_joystick_eleven = new JoystickButton(rightStick, 11);
+
+    public static ButtonCombination manual_wrist = new ButtonCombination(xbox, 7, 8, 6);
+    public static Button left_joystick_four = new JoystickButton(leftStick, 4);
+    public static Button left_joystick_five = new JoystickButton(leftStick, 5);
     public OI() {
-        povd.whenPressed(new ElevatorCommand(0));
-        povl.whenPressed(new ElevatorCommand(0.78));
-        povr.whenPressed(new ElevatorCommand(1.4));
+        /*
+        Select (7) + POV = reverse cargo
+        Y (4) + POV = front cargo
+        Start (8) + POV = Hatch scoring
+         */
 
-        rb.whileHeld(new GripperControl(Constants.GRIPPER_SHOOT_SPEED));
-        start.whileHeld(new GripperControl(Constants.GRIPPER_INTAKE_SPEED));
+        povd.whenPressed(new ShiftButton(xbox, 7,
+                new CargoScoring(0, true),
+                new ShiftButton(xbox, 4,
+                        new CargoScoring(0, false),
+                        new ElevatorCommand(0))));
 
-        a.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INTAKE));
-        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.SHOOTING));
+        povr.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
+                new CargoScoring(1, true),
+                new ShiftButton(xbox, 8,
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH),
+                        new ShiftButton(xbox, 4,
+                                new CargoScoring(1, false),
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LOADING_STATION))))));
 
+        povl.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
+                new CargoScoring(2, true),
+                new ShiftButton(xbox, 8,
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH),
+                        new ShiftButton(xbox, 4,
+                                new CargoScoring(2, false),
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH))))));
 
-        select.whenPressed(new GripperTransportation());
-        lb.whenPressed(new Gripper());
+        povu.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
+                new CargoScoring(3, true),
+                new ShiftButton(xbox, 8,
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH),
+                        new ShiftButton(xbox, 4,
+                                new CargoScoring(3, false),
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO))))));
+
+        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
+        LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
+
+        lb.whenPressed(new CargoRubbing(1, false));
+        a.whenPressed(new Flower());
+        rb.whenPressed(new Fangs(true,0.5));
+        //lb.whileHeld(new(Fangs(true,255)); while held fangs command
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL,1.5));
+        x.whenPressed(new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()));
+
+        //TODO: add right stick to control the cargo intake
+        select.whenPressed(new CloseBoth());
+
+        left_joystick_six.toggleWhenPressed(new VisionDrive());
+        right_joystick_six.whenPressed(new SwitchCamera());
+
+        /*
+        left_joystick_two.whenPressed(new CalibrateLegs());
+        left_joystick_eleven.whenPressed(new CloseForwardLegs());
+        left_joystick_ten.whenPressed(new SafeCloseBackLegs());
+        left_joystick_nine.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
+        left_joystick_eight.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
+
+        manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190, 1));
+
+        left_joystick_four.whenPressed(new ResetWristAngle(0));
+        left_joystick_five.whenPressed(new ResetWristAngle(168));
+        */
+
+        // Place cargo backward
+
+        /*
+
+        |||||||
+        |||3|||
+        |||||||
+        |||||||   Rocket
+        |||2|||
+        |||||||
+        |||||||
+        |||1|||
+        |||||||
+
+        |||||||
+        |     |
+        |     |    Bay
+        |||||||
+        |||0|||
+        |||||||
+
+         */
+        /*
+        lsBottom.whenPressed(new CargoScoring(0, true));
+        lsLeft.whenPressed(new CargoScoring(1, true));
+        lsMid.whenPressed(new CargoScoring(2, true));
+        lsRight.whenPressed(new CargoScoring(3, true));
+
+        // Score cargo
+        rsBottom.whenPressed(new CargoScoring(0, false));
+        rsLeft.whenPressed(new CargoScoring(1, false));
+        rsMid.whenPressed(new CargoScoring(2, false));
+        rsRight.whenPressed(new CargoScoring(3, false));
+        */
     }
 
     /* instead of defining the joysticks in each default command, all of them call these methods */
-    public double leftDriveStick(){ // TODO: might need name refactoring
-        return -leftStick.getY();
+    public double leftDriveStick() { // TODO: might need name refactoring
+        return -SLOW_JOYSTICK_SPEED * leftStick.getY();
     }
 
-    public double rightDriveStick(){
-        return -rightStick.getY();
+    public double rightDriveStick() {
+        return -SLOW_JOYSTICK_SPEED * rightStick.getY();
     }
 
-    public double WristStick(){
-        return xbox.getRawAxis(right_y_stick);
+    public double rightSideAxis() {
+        return rightStick.getX();
+    }
+
+    public double WristStick() {
+        return -xbox.getRawAxis(left_y_stick);
     }
 
     public double ElevatorStick() {
-        return -xbox.getRawAxis(left_y_stick);
+        return -xbox.getRawAxis(right_y_stick);
+
     }
+
     public boolean enableElevator() {
+        return xbox.getRawButton(10);
+    }
+
+
+    public boolean enableWrist() {
         return xbox.getRawButton(9);
     }
 
-    public boolean enableWrist() {
-        return xbox.getRawButton(10);
+    public boolean getEnableRawWrist() {
+        return xbox.getStartButton() && xbox.getBackButton();
     }
-    // CREATING BUTTONS
-    // One type of button is a joystick button which is any button on a
-    //// joystick.
-    // You create one by telling it which joystick it's on and which button
-    // number it is.
-    // Joystick stick = new Joystick(port);
-    // Button button = new JoystickButton(stick, buttonNumber);
-
-    // There are a few additional built in buttons you can use. Additionally,
-    // by subclassing Button you can create custom triggers and bind those to
-    // commands the same as any other Button.
-
-    //// TRIGGERING COMMANDS WITH BUTTONS
-    // Once you have a button, it's trivial to bind it to a button in one of
-    // three ways:
-
-    // Start the command when the button is pressed and let it run the command
-    // until it is finished as determined by it's isFinished method.
-    // button.whenPressed(new ExampleCommand());
-
-    // Run the command while the button is being held down and interrupt it once
-    // the button is released.
-    // button.whileHeld(new ExampleCommand());
-
-    // Start the command when the button is released and let it run the command
-    // until it is finished as determined by it's isFinished method.
-    // button.whenReleased(new ExampleCommand());
 }

@@ -1,11 +1,10 @@
 package robot.subsystems.elevator.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import robot.Robot;
 import robot.subsystems.elevator.Constants;
 
 import static robot.Robot.elevator; //elevator subsystem
-import static robot.Robot.hatchIntake;
+
 
 /**
  * Move the elevator to a certain height
@@ -29,16 +28,13 @@ public class ElevatorCommand extends Command {
      *
      * @param state an enum of heights, defined in the elevator constants class.
      */
-    public ElevatorCommand(Constants.ELEVATOR_STATES state) {
+    public ElevatorCommand(Constants.ELEVATOR_HEIGHTS state) {
         this(state.getLevelHeight());
-        Robot.visionTable.getEntry("target_type").setString(state.getString());
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if (!hatchIntake.isGripperOpen() && !hatchIntake.isGripperPlateExtended())
-            elevator.setHeight(height);
-
+        elevator.setHeight(height);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -53,7 +49,7 @@ public class ElevatorCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-
+        elevator.update();
     }
 
     // Called when another command which requires one or more of the same
