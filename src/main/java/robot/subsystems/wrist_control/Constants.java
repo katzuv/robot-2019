@@ -68,7 +68,8 @@ public class Constants {
         LEVEL_2_BACKWARD(0),
         LEVEL_3_BACKWARD(0),
         INTAKE(150),
-        MAXIMAL(150);
+        MAXIMAL(150),
+        RELATIVE_RUBBING(+30); //Relative angle to turn
         private final double wristAngle;
 
         WRIST_ANGLES(double angle) {
@@ -81,6 +82,7 @@ public class Constants {
     }
 
     public enum GRIPPER_SPEED {
+        RUBBING(0.3),
         INTAKE(-0.75),
         SHIP(0.9),
         SHIP_BACKWARD(0.4),

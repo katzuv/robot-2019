@@ -156,7 +156,7 @@ public class OI {
         RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
         LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
 
-        lb.whenPressed(new CargoRubbing(1, false));
+        lb.whenPressed(new CargoRubbing(false));
         a.whenPressed(new Flower());
         rb.whenPressed(new Fangs(true,0.5));
         //lb.whileHeld(new(Fangs(true,255)); while held fangs command
