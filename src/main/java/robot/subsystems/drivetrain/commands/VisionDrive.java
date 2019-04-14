@@ -15,7 +15,7 @@ public class VisionDrive extends Command {
     /*
         For now have all the constants here for testing, when done move to constants file
      */
-    private double TARGET_VISION_DISTANCE = 1.2;
+    private double TARGET_VISION_DISTANCE = 1.12;
 
     private MiniPID angularVelocityPid = new MiniPID(Constants.PIDAngularVelocity[0], Constants.PIDAngularVelocity[1], Constants.PIDAngularVelocity[2]);
     private MiniPID linearVelocityPid = new MiniPID(Constants.PIDLinearVelocity[0], Constants.PIDLinearVelocity[1], Constants.PIDLinearVelocity[2]);
@@ -25,7 +25,8 @@ public class VisionDrive extends Command {
 
     public VisionDrive() {
         angularVelocityPid.setOutputLimits(-3, 3);
-        linearVelocityPid.setOutputLimits(-2, 2);
+        linearVelocityPid.setOutputLimits(-1.5, 1.5);
+        linearVelocityPid.setDirection(true); //reverse the direction
         requires(drivetrain);
     }
 
