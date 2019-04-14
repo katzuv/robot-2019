@@ -122,53 +122,44 @@ public class OI {
         Y (4) + POV = front cargo
         Start (8) + POV = Hatch scoring
          */
-
-        povd.whenPressed(new ShiftButton(xbox, 7,
-                new CargoScoring(0, true),
-                new ShiftButton(xbox, 4,
-                        new CargoScoring(0, false),
-                        new ElevatorCommand(0))));
-
-        povr.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
-                new CargoScoring(1, true),
-                new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH),
-                        new ShiftButton(xbox, 4,
-                                new CargoScoring(1, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LOADING_STATION))))));
-
-        povl.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
-                new CargoScoring(2, true),
-                new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH),
-                        new ShiftButton(xbox, 4,
-                                new CargoScoring(2, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH))))));
-
-        povu.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
-                new CargoScoring(3, true),
-                new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH),
-                        new ShiftButton(xbox, 4,
-                                new CargoScoring(3, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO))))));
-
-        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
         LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
+        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
 
-        lb.whenPressed(new CargoRubbing(false));
-        a.whenPressed(new Flower());
-        rb.whenPressed(new Fangs(true,0.5));
         //lb.whileHeld(new(Fangs(true,255)); while held fangs command
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL,1.5));
-        x.whenPressed(new WristAndElevatorCommand(Constants.WRIST_ANGLES.INTAKE.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()));
+        lb.whenPressed(new CargoRubbing(false));
+        rb.whenPressed(new Fangs(true,0.5));
 
-        //TODO: add right stick to control the cargo intake
-        select.whenPressed(new CloseBoth());
+        a.whenPressed(new Flower());
+        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
+        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.FORWARD));
+        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+
+        povd.whenPressed(
+                new ShiftButton(xbox, 3,
+                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO),
+                        new ElevatorCommand(0))
+        ); //If x is held, go to cargo height, and if not, goes down to zero.
+
+        private int shiftButton = 3;
+        povr.whenPressed(
+                new ShiftButton(xbox, shiftButton,
+                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_CARGO),
+                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH))
+        );
+
+        povl.whenPressed(
+                new ShiftButton(xbox, shiftButton,
+                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_CARGO),
+                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH))
+        );
+
+        povr.whenPressed(
+                new ShiftButton(xbox, shiftButton,
+                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO),
+                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH))
+        );
 
         left_joystick_six.toggleWhenPressed(new VisionDrive());
-        right_joystick_six.whenPressed(new SwitchCamera());
-
         /*
         left_joystick_two.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());
