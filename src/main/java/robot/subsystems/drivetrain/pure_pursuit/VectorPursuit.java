@@ -9,9 +9,9 @@ import robot.utilities.Vector;
 import static robot.Robot.drivetrain;
 
 /**
- * The methods written here are all part of the Pure pursuit algorithm
- * all instances of the name 'the pure pursuit article' refer to this article by team DAWGMA 1712:
- * https://www.chiefdelphi.com/media/papers/download/5533
+ * This driving algorithm is a remaster of our 2018 driving algorithm.
+ * Most of the changes here are simply readability, and a few upgrades with the work that we have done
+ * throughout 2019.
  *
  * @author paulo
  */
