@@ -337,6 +337,9 @@ public class Drivetrain extends Subsystem {
         Constants.PIDAngularVelocity[0] = getConstant("Vision Drive: turn kp", Constants.PIDAngularVelocity[0]);
         Constants.PIDAngularVelocity[1] = getConstant("Vision Drive: turn ki", Constants.PIDAngularVelocity[1]);
         Constants.PIDAngularVelocity[2] = getConstant("Vision Drive: turn kd", Constants.PIDAngularVelocity[2]);
+        Constants.PIDLinearVelocity[0] = getConstant("Vision Drive: linear kp", Constants.PIDLinearVelocity[0]);
+        Constants.PIDLinearVelocity[1] = getConstant("Vision Drive: linear ki", Constants.PIDLinearVelocity[1]);
+        Constants.PIDLinearVelocity[2] = getConstant("Vision Drive: linear kd", Constants.PIDLinearVelocity[2]);
     }
     private double getConstant(String key, double constant) {
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));

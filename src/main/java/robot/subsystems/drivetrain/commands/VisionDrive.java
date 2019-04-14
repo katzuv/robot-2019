@@ -58,5 +58,6 @@ public class VisionDrive extends Command {
 
     public void updateConstants() {
         angularVelocityPid.setPID(Constants.PIDAngularVelocity[0], Constants.PIDAngularVelocity[1], Constants.PIDAngularVelocity[2]);
+        linearVelocityPid.setPID(Constants.PIDLinearVelocity[0], Constants.PIDLinearVelocity[1],Constants.PIDLinearVelocity[2]);
     }
 }
