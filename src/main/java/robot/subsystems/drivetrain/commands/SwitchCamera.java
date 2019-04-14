@@ -5,18 +5,18 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import robot.Robot;
 
 /**
- * Switch the camera being streamed to the driver station.
+ *
  */
 public class SwitchCamera extends InstantCommand {
-    private final NetworkTableEntry streamedCameraEntry;
+    private final NetworkTableEntry entry;
 
     public SwitchCamera() {
-        this.streamedCameraEntry = Robot.visionTable.getEntry("camera");
+        this.entry = Robot.visionTable.getEntry("camera");
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        String currentState = streamedCameraEntry.getString("cargo");
-        streamedCameraEntry.setString(currentState.equals("cargo") ? "hatch" : "cargo");
+        String currentState = entry.getString("cargo");
+        entry.setString(currentState.equals("cargo") ? "hatch" : "cargo");
     }
 }

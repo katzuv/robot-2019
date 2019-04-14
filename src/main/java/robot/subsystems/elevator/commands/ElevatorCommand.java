@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.elevator.Constants;
 
 import static robot.Robot.elevator; //elevator subsystem
-
+import static robot.Robot.hatchIntake;
 
 /**
  * Move the elevator to a certain height

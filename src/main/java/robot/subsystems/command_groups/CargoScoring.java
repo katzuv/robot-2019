@@ -5,6 +5,7 @@ import robot.subsystems.elevator.Constants;
 import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 
+import static robot.subsystems.elevator.Constants.ELEVATOR_STATES;
 import static robot.subsystems.wrist_control.Constants.WRIST_ANGLES;
 import static robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
 
@@ -16,7 +17,7 @@ public class CargoScoring extends CommandGroup {
 
     public CargoScoring(int state, boolean isBackward) {
 
-        Constants.ELEVATOR_STATES height = getHeight(state, isBackward);
+        ELEVATOR_STATES height = getHeight(state, isBackward);
         WRIST_ANGLES angle = getAngle(state, isBackward);
         GRIPPER_SPEED speed = getSpeed(state, isBackward);
 
@@ -26,19 +27,32 @@ public class CargoScoring extends CommandGroup {
     }
 
 
-    public Constants.ELEVATOR_STATES getHeight(int state, boolean isBackward) {
+    public ELEVATOR_STATES getHeight(int state, boolean isBackward) {
 
         if (isBackward) {
 
             switch (state) {
                 case 0:
-                    return Constants.ELEVATOR_STATES.SHIP_CARGO;
+                    return ELEVATOR_STATES.SHIP_CARGO_BACKWARD;
                 case 1:
-                    return Constants.ELEVATOR_STATES.LEVEL1_CARGO;
+                    return ELEVATOR_STATES.LEVEL1_CARGO_BACKWARD;
                 case 2:
-                    return Constants.ELEVATOR_STATES.LEVEL2_CARGO;
+                    return ELEVATOR_STATES.LEVEL2_CARGO_BACKWARD;
                 case 3:
-                    return Constants.ELEVATOR_STATES.LEVEL3_CARGO;
+                    return ELEVATOR_STATES.LEVEL3_CARGO_BACKWARD;
+            }
+
+        } else {
+            switch (state) {
+                case 0:
+                    return ELEVATOR_STATES.SHIP_CARGO;
+                case 1:
+                    return ELEVATOR_STATES.LEVEL1_CARGO;
+                case 2:
+                    return ELEVATOR_STATES.LEVEL2_CARGO;
+                case 3:
+                    return ELEVATOR_STATES.LEVEL3_CARGO;
+
             }
 
         }
@@ -97,7 +111,7 @@ public class CargoScoring extends CommandGroup {
         } else {
             switch (state) {
                 case 0:
-                    return WRIST_ANGLES.FORWARD;
+                    return WRIST_ANGLES.SHIP;
                 case 1:
                     return WRIST_ANGLES.LEVEL_1;
                 case 2:

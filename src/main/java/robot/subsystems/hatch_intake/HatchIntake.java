@@ -30,7 +30,7 @@ public class HatchIntake extends Subsystem {
      * a command to set the flower, close it if it is already open and open it if it is already closed
      */
     public void setFlower(boolean open) {
-        if (open && !elevator.isHatchMechanismInDanger())
+        if (open && !elevator.isSetpointInDangerZone())
             flower.set(DoubleSolenoid.Value.kForward);
         else
             if(!areFangsExtended())
@@ -48,7 +48,7 @@ public class HatchIntake extends Subsystem {
      * if true, extend forward
      */
     public void setFangs(boolean extend) {
-        if (extend && !elevator.isHatchMechanismInDanger() && isFlowerOpen())
+        if (extend && !elevator.isSetpointInDangerZone() && isFlowerOpen())
             fangs.set(DoubleSolenoid.Value.kForward);
         else
             fangs.set(DoubleSolenoid.Value.kReverse);

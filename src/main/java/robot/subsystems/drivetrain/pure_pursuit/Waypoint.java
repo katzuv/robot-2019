@@ -1,5 +1,6 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
+
 import robot.utilities.Point;
 
 public class Waypoint extends Point {
@@ -16,7 +17,7 @@ public class Waypoint extends Point {
         super(x, y);
     }
 
-    public Waypoint(Point p){ super(p.getX(), p.getY());}
+
     public Waypoint(Waypoint p) {
         super(p.getX(), p.getY());
         this.speed = p.getSpeed();
