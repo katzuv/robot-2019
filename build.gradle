@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.3.2"
+    id "edu.wpi.first.GradleRIO" version "2019.4.1"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -43,11 +43,14 @@ def includeDesktopSupport = false
 // Maven central needed for JUnit
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
+    compile group: 'com.github.5190GreenHopeRobotics', name: 'FalconLibrary', version: 'b4feb6c543050716bb3ef6f51e97c11a53945615'
+    compile group: 'com.github.RoelGo', name: 'MiniPID-Java', version: '1.0.0'
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)

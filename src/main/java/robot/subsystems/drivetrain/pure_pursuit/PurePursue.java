@@ -72,6 +72,11 @@ public class PurePursue extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+<<<<<<<<< Temporary merge branch 1
+        updatePoint();
+        updateLookaheadInPath(path);
+        drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+=========
         if (!isFinished()){
 
             updatePoint();
@@ -80,6 +85,7 @@ public class PurePursue extends Command {
         SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
         SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
     }
+>>>>>>>>> Temporary merge branch 2
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -178,13 +184,7 @@ public class PurePursue extends Command {
      */
     private void updateLookaheadInPath(Path path) {
         for (int i = 0; i < path.length() - 1; i++) {
-            Waypoint wp;
-            if(i==path.length()-2) {
-                Waypoint farPoint = new Vector(path.getWaypoint(i), path.getWaypoint(i+1) ).multiply(10).add(path.getWaypoint(i));
-                wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), farPoint);
-            }
-            else
-                wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
+            Waypoint wp = findNearPath(currentPoint, lookaheadRadius, path.getWaypoint(i), path.getWaypoint(i + 1));
             if (wp != null && Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance() > lastLookaheadDistance) {
                 {
                     lastLookaheadDistance = Point.distance(wp, path.getWaypoint(i)) + path.getWaypoint(i).getDistance();

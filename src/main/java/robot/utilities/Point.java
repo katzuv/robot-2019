@@ -1,4 +1,4 @@
-package robot.subsystems.drivetrain.pure_pursuit;
+package robot.utilities;
 
 /**
  * A generic point class for storing (x, y) coordinates
@@ -83,7 +83,7 @@ public class Point {
 
     @Override
     public String toString() {
-        return x + " " + y;
+        return x + " " + y + "\n";
     }
 
     public void addVector(Vector v) {

@@ -5,7 +5,7 @@ import robot.OI;
 import robot.Robot;
 import robot.subsystems.elevator.Elevator;
 /**
- *
+ *this command is used to move the elevator with the joystick instead of set heights
  */
 public class JoystickElevatorCommand extends Command {
 
@@ -50,6 +50,5 @@ public class JoystickElevatorCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
         end();
-        cancel();
     }
 }

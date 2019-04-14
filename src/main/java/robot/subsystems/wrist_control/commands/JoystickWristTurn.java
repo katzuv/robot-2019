@@ -1,17 +1,17 @@
-package robot.subsystems.cargo_intake.commands;
+package robot.subsystems.wrist_control.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.OI;
 import robot.Robot;
 
-import static robot.Robot.cargoIntake;
+import static robot.Robot.wristControl;
 
 /**
  *
  */
 public class JoystickWristTurn extends Command {
     public JoystickWristTurn() {
-        requires(cargoIntake);
+        requires(wristControl);
     }
 
     // Called just before this Command runs the first time
@@ -30,7 +30,7 @@ public class JoystickWristTurn extends Command {
             change = yAxis * OI.WRIST_ROTATE_RATE;
         else
             change = yAxis * OI.WRIST_ROTATE_RATE;
-        cargoIntake.setWristAngle(cargoIntake.getWristAngle() + change);
+        wristControl.setWristAngle(wristControl.getWristAngle() + change);
 
     }
 
