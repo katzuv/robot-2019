@@ -11,21 +11,23 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
+import robot.subsystems.drivetrain.ramsete.OneHatchRocket;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
-import robot.subsystems.drivetrain.sandstorm.TwoHatchLeftRocket;
-import robot.subsystems.drivetrain.sandstorm.OneHatchCargo;
-import robot.subsystems.drivetrain.sandstorm.TwoHatchRightRocket;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
-import robot.subsystems.hatch_intake.HatchIntake;
 import robot.subsystems.wrist_control.GripperWheels;
+import robot.subsystems.hatch_intake.HatchIntake;
 import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
 
@@ -41,14 +43,13 @@ import java.util.Set;
  * project.
  */
 public class Robot extends TimedRobot {
-    public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
     public static final Climb climb = new Climb();
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final WristControl wristControl = new WristControl();
     public static final GripperWheels gripperWheels = new GripperWheels();
-    public static final Compressor compressor = new Compressor(0);
+    public static final Compressor compressor = new Compressor(1);
     public final static boolean isRobotA = true;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
@@ -94,27 +95,17 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        resetAll();
-
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
-        m_chooser.addOption("Right Rocket level 2", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH));
-        m_chooser.addOption("Right Rocket level 3", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
-
-        m_chooser.addOption("Left rocket level 1", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
-        m_chooser.addOption("Left rocket level 2", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH));
-        m_chooser.addOption("Left rocket level 3", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
-
-        m_chooser.addOption("Cargo ship", new OneHatchCargo(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
-
+        m_chooser.setDefaultOption("Hatch level 2", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
+        m_chooser.addOption("Hatch level 1", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
+        m_chooser.addOption("Hatch level 3", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
         m_chooser.addOption("Do nothing", null);
 
         m_chooser.addOption("Talon test", new TalonTest());
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
-
     }
 
 
@@ -129,8 +120,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         addToShuffleboard();
-        updateDashboardConstants();
-        SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
+        climb.executePreventBreak();
+
     }
 
     /**
@@ -141,7 +132,6 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         drivetrain.setMotorsToCoast();
-        elevator.ResetSetpoint();
         /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
          * to cancel the motion magic that is currently taking place and will still run if you re enable
          */
@@ -149,7 +139,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        wristControl.disabledPeriodic();
         Scheduler.getInstance().run();
         sendMatchInformation();
     }
@@ -167,6 +156,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        drivetrain.setMotorsToBrake();
         resetAll();
         m_autonomousCommand = m_chooser.getSelected();
         if (m_autonomousCommand != null) {
@@ -180,6 +170,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+
     }
 
     @Override
@@ -195,7 +186,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        //updateDashboardConstants();
         Scheduler.getInstance().run();
     }
 
@@ -208,32 +198,28 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleboard() {
-        SmartDashboard.putData(pdp);
         SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
-        SmartDashboard.putNumber("Elevator: height - centimeters", elevator.getHeight());
-        SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
-        SmartDashboard.putNumber("Wrist: wrist angle", wristControl.getWristAngle());
+        SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
+        SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
+        SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
+        SmartDashboard.putNumber("Drivetrain: left distance", drivetrain.getLeftDistance());
+        SmartDashboard.putNumber("Drivetrain: right distance", drivetrain.getRightDistance());
+        SmartDashboard.putNumber("Cargo intake: proximity value", gripperWheels.getProximityVoltage());
+        SmartDashboard.putNumber("Cargo intake: wrist angle", wristControl.getWristAngle());
+        SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
         SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
+        SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
+        Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
+        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
         SmartDashboard.putBoolean("Flower open", hatchIntake.isFlowerOpen());
-        /*SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
+        SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
         SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
         SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
         SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
         SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-        SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());*/
-        SmartDashboard.putData("navx", navx);
         SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
-        SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(150));
-        SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
-        SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
-        SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
-        //printAllCommands();
-    }
-
-    public void updateDashboardConstants() {
-        drivetrain.updateConstants();
-        wristControl.updateConstants();
-
+        SmartDashboard.putData("Reset wrist to 168 degrees", new ResetWristAngle(168));
+        //printRunningCommands();
     }
 
     public void printRunningCommands() {
@@ -246,11 +232,6 @@ public class Robot extends TimedRobot {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
-    }
-    public void printAllCommands() {
-        SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
-        SmartDashboard.putString("Wrist command", wristControl.getCurrentCommandName());
-        SmartDashboard.putString("Cargo wheels command", gripperWheels.getCurrentCommandName());
     }
 
     public void resetAll() {
