@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.elevator.Constants;
 
 import static robot.Robot.elevator; //elevator subsystem
-
+import static robot.Robot.hatchIntake;
 
 /**
  * Move the elevator to a certain height
@@ -28,7 +28,7 @@ public class ElevatorCommand extends Command {
      *
      * @param state an enum of heights, defined in the elevator constants class.
      */
-    public ElevatorCommand(Constants.ELEVATOR_HEIGHTS state) {
+    public ElevatorCommand(Constants.ELEVATOR_STATES state) {
         this(state.getLevelHeight());
     }
 
