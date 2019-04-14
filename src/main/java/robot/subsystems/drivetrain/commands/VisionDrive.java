@@ -15,9 +15,9 @@ public class VisionDrive extends Command {
     /*
         For now have all the constants here for testing, when done move to constants file
      */
-    private double TARGET_VISION_DISTANCE = 1.12;
+    private double TARGET_VISION_DISTANCE = 1.105; //distance from the target to stop
     private double END_ANGLE_TOLERANCE = 0.7;
-
+    private double STUPID_ANGLE_FIX = 0.5; // the camera wasn't centered so i added this
     private MiniPID angularVelocityPid = new MiniPID(Constants.PIDAngularVelocity[0], Constants.PIDAngularVelocity[1], Constants.PIDAngularVelocity[2]);
     private MiniPID linearVelocityPid = new MiniPID(Constants.PIDLinearVelocity[0], Constants.PIDLinearVelocity[1], Constants.PIDLinearVelocity[2]);
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
@@ -36,7 +36,7 @@ public class VisionDrive extends Command {
     }
 
     protected void execute() {
-        double visionAngle = angleEntry.getDouble(0);
+        double visionAngle = angleEntry.getDouble(0)-STUPID_ANGLE_FIX;
         double visionDistance = distanceEntry.getDouble(0);
 
         double tangentVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocityPid.getOutput(visionAngle, 0);
@@ -46,7 +46,8 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return !seenEntry.getBoolean(false) || (distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE && Math.abs(angleEntry.getDouble(0)) < END_ANGLE_TOLERANCE);
+        return !seenEntry.getBoolean(false) || (distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE && Math.abs(angleEntry.getDouble(0)-STUPID_ANGLE_FIX) < END_ANGLE_TOLERANCE);
+        //return false;
     }
 
     protected void end() {
