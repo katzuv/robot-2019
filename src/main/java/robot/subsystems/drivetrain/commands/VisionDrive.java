@@ -16,6 +16,7 @@ public class VisionDrive extends Command {
         For now have all the constants here for testing, when done move to constants file
      */
     private double TARGET_VISION_DISTANCE = 1.12;
+    private double END_ANGLE_TOLERANCE = 0.7;
 
     private MiniPID angularVelocityPid = new MiniPID(Constants.PIDAngularVelocity[0], Constants.PIDAngularVelocity[1], Constants.PIDAngularVelocity[2]);
     private MiniPID linearVelocityPid = new MiniPID(Constants.PIDLinearVelocity[0], Constants.PIDLinearVelocity[1], Constants.PIDLinearVelocity[2]);
@@ -45,7 +46,7 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return !seenEntry.getBoolean(false) || distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE;
+        return !seenEntry.getBoolean(false) || (distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE && Math.abs(angleEntry.getDouble(0)) < END_ANGLE_TOLERANCE);
     }
 
     protected void end() {
