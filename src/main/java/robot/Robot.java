@@ -20,6 +20,7 @@ import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
 import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.VectorPursuit;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.drivetrain.sandstorm.TwoHatchLeftRocket;
@@ -112,9 +113,10 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("Cargo ship", new OneHatchCargo(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
 
         m_chooser.addOption("Do nothing", null);
-        Path p = new Path(new Waypoint(0, 0), new Waypoint(0,1), new Waypoint(1,1));
-        p.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
-        m_chooser.addOption("Pure pursuit test", new PurePursue(p,
+        //        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
+        Path path = new Path(new Waypoint(0, 0), new Waypoint(0,1), new Waypoint(1,1));
+        path.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
+        m_chooser.addOption("Pure pursuit test", new PurePursue(path,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
@@ -122,6 +124,15 @@ public class Robot extends TimedRobot {
                 false
         ));
         m_chooser.addOption("Talon test", new TalonTest());
+
+        m_chooser.addOption("Velocity test", new VectorPursuit(path,0.4,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
+                false,
+                false
+        ));
+
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
@@ -183,13 +194,6 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
         }
-
-        //Create the path and points.
-        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
-        //Generate the path to suit the pure pursuit.
-        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, 1.5, 1.4);
-        VectorPursuit vectorPursuit = new VectorPursuit(path,0.4,Constants.kP,Constants.kA,Constants.kV,false,false);
-        vectorPursuit.start();
     }
 
     /**

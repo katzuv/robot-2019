@@ -1,7 +1,5 @@
 package robot.utilities;
 
-import robot.subsystems.drivetrain.pure_pursuit.Vector;
-
 /**
  * A generic point class for storing (x, y) coordinates
  *
