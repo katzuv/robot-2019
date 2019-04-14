@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class TwoHatchLeftRocket extends CommandGroup {
 
-    public TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS height) {
+    public TwoHatchLeftRocket(Constants.ELEVATOR_STATES height) {
         addSequential(new SetLocation(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(17.645), Rotation2dKt.getDegree(180))));
 
         addParallel(new ElevatorCommand(height));

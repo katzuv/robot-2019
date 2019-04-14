@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class OneHatchCargo extends CommandGroup {
 
-    public OneHatchCargo(Constants.ELEVATOR_HEIGHTS height) {
+    public OneHatchCargo(Constants.ELEVATOR_STATES height) {
         addSequential(new SetLocation(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(13.565), Rotation2dKt.getDegree(180))));
 
         addParallel(new ElevatorCommand(height));

@@ -13,7 +13,7 @@ import robot.subsystems.wrist_control.commands.WristTurn;
 public class VisionTakeHatch extends CommandGroup {
 
     public VisionTakeHatch() {
-        addParallel(new ElevatorCommand(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
+        addParallel(new ElevatorCommand(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
         addParallel(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
         addSequential(new Flower(true));
         addSequential(new VisionDrive());

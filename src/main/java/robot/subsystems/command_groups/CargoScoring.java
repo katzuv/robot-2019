@@ -1,10 +1,10 @@
 package robot.subsystems.command_groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import robot.subsystems.elevator.Constants;
 import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 
-import static robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS;
 import static robot.subsystems.wrist_control.Constants.WRIST_ANGLES;
 import static robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
 
@@ -16,7 +16,7 @@ public class CargoScoring extends CommandGroup {
 
     public CargoScoring(int state, boolean isBackward) {
 
-        ELEVATOR_HEIGHTS height = getHeight(state, isBackward);
+        Constants.ELEVATOR_STATES height = getHeight(state, isBackward);
         WRIST_ANGLES angle = getAngle(state, isBackward);
         GRIPPER_SPEED speed = getSpeed(state, isBackward);
 
@@ -26,35 +26,23 @@ public class CargoScoring extends CommandGroup {
     }
 
 
-    public ELEVATOR_HEIGHTS getHeight(int state, boolean isBackward) {
+    public Constants.ELEVATOR_STATES getHeight(int state, boolean isBackward) {
 
         if (isBackward) {
 
             switch (state) {
                 case 0:
-                    return ELEVATOR_HEIGHTS.SHIP_CARGO_BACKWARD;
+                    return Constants.ELEVATOR_STATES.SHIP_CARGO;
                 case 1:
-                    return ELEVATOR_HEIGHTS.LEVEL1_CARGO_BACKWARD;
+                    return Constants.ELEVATOR_STATES.LEVEL1_CARGO;
                 case 2:
-                    return ELEVATOR_HEIGHTS.LEVEL2_CARGO_BACKWARD;
+                    return Constants.ELEVATOR_STATES.LEVEL2_CARGO;
                 case 3:
-                    return ELEVATOR_HEIGHTS.LEVEL3_CARGO_BACKWARD;
-            }
-
-        } else {
-            switch (state) {
-                case 0:
-                    return ELEVATOR_HEIGHTS.SHIP_CARGO;
-                case 1:
-                    return ELEVATOR_HEIGHTS.LEVEL1_CARGO;
-                case 2:
-                    return ELEVATOR_HEIGHTS.LEVEL2_CARGO;
-                case 3:
-                    return ELEVATOR_HEIGHTS.LEVEL3_CARGO;
-
+                    return Constants.ELEVATOR_STATES.LEVEL3_CARGO;
             }
 
         }
+
         return null;
     }
 

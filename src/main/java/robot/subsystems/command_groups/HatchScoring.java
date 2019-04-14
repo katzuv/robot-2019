@@ -27,7 +27,7 @@ public class HatchScoring extends CommandGroup {
         addSequential(new Fangs(true, 0.5));
     }
 
-    public HatchScoring(Constants.ELEVATOR_HEIGHTS height) {
+    public HatchScoring(Constants.ELEVATOR_STATES height) {
         this(height.getLevelHeight());
     }
 }

@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class TwoHatchRightRocket extends CommandGroup {
 
-    public TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS height) {
+    public TwoHatchRightRocket(Constants.ELEVATOR_STATES height) {
 
         addParallel(new ElevatorCommand(height)); //Raise the elevator
         addSequential(new TrajectoryTracker(Paths.RIGHT_HAB_TO_NEAR_ROCKET, false)); //drive on a specified path.

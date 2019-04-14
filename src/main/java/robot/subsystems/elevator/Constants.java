@@ -79,7 +79,7 @@ public class Constants {
 
         private final double levelHeight;
 
-        ELEVATOR_HEIGHTS(double height) {
+        ELEVATOR_STATES(double height) {
             this.levelHeight = height;
         }
 
