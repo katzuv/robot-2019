@@ -3,13 +3,21 @@ package robot.subsystems.drivetrain.pure_pursuit;
 import robot.utilities.Point;
 
 public class Waypoint extends Point {
-    private double distance, speed, curvature;
+    private double distance, speed, curvature , heading;
 
     public Waypoint(double x, double y, double distance, double speed, double curvature) {
         super(x, y);
         this.speed = speed;
         this.distance = distance;
         this.curvature = curvature;
+    }
+
+    public Waypoint(double x, double y, double distance, double speed, double curvature, double heading) {
+        super(x, y);
+        this.speed = speed;
+        this.distance = distance;
+        this.curvature = curvature;
+        this.heading = heading;
     }
 
     public Waypoint(double x, double y) {
@@ -37,6 +45,10 @@ public class Waypoint extends Point {
 
     public double getSpeed() {
         return speed;
+    }
+
+    public double getHeading(){
+        return heading;
     }
 
     public void setSpeed(double speed) {

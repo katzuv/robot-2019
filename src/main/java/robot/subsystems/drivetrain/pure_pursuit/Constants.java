@@ -37,6 +37,7 @@ public class Constants {
     public static final double RADIUS_CLOSING = 0.05;
     public static final double START_SPACE = 0.25;
     public static final double END_SPACE = 0.25;
+    public static final double MIN_ERROR = 0.5;
 
     public static double errorAcceleration = 0.5;
 
