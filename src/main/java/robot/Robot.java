@@ -183,6 +183,13 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
         }
+
+        //Create the path and points.
+        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
+        //Generate the path to suit the pure pursuit.
+        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, 1.5, 1.4);
+        VectorPursuit vectorPursuit = new VectorPursuit(path,0.4,Constants.kP,Constants.kA,Constants.kV,false,false);
+        vectorPursuit.start();
     }
 
     /**
