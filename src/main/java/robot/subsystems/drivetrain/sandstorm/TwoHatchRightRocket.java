@@ -11,7 +11,6 @@ import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.drivetrain.ramsete.TrajectoryTracker;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
-import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.commands.WristTurn;
 
@@ -26,7 +25,7 @@ import java.util.List;
  */
 public class TwoHatchRightRocket extends CommandGroup {
 
-    public TwoHatchRightRocket(Constants.ELEVATOR_STATES height) {
+    public TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS height) {
 
         addParallel(new ElevatorCommand(height)); //Raise the elevator
         addSequential(new TrajectoryTracker(Paths.RIGHT_HAB_TO_NEAR_ROCKET, false)); //drive on a specified path.
