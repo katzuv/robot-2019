@@ -6,7 +6,6 @@ import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
-import robot.subsystems.hatch_intake.commands.ExtensionPlate;
 
 public class HatchScoring extends CommandGroup {
 
