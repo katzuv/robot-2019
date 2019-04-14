@@ -15,9 +15,10 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import robot.subsystems.climb.commands.*;
 
-import robot.subsystems.command_groups.*;
-import robot.subsystems.drivetrain.commands.SwitchCamera;
-import robot.subsystems.drivetrain.commands.VisionDrive;
+
+import edu.wpi.first.wpilibj.buttons.POVButton;
+import robot.subsystems.command_groups.CargoRubbing;
+import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.RawWristTurn;
