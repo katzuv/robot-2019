@@ -10,20 +10,24 @@ package robot.subsystems.wrist_control;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickWristTurn;
+
+import java.util.concurrent.TimeUnit;
 
 import static robot.Robot.wristControl;
 
 /**
- * The Cargo Intake subsystem, including the Intake and Wrist.
- * first the gripper
+ * New wrist subsystem for the 2019 robot 'GENESIS', after the district championships.
  *
  * @author lior
  */
 public class WristControl extends Subsystem {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private double setPointAngle;
+    private boolean raw = false;
+    private double lastWristAngle = 0;
 
     public WristControl() {
         /*
@@ -39,7 +43,10 @@ public class WristControl extends Subsystem {
         wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
         wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
 
-
+        wrist.configContinuousCurrentLimit(10, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentLimit(30, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentDuration(300, Constants.TALON_TIME_OUT);
+        wrist.enableCurrentLimit(true);
 
         /*
         PIDF config
@@ -78,43 +85,54 @@ public class WristControl extends Subsystem {
         limit switch config
          */
         wrist.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-         Constants.FORWARD_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-         Constants.TALON_TIME_OUT);
-         wrist.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-         Constants.REVERSE_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
-         Constants.TALON_TIME_OUT);
+                Constants.FORWARD_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIME_OUT);
+        wrist.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                Constants.REVERSE_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
+                Constants.TALON_TIME_OUT);
 
 
     }
 
-
-
-
-
-
-
+    /**
+     * Control the wrist manually
+     * @param speed
+     */
     public void setWristSpeed(double speed) {
+        if (speed != 0) //in cases where we set speed 0, we usually still want the wrist to hold itself in place.
+            raw = true;
         wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
     }
 
+    /**
+     * Reset the wrist encoders.
+     */
     public void resetSensors() {
         resetWristEncoder();
     }
 
     private void resetWristEncoder() {
+        lastWristAngle = 0;
         wrist.setSelectedSensorPosition(0);
     }
 
+    /**
+     * The wrist voltage which holds it in place
+     * @return
+     */
     public double stallCurrent() {
-        final double wristAngle = wristControl.getWristAngle();
-        if (wristAngle < Constants.DROP_WRIST_ANGLE && setPointAngle < Constants.DROP_WRIST_ANGLE / 2) {
+        final double wristAngle = wristControl.getWristAngle(); //for readability
+        if (dropWrist())
             return 0;
-        }
-        final double COMCosine = Math.cos(Math.toRadians(15 + wristControl.getWristAngle()));
-        return 1.1 * (0.2 * COMCosine + 0.025 * Math.signum(COMCosine));
+        double multiplier = Robot.gripperWheels.isCargoInside() ? Constants.CARGO_MULTIPLIER : 1; //TODO: add hatch comp aswell
+        return multiplier * (
+                (Constants.PEAK_PERCENT_COMPENSATION - Constants.ZERO_ANGLE_COMPENSATION) * Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle))
+                        + Constants.ZERO_ANGLE_COMPENSATION * Math.signum(Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle))));
+
     }
 
-    public void setEncoderAngle(double angle){
+    public void setEncoderAngle(double angle) {
+        lastWristAngle = angle;
         wrist.setSelectedSensorPosition(convertAngleToTicks(angle));
     }
 
@@ -145,6 +163,15 @@ public class WristControl extends Subsystem {
         return convertTicksToAngle(wrist.getSelectedSensorPosition());
 
     }
+
+    public void setWristAngle(double angle) {
+        raw = false;
+        angle = Math.max(0, angle);
+        angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(), angle);
+        SmartDashboard.putNumber("Cargo intake: target", angle);
+        setPointAngle = angle;
+    }
+
     /**
      * Beyond preventing the motors from going above a certain height, this method prevents them from moving higher or
      * lower once one of the limit switches/hall effects is pressed.
@@ -186,13 +213,6 @@ public class WristControl extends Subsystem {
         return false;
     }
 
-    public void setWristAngle(double angle) {
-        angle = Math.max(0,angle);
-        angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(),angle);
-        setPointAngle = angle;
-        wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(angle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
-    }
-
     public int getVelocity() {
 
         return wrist.getSelectedSensorVelocity();
@@ -204,5 +224,60 @@ public class WristControl extends Subsystem {
         setDefaultCommand(new JoystickWristTurn());
     }
 
+    /**
+     * Detects if the difference in wrist angle from the last loop is higher than a constant. if so, the encoder jumped.
+     * @return returns true, if there was a detected jump.
+     */
+    public boolean preventEncoderJumps() {
+        if (Math.abs(lastWristAngle - getWristAngle()) > Constants.WRIST_JUMP_ANGLE) {
+            setEncoderAngle(lastWristAngle);
+            return true;
+        }
+        lastWristAngle = getWristAngle();
+        return false;
+    }
 
+    /**
+     * This method makes sure the wrist stallCurrent gets updated
+     */
+    public void update() {
+        if (!raw) {
+            if (dropWrist())
+                wristControl.wrist.set(ControlMode.PercentOutput, 0);
+            else
+                wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
+        }
+    }
+
+    public boolean dropWrist(){
+        return (wristControl.getWristAngle() < Constants.DROP_WRIST_ANGLE &&
+                setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
+                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
+                        setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2));
+    }
+
+    @Override
+    public void periodic() {
+        update();
+    }
+
+    public void disabledPeriodic() {
+        setPointAngle = getWristAngle();
+    }
+
+    /**
+     * Update constants from the shuffleboard directly. useful for debugging
+     */
+    public void updateConstants() {
+        Constants.WRIST_FORWARD_DROP_DISABLED = getConstant("Disable: wrist forward drop", Constants.WRIST_FORWARD_DROP_DISABLED);
+        Constants.PROXIMITY_DISABLED = getConstant("Disable: Cargo proximity", Constants.PROXIMITY_DISABLED);
+    }
+    private double getConstant(String key, double constant) {
+        SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
+        return SmartDashboard.getNumber(key, constant);
+    }
+    private boolean getConstant(String key, boolean constant) {
+        SmartDashboard.putBoolean(key, SmartDashboard.getBoolean(key, constant));
+        return SmartDashboard.getBoolean(key, constant);
+    }
 }

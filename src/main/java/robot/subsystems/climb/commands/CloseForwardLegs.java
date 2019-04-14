@@ -28,7 +28,7 @@ public class CloseForwardLegs extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        climb.setLegDriveHeight(0,0);
+        climb.setLegDriveHeight(0,-0.005);
     }
 
     // Make this return true when this Command no longer needs to run execute()

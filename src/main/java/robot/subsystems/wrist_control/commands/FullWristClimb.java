@@ -1,16 +1,16 @@
-package robot.subsystems.command_groups;
+package robot.subsystems.wrist_control.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import robot.subsystems.wrist_control.Constants;
 
 /**
  *
  */
-public class AutoPickUpHatch extends CommandGroup {
+public class FullWristClimb extends CommandGroup {
 
-    public AutoPickUpHatch() {
-
-        //addSequential(new GamePiecePickup(Constants.DRIVING_TARGETS.HATCH));
-        //addSequential(new Flower(false));
+    public FullWristClimb() {
+        addSequential(new WristTurn(Constants.WRIST_ANGLES.INTAKE),1.5);
+        addSequential(new RawWristTurn(0.5190,1));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -28,5 +28,4 @@ public class AutoPickUpHatch extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     }
-
 }

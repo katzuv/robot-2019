@@ -14,14 +14,14 @@ import static robot.Robot.elevator;
 
 /**
  * Hatch subsystem for the 2019 robot 'GENESIS'
- * the hatch subsystem uses two pistons, one which grabs the hatch and the other which extends the mechanism forward.
+ * the hatch subsystem uses two pistons, one which grabs the hatch and the other which extends to push the hatch onto the field pieces.
  *
  * @author paulo
  */
 public class HatchIntake extends Subsystem {
 
     private final DoubleSolenoid flower = new DoubleSolenoid(1, Ports.flowerForward, Ports.flowerReverse);
-    private final DoubleSolenoid extensionPlate = new DoubleSolenoid(1, Ports.extensionPlateForward, Ports.extensionPlateReverse);
+    private final DoubleSolenoid fangs = new DoubleSolenoid(1, Ports.pusherForward, Ports.pusherReverse);
 
     public HatchIntake() {
     }
@@ -30,10 +30,11 @@ public class HatchIntake extends Subsystem {
      * a command to set the flower, close it if it is already open and open it if it is already closed
      */
     public void setFlower(boolean open) {
-        if (open && !elevator.isSetpointInDangerZone())
+        if (open && !elevator.isHatchMechanismInDanger())
             flower.set(DoubleSolenoid.Value.kForward);
         else
-            flower.set(DoubleSolenoid.Value.kReverse);
+            if(!areFangsExtended())
+                flower.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
@@ -46,18 +47,18 @@ public class HatchIntake extends Subsystem {
     /**
      * if true, extend forward
      */
-    public void setExtensionPlate(boolean extend) {
-        if (extend && !elevator.isSetpointInDangerZone())
-            extensionPlate.set(DoubleSolenoid.Value.kForward);
+    public void setFangs(boolean extend) {
+        if (extend && !elevator.isHatchMechanismInDanger() && isFlowerOpen())
+            fangs.set(DoubleSolenoid.Value.kForward);
         else
-            extensionPlate.set(DoubleSolenoid.Value.kReverse);
+            fangs.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
-     * @return true if the flower is extended and false otherwise
+     * @return true if the fangs is extended and false otherwise
      */
-    public boolean isExtensionPlateExtended() {
-        return extensionPlate.get() == DoubleSolenoid.Value.kForward;
+    public boolean areFangsExtended() {
+        return fangs.get() == DoubleSolenoid.Value.kForward;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class HatchIntake extends Subsystem {
      * This is called whenever the mechanism is in danger.
      */
     public void emergencyClose() {
-        setExtensionPlate(false);
+        setFangs(false);
         setFlower(false);
     }
 }

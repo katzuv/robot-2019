@@ -1,4 +1,4 @@
-package robot.subsystems.drivetrain.pure_pursuit;
+package robot.utilities;
 
 /**
  * A generic point class for storing (x, y) coordinates

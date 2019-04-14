@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.Robot;
 
 /**
  * Climbing subsystem for the 2019 robot 'GENESIS'
@@ -90,7 +91,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     public void setLegBLHeight(double height, double legOffset) {
         SmartDashboard.putNumber("target BL", height);
         if (!isCompromised())
-            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+            talonBL.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, 13 * (legOffset + getLegBRHeight() - getLegBLHeight()));
     }
 
     /**
@@ -98,7 +99,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      */
     public void setLegBRHeight(double height, double legOffset) {
         if (!isCompromised())
-            talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, Constants.CLIMB_PIDFE[4] * legOffset);
+            talonBR.set(ControlMode.MotionMagic, metersToTicks(height), DemandType.ArbitraryFeedForward, 13 * (legOffset + getLegBLHeight() - getLegBRHeight()));
     }
 
     /**
@@ -173,9 +174,9 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      *
      * @param cruiseVelocity cruise velocity in meters [0.0 - 0.55]
      */
-    public void configFrontCruiseVelocity(double cruiseVelocity){
-        talonFL.configMotionCruiseVelocity(metersToTicks(cruiseVelocity)/10, Constants.TALON_TIMEOUT_MS);
-        talonFR.configMotionCruiseVelocity(metersToTicks(cruiseVelocity)/10, Constants.TALON_TIMEOUT_MS);
+    public void configFrontCruiseVelocity(double cruiseVelocity) {
+        talonFL.configMotionCruiseVelocity(metersToTicks(cruiseVelocity) / 10, Constants.TALON_TIMEOUT_MS);
+        talonFR.configMotionCruiseVelocity(metersToTicks(cruiseVelocity) / 10, Constants.TALON_TIMEOUT_MS);
     }
 
     /**
@@ -183,25 +184,25 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      *
      * @param cruiseVelocity cruise velocity in meters [0.0 - 0.55]
      */
-    public void configBackCruiseVelocity(double cruiseVelocity){
-        talonFL.configMotionCruiseVelocity(metersToTicks(cruiseVelocity)/10, Constants.TALON_TIMEOUT_MS);
-        talonFR.configMotionCruiseVelocity(metersToTicks(cruiseVelocity)/10, Constants.TALON_TIMEOUT_MS);
+    public void configBackCruiseVelocity(double cruiseVelocity) {
+        talonFL.configMotionCruiseVelocity(metersToTicks(cruiseVelocity) / 10, Constants.TALON_TIMEOUT_MS);
+        talonFR.configMotionCruiseVelocity(metersToTicks(cruiseVelocity) / 10, Constants.TALON_TIMEOUT_MS);
     }
 
     /**
      * Reset the cruise speed of the front legs to the defined default
      */
-    public void configFrontCruiseVelocity(){
-        talonFL.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY)/10, Constants.TALON_TIMEOUT_MS);
-        talonFR.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY)/10, Constants.TALON_TIMEOUT_MS);
+    public void configFrontCruiseVelocity() {
+        talonFL.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY) / 10, Constants.TALON_TIMEOUT_MS);
+        talonFR.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY) / 10, Constants.TALON_TIMEOUT_MS);
     }
 
     /**
      * Reset the cruise speed of the front legs to the defined default
      */
-    public void configBackCruiseVelocity(){
-        talonFL.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY)/10, Constants.TALON_TIMEOUT_MS);
-        talonFR.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY)/10, Constants.TALON_TIMEOUT_MS);
+    public void configBackCruiseVelocity() {
+        talonFL.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY) / 10, Constants.TALON_TIMEOUT_MS);
+        talonFR.configMotionCruiseVelocity(metersToTicks(Constants.MOTION_MAGIC_CRUISE_VELOCITY) / 10, Constants.TALON_TIMEOUT_MS);
     }
 
     /**
@@ -224,7 +225,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         if (isCompromised()) {
             stillDisabled = true;
             emergencyStop();
-            if(isCompromisedElectronical())
+            if (isCompromisedElectronical())
                 return;
             /*
              * after stopping the motors, if the error is electronical, don't attempt to fix the legs.
@@ -234,25 +235,24 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
             attemptCompromisedFix();
         }
 
-        if(Math.abs(getLegBRHeight() - getLegBLHeight()) < Constants.LEGS_EMERGENCY_OKAY && Math.abs(getLegFRHeight() - getLegFLHeight()) < Constants.LEGS_EMERGENCY_OKAY)
-            stillDisabled = false;
+        if (stillDisabled)
+            if (Math.abs(getLegBRHeight() - getLegBLHeight()) < Constants.LEGS_EMERGENCY_OKAY && Math.abs(getLegFRHeight() - getLegFLHeight()) < Constants.LEGS_EMERGENCY_OKAY)
+                stillDisabled = false;
     }
 
     private void attemptCompromisedFix() {
-        if(Math.abs(getLegBRHeight() - getLegBLHeight()) >= Constants.LEGS_EMERGENCY_OKAY){
-            _setLegBLSpeed(Math.signum(getLegBRHeight() - getLegBLHeight())*Constants.EMERGENCY_FIX_SPEED);
-            _setLegBRSpeed(Math.signum(getLegBLHeight() - getLegBRHeight())*Constants.EMERGENCY_FIX_SPEED);
-        }
-        else{
+        if (Math.abs(getLegBRHeight() - getLegBLHeight()) >= Constants.LEGS_EMERGENCY_OKAY) {
+            _setLegBLSpeed(Math.signum(getLegBRHeight() - getLegBLHeight()) * Constants.EMERGENCY_FIX_SPEED);
+            _setLegBRSpeed(Math.signum(getLegBLHeight() - getLegBRHeight()) * Constants.EMERGENCY_FIX_SPEED);
+        } else {
             _setLegBLSpeed(0);
             _setLegBRSpeed(0);
         }
 
-        if(Math.abs(getLegFRHeight() - getLegFLHeight()) >= Constants.LEGS_EMERGENCY_OKAY){
-            _setLegFLSpeed(Math.signum(getLegFRHeight() - getLegFLHeight())*Constants.EMERGENCY_FIX_SPEED);
-            _setLegFRSpeed(Math.signum(getLegFLHeight() - getLegFRHeight())*Constants.EMERGENCY_FIX_SPEED);
-        }
-        else{
+        if (Math.abs(getLegFRHeight() - getLegFLHeight()) >= Constants.LEGS_EMERGENCY_OKAY) {
+            _setLegFLSpeed(Math.signum(getLegFRHeight() - getLegFLHeight()) * Constants.EMERGENCY_FIX_SPEED);
+            _setLegFRSpeed(Math.signum(getLegFLHeight() - getLegFRHeight()) * Constants.EMERGENCY_FIX_SPEED);
+        } else {
             _setLegFLSpeed(0);
             _setLegFRSpeed(0);
         }
@@ -280,9 +280,10 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
      * A sub command of isCompromised, only this method only checks whether any of the encoders disconnected.
      * This method is used to differentiate between what problems we want to try to fix in real time, to the ones we have
      * to stop until a manual check is done.
+     *
      * @return if any of the climbing sensors is compromised.
      */
-    private boolean isCompromisedElectronical(){
+    public boolean isCompromisedElectronical() {
         return ((!talonFL.getSensorCollection().isFwdLimitSwitchClosed() && !talonFL.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonFR.getSensorCollection().isFwdLimitSwitchClosed() && !talonFR.getSensorCollection().isRevLimitSwitchClosed()) ||
                 (!talonBL.getSensorCollection().isFwdLimitSwitchClosed() && !talonBL.getSensorCollection().isRevLimitSwitchClosed()) ||
@@ -302,13 +303,14 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
 
     /**
      * don't use unless you are sure of what you are doing.
+     *
      * @param speed
      */
-    private void _setLegFLSpeed(double speed){
+    private void _setLegFLSpeed(double speed) {
         talonFL.set(ControlMode.PercentOutput, speed);
     }
 
-    private void _setLegFRSpeed(double speed){
+    private void _setLegFRSpeed(double speed) {
         talonFR.set(ControlMode.PercentOutput, speed);
 
     }
@@ -320,6 +322,7 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
     public void _setLegBRSpeed(double speed) {
         talonBR.set(ControlMode.PercentOutput, speed);
     }
+
     /**
      * reset all four encoder values
      */
@@ -392,6 +395,13 @@ public class Climb extends Subsystem { //TODO: only work last 30 seconds
         motorController.config_kF(0, pidfConstants[3], timeout);
         motorController.configMotionCruiseVelocity(cruise);
         motorController.configMotionAcceleration(acceleration);
+    }
+
+    public boolean isClimbing() {
+        return Robot.climb.getLegFRHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH ||
+                Robot.climb.getLegFLHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH ||
+                Robot.climb.getLegBRHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH ||
+                Robot.climb.getLegBLHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH;
     }
 
     //TODO: move this enum to the Constants class.
