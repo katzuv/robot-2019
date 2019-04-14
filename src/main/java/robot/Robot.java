@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.drivetrain.sandstorm.TwoHatchLeftRocket;
 import robot.subsystems.drivetrain.sandstorm.OneHatchCargo;
@@ -98,16 +101,6 @@ public class Robot extends TimedRobot {
 
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
-        m_chooser.addOption("Right Rocket level 2", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH));
-        m_chooser.addOption("Right Rocket level 3", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
-
-        m_chooser.addOption("Left rocket level 1", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
-        m_chooser.addOption("Left rocket level 2", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH));
-        m_chooser.addOption("Left rocket level 3", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
-
-        m_chooser.addOption("Cargo ship", new OneHatchCargo(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
-
         m_chooser.addOption("Do nothing", null);
 
         m_chooser.addOption("Talon test", new TalonTest());
@@ -176,8 +169,8 @@ public class Robot extends TimedRobot {
         //Create the path and points.
         Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.7, 3.65), 90,0.5);
         //Generate the path to suit the pure pursuit.
-        path.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, 1.5, 1.4);
-        PurePursue purePursue = new PurePursue(path,0.4,Constants.kP,Constants.kA,Constants.kV,false,false);
+        path.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, 1.5, 1.4);
+        PurePursue purePursue = new PurePursue(path,0.4,robot.subsystems.drivetrain.pure_pursuit.Constants.kP,robot.subsystems.drivetrain.pure_pursuit.Constants.kA,robot.subsystems.drivetrain.pure_pursuit.Constants.kV,false,false);
         System.out.println(path);
         purePursue.start();
     }
@@ -196,14 +189,12 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        cargoIntake.resetSensors(); // TODO: move to auto init. deal with all resets better
 
         navx.reset();
         drivetrain.resetLocation();
         drivetrain.resetEncoders();
         elevator.resetEncoders();
         navx.reset();
-        cargoIntake.resetSensors();
         compressor.start();
     }
 

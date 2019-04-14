@@ -7,6 +7,7 @@
 
 package robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -131,26 +132,26 @@ public class OI {
         povr.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
                 new CargoScoring(1, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL1_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(1, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LOADING_STATION))))));
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LOADING_STATION))))));
 
         povl.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
                 new CargoScoring(2, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(2, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH))))));
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL2_HATCH))))));
 
         povu.whenPressed(new ClimbConditionalCommand(new ShiftButton(xbox, 7,
                 new CargoScoring(3, true),
                 new ShiftButton(xbox, 8,
-                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH),
+                        new HatchScoring(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_HATCH),
                         new ShiftButton(xbox, 4,
                                 new CargoScoring(3, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO))))));
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_STATES.LEVEL3_CARGO))))));
 
         RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
         LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));

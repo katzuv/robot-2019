@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import robot.subsystems.drivetrain.pure_pursuit.*;
+import robot.utilities.Point;
+import robot.utilities.Vector;
 
 
 import static robot.Robot.drivetrain;
@@ -72,20 +74,10 @@ public class PurePursue extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-<<<<<<<<< Temporary merge branch 1
         updatePoint();
         updateLookaheadInPath(path);
         drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
-=========
-        if (!isFinished()){
 
-            updatePoint();
-        updateLookaheadInPath(path);
-        drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
-        SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
-        SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
-    }
->>>>>>>>> Temporary merge branch 2
     }
 
     // Make this return true when this Command no longer needs to run execute()
