@@ -41,7 +41,7 @@ public class VisionDrive extends Command {
         double tangentVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocityPid.getOutput(visionAngle, 0);
         double linearVelocity = linearVelocityPid.getOutput(visionDistance, TARGET_VISION_DISTANCE);
 
-        drivetrain.setVelocity(linearVelocity + tangentVelocity, linearVelocity - tangentVelocity);
+        drivetrain.setVelocity(linearVelocity - tangentVelocity, linearVelocity + tangentVelocity);
     }
 
     protected boolean isFinished() {
