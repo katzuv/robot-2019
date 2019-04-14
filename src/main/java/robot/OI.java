@@ -140,7 +140,7 @@ public class OI {
                         new ElevatorCommand(0))
         ); //If x is held, go to cargo height, and if not, goes down to zero.
 
-        private int shiftButton = 3;
+        int shiftButton = 3;
         povr.whenPressed(
                 new ShiftButton(xbox, shiftButton,
                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_CARGO),
@@ -158,7 +158,6 @@ public class OI {
                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO),
                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH))
         );
-
         left_joystick_six.toggleWhenPressed(new VisionDrive());
         /*
         left_joystick_two.whenPressed(new CalibrateLegs());
