@@ -4,9 +4,14 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
-import robot.subsystems.drivetrain.pure_pursuit.*;
+import robot.subsystems.drivetrain.pure_pursuit.Constants;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.VectorPursuit;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
+import robot.utilities.Point;
 
-import static robot.Robot.*;
+import static robot.Robot.drivetrain;
+import static robot.Robot.visionTable;
 
 
 /**
@@ -30,10 +35,7 @@ public class GamePiecePickup extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if (cargoIntake.isCargoInside())
-            visionTable.getEntry("game_piece").setString("cargo");
-        else
-            visionTable.getEntry("game_piece").setString("hatch");
+        visionTable.getEntry("game_piece").setString("hatch");
         CargotargetAngleEntry = Robot.visionTable.getEntry("cargo_angle");
         CargotargetDistanceEntry = Robot.visionTable.getEntry("cargo_distance");
         HatchAngleEntry = Robot.visionTable.getEntry("hatch_angle");
@@ -64,7 +66,7 @@ public class GamePiecePickup extends Command {
         SmartDashboard.putNumber("target angle ", targetAngle);
         path1 = new Path(new Point(0, 0), 0, target, targetFieldAngle, Constants.TURN_RADIUS);
         path1.generateAll(Constants.WEIGHT_DATA, Constants.WEIGHT_SMOOTH, Constants.TOLERANCE, Constants.MAX_ACCEL, Constants.MAX_PATH_VELOCITY);
-        PurePursue pursue = new PurePursue(path1, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
+        VectorPursuit pursue = new VectorPursuit(path1, Constants.LOOKAHEAD_DISTANCE, Constants.kP, Constants.kA, Constants.kV, true, false);
         pursue.start();
     }
 
