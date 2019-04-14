@@ -131,7 +131,6 @@ public class OI {
         a.whenPressed(new Flower());
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.FORWARD));
-        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
 
         povd.whenPressed(
                 new ShiftButton(xbox, 3,
