@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.drivetrain.sandstorm.TwoHatchLeftRocket;
 import robot.subsystems.drivetrain.sandstorm.OneHatchCargo;
@@ -109,7 +112,15 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("Cargo ship", new OneHatchCargo(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
 
         m_chooser.addOption("Do nothing", null);
-
+        Path p = new Path(new Waypoint(0, 0), new Waypoint(0,1), new Waypoint(1,1));
+        p.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
+        m_chooser.addOption("Pure pursuit test", new PurePursue(p,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,false,
+                false
+        ));
         m_chooser.addOption("Talon test", new TalonTest());
         SmartDashboard.putData("Sandstorm", m_chooser);
 
