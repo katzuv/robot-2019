@@ -3,6 +3,8 @@ package robot.subsystems.drivetrain.pure_pursuit;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.utilities.Point;
+import robot.utilities.Vector;
 
 import static robot.Robot.drivetrain;
 
@@ -72,8 +74,8 @@ public class VectorPursuit extends Command {
         if (!isFinished()) {
             updatePoint();
             drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
-            SmartDashboard.putNumber("x", drivetrain.currentLocation.x);
-            SmartDashboard.putNumber("y", drivetrain.currentLocation.y);
+            SmartDashboard.putNumber("x", drivetrain.currentLocation.getX());
+            SmartDashboard.putNumber("y", drivetrain.currentLocation.getY());
         }
     }
 

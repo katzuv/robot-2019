@@ -1,5 +1,7 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
+import robot.utilities.Point;
+
 public class Main {
     public static void main(String[] args){
         Point a = new Point(1,0);
