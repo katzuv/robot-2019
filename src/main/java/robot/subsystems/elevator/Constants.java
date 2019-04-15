@@ -68,7 +68,7 @@ public class Constants {
      */
     public enum ELEVATOR_HEIGHTS {
         INTAKE_CARGO(0.085),
-        LOADING_STATION(0.12),
+        LOADING_STATION(0.21),
         LEVEL1_HATCH(0.3),
         LEVEL2_HATCH(1),
         LEVEL3_HATCH(1.575),

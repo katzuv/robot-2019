@@ -334,12 +334,12 @@ public class Drivetrain extends Subsystem {
      * Update constants from the shuffleboard directly. useful for debugging
      */
     public void updateConstants() {
-        Constants.PIDAngularVelocity[0] = getConstant("Vision Drive: turn kp", Constants.PIDAngularVelocity[0]);
-        Constants.PIDAngularVelocity[1] = getConstant("Vision Drive: turn ki", Constants.PIDAngularVelocity[1]);
-        Constants.PIDAngularVelocity[2] = getConstant("Vision Drive: turn kd", Constants.PIDAngularVelocity[2]);
-        Constants.PIDLinearVelocity[0] = getConstant("Vision Drive: linear kp", Constants.PIDLinearVelocity[0]);
-        Constants.PIDLinearVelocity[1] = getConstant("Vision Drive: linear ki", Constants.PIDLinearVelocity[1]);
-        Constants.PIDLinearVelocity[2] = getConstant("Vision Drive: linear kd", Constants.PIDLinearVelocity[2]);
+        Constants.PIDVisionTurn[0] = getConstant("Vision Drive: turn kp", Constants.PIDVisionTurn[0]);
+        Constants.PIDVisionTurn[1] = getConstant("Vision Drive: turn ki", Constants.PIDVisionTurn[1]);
+        Constants.PIDVisionTurn[2] = getConstant("Vision Drive: turn kd", Constants.PIDVisionTurn[2]);
+        Constants.PIDVisionForward[0] = getConstant("Vision Drive: forward kp", Constants.PIDVisionForward[0]);
+        Constants.PIDVisionForward[1] = getConstant("Vision Drive: forward ki", Constants.PIDVisionForward[1]);
+        Constants.PIDVisionForward[2] = getConstant("Vision Drive: forward kd", Constants.PIDVisionForward[2]);
     }
     private double getConstant(String key, double constant) {
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
