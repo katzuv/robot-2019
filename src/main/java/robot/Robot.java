@@ -244,6 +244,7 @@ public class Robot extends TimedRobot {
             SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
             SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
             SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
+            SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
         }
     }
 

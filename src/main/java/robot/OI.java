@@ -142,7 +142,7 @@ public class OI {
 
         povd.whenPressed(
                 new ShiftButton(xbox, shiftButton,
-                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO),
+                        new WristAndElevatorCommand(Constants.WRIST_ANGLES.FORWARD.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()),
                         new ElevatorCommand(0)
                 )
         ); //If x is held, go to cargo height, and if not, goes down to zero.
@@ -160,7 +160,7 @@ public class OI {
                         new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)),
                         new ShiftButton(xbox, shiftButton,
                                 new CargoScoring(1, false),
-                                null
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)
                         )
                 )
 
@@ -171,7 +171,7 @@ public class OI {
                         new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)),
                         new ShiftButton(xbox, shiftButton,
                                new CargoScoring(2, false),
-                               null
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)
                         )
                 )
         );
@@ -181,7 +181,7 @@ public class OI {
                         new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)),
                         new ShiftButton(xbox, shiftButton,
                                 new CargoScoring(3, false),
-                                null
+                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)
                         )
                 )
         );
