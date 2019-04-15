@@ -8,10 +8,16 @@
 package robot;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,8 +25,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
-import robot.subsystems.drivetrain.sandstorm.TwoHatchLeftRocket;
 import robot.subsystems.drivetrain.sandstorm.OneHatchCargo;
+import robot.subsystems.drivetrain.sandstorm.TwoHatchLeftRocket;
 import robot.subsystems.drivetrain.sandstorm.TwoHatchRightRocket;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
@@ -114,6 +120,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
+
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setWhiteBalanceAuto();
+        camera.setExposureAuto();
 
     }
 
@@ -247,6 +257,7 @@ public class Robot extends TimedRobot {
             e.printStackTrace();
         }
     }
+
     public void printAllCommands() {
         SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
         SmartDashboard.putString("Wrist command", wristControl.getCurrentCommandName());
