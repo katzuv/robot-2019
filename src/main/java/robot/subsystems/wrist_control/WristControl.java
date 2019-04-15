@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
-import java.util.concurrent.TimeUnit;
-
 import static robot.Robot.wristControl;
 
 /**
@@ -96,6 +94,7 @@ public class WristControl extends Subsystem {
 
     /**
      * Control the wrist manually
+     *
      * @param speed
      */
     public void setWristSpeed(double speed) {
@@ -118,6 +117,7 @@ public class WristControl extends Subsystem {
 
     /**
      * The wrist voltage which holds it in place
+     *
      * @return
      */
     public double stallCurrent() {
@@ -168,7 +168,9 @@ public class WristControl extends Subsystem {
         raw = false;
         angle = Math.max(0, angle);
         angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(), angle);
-        SmartDashboard.putNumber("Cargo intake: target", angle);
+        if (Robot.debug) {
+            SmartDashboard.putNumber("Cargo intake: target", angle);
+        }
         setPointAngle = angle;
     }
 
@@ -226,6 +228,7 @@ public class WristControl extends Subsystem {
 
     /**
      * Detects if the difference in wrist angle from the last loop is higher than a constant. if so, the encoder jumped.
+     *
      * @return returns true, if there was a detected jump.
      */
     public boolean preventEncoderJumps() {
@@ -249,7 +252,7 @@ public class WristControl extends Subsystem {
         }
     }
 
-    public boolean dropWrist(){
+    public boolean dropWrist() {
         return (wristControl.getWristAngle() < Constants.DROP_WRIST_ANGLE &&
                 setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
                 (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
@@ -272,10 +275,12 @@ public class WristControl extends Subsystem {
         Constants.WRIST_FORWARD_DROP_DISABLED = getConstant("Disable: wrist forward drop", Constants.WRIST_FORWARD_DROP_DISABLED);
         Constants.PROXIMITY_DISABLED = getConstant("Disable: Cargo proximity", Constants.PROXIMITY_DISABLED);
     }
+
     private double getConstant(String key, double constant) {
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
         return SmartDashboard.getNumber(key, constant);
     }
+
     private boolean getConstant(String key, boolean constant) {
         SmartDashboard.putBoolean(key, SmartDashboard.getBoolean(key, constant));
         return SmartDashboard.getBoolean(key, constant);

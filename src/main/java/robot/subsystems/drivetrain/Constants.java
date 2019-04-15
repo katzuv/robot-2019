@@ -32,8 +32,8 @@ public class Constants {
     public static final double[] PIDFLeft = isRobotA ? new double[]{6, 0.0042, 2, 0} : new double[]{1.5, 0, 10, 1.3};
     public static final double[] PIDFRight = isRobotA ? new double[]{6, 0.0042, 2, 0} : new double[]{1.5, 0, 10, 1.3};
 
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.025, 0, 0.01} : new double[]{0, 0, 0};
-    public static double[] PIDVisionForward = isRobotA ? new double[]{0.41, 0.0008, 0.1} : new double[]{0, 0, 0};
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0, 0.02} : new double[]{0, 0, 0};
+    public static double[] PIDVisionForward = isRobotA ? new double[]{0.25, 0.0008, 0.15} : new double[]{0, 0, 0};
 
     public static final double distanceFromEnd = 2;
     public static final double ENDING_TOLERANCE = 0.05;

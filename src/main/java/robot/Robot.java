@@ -56,9 +56,11 @@ public class Robot extends TimedRobot {
     public static final GripperWheels gripperWheels = new GripperWheels();
     public static final Compressor compressor = new Compressor(0);
     public final static boolean isRobotA = true;
+    public final static boolean debug = true;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
+
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -122,9 +124,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Robot A", isRobotA);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setResolution(320, 240);
+        camera.setExposureManual(35);
         camera.setWhiteBalanceAuto();
-        camera.setExposureAuto();
-
     }
 
 
@@ -139,7 +141,9 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         addToShuffleboard();
-        updateDashboardConstants();
+        if(debug) {
+            updateDashboardConstants();
+        }
         SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
     }
 
@@ -219,25 +223,28 @@ public class Robot extends TimedRobot {
 
     public void addToShuffleboard() {
         SmartDashboard.putData(pdp);
-        SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
         SmartDashboard.putNumber("Elevator: height - centimeters", elevator.getHeight());
-        SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
         SmartDashboard.putNumber("Wrist: wrist angle", wristControl.getWristAngle());
-        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
         SmartDashboard.putBoolean("Flower open", hatchIntake.isFlowerOpen());
-        /*SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
-        SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
-        SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
-        SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
-        SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-        SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());*/
+
         SmartDashboard.putData("navx", navx);
         SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
         SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(150));
-        SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
-        SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
-        SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
-        //printAllCommands();
+
+        if(debug) {
+            SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
+            SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
+            SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
+            SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
+            SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
+            SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
+            SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
+            SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
+            SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());
+            SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
+            SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
+            SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
+        }
     }
 
     public void updateDashboardConstants() {

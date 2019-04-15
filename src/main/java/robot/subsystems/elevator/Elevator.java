@@ -124,7 +124,9 @@ public class Elevator extends Subsystem {
      * Moves the elevator to the current setpoint, assigned in setHeight()
      */
     public void moveElevator() {
-        SmartDashboard.putNumber("setPoint ", setpoint);
+        if(Robot.debug) {
+            SmartDashboard.putNumber("setPoint ", setpoint);
+        }
     if (getHeight() < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT && setpoint < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT) //let the robot go if its below a certain height
             masterMotor.set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, Constants.FLOOR_FEEDFORWARD);
         else if (atSecondStage())
