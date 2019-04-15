@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.command_groups.CargoRubbing;
 import robot.subsystems.command_groups.VisionPlaceHatch;
 import robot.subsystems.command_groups.VisionTakeHatch;
+import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
@@ -27,6 +28,7 @@ import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.utilities.ButtonCombination;
 import robot.utilities.ShiftButton;
 import robot.utilities.TriggerButton;
+import robot.utilities.VisionConditionalCommand;
 
 import static robot.subsystems.drivetrain.Constants.SLOW_JOYSTICK_SPEED;
 
@@ -154,7 +156,7 @@ public class OI {
 
         povr.whenPressed(
                 new ShiftButton(xbox, hatchButton,
-                        new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH),
+                        new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)),
                         new ShiftButton(xbox, shiftButton,
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_CARGO),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)
@@ -165,7 +167,7 @@ public class OI {
 
         povl.whenPressed(
                 new ShiftButton(xbox, hatchButton,
-                        new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH),
+                        new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)),
                         new ShiftButton(xbox, shiftButton,
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_CARGO),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)
@@ -175,13 +177,15 @@ public class OI {
 
         povr.whenPressed(
                 new ShiftButton(xbox, hatchButton,
-                        new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH),
+                        new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)),
                         new ShiftButton(xbox, shiftButton,
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO),
                                 new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)
                         )
                 )
         );
+
+        left_joystick_six.toggleWhenPressed(new VisionDrive());
 
         /*
         left_joystick_two.whenPressed(new CalibrateLegs());

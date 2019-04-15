@@ -21,6 +21,6 @@ public class VisionPlaceHatch extends CommandGroup {
         });
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
-        addSequential(new HatchScoring(height));
+        addSequential(new HatchScoring(height, false));
     }
 }

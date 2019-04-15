@@ -13,21 +13,29 @@ import robot.subsystems.wrist_control.commands.WristTurn;
  */
 public class HatchScoring extends CommandGroup {
 
-    public HatchScoring(double height) {
-        addSequential(
-                new CommandGroup() {
-                    {
-                        addParallel(new ElevatorCommand(height));
-                        addParallel(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
+    public HatchScoring(double height, boolean raise) {
+        if(raise) {
+            addSequential(
+                    new CommandGroup() {
+                        {
+                            addParallel(new ElevatorCommand(height));
+                            addParallel(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
+                        }
                     }
-                }
-        );
+            );
+        }
+
         addSequential(new Flower(true));
         addSequential(new WaitCommand(0.2));
         addSequential(new Fangs(true, 0.5));
     }
 
-    public HatchScoring(Constants.ELEVATOR_HEIGHTS height) {
-        this(height.getLevelHeight());
+    public HatchScoring(Constants.ELEVATOR_HEIGHTS height, boolean raise) {
+        this(height.getLevelHeight(), raise);
     }
+
+    public HatchScoring(Constants.ELEVATOR_HEIGHTS height) {
+        this(height, false);
+    }
+
 }
