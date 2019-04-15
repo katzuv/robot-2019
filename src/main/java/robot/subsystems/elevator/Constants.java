@@ -72,7 +72,7 @@ public class Constants {
         LEVEL1_HATCH(0.3),
         LEVEL2_HATCH(1),
         LEVEL3_HATCH(1.575),
-        SHIP_CARGO(0.70),
+        SHIP_CARGO(0.971),
         LEVEL1_CARGO(0.3),
         LEVEL2_CARGO(1),
         LEVEL3_CARGO(1.57),

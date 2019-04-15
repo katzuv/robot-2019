@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.command_groups.CargoRubbing;
+import robot.subsystems.command_groups.CargoScoring;
 import robot.subsystems.command_groups.VisionPlaceHatch;
 import robot.subsystems.command_groups.VisionTakeHatch;
 import robot.subsystems.drivetrain.commands.VisionDrive;
@@ -24,11 +25,9 @@ import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.GripperControl;
+import robot.subsystems.wrist_control.commands.WristAndElevatorCommand;
 import robot.subsystems.wrist_control.commands.WristTurn;
-import robot.utilities.ButtonCombination;
-import robot.utilities.ShiftButton;
-import robot.utilities.TriggerButton;
-import robot.utilities.VisionConditionalCommand;
+import robot.utilities.*;
 
 import static robot.subsystems.drivetrain.Constants.SLOW_JOYSTICK_SPEED;
 
@@ -135,16 +134,14 @@ public class OI {
 
         a.whenPressed(new Flower());
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.FORWARD));
-        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UP));
+        x.whenPressed(new ElevatorWristConditional(new WristTurn(Constants.WRIST_ANGLES.FORWARD)));
 
-
-        int shiftButton = 3; // (x)
+        int shiftButton = 4; // (x)
         int hatchButton = 8; // Start
         int cargoButton = 7; // Select
 
         povd.whenPressed(
-                new ShiftButton(xbox, 3,
+                new ShiftButton(xbox, shiftButton,
                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO),
                         new ElevatorCommand(0)
                 )
@@ -154,12 +151,16 @@ public class OI {
                 new ShiftButton(xbox, cargoButton, new VisionTakeHatch(), null)
         );
 
+        select.whenPressed(new ShiftButton(
+                xbox, shiftButton, new CargoScoring(0, false), null)
+        );
+
         povr.whenPressed(
                 new ShiftButton(xbox, hatchButton,
                         new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)),
                         new ShiftButton(xbox, shiftButton,
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_CARGO),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)
+                                new CargoScoring(1, false),
+                                null
                         )
                 )
 
@@ -169,18 +170,18 @@ public class OI {
                 new ShiftButton(xbox, hatchButton,
                         new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)),
                         new ShiftButton(xbox, shiftButton,
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_CARGO),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)
+                               new CargoScoring(2, false),
+                               null
                         )
                 )
         );
 
-        povr.whenPressed(
+        povu.whenPressed(
                 new ShiftButton(xbox, hatchButton,
                         new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)),
                         new ShiftButton(xbox, shiftButton,
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)
+                                new CargoScoring(3, false),
+                                null
                         )
                 )
         );
