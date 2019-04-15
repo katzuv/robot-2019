@@ -158,7 +158,8 @@ public class OI {
                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO),
                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH))
         );
-        left_joystick_six.toggleWhenPressed(new VisionDrive());
+        left_joystick_six.toggleWhenPressed(new VisionTakeHatch());
+        left_joystick_seven.toggleWhenPressed(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
         /*
         left_joystick_two.whenPressed(new CalibrateLegs());
         left_joystick_eleven.whenPressed(new CloseForwardLegs());

@@ -2,9 +2,7 @@ package robot.subsystems.drivetrain.commands;
 
 import com.stormbots.MiniPID;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
 
@@ -15,60 +13,47 @@ import static robot.Robot.drivetrain;
  */
 public class VisionDrive extends Command {
     /*
-        For now have all the constants here for testing, when done move to constants file
-     */
-    private double TARGET_VISION_DISTANCE = 1.2; //distance from the target to stop
-    private double END_ANGLE_TOLERANCE = 0.7;
-    private double STUPID_ANGLE_FIX = 0.3; // the camera wasn't centered so i added this
-    private double EXTRA_PID_DISTANCE = 0.15;
-    private double TIMER_DELAY = 0.1;
-    private MiniPID angularVelocityPid = new MiniPID(Constants.PIDAngularVelocity[0], Constants.PIDAngularVelocity[1], Constants.PIDAngularVelocity[2]);
-    private MiniPID linearVelocityPid = new MiniPID(Constants.PIDLinearVelocity[0], Constants.PIDLinearVelocity[1], Constants.PIDLinearVelocity[2]);
+            For now have all the constants here for testing, when done move to constants file
+         */
+    private double TARGET_VISION_DISTANCE = 1.05; //distance from the target to stop
+    private static final double EXIT_TOLERANCE = 0.23;
+    private MiniPID turnPid = new MiniPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
+    private MiniPID forwardPid = new MiniPID(Constants.PIDVisionForward[0], Constants.PIDVisionForward[1], Constants.PIDVisionForward[2]);
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
     private NetworkTableEntry distanceEntry = Robot.visionTable.getEntry("tape_distance");
     private NetworkTableEntry seenEntry = Robot.visionTable.getEntry("tape_seen");
-    private Timer timeout = new Timer(); //this timer is meant to prevent jumps where the vision target gets lost
 
     public VisionDrive() {
-        angularVelocityPid.setOutputLimits(-3, 3);
-        linearVelocityPid.setOutputLimits(-1.5, 1.5);
-        linearVelocityPid.setDirection(true); //reverse the direction
+        turnPid.setOutputLimits(-0.5, 0.5);
+        forwardPid.setOutputLimits(-0.5, 0.5);
+        forwardPid.setDirection(true);
         requires(drivetrain);
     }
 
     protected void initialize() {
         updateConstants();
-        timeout.reset();
-        if (!seenEntry.getBoolean(false))
-            cancel();
     }
 
     protected void execute() {
-        double visionAngle = angleEntry.getDouble(0) - STUPID_ANGLE_FIX;
+        double visionAngle = angleEntry.getDouble(0);
         double visionDistance = distanceEntry.getDouble(0);
 
-        double tangentVelocity = Constants.ROBOT_WIDTH / 2.0 * angularVelocityPid.getOutput(visionAngle, 0);
-        double linearVelocity = linearVelocityPid.getOutput(visionDistance, TARGET_VISION_DISTANCE-EXTRA_PID_DISTANCE);
+        double speed = forwardPid.getOutput(visionDistance, TARGET_VISION_DISTANCE);
+        double turn = turnPid.getOutput(visionAngle, 0);
 
-        drivetrain.setVelocity(linearVelocity - tangentVelocity, linearVelocity + tangentVelocity);
+        if (visionAngle > 1) {
+            turn -= Constants.MIN_AIM;
+        } else if (visionAngle < -1) {
+            turn += Constants.MIN_AIM;
+        }
 
-        if (!seenEntry.getBoolean(false)) {
-            System.out.print(timeout.get());
-            System.out.println(timeout.get()==0);
-            if (timeout.get() == 0)
-                timeout.start();
+        if (seenEntry.getBoolean(false)) {
+            drivetrain.setSpeed(speed - turn, speed + turn);
         }
-        else {
-            timeout.stop();
-            timeout.reset();
-        }
-        SmartDashboard.putNumber("timeout", timeout.get());
     }
 
     protected boolean isFinished() {
-        return (!seenEntry.getBoolean(false) && timeout.get() > TIMER_DELAY) || (distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE && Math.abs(angleEntry.getDouble(0) - STUPID_ANGLE_FIX) < END_ANGLE_TOLERANCE);
-
-        //return false;
+        return !seenEntry.getBoolean(false) || distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE + EXIT_TOLERANCE;
     }
 
     protected void end() {
@@ -80,7 +65,7 @@ public class VisionDrive extends Command {
     }
 
     public void updateConstants() {
-        angularVelocityPid.setPID(Constants.PIDAngularVelocity[0], Constants.PIDAngularVelocity[1], Constants.PIDAngularVelocity[2]);
-        linearVelocityPid.setPID(Constants.PIDLinearVelocity[0], Constants.PIDLinearVelocity[1], Constants.PIDLinearVelocity[2]);
+        turnPid.setPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
+        forwardPid.setPID(Constants.PIDVisionForward[0], Constants.PIDVisionForward[1], Constants.PIDVisionForward[2]);
     }
 }
