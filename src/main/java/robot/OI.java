@@ -135,26 +135,29 @@ public class OI {
 
         povd.whenPressed(
                 new ShiftButton(xbox, 3,
-                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO),
+                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.SHIP_CARGO),
                         new ElevatorCommand(0))
         ); //If x is held, go to cargo height, and if not, goes down to zero.
-
+        select.whenPressed(
+                new ShiftButton(xbox, 3,
+                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO),null)
+        );
         int shiftButton = 3;
         povr.whenPressed(
                 new ShiftButton(xbox, shiftButton,
-                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_CARGO),
+                        new WristAndElevatorCommand(Constants.WRIST_ANGLES.LEVEL_1, robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_CARGO),
                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH))
         );
 
         povl.whenPressed(
                 new ShiftButton(xbox, shiftButton,
-                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_CARGO),
+                        new WristAndElevatorCommand(Constants.WRIST_ANGLES.LEVEL_1, robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_CARGO),
                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH))
         );
 
         povr.whenPressed(
                 new ShiftButton(xbox, shiftButton,
-                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO),
+                        new WristAndElevatorCommand(Constants.WRIST_ANGLES.LEVEL_1, robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_CARGO),
                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH))
         );
         left_joystick_six.toggleWhenPressed(new VisionDrive());
