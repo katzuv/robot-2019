@@ -277,11 +277,11 @@ public class Drivetrain extends Subsystem {
      * @param distance height in meters
      * @return ticks of the encoder
      */
-    private int convertLeftDistanceToTicks(double distance) {
+    public int convertLeftDistanceToTicks(double distance) {
         return (int) (distance * Constants.LEFT_TICKS_PER_METER);
     }
 
-    private int convertRightDistanceToTicks(double distance) {
+    public int convertRightDistanceToTicks(double distance) {
         return (int) (distance * Constants.RIGHT_TICKS_PER_METER);
     }
 
