@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.ConditionalCommand;
 /**
  *
  */
-public class ShiftButton extends ConditionalCommand {
+public class ShiftButton extends CustomConditionalCommand {
 
     private final GenericHID joystick;
     private final int button;
