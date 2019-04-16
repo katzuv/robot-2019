@@ -29,10 +29,10 @@ public class Constants {
     public static final int TALON_RUNNING_TIMEOUT_MS = isRobotA ? 0 : 0;
     public static final int TALON_TIMEOUT_MS = isRobotA ? 10 : 10;
 
-    public static final double[] PIDFLeft = isRobotA ? new double[]{6, 0.0042, 2, 0} : new double[]{1.5, 0, 10, 1.3};
-    public static final double[] PIDFRight = isRobotA ? new double[]{6, 0.0042, 2, 0} : new double[]{1.5, 0, 10, 1.3};
+    public static final double[] PIDFLeft = isRobotA ? new double[]{1.5, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
+    public static final double[] PIDFRight = isRobotA ? new double[]{1.5, 0, 10, 1.3} : new double[]{1.5, 0, 10, 1.3};
 
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0, 0.05} : new double[]{0, 0, 0};
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.017, 0, 0.07} : new double[]{0, 0, 0};
     public static double[] PIDVisionForward = isRobotA ? new double[]{0.4, 0.0015, 0.1} : new double[]{0, 0, 0};
 
     public static final double distanceFromEnd = 2;
