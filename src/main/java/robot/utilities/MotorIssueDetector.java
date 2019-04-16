@@ -1,7 +1,7 @@
 package robot.utilities;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class MotorIssueDetector {
     private PowerDistributionPanel pdp;
@@ -17,7 +17,7 @@ public class MotorIssueDetector {
         }
     }
 
-    private int[] checkGroups() {
+    public void update() {
         for (int[] group : Constants.pdpGroups) {
             boolean areAllOn = true;
             boolean areAllOff = true;
@@ -27,33 +27,21 @@ public class MotorIssueDetector {
                 else
                     areAllOn = false;
             }
-
             if (!areAllOff && !areAllOn)
-                return group;
+                DriverStation.reportError("There is a non working motor in motor group {" + group[0] + "," + group[1] + "," + group[2] + "}", false);
         }
-        return null;
-    }
 
-    public void update() {
         updateAmpHours();
-        int[] problematic = checkGroups();
-        double[] sendableList = new double[16];
-        if (problematic != null) {
-
-            for(int i = 0; i < 16; i++)
-                sendableList[i] = problematic[i];
-            SmartDashboard.putNumberArray("PROBLEMATIC MOTOR GROUP", sendableList);
-        }
         for (int i = 0; i < 16; i++) {
             if (amperSeconds[i] > Constants.ALLOWED_AMPER_SECONDS[i]) {
-
+                DriverStation.reportWarning("Motor " + i + " has been taking a lot of amps, it should cool down", false);
             }
         }
 
     }
 
     public void reset() {
-
+        amperSeconds = new double[16];
     }
 }
 
@@ -64,5 +52,5 @@ class Constants {
             {7, 12, 12}
     };
 
-    static int[] ALLOWED_AMPER_SECONDS = {4200, 4200, 4200, 4200, 4200, 4200, 4200, 4200, 4200, 4200, 4200, 4200, 4200, 4200, 4200, 4200};
+    static int[] ALLOWED_AMPER_SECONDS = {6000, 6000, 6000, 4200, 4200, 4200, 4200, 4000, 4200, 3000, 4200, 4200, 4000, 6000, 6000, 6000};
 }
