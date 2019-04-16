@@ -144,7 +144,7 @@ public class Robot extends TimedRobot {
         if(debug) {
             updateDashboardConstants();
         }
-        SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
+        //SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
     }
 
     /**
