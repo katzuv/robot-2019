@@ -129,8 +129,19 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("Do nothing", null);
         //        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
         Path path = new Path(new Waypoint(0, 0), new Waypoint(0, 1), new Waypoint(1, 1));
+        Path path2 = new Path(new Waypoint(0, 0), new Waypoint(0,1), new Waypoint(0, 2));
+
         path.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
+        path2.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
+
         m_chooser.addOption("Pure pursuit test", new PurePursue(path,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV, false,
+                false
+        ));
+        m_chooser.addOption("Pure pursuit straight test", new PurePursue(path2,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
@@ -139,7 +150,7 @@ public class Robot extends TimedRobot {
         ));
         m_chooser.addOption("Talon test", new TalonTest());
 
-        m_chooser.addOption("Velocity test", new VectorPursuit(path, 0.4,
+        m_chooser.addOption("Velocity 2018 test", new VectorPursuit(path, 0.4,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
