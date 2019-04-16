@@ -73,7 +73,7 @@ public class PurePursue extends Command {
     protected void execute() {
         updatePoint();
         updateLookaheadInPath(path);
-        drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+        printVariables();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -302,6 +302,13 @@ public class PurePursue extends Command {
             }
         }
         return angles[closest];
+    }
+
+    public void printVariables(){
+        SmartDashboard.putNumber("Pure pursuit: left velocity", getLeftSpeedVoltage(path));
+        SmartDashboard.putNumber("Pure pursuit: right velocity", getRightSpeedVoltage(path));
+        SmartDashboard.putNumber("Pure pursuit: curvature", curvatureCalculate());
+        SmartDashboard.putString("Pure pursuit: lookahead point", currentLookahead.toString());
     }
 
 }
