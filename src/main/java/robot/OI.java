@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.command_groups.*;
 import robot.subsystems.drivetrain.commands.VisionDrive;
@@ -141,13 +140,12 @@ public class OI {
         povd.whenPressed(
                 new ShiftButton(xbox, shiftButton,
                         new WristAndElevatorCommand(Constants.WRIST_ANGLES.FORWARD.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()),
-                        new ElevatorCommand(0)
+                        new ShiftButton(xbox, cargoButton,
+                                new VisionConditionalCommand(new VisionPlaceCargo(0)),
+                                new ElevatorCommand(0)
+                        )
                 )
         ); //If x is held, go to cargo height, and if not, goes down to zero.
-
-        start.whenPressed(
-                new ShiftButton(xbox, cargoButton, new VisionTakeHatch(), null)
-        );
 
         select.whenPressed(new ShiftButton(
                 xbox, shiftButton, new CargoScoring(0, false), null)
@@ -158,7 +156,10 @@ public class OI {
                         new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)),
                         new ShiftButton(xbox, shiftButton,
                                 new CargoScoring(1, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)
+                                new ShiftButton(xbox, cargoButton,
+                                        new VisionConditionalCommand(new VisionPlaceCargo(1)),
+                                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)
+                                )
                         )
                 )
 
@@ -168,8 +169,11 @@ public class OI {
                 new ShiftButton(xbox, hatchButton,
                         new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)),
                         new ShiftButton(xbox, shiftButton,
-                               new CargoScoring(2, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)
+                                new CargoScoring(2, false),
+                                new ShiftButton(xbox, cargoButton,
+                                        new VisionConditionalCommand(new VisionPlaceCargo(2)),
+                                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)
+                                )
                         )
                 )
         );
@@ -179,14 +183,18 @@ public class OI {
                         new VisionConditionalCommand(new VisionPlaceHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH_VISION)),
                         new ShiftButton(xbox, shiftButton,
                                 new CargoScoring(3, false),
-                                new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)
+                                new ShiftButton(xbox, cargoButton,
+                                        new VisionConditionalCommand(new VisionPlaceCargo(3)),
+                                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)
+                                )
                         )
                 )
         );
 
         trigger.whenPressed(new CancelAll());
-        left_joystick_six.toggleWhenPressed(new VisionDrive());
-        left_joystick_seven.toggleWhenPressed(new VisionPlaceCargo(1));
+        left_joystick_six.toggleWhenPressed(new VisionConditionalCommand(new VisionDrive()));
+        left_joystick_seven.toggleWhenPressed(new VisionConditionalCommand(new VisionTakeHatch()));
+
 
         /*
         left_joystick_two.whenPressed(new CalibrateLegs());

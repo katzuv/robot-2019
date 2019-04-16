@@ -85,7 +85,7 @@ public class Constants {
     public enum GRIPPER_SPEED {
         RUBBING(0.3),
         INTAKE(-0.75),
-        SHIP(0.9),
+        SHIP(0.6),
         SHIP_BACKWARD(0.4),
         LEVEL_1(0.9),
         LEVEL_2(0.9),
