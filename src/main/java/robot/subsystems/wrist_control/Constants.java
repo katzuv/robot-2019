@@ -5,6 +5,7 @@ import static robot.Robot.isRobotA;
 public class Constants {
     public static final double WRIST_JUMP_ANGLE = 30;
     public static final double DEFAULT_TIMEOUT = 1.5; //If no default is specified, and if its not disabled, set to this default timeout when trying to reach a setpoint
+    public static final double WRIST_THRESHOLD = 2;
     final static double CARGO_IN_VOLTAGE = isRobotA ? 1.2 : 1.2; //TODO: change
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
@@ -69,7 +70,7 @@ public class Constants {
         LEVEL_3_BACKWARD(0),
         INTAKE(150),
         MAXIMAL(150),
-        RELATIVE_RUBBING(+30); //Relative angle to turn
+        RELATIVE_RUBBING(+40); //Relative angle to turn
         private final double wristAngle;
 
         WRIST_ANGLES(double angle) {

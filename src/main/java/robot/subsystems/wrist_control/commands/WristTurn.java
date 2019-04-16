@@ -1,5 +1,6 @@
 package robot.subsystems.wrist_control.commands;
 
+import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.wrist_control.Constants;
@@ -58,19 +59,27 @@ public class WristTurn extends Command {
     protected void execute() {
         wristControl.setWristAngle(angle);
         wristControl.preventOverShoot();
-        if (wristControl.getWristAngle() < 5 && angle < 3) { //TODO: this is done in the code, is it necessary?
-            wristControl.setWristSpeed(0);
-        }
-        else
-            wristControl.setWristAngle(angle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished()
     {
+        //If the target is in a range where the wrist should drop itself once reaching it, also allow the command to finish if the wrist is beyond the angle.
+        if(angle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE) {
+            if (usingTimer)
+                return timer.get() > timeout || wristControl.getWristAngle() > angle - Constants.DROP_WRIST_ANGLE;
+            return wristControl.getWristAngle() > angle - Constants.DROP_WRIST_ANGLE;
+        }
+        else if(angle < Constants.DROP_WRIST_ANGLE)
+        {
+            if(usingTimer)
+                return timer.get() > timeout || wristControl.getWristAngle()  < angle + Constants.WRIST_THRESHOLD;
+            return wristControl.getWristAngle()  < angle + Constants.WRIST_THRESHOLD;
+        }
+
         if(usingTimer)
-            return timer.get() > timeout || Math.abs(wristControl.getWristAngle() - angle) < 2;
-        return Math.abs(wristControl.getWristAngle() - angle) < 2;
+            return timer.get() > timeout || Math.abs(wristControl.getWristAngle() - angle) < Constants.WRIST_THRESHOLD;
+        return Math.abs(wristControl.getWristAngle() - angle) < Constants.WRIST_THRESHOLD;
     }
 
     // Called once after isFinished returns true
