@@ -66,7 +66,7 @@ public class VelocityVisionDrive extends Command {
             timeout.stop();
             timeout.reset();
         }
-        SmartDashboard.putNumber("timeout", timeout.get());
+        //SmartDashboard.putNumber("timeout", timeout.get());
     }
 
     protected boolean isFinished() {

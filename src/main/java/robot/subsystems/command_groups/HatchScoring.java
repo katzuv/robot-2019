@@ -1,6 +1,7 @@
 package robot.subsystems.command_groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
@@ -35,7 +36,7 @@ public class HatchScoring extends CommandGroup {
     }
 
     public HatchScoring(Constants.ELEVATOR_HEIGHTS height) {
-        this(height, false);
+        this(height, true);
     }
 
 }

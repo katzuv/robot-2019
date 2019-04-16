@@ -70,6 +70,10 @@ public class Robot extends TimedRobot {
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+    static {
+        NetworkTableInstance.getDefault().setUpdateRate(0.01); //Set update rate to 10ms for vision
+    }
+
     /**
      * Send the match type and number to the "vision" table.
      */
@@ -169,8 +173,7 @@ public class Robot extends TimedRobot {
         if(debug) {
             updateDashboardConstants();
         }
-        SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
-
+        //SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
     }
 
     /**

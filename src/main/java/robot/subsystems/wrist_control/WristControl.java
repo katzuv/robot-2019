@@ -232,11 +232,13 @@ public class WristControl extends Subsystem {
      * @return returns true, if there was a detected jump.
      */
     public boolean preventEncoderJumps() {
-        if (Math.abs(lastWristAngle - getWristAngle()) > Constants.WRIST_JUMP_ANGLE) {
+        double currentAngle = getWristAngle();
+        if (Math.abs(lastWristAngle - currentAngle) > Constants.WRIST_JUMP_ANGLE) {
             setEncoderAngle(lastWristAngle);
             return true;
         }
-        lastWristAngle = getWristAngle();
+
+        lastWristAngle = currentAngle;
         return false;
     }
 
