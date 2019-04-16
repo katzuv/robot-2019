@@ -220,7 +220,7 @@ public class PurePursue extends Command {
         double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2);
         if (radius == 0) {
-            return Math.pow(10, 6);
+            return Math.pow(10, 1);
         } else {
             return 2 * x / radius;
         }
@@ -244,7 +244,7 @@ public class PurePursue extends Command {
         double x = Math.abs(currentLookahead.getX() * a + currentLookahead.getY() + c) / Math.sqrt(a*a + 1);
         double sign = Math.sin(angle) * (currentLookahead.getX() - currentPoint.getX()) - Math.cos(angle) * (currentLookahead.getY() - currentPoint.getY());
         double side = Math.signum(sign);
-        return x * side;
+        return -x * side;
     }
 
 
