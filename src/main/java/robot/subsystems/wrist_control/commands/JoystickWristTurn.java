@@ -3,6 +3,7 @@ package robot.subsystems.wrist_control.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.OI;
 import robot.Robot;
+import robot.subsystems.wrist_control.Constants;
 
 import static robot.Robot.wristControl;
 
@@ -30,7 +31,7 @@ public class JoystickWristTurn extends Command {
             change = yAxis * OI.WRIST_ROTATE_RATE;
         else
             change = yAxis * OI.WRIST_ROTATE_RATE;
-        wristControl.setWristAngle(wristControl.getWristAngle() + change);
+        wristControl.setWristAngle(Math.max(0, Math.min(wristControl.getWristAngle(), Constants.WRIST_ANGLES.MAXIMAL.getValue())) + change);
 
     }
 
