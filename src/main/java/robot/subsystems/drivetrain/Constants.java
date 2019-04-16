@@ -32,19 +32,19 @@ public class Constants {
     public static final double[] PIDFLeft = isRobotA ? new double[]{6, 0.0042, 2, 0} : new double[]{1.5, 0, 10, 1.3};
     public static final double[] PIDFRight = isRobotA ? new double[]{6, 0.0042, 2, 0} : new double[]{1.5, 0, 10, 1.3};
 
-    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0, 0.02} : new double[]{0, 0, 0};
+    public static double[] PIDVisionTurn = isRobotA ? new double[]{0.02, 0, 0.05} : new double[]{0, 0, 0};
     public static double[] PIDVisionForward = isRobotA ? new double[]{0.4, 0.0015, 0.1} : new double[]{0, 0, 0};
 
     public static final double distanceFromEnd = 2;
     public static final double ENDING_TOLERANCE = 0.05;
-    public static final double MIN_AIM = 0.03;
+    public static final double MIN_AIM = 0.07;
 
     public static final double MOTION_CRUISE_VELOCITY = 2; //Motion acceleration in M/S
     public static final double MOTION_ACCELERATION = 2; //Motion acceleration in M/S^2
 
     public static final double RAMSETE_PEAK_VELOCITY = 2.5;
     public static final double RAMSETE_PEAK_ACCELERATION = 2.5;
-    public static final double VISION_SPEED = -0.26;
+    public static final double VISION_SPEED = isRobotA ? 0.3 : 0.3;
     public static final double SLOW_JOYSTICK_SPEED = 1; //multiplied by joystick value, keep at 1 for no changes.
     public static final double kZeta = 0.8;
     public static final double kBeta = isRobotA ? 2 : 2;
