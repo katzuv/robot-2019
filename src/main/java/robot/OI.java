@@ -16,10 +16,7 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.WaitCommand;
-import robot.subsystems.command_groups.CargoRubbing;
-import robot.subsystems.command_groups.CargoScoring;
-import robot.subsystems.command_groups.VisionPlaceHatch;
-import robot.subsystems.command_groups.VisionTakeHatch;
+import robot.subsystems.command_groups.*;
 import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Fangs;
@@ -189,6 +186,7 @@ public class OI {
 
         trigger.whenPressed(new CancelAll());
         left_joystick_six.toggleWhenPressed(new VisionDrive());
+        left_joystick_seven.toggleWhenPressed(new VisionPlaceCargo(1));
 
         /*
         left_joystick_two.whenPressed(new CalibrateLegs());

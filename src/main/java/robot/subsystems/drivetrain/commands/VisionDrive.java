@@ -16,7 +16,7 @@ public class VisionDrive extends Command {
     /*
             For now have all the constants here for testing, when done move to constants file
          */
-    private double TARGET_VISION_DISTANCE = 1.2; //distance from the target to stop
+    private double targetDistance = 1.2; //distance from the target to stop
 
     private MiniPID turnPid = new MiniPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
@@ -26,9 +26,14 @@ public class VisionDrive extends Command {
 
     private double TIMER_DELAY = 0.1;
 
-    public VisionDrive() {
+    public VisionDrive(double targetDistance) {
         turnPid.setOutputLimits(-0.5, 0.5);
+        this.targetDistance = targetDistance;
         requires(drivetrain);
+    }
+
+    public VisionDrive() {
+        this(Constants.HATCH_TARGET_DISTANCE);
     }
 
     public static double velocityByDistance(double targetSpeed, double acceleration, double startPos, double targetPos) {
@@ -43,7 +48,7 @@ public class VisionDrive extends Command {
         double visionAngle = angleEntry.getDouble(0);
         double visionDistance = distanceEntry.getDouble(0);
 
-        double speed = Math.min(Constants.VISION_SPEED, velocityByDistance(0, 0.08, TARGET_VISION_DISTANCE, visionDistance));
+        double speed = Math.min(Constants.VISION_SPEED, velocityByDistance(0, 0.08, targetDistance, visionDistance));
         double turn = turnPid.getOutput(visionAngle, 0);
 
         if (visionAngle > 1) {
@@ -58,7 +63,7 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return (!seenEntry.getBoolean(false) && timeout.get() > TIMER_DELAY) || distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE;
+        return (!seenEntry.getBoolean(false) && timeout.get() > TIMER_DELAY) || distanceEntry.getDouble(0) < targetDistance;
     }
 
     protected void end() {

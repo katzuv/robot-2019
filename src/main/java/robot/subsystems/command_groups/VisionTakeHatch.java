@@ -7,6 +7,7 @@ import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.commands.WristTurn;
+import robot.utilities.SetRocket;
 
 /**
  *
@@ -14,6 +15,7 @@ import robot.subsystems.wrist_control.commands.WristTurn;
 public class VisionTakeHatch extends CommandGroup {
 
     public VisionTakeHatch() {
+        addSequential(new SetRocket(true));
         addSequential(new CommandGroup() {
             {
                 addParallel(new ElevatorCommand(Constants.ELEVATOR_HEIGHTS.LOADING_STATION));
@@ -22,7 +24,7 @@ public class VisionTakeHatch extends CommandGroup {
         });
         addSequential(new Flower(true));
         addSequential(new WaitCommand(0.2));
-        addSequential(new VisionDrive());
+        addSequential(new VisionDrive(robot.subsystems.drivetrain.Constants.HATCH_TARGET_DISTANCE));
         addSequential(new WaitCommand(0.2));
         addSequential(new Flower(false));
 

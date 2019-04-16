@@ -6,6 +6,7 @@ import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.wrist_control.commands.WristTurn;
+import robot.utilities.SetRocket;
 
 /**
  *
@@ -13,6 +14,7 @@ import robot.subsystems.wrist_control.commands.WristTurn;
 public class VisionPlaceHatch extends CommandGroup {
 
     public VisionPlaceHatch(Constants.ELEVATOR_HEIGHTS height) {
+        addSequential(new SetRocket(true));
         addSequential(new CommandGroup() {
             {
                 addParallel(new ElevatorCommand(height));
@@ -20,7 +22,7 @@ public class VisionPlaceHatch extends CommandGroup {
             }
         });
         addSequential(new WaitCommand(0.3));
-        addSequential(new VisionDrive());
+        addSequential(new VisionDrive(robot.subsystems.drivetrain.Constants.HATCH_TARGET_DISTANCE));
         addSequential(new WaitCommand(0.2));
         if (height == Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH_VISION) {
             addSequential(new HatchScoring(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
