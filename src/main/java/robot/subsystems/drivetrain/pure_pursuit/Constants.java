@@ -21,9 +21,9 @@ public class Constants {
     public static final double K_CURVE = 3; //number from 1 to 5
 
     //DRIVING CONSTANTS (pure numbers)
-    public final static double kV = 1 / MAX_VELOCITY;
-    public final static double kA = 0.004;
-    public final static double kP = 0.01;
+    public final static double kV = 1.5 / MAX_VELOCITY;
+    public final static double kA = 0.000;
+    public final static double kP = 0.00;
 
     //Pure pursuit real time
     public final static double MIN_DISTANCE = 0.5;//The minimum distance between the robot to the target point
