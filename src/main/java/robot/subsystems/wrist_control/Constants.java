@@ -25,8 +25,8 @@ public class Constants {
 
     final static int TALON_TIME_OUT = isRobotA ? 10 : 10;
 
-    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 3000 : 2468;
-    public static final int CRUISE_VELOCITY  = isRobotA ? 4500 : 3000;
+    public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 1250 : 2468;
+    public static final int CRUISE_VELOCITY  = isRobotA ? 2500 : 3000;
 
     final static double kP = isRobotA ? 0.9 : 0.7;
     final static double kD = isRobotA ? 70 : 150;
