@@ -21,6 +21,7 @@ public class VisionTakeHatch extends CommandGroup {
             }
         });
         addSequential(new Flower(true));
+        addSequential(new WaitCommand(0.2));
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
         addSequential(new Flower(false));

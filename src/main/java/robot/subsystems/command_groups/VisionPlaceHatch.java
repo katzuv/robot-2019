@@ -19,8 +19,13 @@ public class VisionPlaceHatch extends CommandGroup {
                 addParallel(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
             }
         });
+        addSequential(new WaitCommand(0.3));
         addSequential(new VisionDrive());
         addSequential(new WaitCommand(0.2));
-        addSequential(new HatchScoring(height, false));
+        if (height == Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH_VISION) {
+            addSequential(new HatchScoring(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
+        } else {
+            addSequential(new HatchScoring(height, false));
+        }
     }
 }

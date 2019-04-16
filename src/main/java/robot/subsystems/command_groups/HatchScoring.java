@@ -35,7 +35,7 @@ public class HatchScoring extends CommandGroup {
     }
 
     public HatchScoring(Constants.ELEVATOR_HEIGHTS height) {
-        this(height, false);
+        this(height, true);
     }
 
 }

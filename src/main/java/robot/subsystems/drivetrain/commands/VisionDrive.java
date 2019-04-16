@@ -2,6 +2,7 @@ package robot.subsystems.drivetrain.commands;
 
 import com.stormbots.MiniPID;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
@@ -21,10 +22,17 @@ public class VisionDrive extends Command {
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
     private NetworkTableEntry distanceEntry = Robot.visionTable.getEntry("tape_distance");
     private NetworkTableEntry seenEntry = Robot.visionTable.getEntry("tape_seen");
+    private Timer timeout = new Timer(); //this timer is meant to prevent jumps where the vision target gets lost
+
+    private double TIMER_DELAY = 0.1;
 
     public VisionDrive() {
         turnPid.setOutputLimits(-0.5, 0.5);
         requires(drivetrain);
+    }
+
+    public static double velocityByDistance(double targetSpeed, double acceleration, double startPos, double targetPos) {
+        return Math.sqrt(targetSpeed * targetSpeed + 2 * Math.abs(acceleration) * Math.abs(targetPos - startPos));
     }
 
     protected void initialize() {
@@ -35,7 +43,7 @@ public class VisionDrive extends Command {
         double visionAngle = angleEntry.getDouble(0);
         double visionDistance = distanceEntry.getDouble(0);
 
-        double speed = Constants.VISION_SPEED;
+        double speed = Math.min(Constants.VISION_SPEED, velocityByDistance(0, 0.08, TARGET_VISION_DISTANCE, visionDistance));
         double turn = turnPid.getOutput(visionAngle, 0);
 
         if (visionAngle > 1) {
@@ -50,7 +58,7 @@ public class VisionDrive extends Command {
     }
 
     protected boolean isFinished() {
-        return !seenEntry.getBoolean(false) || distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE;
+        return (!seenEntry.getBoolean(false) && timeout.get() > TIMER_DELAY) || distanceEntry.getDouble(0) < TARGET_VISION_DISTANCE;
     }
 
     protected void end() {
