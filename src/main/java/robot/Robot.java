@@ -38,6 +38,7 @@ import robot.subsystems.hatch_intake.HatchIntake;
 import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
+import robot.utilities.MotorIssueDetector;
 
 import java.lang.reflect.Field;
 import java.util.Hashtable;
@@ -59,6 +60,7 @@ public class Robot extends TimedRobot {
     public static final WristControl wristControl = new WristControl();
     public static final GripperWheels gripperWheels = new GripperWheels();
     public static final Compressor compressor = new Compressor(0);
+    public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = true;
     public final static boolean debug = true;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
@@ -168,6 +170,7 @@ public class Robot extends TimedRobot {
             updateDashboardConstants();
         }
         SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
+
     }
 
     /**
