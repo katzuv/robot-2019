@@ -74,6 +74,11 @@ public class PurePursue extends Command {
         updatePoint();
         updateLookaheadInPath(path);
         printVariables();
+        drivetrain.setVelocity(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+        lastLeftSpeed = drivetrain.getLeftSpeed();
+        lastRightSpeed = drivetrain.getRightSpeed();
+
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -252,7 +257,6 @@ public class PurePursue extends Command {
      */
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
-        lastRightSpeed = drivetrain.getRightSpeed();
         return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getRightSpeed());
@@ -268,7 +272,6 @@ public class PurePursue extends Command {
      */
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / 0.02;
-        lastLeftSpeed = drivetrain.getLeftSpeed();
         return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());
