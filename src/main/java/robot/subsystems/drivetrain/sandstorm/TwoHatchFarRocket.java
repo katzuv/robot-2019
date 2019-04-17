@@ -18,12 +18,12 @@ public class TwoHatchFarRocket extends CommandGroup {
     public TwoHatchFarRocket(Constants.ELEVATOR_HEIGHTS height , boolean isRight) {
             addSequential(new TalonFollow(Profiles.toFarRocketLeft, Profiles.toFarRocketRight, !isRight));
             addSequential(new VisionPlaceHatch(height));
-            addParallel(new CommandGroup() {{
-                addSequential(new WaitCommand(0.8));
-                addParallel(new Flower(false));
-                addSequential(new WristTurn(0));
-
-            }}); //Close wrist and flower while driving from the rocket to the loading station
+//            addParallel(new CommandGroup() {{
+//                addSequential(new WaitCommand(0.8));
+//                addParallel(new Flower(false));
+//                addSequential(new WristTurn(0));
+//
+//            }}); //Close wrist and flower while driving from the rocket to the loading station
             //addSequential(new TalonFollow(Profiles.farRocketToLoadingRevLeft, Profiles.farRocketToLoadingRevRight, !isRight));
     }
 }

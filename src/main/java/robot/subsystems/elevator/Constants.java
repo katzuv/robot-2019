@@ -4,7 +4,9 @@ import static robot.Robot.isRobotA;
 
 public class Constants {
 
-    public static final int START_UNIT = isRobotA ? -1000 : -720; //at what units to start
+
+    static final double TICKS_PER_METER = isRobotA ? 25993 : 25993;
+    public static final int START_UNIT = isRobotA ? 780 : -720; //at what units to start
     public static final double LOWER_DANGER_ZONE = 0.445;
     public static final double UPPER_DANGER_ZONE = 0.82;
 
@@ -12,7 +14,6 @@ public class Constants {
     public static final int TALON_TIME_OUT = 10;
 
     //Encoder constants:
-    static final double TICKS_PER_METER = isRobotA ? 25993 : 25993;
     static final boolean ENCODER_REVERSED = isRobotA ? true : true;
 
     //Motor reverse constants:
@@ -30,7 +31,7 @@ public class Constants {
     static final double FIRST_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
     static final double SECOND_STAGE_FEEDFORWARD = isRobotA ? 0.17 : 0.17;
 
-    static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT = isRobotA ? 0.03 : 0.03;
+    static final double ELEVATOR_HOLD_IN_PLACE_HEIGHT = isRobotA ? 0.05 : 0.05;
     /* Talon constants */
     /*
      * Since most config* calls occur during the robot boot sequence, the recommended value for timeoutMs is 10 (ms).
@@ -58,8 +59,7 @@ public class Constants {
     static final double NOMINAL_OUT_REV = 0;
     static final double PEAK_OUT_REV = -1;
     /* Motion magic speed constants */
-    static final int MOTION_MAGIC_ACCELERATION = isRobotA ? (int) (1.5 * TICKS_PER_METER / 10) : (int) (3.2 * TICKS_PER_METER / 10);
-    static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (2 * TICKS_PER_METER / 10) : (int) (4 * TICKS_PER_METER / 10);
+
     static final int MOTION_MAGIC_ACCELERATION = isRobotA ? (int) (3.2 * TICKS_PER_METER / 10) : (int) (3.2 * TICKS_PER_METER / 10);
     static final int MOTION_MAGIC_CRUISE_SPEED = isRobotA ? (int) (4 * TICKS_PER_METER / 10) : (int) (4 * TICKS_PER_METER / 10);
     public static double ELEVATOR_TOLERANCE = 0.1; //The tolerance in which the elevator will stop when trying to get to a certain height.

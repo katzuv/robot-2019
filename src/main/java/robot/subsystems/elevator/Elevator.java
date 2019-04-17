@@ -10,6 +10,7 @@ package robot.subsystems.elevator;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
@@ -133,7 +134,7 @@ public class Elevator extends Subsystem {
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
-        if (isHatchMechanismInDanger() && wristControl.getWristAngle() <= 70)
+        if (isHatchMechanismInDanger() && wristControl.getWristAngle() <= robot.subsystems.wrist_control.Constants.WRIST_ANGLES.UNSAFE_HATCHES.getValue())
             Robot.hatchIntake.emergencyClose();
 
     }

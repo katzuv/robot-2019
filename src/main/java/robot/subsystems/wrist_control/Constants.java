@@ -60,6 +60,7 @@ public class Constants {
     final static double CARGO_MULTIPLIER = (WRIST_WEIGHT + CARGO_WEIGHT) / WRIST_WEIGHT;
     public enum WRIST_ANGLES {//TODO: remove useless angles for new wrist.
         INITIAL(0),
+        UNSAFE_HATCHES(60),
         UP(90 - COM_ANGLE),
         FORWARD(150),
         SHIP(137),
