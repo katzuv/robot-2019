@@ -47,6 +47,8 @@ public class Constants {
     static final double PEAK_PERCENT_COMPENSATION = 0.38; //The percent output that is given to the wrist to hold it in place at its peak.
     public static final double ZERO_ANGLE_COMPENSATION = 0.025;
 
+    public static final double ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE = 0.08; //sorry for the long name, had to be clear that this is infact an elevator constant.
+
     //idea for a stall current calculation when hatches are inside.
     private final static double WRIST_WEIGHT = 1;
     private final static double HATCH_WEIGHT = 0.1;
@@ -70,6 +72,7 @@ public class Constants {
         LEVEL_3_BACKWARD(0),
         INTAKE(150),
         MAXIMAL(150),
+        MAXIMAL_FLOOR(139), //Maximal angle when the elevator is down.
         RELATIVE_RUBBING(+40); //Relative angle to turn
         private final double wristAngle;
 

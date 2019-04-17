@@ -167,7 +167,7 @@ public class WristControl extends Subsystem {
     public void setWristAngle(double angle) {
         raw = false;
         angle = Math.max(0, angle);
-        angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(), angle);
+        angle = Math.min(getMaximalAngle(), angle);
         if (Robot.debug) {
             SmartDashboard.putNumber("Cargo intake: target", angle);
         }
@@ -255,12 +255,31 @@ public class WristControl extends Subsystem {
     }
 
     public boolean dropWrist() {
+//        return (wristControl.getWristAngle() < Constants.DROP_WRIST_ANGLE &&
+//                setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
+//                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
+//                        setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2));
         return (wristControl.getWristAngle() < Constants.DROP_WRIST_ANGLE &&
                 setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
-                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
-                        setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2));
+                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > getMaximalAngle() - Constants.DROP_WRIST_ANGLE &&
+                        setPointAngle > getMaximalAngle() - Constants.DROP_WRIST_ANGLE / 2));
+
     }
 
+    /**
+     * Returns the maximal angle of the wrist. this method is used for when the maximal angle of the wrist changes,
+     * for example when the elevator is in its bottom position, and can be used by commands to update their isFinished statement.
+     * @return current maximal angle in degrees.
+     */
+    public double getMaximalAngle(){
+        //if(Robot.elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
+        if(SmartDashboard.getBoolean("Disable: Cargo proximity", true))
+            return Constants.WRIST_ANGLES.MAXIMAL.getValue();
+        else
+            return Constants.WRIST_ANGLES.MAXIMAL_FLOOR.getValue();
+
+
+    }
     @Override
     public void periodic() {
         update();
