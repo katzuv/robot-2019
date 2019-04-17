@@ -7,6 +7,8 @@
 
 package robot.subsystems.drivetrain;
 
+import com.ctre.phoenix.motion.MotionProfileStatus;
+import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -17,6 +19,8 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team254.lib.physics.DifferentialDrive;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,6 +37,13 @@ import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
 import robot.utilities.Point;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Drivetrain subsystem for the 2019 robot 'GENESIS'
  *
@@ -46,6 +57,10 @@ public class Drivetrain extends Subsystem {
     private final TalonSRX rightMaster = new TalonSRX(Ports.rightMaster);
     private final VictorSPX rightSlave1 = new VictorSPX(Ports.rightSlave1);
     private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
+
+    private static MotionProfileStatus leftMPStatus = new MotionProfileStatus();
+    private static MotionProfileStatus rightMPStatus = new MotionProfileStatus();
+
     public Point currentLocation = new Point(0, 0);
 
     /**
@@ -420,4 +435,109 @@ public class Drivetrain extends Subsystem {
                 wheelVoltages.getRight() / 12
         );
     }
+
+    public void clearTrajectories() {
+        leftMaster.set(ControlMode.Follower, 1);
+        rightMaster.set(ControlMode.Follower, 3);
+
+        leftMaster.getMotionProfileStatus(leftMPStatus);
+        rightMaster.getMotionProfileStatus(rightMPStatus);
+
+        ArrayList<double[]> leftProfile = readCSVMotionProfileFile(Filesystem.getDeployDirectory() + "/test2_left.csv");
+        ArrayList<double[]> rightProfile = readCSVMotionProfileFile(Filesystem.getDeployDirectory() + "/test2_right.csv");
+
+        if (leftMPStatus.hasUnderrun)
+            leftMaster.clearMotionProfileHasUnderrun(0);
+
+        if (rightMPStatus.hasUnderrun)
+            rightMaster.clearMotionProfileHasUnderrun(0);
+
+        leftMaster.clearMotionProfileTrajectories();
+        leftMaster.configMotionProfileTrajectoryPeriod(0, 10);
+        rightMaster.clearMotionProfileTrajectories();
+        rightMaster.configMotionProfileTrajectoryPeriod(0, 10);
+
+        loadTrajectoryToTalon(leftMaster, leftProfile);
+        loadTrajectoryToTalon(rightMaster, rightProfile);
+    }
+
+    /**
+     * Processes and feeds the generated data points one-by-one into the Talon SRX MPB.
+     *
+     * @param talonSRX the Talon SRX device reference
+     * @param profile the generated trajectory extracted from a CSV file
+     */
+    private void loadTrajectoryToTalon(TalonSRX talonSRX, ArrayList<double[]> profile) {
+        TrajectoryPoint point = new TrajectoryPoint();
+
+        for (int i = 0; i < profile.size(); i++) {
+            point.position = convertRightDistanceToTicks(profile.get(i)[0]);     // meters -> rotations -> ticks
+            point.velocity = convertRightDistanceToTicks(profile.get(i)[1]) / 10.0;     // meters/second -> ticks/sec -> ticks/100ms
+            point.timeDur = 50;
+            point.profileSlotSelect0 = 0;
+
+            point.zeroPos = i == 0;
+            point.isLastPoint = (i + 1) == profile.size();
+
+            talonSRX.pushMotionProfileTrajectory(point);
+
+        }
+    }
+
+    /**
+     * Reads and processes individual data points from a CSV file.
+     *
+     * @param path the path of the file with the data points
+     * @return an ArrayList of double[] with each data point
+     */
+    private static ArrayList<double[]> readCSVMotionProfileFile(String path) {
+
+        ArrayList<double[]> pathSegments = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+
+            String line;
+            String csvDelimiter = ",";
+
+            while ((line = br.readLine()) != null) {
+                String[] segment = line.split(csvDelimiter);
+
+                double[] convertedSegment = Arrays.stream(segment)
+                        .mapToDouble(Double::parseDouble)
+                        .toArray();
+
+                pathSegments.add(convertedSegment);
+            }
+
+        } catch (IOException ex) {
+            DriverStation.reportError("Unable to read motion profile file " +  path, true);
+        }
+
+        return pathSegments;
+
+    }
+
+    public void followLoadedTrajectoryPeriodic() {
+        leftMaster.getMotionProfileStatus(leftMPStatus);     // periodic calls to get the status of the Talon SRX
+        rightMaster.getMotionProfileStatus(rightMPStatus);
+
+        leftMaster.processMotionProfileBuffer();     // streams data points from the MPB to the lower-level buffer
+        rightMaster.processMotionProfileBuffer();
+
+        if (leftMPStatus.btmBufferCnt > 50 || leftMPStatus.topBufferCnt == 0)
+            leftMaster.set(ControlMode.MotionProfile, 1);
+
+        if (rightMPStatus.btmBufferCnt > 50 || rightMPStatus.topBufferCnt == 0)
+            rightMaster.set(ControlMode.MotionProfile, 1);
+
+        if (leftMPStatus.isLast) {
+            leftMaster.set(ControlMode.MotionProfile, 0);
+        }
+
+        if (rightMPStatus.isLast) {
+            rightMaster.set(ControlMode.MotionProfile, 0);
+        }
+
+    }
+
 }
