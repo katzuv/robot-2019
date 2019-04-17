@@ -6,21 +6,48 @@ import edu.wpi.first.wpilibj.command.Command;
 import static robot.Robot.drivetrain;
 
 /**
- *
+ * Motion profile autonomous code, written for the Detroit championships.
+ * Implements all methods in the drivetrain.
  */
 public class TalonFollow extends Command {
 
     private final BufferedTrajectoryPointStream rightStream;
     private final BufferedTrajectoryPointStream leftStream;
 
+    /**
+     *
+     * @param leftStream
+     * @param rightStream
+     */
     public TalonFollow(BufferedTrajectoryPointStream leftStream, BufferedTrajectoryPointStream rightStream) {
         this.leftStream = leftStream;
         this.rightStream = rightStream;
         requires(drivetrain);
     }
 
+    /**
+     *
+     * @param leftStream
+     * @param rightStream
+     * @param isFlipped
+     */
+    public TalonFollow(BufferedTrajectoryPointStream leftStream, BufferedTrajectoryPointStream rightStream, boolean isFlipped) {
+        requires(drivetrain);
+        if(isFlipped)
+        {
+            this.leftStream = rightStream;
+            this.rightStream = leftStream;
+        }
+        else
+        {
+            this.leftStream = leftStream;
+            this.rightStream = rightStream;
+        }
+    }
+
     // Called just before this Command runs the first time
     protected void initialize() {
+        drivetrain.setMotorsToBrake();
         drivetrain.startMotionProfile(leftStream, rightStream);
     }
 
