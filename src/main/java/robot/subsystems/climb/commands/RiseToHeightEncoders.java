@@ -32,9 +32,9 @@ public class RiseToHeightEncoders extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        climb.setLegDriveHeight(targetHeight, 0); //TODO: should be get drive height
-        climb.setLegBLHeight(targetHeight+0.01-Constants.BACK_LEFT_STARTING_OFFSET, 0);
-        climb.setLegBRHeight(targetHeight+0.01-Constants.BACK_RIGHT_STARTING_OFFSET, 0);
+        climb.setLegDriveHeight(targetHeight, 0.5*(climb.getLegBRHeight()-climb.getLegFRHeight()-0.018)); //TODO: should be get drive height
+        climb.setLegBLHeight(targetHeight-Constants.BACK_LEFT_STARTING_OFFSET, 0.00102);
+        climb.setLegBRHeight(targetHeight-Constants.BACK_RIGHT_STARTING_OFFSET, 0.00102);
     }
 
     // Make this return true when this Command no longer needs to run execute()

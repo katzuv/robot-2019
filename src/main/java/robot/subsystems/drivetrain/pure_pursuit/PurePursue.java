@@ -3,6 +3,8 @@ package robot.subsystems.drivetrain.pure_pursuit;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.utilities.Point;
+import robot.utilities.Vector;
 
 import static robot.Robot.drivetrain;
 
@@ -71,7 +73,12 @@ public class PurePursue extends Command {
     protected void execute() {
         updatePoint();
         updateLookaheadInPath(path);
-        drivetrain.setSpeed(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+        printVariables();
+        drivetrain.setVelocity(getLeftSpeedVoltage(path), getRightSpeedVoltage(path));
+        lastLeftSpeed = drivetrain.getLeftSpeed();
+        lastRightSpeed = drivetrain.getRightSpeed();
+
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -213,7 +220,7 @@ public class PurePursue extends Command {
         double L = Point.distance(currentPoint, currentLookahead);
         double radius = Math.pow(L, 2);
         if (radius == 0) {
-            return Math.pow(10, 6);
+            return Math.pow(10, 1);
         } else {
             return 2 * x / radius;
         }
@@ -237,7 +244,7 @@ public class PurePursue extends Command {
         double x = Math.abs(currentLookahead.getX() * a + currentLookahead.getY() + c) / Math.sqrt(a*a + 1);
         double sign = Math.sin(angle) * (currentLookahead.getX() - currentPoint.getX()) - Math.cos(angle) * (currentLookahead.getY() - currentPoint.getY());
         double side = Math.signum(sign);
-        return x * side;
+        return -x * side;
     }
 
 
@@ -250,7 +257,6 @@ public class PurePursue extends Command {
      */
     public double getRightSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getRightSpeed() - lastRightSpeed) / 0.02;
-        lastRightSpeed = drivetrain.getRightSpeed();
         return kV * (closestPoint(path).getSpeed() * (2 - curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getRightSpeed());
@@ -266,7 +272,6 @@ public class PurePursue extends Command {
      */
     public double getLeftSpeedVoltage(Path path) {
         double target_accel = (drivetrain.getLeftSpeed() - lastLeftSpeed) / 0.02;
-        lastLeftSpeed = drivetrain.getLeftSpeed();
         return kV * (closestPoint(path).getSpeed() * (2 + curvatureCalculate() * Constants.ROBOT_WIDTH) / 2) +
                 kA * (target_accel) +
                 kP * (closestPoint(path).getSpeed() - drivetrain.getLeftSpeed());
@@ -300,6 +305,13 @@ public class PurePursue extends Command {
             }
         }
         return angles[closest];
+    }
+
+    public void printVariables(){
+        SmartDashboard.putNumber("Pure pursuit: left velocity", getLeftSpeedVoltage(path));
+        SmartDashboard.putNumber("Pure pursuit: right velocity", getRightSpeedVoltage(path));
+        SmartDashboard.putNumber("Pure pursuit: curvature", curvatureCalculate());
+        SmartDashboard.putString("Pure pursuit: lookahead point", currentLookahead.toString());
     }
 
 }

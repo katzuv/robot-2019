@@ -1,37 +1,37 @@
-package robot.subsystems.elevator.commands;
+package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.ConditionalCommand;
-
-import static robot.Robot.cargoIntake;
+import robot.Robot;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.ramsete.RamseteNew;
 
 /**
- *
+ * the new Ramsete code test command
  */
-public class ConditionalElevatorCommand extends ConditionalCommand {
+public class NewRamseteTest extends Command {
+    Path path = new Path();//need to add path for testing
+    private RamseteNew ramseteNew = new RamseteNew(path);
 
-    public ConditionalElevatorCommand(Command onTrue, Command onFalse) {
-        super(onTrue, onFalse);
 
+    public NewRamseteTest() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.drivetrain);
     }
-
 
     // Called just before this Command runs the first time
     protected void initialize() {
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    }
-
-    @Override
-    protected boolean condition() {
-        return cargoIntake.isCargoInside();
+        ramseteNew.getNextVelocities();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return ramseteNew.isFinished();
     }
 
     // Called once after isFinished returns true

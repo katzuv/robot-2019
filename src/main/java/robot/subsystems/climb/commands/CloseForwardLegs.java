@@ -19,7 +19,6 @@ public class CloseForwardLegs extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        climb.setLegDriveHeight(0,0);
         if (climb.getLegBRHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH || climb.getLegBLHeight() > Constants.DRIVE_CLIMB_HEIGHT_THRESH) {
             climb.setLegBLHeight(climb.getLegBLHeight() - 0.01, 0);
             climb.setLegBRHeight(climb.getLegBRHeight() - 0.01, 0);
@@ -29,6 +28,7 @@ public class CloseForwardLegs extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        climb.setLegDriveHeight(0,-0.005);
     }
 
     // Make this return true when this Command no longer needs to run execute()
