@@ -60,7 +60,7 @@ public class Utils {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 
             String line;
-            String csvDelimiter = ", ";
+            String csvDelimiter = ",";
 
             while ((line = br.readLine()) != null) {
                 String[] segment = line.split(csvDelimiter);
