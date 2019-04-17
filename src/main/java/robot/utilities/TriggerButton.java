@@ -1,6 +1,7 @@
 package robot.utilities;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
@@ -19,10 +20,14 @@ public class TriggerButton extends Button {
      *                     etc)
      * @param axisNumber The button number (see {@link GenericHID#getRawButton(int) }
      */
-    public TriggerButton(GenericHID joystick, int axisNumber, double startingValue) {
+    public TriggerButton(GenericHID joystick, int axisNumber, double threshHoldValue) {
         m_joystick = joystick;
         m_axis_number = axisNumber;
-        m_starting_value = startingValue;
+        m_starting_value = threshHoldValue;
+    }
+
+    public TriggerButton(XboxController xbox, GenericHID.Hand wantedHand, double startingValue) {
+        this(xbox, wantedHand == GenericHID.Hand.kLeft ? 2 : 3, startingValue); //Allow inputting xbox triggers directly.
     }
 
     /**

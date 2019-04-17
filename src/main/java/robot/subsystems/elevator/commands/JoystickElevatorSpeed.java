@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 
 /**
- *
+ * Control the raw output of the elevator using the joystick.
  */
 public class JoystickElevatorSpeed extends Command {
 

@@ -8,29 +8,37 @@
 package robot;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import robot.subsystems.climb.Climb;
-import robot.subsystems.cargo_intake.CargoIntake;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.commands.AngleDrive;
-import robot.subsystems.drivetrain.ramsete.OneHatchRocket;
-import robot.subsystems.drivetrain.ramsete.SandstormCargo;
-import robot.subsystems.drivetrain.ramsete.SandstormRocket;
+import robot.subsystems.drivetrain.pure_pursuit.Path;
+import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
+import robot.subsystems.drivetrain.pure_pursuit.VectorPursuit;
+import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
+import robot.subsystems.drivetrain.sandstorm.OneHatchCargo;
+import robot.subsystems.drivetrain.sandstorm.TwoHatchLeftRocket;
+import robot.subsystems.drivetrain.sandstorm.TwoHatchRightRocket;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.hatch_intake.HatchIntake;
+import robot.subsystems.wrist_control.GripperWheels;
+import robot.subsystems.wrist_control.WristControl;
+import robot.subsystems.wrist_control.commands.ResetWristAngle;
+import robot.utilities.MotorIssueDetector;
 
 import java.lang.reflect.Field;
 import java.util.Hashtable;
@@ -44,18 +52,27 @@ import java.util.Set;
  * project.
  */
 public class Robot extends TimedRobot {
+    public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
     public static final Climb climb = new Climb();
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final HatchIntake hatchIntake = new HatchIntake();
-    public static final CargoIntake cargoIntake = new CargoIntake();
-    public static final Compressor compressor = new Compressor(1);
-    public final static boolean isRobotA = false;
+    public static final WristControl wristControl = new WristControl();
+    public static final GripperWheels gripperWheels = new GripperWheels();
+    public static final Compressor compressor = new Compressor(0);
+    public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
+    public final static boolean isRobotA = true;
+    public final static boolean debug = true;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
+
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+    static {
+        NetworkTableInstance.getDefault().setUpdateRate(0.01); //Set update rate to 10ms for vision
+    }
 
     /**
      * Send the match type and number to the "vision" table.
@@ -95,18 +112,63 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        resetAll();
+
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Hatch level 2", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL2_HATCH));
-        m_chooser.addOption("Hatch level 1", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL1_HATCH));
-        m_chooser.addOption("Hatch level 3", new OneHatchRocket(Constants.ELEVATOR_STATES.LEVEL3_HATCH));
+        m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
+        m_chooser.addOption("Right Rocket level 2", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH));
+        m_chooser.addOption("Right Rocket level 3", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
+
+        m_chooser.addOption("Left rocket level 1", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
+        m_chooser.addOption("Left rocket level 2", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH));
+        m_chooser.addOption("Left rocket level 3", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
+
+        m_chooser.addOption("Cargo ship", new OneHatchCargo(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
+
         m_chooser.addOption("Do nothing", null);
+        //        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
+        Path path = new Path(new Waypoint(0, 0), new Waypoint(0, 1), new Waypoint(1, 1));
+        Path path2 = new Path(new Waypoint(0, 0), new Waypoint(0,1), new Waypoint(0, 2));
+
+        path.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
+        path2.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
+
+        m_chooser.addOption("Pure pursuit test", new PurePursue(path,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV, false,
+                false
+        ));
+        m_chooser.addOption("Pure pursuit straight test", new PurePursue(path2,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.LOOKAHEAD_DISTANCE,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV, false,
+                false
+        ));
+        m_chooser.addOption("Talon test", new TalonTest());
+
+        m_chooser.addOption("Velocity 2018 test", new VectorPursuit(path, 0.4,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
+                robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
+                false,
+                false
+        ));
 
         m_chooser.addOption("Talon test", new TalonTest());
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
+
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setResolution(320, 240);
+        camera.setExposureAuto();
+        camera.setWhiteBalanceAuto();
     }
+
 
     /**
      * This function is called every robot packet, no matter the mode. Use
@@ -119,8 +181,11 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         addToShuffleboard();
-        climb.executePreventBreak();
-
+        if(debug) {
+            updateDashboardConstants();
+        }
+        motorChecker.update();
+        //SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
     }
 
     /**
@@ -131,6 +196,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         drivetrain.setMotorsToCoast();
+        elevator.ResetSetpoint();
         /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
          * to cancel the motion magic that is currently taking place and will still run if you re enable
          */
@@ -138,6 +204,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        wristControl.disabledPeriodic();
         Scheduler.getInstance().run();
         sendMatchInformation();
     }
@@ -155,7 +222,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        drivetrain.setMotorsToBrake();
         resetAll();
         m_autonomousCommand = m_chooser.getSelected();
         if (m_autonomousCommand != null) {
@@ -169,7 +235,6 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-
     }
 
     @Override
@@ -178,7 +243,6 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        cargoIntake.resetSensors();
     }
 
     /**
@@ -186,6 +250,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        //updateDashboardConstants();
         Scheduler.getInstance().run();
     }
 
@@ -198,29 +263,39 @@ public class Robot extends TimedRobot {
 
 
     public void addToShuffleboard() {
-        SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
-        SmartDashboard.putNumber("Elevator: height - ticks", elevator.getTicks());
-        SmartDashboard.putNumber("Elevator: height - meters", elevator.getHeight());
-        SmartDashboard.putNumber("Drivetrain: navx angle", navx.getAngle());
-        SmartDashboard.putNumber("Drivetrain: left distance", drivetrain.getLeftDistance());
-        SmartDashboard.putNumber("Drivetrain: right distance", drivetrain.getRightDistance());
-        SmartDashboard.putNumber("Cargo intake: proximity value", cargoIntake.getProximityVoltage());
-        SmartDashboard.putNumber("Cargo intake: wrist angle", cargoIntake.getWristAngle());
-        SmartDashboard.putNumber("Elevator: speed", elevator.getSpeed());
-        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
-        SmartDashboard.putNumber("test: axis", m_oi.ElevatorStick());
-        Translation2d robotLocation = drivetrain.getRobotPosition().getTranslation();
-        SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", robotLocation.getX().getMeter(), robotLocation.getY().getMeter()));
-        SmartDashboard.putBoolean("Flower open",hatchIntake.isGripperOpen());
-        SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
-        SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
-        SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
-        SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
-        SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-        //printRunningCommands();
+        SmartDashboard.putData(pdp);
+        SmartDashboard.putNumber("Elevator: height - centimeters", elevator.getHeight());
+        SmartDashboard.putNumber("Wrist: wrist angle", wristControl.getWristAngle());
+        SmartDashboard.putBoolean("Flower open", hatchIntake.isFlowerOpen());
+
+        SmartDashboard.putData("navx", navx);
+        SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
+        SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(150));
+
+        if(debug) {
+            SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
+            SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
+            SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
+            SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
+            SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
+            SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
+            SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
+            SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
+            SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());
+            SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
+            SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
+            SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
+            SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
+        }
     }
 
-    public void printRunningCommands(){
+    public void updateDashboardConstants() {
+        drivetrain.updateConstants();
+        wristControl.updateConstants();
+
+    }
+
+    public void printRunningCommands() {
         try {
             Field field = Scheduler.class.getField("m_commandTable");
             field.setAccessible(true);
@@ -232,8 +307,14 @@ public class Robot extends TimedRobot {
         }
     }
 
-    public void resetAll(){
-        cargoIntake.resetSensors();
+    public void printAllCommands() {
+        SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
+        SmartDashboard.putString("Wrist command", wristControl.getCurrentCommandName());
+        SmartDashboard.putString("Cargo wheels command", gripperWheels.getCurrentCommandName());
+    }
+
+    public void resetAll() {
+        wristControl.resetSensors();
         elevator.resetEncoders();
         navx.reset();
         drivetrain.resetLocation();

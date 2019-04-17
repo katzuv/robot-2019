@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
-import robot.subsystems.hatch_intake.HatchIntake;
+
+import static robot.Robot.wristControl;
 
 /**
  * Elevator subsystem for the 2019 robot 'GENESIS'
@@ -22,9 +23,7 @@ import robot.subsystems.hatch_intake.HatchIntake;
  * @author paulo
  */
 public class Elevator extends Subsystem {
-
-    /* pid slots for the four states: up and down on the first level and up and down on the second level of the cascade*/
-    private final int TALON_LOW_UP_PID_SLOT = 0;
+    
     private final VictorSPX slaveMotor = new VictorSPX(Ports.victorPort);
     private final TalonSRX masterMotor = new TalonSRX(Ports.talonPort);
     private int setpoint;
@@ -38,10 +37,10 @@ public class Elevator extends Subsystem {
         masterMotor.setNeutralMode(NeutralMode.Brake);
 
         /* set closed loop gains in slot0 */
-        masterMotor.config_kP(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
-        masterMotor.config_kI(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
-        masterMotor.config_kD(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
-        masterMotor.config_kF(TALON_LOW_UP_PID_SLOT, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kP(0, Constants.LIFT_LOW_UP_PIDF[0], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kI(0, Constants.LIFT_LOW_UP_PIDF[1], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kD(0, Constants.LIFT_LOW_UP_PIDF[2], Constants.TALON_TIMEOUT_MS);
+        masterMotor.config_kF(0, Constants.LIFT_LOW_UP_PIDF[3], Constants.TALON_TIMEOUT_MS);
 
         masterMotor.configMotionCruiseVelocity(Constants.MOTION_MAGIC_CRUISE_SPEED);
         masterMotor.configMotionAcceleration(Constants.MOTION_MAGIC_ACCELERATION);
@@ -56,6 +55,11 @@ public class Elevator extends Subsystem {
         masterMotor.configPeakOutputForward(Constants.PEAK_OUT_FWD, Constants.TALON_TIMEOUT_MS);
         masterMotor.configNominalOutputReverse(Constants.NOMINAL_OUT_REV, Constants.TALON_TIMEOUT_MS);
         masterMotor.configPeakOutputReverse(Constants.PEAK_OUT_REV, Constants.TALON_TIMEOUT_MS);
+
+        masterMotor.configContinuousCurrentLimit(15);
+        masterMotor.configPeakCurrentLimit(30);
+        masterMotor.configPeakCurrentDuration(1000);
+        masterMotor.enableCurrentLimit(true);
 
         masterMotor.setSensorPhase(Constants.ENCODER_REVERSED);
         /* Configure the encoder */
@@ -76,6 +80,9 @@ public class Elevator extends Subsystem {
         );
         masterMotor.overrideLimitSwitchesEnable(false);
         masterMotor.overrideSoftLimitsEnable(false);
+
+        masterMotor.configVoltageCompSaturation(12);
+        masterMotor.enableVoltageCompensation(true);
     }
 
     /**
@@ -96,6 +103,11 @@ public class Elevator extends Subsystem {
         this.setpoint = convertHeightToTicks(Math.min(Constants.ELEVATOR_MAX_HEIGHT, Math.max(0, height)));
     }
 
+    /**
+     * Get the raw ticks from the encoder of the elevator.
+     *
+     * @return raw ticks in native units.
+     */
     public double getTicks() {
         return masterMotor.getSelectedSensorPosition(0);
     }
@@ -112,14 +124,16 @@ public class Elevator extends Subsystem {
      * Moves the elevator to the current setpoint, assigned in setHeight()
      */
     public void moveElevator() {
-        SmartDashboard.putNumber("setPoint ", setpoint);
+        if(Robot.debug) {
+            SmartDashboard.putNumber("setPoint ", setpoint);
+        }
     if (getHeight() < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT && setpoint < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT) //let the robot go if its below a certain height
             masterMotor.set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, Constants.FLOOR_FEEDFORWARD);
         else if (atSecondStage())
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
-        if (isSetpointInDangerZone())
+        if (isHatchMechanismInDanger() && wristControl.getWristAngle() <= 70)
             Robot.hatchIntake.emergencyClose();
 
     }
@@ -130,11 +144,9 @@ public class Elevator extends Subsystem {
      */
     private void preventOverShoot() {
         if (atTop()) {
-            //setHeight(Math.min(getHeight(), convertTicksToMeters(setpoint)));
             masterMotor.setSelectedSensorPosition((int) (Constants.ELEVATOR_MAX_HEIGHT * Constants.TICKS_PER_METER), 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the position to the top.
         }
         if (atBottom()) {
-            //setHeight(Math.max(getHeight(), convertTicksToMeters(setpoint)));
             masterMotor.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS); //set the encoder position to the bottom
         }
     }
@@ -188,9 +200,13 @@ public class Elevator extends Subsystem {
         return Constants.ELEVATOR_MID_HEIGHT < getHeight();
     }
 
-    public boolean isSetpointInDangerZone() {
-        return (getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
-                (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE);
+    /**
+     * checks if the elevator is in range of the genesis profile to make sure the hatch system isn't open when in that zone
+     * @return
+     */
+    public boolean isHatchMechanismInDanger() {
+        return ((getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
+                (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE)) && wristControl.getWristAngle() <= robot.subsystems.wrist_control.Constants.WRIST_DANGER_ANGLE;
 
     }
 
@@ -224,6 +240,9 @@ public class Elevator extends Subsystem {
         return ticks / Constants.TICKS_PER_METER;
     }
 
+    /**
+     * resets the encoder of the elevator
+     */
     public void resetEncoders() {
         masterMotor.setSelectedSensorPosition(Constants.START_UNIT, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
         setHeight(0);
@@ -233,5 +252,13 @@ public class Elevator extends Subsystem {
     public void initDefaultCommand() {
         //setDefaultCommand(new ElevatorCommand(1.2));
         setDefaultCommand(new JoystickElevatorCommand());
+    }
+
+    /**
+     * turns off the motors, and sets the setpoint to the bottom of the
+     */
+    public void ResetSetpoint() {
+        setpoint = 0;
+        masterMotor.set(ControlMode.PercentOutput, 0);
     }
 }
