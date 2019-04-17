@@ -13,64 +13,79 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import static robot.Robot.elevator;
 
 /**
- * Hatch subsystem for the 2019 robot 'GENESIS'
- * the hatch subsystem uses two pistons, one which grabs the hatch and the other which extends to push the hatch onto the field pieces.
- *
- * @author paulo
+ * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class HatchIntake extends Subsystem {
+public class HatchIntake extends Subsystem { //TODO: needs java-doc
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
+    private final DoubleSolenoid gripper = new DoubleSolenoid(1, Ports.gripperForward, Ports.gripperReverse);
+    private final DoubleSolenoid gripperPlate = new DoubleSolenoid(1, Ports.gripperPlateForward, Ports.gripperPlateReverse);
+//    private final AnalogInput hatchSensor = new AnalogInput(Ports.proximitySensor);
 
-    private final DoubleSolenoid flower = new DoubleSolenoid(1, Ports.flowerForward, Ports.flowerReverse);
-    private final DoubleSolenoid fangs = new DoubleSolenoid(1, Ports.pusherForward, Ports.pusherReverse);
 
     public HatchIntake() {
+//        hatchSensor.resetAccumulator();
+    }
+
+
+    /**
+     * @return the voltage from the sensor
+     */
+    public double getVoltage() {
+//        return hatchSensor.getVoltage();
+        return 2;
     }
 
     /**
-     * a command to set the flower, close it if it is already open and open it if it is already closed
+     * a command to set the gripper, close it if it is already open and open it if it is already closed
      */
-    public void setFlower(boolean open) {
-        if (open && !elevator.isHatchMechanismInDanger())
-            flower.set(DoubleSolenoid.Value.kForward);
+    public void setGripper(boolean open) {
+        if (open && !elevator.isSetpointInDangerZone())
+            gripper.set(DoubleSolenoid.Value.kForward);
         else
-            if(!areFangsExtended())
-                flower.set(DoubleSolenoid.Value.kReverse);
+            gripper.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
-     * @return returns true if the flower is open and false otherwise
+     * @return returns true if the gripper is open and false otherwise
      */
-    public boolean isFlowerOpen() {
-        return flower.get() == DoubleSolenoid.Value.kForward;
+    public boolean isGripperOpen() {
+        return gripper.get() == DoubleSolenoid.Value.kForward;
     }
 
     /**
      * if true, extend forward
      */
-    public void setFangs(boolean extend) {
-        if (extend && !elevator.isHatchMechanismInDanger() && isFlowerOpen())
-            fangs.set(DoubleSolenoid.Value.kForward);
+    public void setGripperPlate(boolean extend) {
+        if (extend && !elevator.isSetpointInDangerZone())
+            gripperPlate.set(DoubleSolenoid.Value.kForward);
         else
-            fangs.set(DoubleSolenoid.Value.kReverse);
+            gripperPlate.set(DoubleSolenoid.Value.kReverse);
     }
 
     /**
-     * @return true if the fangs is extended and false otherwise
+     * @return true if the gripper is extended and false otherwise
      */
-    public boolean areFangsExtended() {
-        return fangs.get() == DoubleSolenoid.Value.kForward;
+    public boolean isGripperPlateExtended() {
+        return gripperPlate.get() == DoubleSolenoid.Value.kForward;
     }
+
+    /**
+     * @return if the hatch is inside
+     */
+    public boolean isHatchInside() {
+        return getVoltage() <= Constants.HATCH_IN_VOLTAGE;
+    }
+
 
     @Override
     public void initDefaultCommand() {
-        // There is no default command for the hatches currently
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
     }
 
-    /**
-     * This is called whenever the mechanism is in danger.
-     */
     public void emergencyClose() {
-        setFangs(false);
-        setFlower(false);
+        setGripperPlate(false);
+        setGripper(false);
     }
 }

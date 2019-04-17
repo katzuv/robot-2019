@@ -50,7 +50,6 @@ repositories {
 // Also defines JUnit 4.
 dependencies {
     compile group: 'com.github.5190GreenHopeRobotics', name: 'FalconLibrary', version: 'b4feb6c543050716bb3ef6f51e97c11a53945615'
-    compile group: 'com.github.RoelGo', name: 'MiniPID-Java', version: '1.0.0'
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)

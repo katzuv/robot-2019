@@ -1,13 +1,15 @@
-package robot.utilities;
+package robot.subsystems.commandGroups;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import robot.OI;
+import robot.Robot;
 
 /**
  *
  */
-public class ShiftButton extends CustomConditionalCommand {
+public class ShiftButton extends ConditionalCommand {
 
     private final GenericHID joystick;
     private final int button;

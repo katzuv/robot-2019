@@ -1,8 +1,10 @@
 package robot.subsystems.climb.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.Robot;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.climb.Constants;
+import robot.subsystems.climb.TiltUtils;
 
 import static robot.Robot.climb;
 
@@ -13,17 +15,18 @@ import static robot.Robot.climb;
  *
  * @author paulo
  */
-public class RiseToHeightEncoders extends Command {
-    private double targetHeight = Constants.LEVEL_THREE_LEG_LENGTH;
+public class RiseToHeightGyro extends Command {
+    private double targetHeight;
 
     //gamers, (lose yourself and) rise up
-    public RiseToHeightEncoders(double targetHeight) {
+    public RiseToHeightGyro(double targetHeight) {
         this.targetHeight = targetHeight;
         requires(climb);
     }
 
-    public RiseToHeightEncoders(Climb.HAB_LEG_HEIGHTS height_state) {
-        this(height_state.getHABHHeight());
+    public RiseToHeightGyro(Climb.HAB_LEG_HEIGHTS height_state) {
+        this.targetHeight = height_state.getHABHHeight();
+        requires(climb);
     }
 
     // Called just before this Command runs the first time
@@ -32,9 +35,9 @@ public class RiseToHeightEncoders extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        climb.setLegDriveHeight(targetHeight, 0); //TODO: should be get drive height
-        climb.setLegBLHeight(targetHeight+0.01-Constants.BACK_LEFT_STARTING_OFFSET, 0);
-        climb.setLegBRHeight(targetHeight+0.01-Constants.BACK_RIGHT_STARTING_OFFSET, 0);
+        climb.setLegDriveHeight(targetHeight, 0);
+        climb.setLegBLHeight(targetHeight, TiltUtils.getLegLength(-Constants.BACK_LEG_X_DIMENSION, -Constants.BACK_LEG_Y_DIMENSION, Robot.navx.getPitch(), Robot.navx.getRoll()));
+        climb.setLegBRHeight(targetHeight, TiltUtils.getLegLength(Constants.BACK_LEG_X_DIMENSION, -Constants.BACK_LEG_Y_DIMENSION, Robot.navx.getPitch(), Robot.navx.getRoll()));
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -47,15 +50,11 @@ public class RiseToHeightEncoders extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        climb.setLegBLSpeed(0);
-        climb.setLegBRSpeed(0);
-        climb.setLegDriveSpeed(0);
 
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        end();
     }
 }

@@ -1,16 +1,21 @@
-package robot.subsystems.hatch_intake.commands;
+package robot.subsystems.commandGroups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import robot.subsystems.cargo_intake.commands.GripperControl;
+import robot.subsystems.cargo_intake.commands.WristTurn;
+import robot.subsystems.drivetrain.Constants;
+import robot.subsystems.drivetrain.commands.GamePiecePickup;
+import robot.subsystems.hatch_intake.commands.Gripper;
 
 /**
  *
  */
-public class CloseBoth extends CommandGroup {
+public class AutoPickUpHatch extends CommandGroup {
 
-    public CloseBoth() {
-        addSequential(new Gripper(false));
+    public AutoPickUpHatch() {
 
-        addSequential(new GripperTransportation(false));
+        //addSequential(new GamePiecePickup(Constants.DRIVING_TARGETS.HATCH));
+        //addSequential(new Gripper(false));
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -28,4 +33,5 @@ public class CloseBoth extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     }
+
 }

@@ -12,11 +12,9 @@ import robot.OI;
 import robot.Robot;
 import robot.subsystems.climb.Constants;
 
-import static robot.Robot.*;
+import static robot.Robot.climb;
+import static robot.Robot.drivetrain;
 
-/**
- * Control the Drivetrain via the joysticks.
- */
 public class JoystickDrive extends Command {
     public  JoystickDrive() {
         requires(drivetrain);
@@ -38,7 +36,7 @@ public class JoystickDrive extends Command {
         // 2: bell
         // 3: x^3
         // 4: e^C(x - 1)
-        int option = 6;
+        int option = 1;
         final int C = 5;
         double leftInput = -Robot.m_oi.leftStick.getY();
         double rightInput = -Robot.m_oi.rightStick.getY();
@@ -69,28 +67,21 @@ public class JoystickDrive extends Command {
                     rightOutput = -Math.pow(Math.E, C * (-rightInput - 1));
                 }
                 break;
-            case 6:
-                leftOutput = curve(leftInput);
-                rightOutput = curve(rightInput);
-                if(Math.abs(leftInput) < 0.05) {
-                    leftOutput = 0;
-                }
-                if(Math.abs(rightInput) < 0.05) {
-                    rightOutput = 0;
-                }
-                break;
             default:
                 throw new IllegalArgumentException("Number must be 1-4");
         } //TODO: put this in subsystem
-        if(climb.isClimbing()) //maybe also lower speeds when back legs are lowered.
+        if((Robot.climb.getLegFRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
+                Robot.climb.getLegFLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH) || (Robot.climb.getLegBRHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH &&
+                Robot.climb.getLegBLHeight()> Constants.DRIVE_CLIMB_HEIGHT_THRESH)) //maybe also lower speeds when back legs are lowered.
         {
-            gripperWheels.setGripperSpeed(Math.min(0.9,Math.max(0,rightOutput))); //TODO: not good, no requires
-            drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.1,
-                    rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.1);
+            climb.setWheelSpeed(rightOutput*0.8);
+            drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.08,
+                    rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.08);
         }
         else {
             drivetrain.setSpeed(leftOutput, rightOutput);
             climb.setWheelSpeed((rightOutput+leftOutput) *(0.8/2));
+
         }
     }
 
@@ -107,18 +98,11 @@ public class JoystickDrive extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        drivetrain.setSpeed(0, 0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        end();
     }
-
-    private static double curve(double x) {
-        return 0.08 + 0.5 * x+ 0.2 * Math.pow(x, 3) + 0.25 * Math.pow(x, 5);
-    }
-
 }

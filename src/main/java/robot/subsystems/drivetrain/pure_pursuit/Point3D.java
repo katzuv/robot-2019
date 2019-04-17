@@ -1,7 +1,5 @@
 package robot.subsystems.drivetrain.pure_pursuit;
 
-import robot.utilities.Point;
-
 public class Point3D extends Point {
     protected double z;
 
