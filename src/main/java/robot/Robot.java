@@ -15,7 +15,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,9 +29,7 @@ import robot.subsystems.drivetrain.pure_pursuit.VectorPursuit;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.drivetrain.ramsete.TrajectoryTracker;
-import robot.subsystems.drivetrain.sandstorm.OneHatchCargo;
-import robot.subsystems.drivetrain.sandstorm.TwoHatchLeftRocket;
-import robot.subsystems.drivetrain.sandstorm.TwoHatchRightRocket;
+import robot.subsystems.drivetrain.sandstorm.TwoHatchFarRocket;
 import robot.subsystems.drivetrain.talon_profiling.Profiles;
 import robot.subsystems.drivetrain.talon_profiling.TalonFollow;
 import robot.subsystems.elevator.Constants;
@@ -124,15 +121,7 @@ public class Robot extends TimedRobot {
 
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
-        m_chooser.addOption("Right Rocket level 2", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH));
-        m_chooser.addOption("Right Rocket level 3", new TwoHatchRightRocket(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
-
-        m_chooser.addOption("Left rocket level 1", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
-        m_chooser.addOption("Left rocket level 2", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH));
-        m_chooser.addOption("Left rocket level 3", new TwoHatchLeftRocket(Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH));
-
-        m_chooser.addOption("Cargo ship", new OneHatchCargo(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
+        m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchFarRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH, true));
 
         m_chooser.addOption("Do nothing", null);
         //        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
@@ -170,15 +159,13 @@ public class Robot extends TimedRobot {
         toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(3.3), Rotation2dKt.getDegree(180)));
         m_chooser.addOption("Ramesete test", new TrajectoryTracker(toLoadingStation, 0, 1, false, false));
         m_chooser.addOption("Talon test", new TalonTest());
-        m_chooser.addOption("Talon follow", new TalonFollow(Profiles.toRocketLeft, Profiles.toRocketRight));
+        m_chooser.addOption("Talon follow", new TalonFollow(Profiles.toFarRocketLeft, Profiles.toFarRocketRight));
 
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-        camera.setResolution(320, 240);
-        camera.setExposureAuto();
         camera.setWhiteBalanceAuto();
     }
 
