@@ -21,7 +21,7 @@ public class VisionPlaceCargo extends CommandGroup {
             addSequential(new CargoScoring(state, false));
             addSequential(new WaitCommand(0.2));
             addSequential(new VisionDrive(1));
-            addSequential(new GripperControl(Constants.GRIPPER_SPEED.SHIP.getValue(), 0.3));
+            addSequential(new GripperControl(Constants.GRIPPER_SPEED.SHIP.getValue()), 0.3);
         }
         else {
             addSequential(new SetRocket(false));
