@@ -41,11 +41,6 @@ public class WristControl extends Subsystem {
         wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
         wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
 
-        wrist.configContinuousCurrentLimit(10, Constants.TALON_TIME_OUT);
-        wrist.configPeakCurrentLimit(30, Constants.TALON_TIME_OUT);
-        wrist.configPeakCurrentDuration(300, Constants.TALON_TIME_OUT);
-        wrist.enableCurrentLimit(true);
-
         /*
         PIDF config
          */
@@ -78,6 +73,11 @@ public class WristControl extends Subsystem {
 
         wrist.configVoltageCompSaturation(12.0);
         wrist.enableVoltageCompensation(true);
+
+        wrist.configContinuousCurrentLimit(13, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentLimit(30, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentDuration(300, Constants.TALON_TIME_OUT);
+        wrist.enableCurrentLimit(true);
 
         /*
         limit switch config
