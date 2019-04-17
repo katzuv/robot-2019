@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
+import static robot.Robot.elevator;
 import static robot.Robot.wristControl;
 
 /**
@@ -273,7 +274,7 @@ public class WristControl extends Subsystem {
      */
     public double getMaximalAngle(){
         //if(Robot.elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
-        if(SmartDashboard.getBoolean("Disable: Cargo proximity", true))
+        if(elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
             return Constants.WRIST_ANGLES.MAXIMAL.getValue();
         else
             return Constants.WRIST_ANGLES.MAXIMAL_FLOOR.getValue();

@@ -72,7 +72,7 @@ public class Constants {
         LEVEL_3_BACKWARD(0),
         INTAKE(150),
         MAXIMAL(150),
-        MAXIMAL_FLOOR(139), //Maximal angle when the elevator is down.
+        MAXIMAL_FLOOR(138), //Maximal angle when the elevator is down.
         RELATIVE_RUBBING(+40); //Relative angle to turn
         private final double wristAngle;
 

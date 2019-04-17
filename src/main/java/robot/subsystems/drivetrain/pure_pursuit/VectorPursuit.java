@@ -73,7 +73,7 @@ public class VectorPursuit extends Command {
     protected void execute() {
         if (!isFinished()) {
             updatePoint();
-            drivetrain.setSpeed(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(path) * direction);
+            drivetrain.setVelocity(getLeftSpeedVoltage(path) * direction, getRightSpeedVoltage(null) * direction);
             SmartDashboard.putNumber("x", drivetrain.currentLocation.getX());
             SmartDashboard.putNumber("y", drivetrain.currentLocation.getY());
         }
@@ -186,11 +186,12 @@ public class VectorPursuit extends Command {
     /**
      * calculates the speed needed in the right wheel and makes so we can apply it straight to the right engine
      *
-     * @param path current path
+     * @param movementVector current path
      * @return applied voltage to right engine
      * @author lior
      */
-    public double getRightSpeedVoltage(Path path) {
+    public double getRightSpeedVoltage(Vector movementVector) {
+        //double leftVelocity = movementVector.magnitude() * Math.cos(movementVector.angle()-drivetrain.getAngle()) - movementVector.magnitude() * Math.sin(movementVector.angle() - drivetrain.getAngle()) * r / h;
         return 0;
     }
 
@@ -202,7 +203,11 @@ public class VectorPursuit extends Command {
      * @author lior
      */
     public double getLeftSpeedVoltage(Path path) {
-        SmartDashboard.putString("Vector", getVelocity().toString());
+        SmartDashboard.putString("~Vector", getVelocity().toString());
+        SmartDashboard.putString("~Forward", driveVelocityVector(path).toString());
+        SmartDashboard.putString("~Distance", getDistanceVectorFromPath(path).toString());
+        SmartDashboard.putString("~Robot location", currentPoint.toString());
+        SmartDashboard.putNumber("~Distance from path", getDistanceFromPath(path));
         return 0;
     }
 
@@ -245,12 +250,14 @@ public class VectorPursuit extends Command {
     private Vector getVelocity() {
         Vector errorVelocityVector = getDistanceVectorFromPath(path).normalize().multiply(velocityByDistance(0, Constants.errorAcceleration, 0, getDistanceVectorFromPath(path).magnitude()));
         Vector driveVelocityVector = driveVelocityVector(path);
+        if(errorVelocityVector.magnitude()>0) {
+            driveVelocityVector.normalize().multiply(Math.max(driveVelocityVector.magnitude(),
+                    Math.pow(Constants.MAX_VELOCITY, 2) - Math.pow(errorVelocityVector.magnitude(), 2)
+            )); //make sure the forward velocity doesn't pass the maximal forward velocity
 
-        driveVelocityVector.normalize().multiply(Math.max(driveVelocityVector.magnitude(),
-                Math.pow(Constants.MAX_VELOCITY, 2) - Math.pow(errorVelocityVector.magnitude(), 2)
-        )); //make sure the forward velocity doesn't pass the forward velocity
-
-        return driveVelocityVector.add(errorVelocityVector);
+            return driveVelocityVector.add(errorVelocityVector);
+        }
+        return driveVelocityVector;
     }
 
 
