@@ -76,8 +76,8 @@ public class WristControl extends Subsystem {
         wrist.enableVoltageCompensation(true);
 
         wrist.configContinuousCurrentLimit(15, Constants.TALON_TIME_OUT);
-        wrist.configPeakCurrentLimit(35, Constants.TALON_TIME_OUT);
-        wrist.configPeakCurrentDuration(500, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentLimit(40, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentDuration(1000, Constants.TALON_TIME_OUT);
         wrist.enableCurrentLimit(true);
 
         /*
