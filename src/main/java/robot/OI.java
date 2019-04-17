@@ -131,7 +131,7 @@ public class OI {
 
         a.whenPressed(new Flower());
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        x.whenPressed(new ElevatorWristConditional(new WristTurn(Constants.WRIST_ANGLES.FORWARD)));
+        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.FORWARD));
 
         int shiftButton = 4; // (x)
         int hatchButton = 8; // Start

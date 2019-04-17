@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickWristTurn;
 
+import static robot.Robot.elevator;
 import static robot.Robot.wristControl;
 
 /**
@@ -40,11 +41,6 @@ public class WristControl extends Subsystem {
         wrist.setInverted(Constants.WRIST_MOTOR_REVERSED);
         wrist.overrideLimitSwitchesEnable(Constants.LIMIT_SWITCH_OVERRIDE);
         wrist.overrideSoftLimitsEnable(Constants.SOFT_LIMIT_OVERRIDE);
-
-        wrist.configContinuousCurrentLimit(10, Constants.TALON_TIME_OUT);
-        wrist.configPeakCurrentLimit(30, Constants.TALON_TIME_OUT);
-        wrist.configPeakCurrentDuration(300, Constants.TALON_TIME_OUT);
-        wrist.enableCurrentLimit(true);
 
         /*
         PIDF config
@@ -78,6 +74,11 @@ public class WristControl extends Subsystem {
 
         wrist.configVoltageCompSaturation(12.0);
         wrist.enableVoltageCompensation(true);
+
+        wrist.configContinuousCurrentLimit(13, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentLimit(30, Constants.TALON_TIME_OUT);
+        wrist.configPeakCurrentDuration(300, Constants.TALON_TIME_OUT);
+        wrist.enableCurrentLimit(true);
 
         /*
         limit switch config
@@ -167,7 +168,7 @@ public class WristControl extends Subsystem {
     public void setWristAngle(double angle) {
         raw = false;
         angle = Math.max(0, angle);
-        angle = Math.min(Constants.WRIST_ANGLES.MAXIMAL.getValue(), angle);
+        angle = Math.min(getMaximalAngle(), angle);
         if (Robot.debug) {
             SmartDashboard.putNumber("Cargo intake: target", angle);
         }
@@ -255,12 +256,31 @@ public class WristControl extends Subsystem {
     }
 
     public boolean dropWrist() {
+//        return (wristControl.getWristAngle() < Constants.DROP_WRIST_ANGLE &&
+//                setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
+//                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
+//                        setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2));
         return (wristControl.getWristAngle() < Constants.DROP_WRIST_ANGLE &&
                 setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
-                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
-                        setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2));
+                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > getMaximalAngle() - Constants.DROP_WRIST_ANGLE &&
+                        setPointAngle > getMaximalAngle() - Constants.DROP_WRIST_ANGLE / 2));
+
     }
 
+    /**
+     * Returns the maximal angle of the wrist. this method is used for when the maximal angle of the wrist changes,
+     * for example when the elevator is in its bottom position, and can be used by commands to update their isFinished statement.
+     * @return current maximal angle in degrees.
+     */
+    public double getMaximalAngle(){
+        //if(Robot.elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
+        if(elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
+            return Constants.WRIST_ANGLES.MAXIMAL.getValue();
+        else
+            return Constants.WRIST_ANGLES.MAXIMAL_FLOOR.getValue();
+
+
+    }
     @Override
     public void periodic() {
         update();

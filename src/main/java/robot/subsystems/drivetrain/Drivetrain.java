@@ -7,6 +7,9 @@
 
 package robot.subsystems.drivetrain;
 
+import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
+import com.ctre.phoenix.motion.MotionProfileStatus;
+import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -17,6 +20,8 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team254.lib.physics.DifferentialDrive;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,6 +37,13 @@ import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
 import robot.utilities.Point;
+import robot.utilities.Utils;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Drivetrain subsystem for the 2019 robot 'GENESIS'
@@ -46,6 +58,7 @@ public class Drivetrain extends Subsystem {
     private final TalonSRX rightMaster = new TalonSRX(Ports.rightMaster);
     private final VictorSPX rightSlave1 = new VictorSPX(Ports.rightSlave1);
     private final VictorSPX rightSlave2 = new VictorSPX(Ports.rightSlave2);
+
     public Point currentLocation = new Point(0, 0);
 
     /**
@@ -244,7 +257,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void resetLocation() {
-        localization.reset(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(180))); //TODO: make this a constant
+        localization.reset(new Pose2d(LengthKt.getFeet(9.393), LengthKt.getFeet(8.962), Rotation2dKt.getDegree(0))); //TODO: make this a constant
         currentLocation.setX(0);
         currentLocation.setY(0);
     }
@@ -425,4 +438,39 @@ public class Drivetrain extends Subsystem {
                 wheelVoltages.getRight() / 12
         );
     }
+
+    public static BufferedTrajectoryPointStream loadTrajectoryFromCSV(String name) {
+        BufferedTrajectoryPointStream pointStream = new BufferedTrajectoryPointStream();
+        ArrayList<double[]> profile = Utils.readCSVMotionProfileFile(Filesystem.getDeployDirectory() + "/" + name);
+
+        TrajectoryPoint point = new TrajectoryPoint();
+
+        for (int i = 0; i < profile.size(); i++) {
+            point.position = Robot.drivetrain.convertRightDistanceToTicks(profile.get(i)[0]);     // meters -> rotations -> ticks
+            point.velocity = Robot.drivetrain.convertRightDistanceToTicks(profile.get(i)[1]) / 10.0;     // meters/second -> ticks/sec -> ticks/100ms
+            point.timeDur = 50;
+            point.profileSlotSelect0 = 0;
+
+            point.zeroPos = i == 0;
+            point.isLastPoint = (i + 1) == profile.size();
+
+            pointStream.Write(point);
+        }
+
+        return pointStream;
+    }
+
+    public void startMotionProfile(BufferedTrajectoryPointStream left, BufferedTrajectoryPointStream right) {
+        leftMaster.startMotionProfile(left, 10, ControlMode.MotionProfile);
+        rightMaster.startMotionProfile(right, 10, ControlMode.MotionProfile);
+    }
+
+    public boolean isMotionProfileDone() {
+        return leftMaster.isMotionProfileFinished() && rightMaster.isMotionProfileFinished();
+    }
+
+    public void printMotionProfileBuffer(){
+
+    }
+
 }

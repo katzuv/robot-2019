@@ -3,6 +3,7 @@ package robot.subsystems.wrist_control.commands;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import robot.Robot;
 import robot.subsystems.wrist_control.Constants;
 
 import static robot.Robot.wristControl;
@@ -65,7 +66,7 @@ public class WristTurn extends Command {
     protected boolean isFinished()
     {
         //If the target is in a range where the wrist should drop itself once reaching it, also allow the command to finish if the wrist is beyond the angle.
-        if(angle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE) {
+        if(angle > wristControl.getMaximalAngle() - Constants.DROP_WRIST_ANGLE) {
             if (usingTimer)
                 return timer.get() > timeout || wristControl.getWristAngle() > angle - Constants.DROP_WRIST_ANGLE;
             return wristControl.getWristAngle() > angle - Constants.DROP_WRIST_ANGLE;

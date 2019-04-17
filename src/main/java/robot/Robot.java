@@ -13,15 +13,15 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.pure_pursuit.Path;
@@ -29,11 +29,15 @@ import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
 import robot.subsystems.drivetrain.pure_pursuit.VectorPursuit;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
+import robot.subsystems.drivetrain.ramsete.TrajectoryTracker;
 import robot.subsystems.drivetrain.sandstorm.OneHatchCargo;
 import robot.subsystems.drivetrain.sandstorm.TwoHatchLeftRocket;
 import robot.subsystems.drivetrain.sandstorm.TwoHatchRightRocket;
+import robot.subsystems.drivetrain.talon_profiling.Profiles;
+import robot.subsystems.drivetrain.talon_profiling.TalonFollow;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
+import robot.subsystems.elevator.commands.ResetElevatorHeight;
 import robot.subsystems.hatch_intake.HatchIntake;
 import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.wrist_control.WristControl;
@@ -41,7 +45,9 @@ import robot.subsystems.wrist_control.commands.ResetWristAngle;
 import robot.utilities.MotorIssueDetector;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -66,6 +72,9 @@ public class Robot extends TimedRobot {
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
+
+    public static ArrayList<double[]> leftProfile;
+    public static ArrayList<double[]> rightProfile;
 
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -129,7 +138,7 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("Do nothing", null);
         //        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
         Path path = new Path(new Waypoint(0, 0), new Waypoint(0, 1), new Waypoint(1, 1));
-        Path path2 = new Path(new Waypoint(0, 0), new Waypoint(0,1), new Waypoint(0, 2));
+        Path path2 = new Path(new Waypoint(1, 0), new Waypoint(0,1), new Waypoint(0, 2));
 
         path.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
         path2.generateAll(robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_DATA, robot.subsystems.drivetrain.pure_pursuit.Constants.WEIGHT_SMOOTH, robot.subsystems.drivetrain.pure_pursuit.Constants.TOLERANCE, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_ACCEL, robot.subsystems.drivetrain.pure_pursuit.Constants.MAX_PATH_VELOCITY);
@@ -150,7 +159,7 @@ public class Robot extends TimedRobot {
         ));
         m_chooser.addOption("Talon test", new TalonTest());
 
-        m_chooser.addOption("Velocity 2018 test", new VectorPursuit(path, 0.4,
+        m_chooser.addOption("Velocity 2018 test", new VectorPursuit(path2, 0.4,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kP,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kA,
                 robot.subsystems.drivetrain.pure_pursuit.Constants.kV,
@@ -158,7 +167,12 @@ public class Robot extends TimedRobot {
                 false
         ));
 
+        List<Pose2d> toLoadingStation = new ArrayList<>();
+        toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(3.3), Rotation2dKt.getDegree(180)));
+        m_chooser.addOption("Ramesete test", new TrajectoryTracker(toLoadingStation, 0, 1, false, false));
         m_chooser.addOption("Talon test", new TalonTest());
+        m_chooser.addOption("Talon follow", new TalonFollow(Profiles.toRocketLeft, Profiles.toRocketRight));
+
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
@@ -271,6 +285,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("navx", navx);
         SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
         SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(150));
+        SmartDashboard.putData("reset elevator height", new ResetElevatorHeight());
 
         if(debug) {
             SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());

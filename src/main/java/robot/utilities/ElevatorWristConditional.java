@@ -10,6 +10,10 @@ public class ElevatorWristConditional extends ConditionalCommand {
         super(onTrue);
     }
 
+    public ElevatorWristConditional(Command onTrue, Command onFalse){
+        super(onTrue, onFalse);
+    }
+
     @Override
     protected boolean condition() {
         return Robot.elevator.getHeight() > 0.08;

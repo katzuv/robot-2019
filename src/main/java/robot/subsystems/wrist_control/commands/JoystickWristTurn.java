@@ -31,7 +31,7 @@ public class JoystickWristTurn extends Command {
             change = yAxis * OI.WRIST_ROTATE_RATE;
         else
             change = yAxis * OI.WRIST_ROTATE_RATE;
-        wristControl.setWristAngle(Math.max(0, Math.min(wristControl.getWristAngle(), Constants.WRIST_ANGLES.MAXIMAL.getValue())) + change);
+        wristControl.setWristAngle(Math.max(0, Math.min(wristControl.getWristAngle(), wristControl.getMaximalAngle())) + change);
 
     }
 
