@@ -25,6 +25,7 @@ public class VisionDrive extends Command {
     private Timer timeout = new Timer(); //this timer is meant to prevent jumps where the vision target gets lost
 
     private double TIMER_DELAY = 0.1;
+    private double ANGLE_SETPOINT = 0.8;
 
     public VisionDrive(double targetDistance) {
         turnPid.setOutputLimits(-0.5, 0.5);
@@ -49,11 +50,11 @@ public class VisionDrive extends Command {
         double visionDistance = distanceEntry.getDouble(0);
 
         double speed = Math.min(Constants.VISION_SPEED, velocityByDistance(0, 0.08, targetDistance, visionDistance));
-        double turn = turnPid.getOutput(visionAngle, 0.8);
+        double turn = turnPid.getOutput(visionAngle, ANGLE_SETPOINT);
 
-        if (visionAngle > 1) {
+        if (visionAngle > 1 + ANGLE_SETPOINT) {
             turn -= Constants.MIN_AIM;
-        } else if (visionAngle < -1) {
+        } else if (visionAngle < -1 + ANGLE_SETPOINT) {
             turn += Constants.MIN_AIM;
         }
 
