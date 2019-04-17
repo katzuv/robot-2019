@@ -192,6 +192,11 @@ public class Drivetrain extends Subsystem {
         setRightVelocity(right);
     }
 
+    public void setMotionMagicDistance(double rightDistance, double leftDistance){
+        rightMaster.set(ControlMode.MotionMagic, rightDistance);
+        leftMaster.set(ControlMode.MotionMagic, leftDistance);
+    }
+
     /**
      * @return the speed of the left side of the Drivetrain
      */

@@ -1,6 +1,7 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.subsystems.drivetrain.Constants;
 import robot.utilities.Utils;
 
 import static robot.Robot.drivetrain;
@@ -13,11 +14,13 @@ import static robot.Robot.navx;
 public class TurnAngle extends Command {
     private double angle;
     private double setpoint;
+    private double arcLength;
     private boolean absolute; //if the angle is relative or absolute
 
 
     public TurnAngle(double angle) {
         this.angle = angle;
+
         absolute = false;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -33,14 +36,13 @@ public class TurnAngle extends Command {
             this.setpoint = navx.getAngle() + angle;
         else
             this.setpoint = angle;
+        this.arcLength = 2* (Constants.ROBOT_WIDTH/2)*(Math.toRadians(this.setpoint));
         drivetrain.setMotorsToBrake();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double direction = Math.signum(this.setpoint - navx.getAngle()); //If the target is on the robots right, turn accordingly
-        double velocity = Utils.constrainedMap(Math.abs(this.setpoint - navx.getAngle()), 0, angle, 0.4, 2.5); //Have the value start at 2.5 and end at a slower speed
-        drivetrain.setVelocity(direction * velocity, -direction * velocity);
+        drivetrain.setMotionMagicDistance(this.arcLength, -this.arcLength);
     }
 
     // Make this return true when this Command no longer needs to run execute()

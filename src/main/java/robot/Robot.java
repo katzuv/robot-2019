@@ -34,6 +34,7 @@ import robot.subsystems.drivetrain.talon_profiling.Profiles;
 import robot.subsystems.drivetrain.talon_profiling.TalonFollow;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
+import robot.subsystems.elevator.commands.ResetElevatorHeight;
 import robot.subsystems.hatch_intake.HatchIntake;
 import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.wrist_control.WristControl;
@@ -271,6 +272,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("navx", navx);
         SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
         SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(150));
+        SmartDashboard.putData("reset elevator height", new ResetElevatorHeight());
 
         if(debug) {
             SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
