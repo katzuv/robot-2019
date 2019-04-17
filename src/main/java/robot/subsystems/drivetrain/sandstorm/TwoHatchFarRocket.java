@@ -24,6 +24,6 @@ public class TwoHatchFarRocket extends CommandGroup {
                 addSequential(new WristTurn(0));
 
             }}); //Close wrist and flower while driving from the rocket to the loading station
-            addSequential(new TalonFollow(Profiles.farRocketToLoadingRevLeft, Profiles.farRocketToLoadingRevRight, !isRight));
+            //addSequential(new TalonFollow(Profiles.farRocketToLoadingRevLeft, Profiles.farRocketToLoadingRevRight, !isRight));
     }
 }
