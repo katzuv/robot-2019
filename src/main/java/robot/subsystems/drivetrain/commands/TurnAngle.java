@@ -19,14 +19,14 @@ public class TurnAngle extends Command {
 
 
     public TurnAngle(double angle) {
+        requires(drivetrain);
         this.angle = angle;
 
         absolute = false;
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     }
 
     public TurnAngle(double absoluteAngle, boolean isAbsolute){
+        requires(drivetrain);
          absolute = isAbsolute;
          angle = absoluteAngle;
     }
@@ -47,7 +47,7 @@ public class TurnAngle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(this.setpoint - navx.getAngle()) < 5;
+        return Math.abs(this.setpoint - navx.getAngle()) < 4;
     }
 
     // Called once after isFinished returns true
