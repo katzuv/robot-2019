@@ -143,7 +143,7 @@ public class OI {
                         new WristAndElevatorCommand(Constants.WRIST_ANGLES.FORWARD.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()),
                         new ShiftButton(xbox, cargoButton,
                                 new VisionConditionalCommand(new VisionPlaceCargo(0)),
-                                new ElevatorCommand(0)
+                                new ElevatorCommand(0.04)
                         )
                 )
         ); //If x is held, go to cargo height, and if not, goes down to zero.
@@ -196,8 +196,6 @@ public class OI {
         left_joystick_seven.toggleWhenPressed(new VisionConditionalCommand(new VisionDrive()));
         left_joystick_six.toggleWhenPressed(new VisionConditionalCommand(new VisionTakeHatch()));
 
-        left_joystick_nine.whenPressed(new TurnAngle(90));
-        left_joystick_eight.whenPressed(new TurnAngle(180));
 
         /*
         left_joystick_two.whenPressed(new CalibrateLegs());

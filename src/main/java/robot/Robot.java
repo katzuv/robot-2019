@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
     public static final Compressor compressor = new Compressor(0);
     public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = true;
-    public final static boolean debug = true;
+    public final static boolean debug = false;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
@@ -122,7 +122,7 @@ public class Robot extends TimedRobot {
 
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH, true));
+        m_chooser.setDefaultOption("Right Rocket", new TwoHatchRocket(true));
 
         m_chooser.addOption("Do nothing", null);
         //        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);

@@ -18,12 +18,16 @@ import static robot.Robot.*;
  * Control the Drivetrain via the joysticks.
  */
 public class JoystickDrive extends Command {
-    public  JoystickDrive() {
+    public JoystickDrive() {
         requires(drivetrain);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
+    private static double curve(double x) {
+        double b = 4, a = -1.1, c = 4.9, d = 2.3;
+        return (b * Math.pow(x, 3) + a * Math.pow(x, 5) + c * x + d * Math.pow(x, 9)) / (a + b + c + d);
+    }
 
     // Called just before this Command runs the first time
     @Override
@@ -72,25 +76,19 @@ public class JoystickDrive extends Command {
             case 6:
                 leftOutput = curve(leftInput);
                 rightOutput = curve(rightInput);
-                if(Math.abs(leftInput) < 0.05) {
-                    leftOutput = 0;
-                }
-                if(Math.abs(rightInput) < 0.05) {
-                    rightOutput = 0;
-                }
+
                 break;
             default:
                 throw new IllegalArgumentException("Number must be 1-4");
         } //TODO: put this in subsystem
-        if(climb.isClimbing()) //maybe also lower speeds when back legs are lowered.
+        if (climb.isClimbing()) //maybe also lower speeds when back legs are lowered.
         {
-            gripperWheels.setGripperSpeed(Math.min(0.9,Math.max(0,rightOutput))); //TODO: not good, no requires
-            drivetrain.setSpeed(rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR+ OI.rightStick.getX()*0.1,
-                    rightOutput/Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR- OI.rightStick.getX()*0.1);
-        }
-        else {
+            gripperWheels.setGripperSpeed(Math.min(0.9, Math.max(0, rightOutput))); //TODO: not good, no requires
+            drivetrain.setSpeed(rightOutput / Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR + OI.rightStick.getX() * 0.1,
+                    rightOutput / Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR - OI.rightStick.getX() * 0.1);
+        } else {
             drivetrain.setSpeed(leftOutput, rightOutput);
-            climb.setWheelSpeed((rightOutput+leftOutput) *(0.8/2));
+            climb.setWheelSpeed((rightOutput + leftOutput) * (0.8 / 2));
         }
     }
 
@@ -115,10 +113,6 @@ public class JoystickDrive extends Command {
     @Override
     protected void interrupted() {
         end();
-    }
-
-    private static double curve(double x) {
-        return 0.08 + 0.5 * x+ 0.2 * Math.pow(x, 3) + 0.25 * Math.pow(x, 5);
     }
 
 }
