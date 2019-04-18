@@ -72,6 +72,9 @@ public class Constants {
     public static double[] PIDVisionForward = isRobotA ? new double[]{0.4, 0.0015, 0.1} : new double[]{0, 0, 0};
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
 
+    public static double[] TURNING_PID = isRobotA ? new double[]{0.15,0,0.44}: new double[]{0.15, 0, 0.44};
+    public static double TURNING_PEAK = 3;
+
     public static double kDriveLeftKv = 0.7256 / 3.28;
     public static double kDriveLeftKa = 0.2766 / 3.28;
     public static double kDriveLeftKs = 0.8616 / 3.28;
@@ -103,4 +106,5 @@ public class Constants {
         constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(ACCELERATION_CONSTRAINT))));
         constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(RECTANGLE_1), LengthKt.getFeet(RECTANGLE_2), LengthKt.getFeet(RECTANGLE_3), LengthKt.getFeet(RECTANGLE_4)), VelocityKt.getVelocity(LengthKt.getFeet(VELOCITY_CONSTRAINT))));
     }
+
 }
