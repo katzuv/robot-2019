@@ -1,5 +1,6 @@
 package robot.subsystems.drivetrain.commands;
 
+import com.stormbots.MiniPID;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.subsystems.drivetrain.Constants;
 import robot.utilities.Utils;
@@ -16,18 +17,18 @@ public class TurnAngle extends Command {
     private double setpoint;
     private double arcLength;
     private boolean absolute; //if the angle is relative or absolute
-
+    private MiniPID turninPID = new MiniPID(1,1,1);
 
     public TurnAngle(double angle) {
+        requires(drivetrain);
         this.angle = angle;
 
         absolute = false;
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     }
 
     public TurnAngle(double absoluteAngle, boolean isAbsolute){
-         absolute = isAbsolute;
+        requires(drivetrain);
+        absolute = isAbsolute;
          angle = absoluteAngle;
     }
     // Called just before this Command runs the first time
@@ -41,8 +42,8 @@ public class TurnAngle extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        this.arcLength = (Constants.ROBOT_WIDTH/2)*(Math.toRadians(this.setpoint));
-        drivetrain.setMotionMagicDistance(this.arcLength, -this.arcLength);
+        double turnSpeed = turninPID.getOutput(drivetrain.getAngle(), setpoint);
+        drivetrain.setSpeed(turnSpeed, -turnSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
