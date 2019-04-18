@@ -1,7 +1,6 @@
 package robot.subsystems.command_groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
@@ -15,7 +14,7 @@ import robot.subsystems.wrist_control.commands.WristTurn;
 public class HatchScoring extends CommandGroup {
 
     public HatchScoring(double height, boolean raise) {
-        if(raise) {
+        if (raise) {
             addSequential(
                     new CommandGroup() {
                         {
@@ -25,7 +24,6 @@ public class HatchScoring extends CommandGroup {
                     }
             );
         }
-
         addSequential(new Flower(true));
         addSequential(new WaitCommand(0.2));
         addSequential(new Fangs(true, 0.5));

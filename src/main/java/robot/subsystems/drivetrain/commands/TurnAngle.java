@@ -40,7 +40,6 @@ public class TurnAngle extends Command {
         else
             this.setpoint = angle;
         SmartDashboard.putNumber("Setpoint", setpoint);
-        drivetrain.setMotorsToBrake();
 
         drivetrain.driveDistance(this.arcLength, -this.arcLength);
         updateConstants();
@@ -62,7 +61,6 @@ public class TurnAngle extends Command {
     // Called once after isFinished returns true
     protected void end() {
         drivetrain.setSpeed(0, 0);
-        drivetrain.setMotorsToCoast();
     }
 
 

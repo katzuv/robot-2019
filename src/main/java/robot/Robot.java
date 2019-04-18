@@ -195,7 +195,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-        drivetrain.setMotorsToCoast();
         elevator.ResetSetpoint();
         /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
          * to cancel the motion magic that is currently taking place and will still run if you re enable
@@ -227,6 +226,8 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.start();
         }
+
+        drivetrain.setMotorsToBrake();
     }
 
     /**

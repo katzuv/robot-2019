@@ -21,7 +21,6 @@ public class DistanceDrive extends Command {
     protected void initialize() {
         startDistance = (drivetrain.getLeftDistance() + drivetrain.getRightDistance()) / 2;
         drivetrain.driveDistance(distance, distance); //TODO: currently this doesn't use the real values
-        drivetrain.setMotorsToBrake();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -36,8 +35,6 @@ public class DistanceDrive extends Command {
     // Called once after isFinished returns true
     protected void end() {
         drivetrain.setSpeed(0, 0);
-        drivetrain.setMotorsToCoast();
-
     }
 
     // Called when another command which requires one or more of the same
