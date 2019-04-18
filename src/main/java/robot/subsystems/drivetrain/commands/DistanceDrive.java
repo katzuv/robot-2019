@@ -20,7 +20,7 @@ public class DistanceDrive extends Command {
 
     protected void initialize() {
         startDistance = (drivetrain.getLeftDistance() + drivetrain.getRightDistance()) / 2;
-        drivetrain.driveDistance(distance); //TODO: currently this doesn't use the real values
+        drivetrain.driveDistance(distance, distance); //TODO: currently this doesn't use the real values
         drivetrain.setMotorsToBrake();
     }
 

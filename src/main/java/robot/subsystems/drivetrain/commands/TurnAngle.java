@@ -36,18 +36,19 @@ public class TurnAngle extends Command {
             this.setpoint = navx.getAngle() + angle;
         else
             this.setpoint = angle;
-        this.arcLength = 2* (Constants.ROBOT_WIDTH/2)*(Math.toRadians(this.setpoint));
+        this.arcLength = (Constants.ROBOT_WIDTH/2)*(Math.toRadians(this.setpoint));
         drivetrain.setMotorsToBrake();
+
+        drivetrain.driveDistance(this.arcLength, -this.arcLength);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        drivetrain.setMotionMagicDistance(this.arcLength, -this.arcLength);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(this.setpoint - navx.getAngle()) < 4;
+        return Math.abs(this.setpoint - navx.getAngle()) < 1;
     }
 
     // Called once after isFinished returns true
