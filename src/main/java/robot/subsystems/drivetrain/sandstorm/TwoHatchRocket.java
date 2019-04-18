@@ -3,6 +3,8 @@ package robot.subsystems.drivetrain.sandstorm;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.command_groups.VisionPlaceHatch;
+import robot.subsystems.command_groups.VisionTakeHatch;
+import robot.subsystems.drivetrain.commands.TurnAngle;
 import robot.subsystems.drivetrain.talon_profiling.Profiles;
 import robot.subsystems.drivetrain.talon_profiling.TalonFollow;
 import robot.subsystems.elevator.Constants;
@@ -17,6 +19,7 @@ public class TwoHatchRocket extends CommandGroup {
 
     public TwoHatchRocket(Constants.ELEVATOR_HEIGHTS height, boolean isRight) {
         addParallel(new Flower(false));
+        addParallel(new Flower(false));
         addParallel(new ElevatorCommand(height));
         addParallel(new CommandGroup(){{
             addSequential(new WaitCommand(1));
@@ -30,5 +33,11 @@ public class TwoHatchRocket extends CommandGroup {
 //                addSequential(new WristTurn(0));
 ////
 //            }}); //Close wrist and flower while driving from the rocket to the loading station
+        addSequential(new WaitCommand(0.3));
+        addSequential(new TalonFollow(Profiles.toLoadingStationNearRocketLeft, Profiles.toLoadingStationNearRocketRight));
+        addSequential(new TurnAngle(180, true));
+        addSequential(new VisionTakeHatch());
+        addSequential(new TalonFollow(Profiles.loadingStationToFarRocketLeft, Profiles.loadingStationToFarRocketRight));
+        addSequential(new VisionPlaceHatch(height));
     }
 }
