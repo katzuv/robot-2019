@@ -320,7 +320,7 @@ public class Drivetrain extends Subsystem {
      * @return navx yaw angle
      */
     public double getAngle() {
-        return -Robot.navx.getAngle();
+        return Robot.navx.getAngle();
     }
 
     /**
@@ -355,6 +355,11 @@ public class Drivetrain extends Subsystem {
         Constants.PIDVisionForward[0] = getConstant("Vision Drive: forward kp", Constants.PIDVisionForward[0]);
         Constants.PIDVisionForward[1] = getConstant("Vision Drive: forward ki", Constants.PIDVisionForward[1]);
         Constants.PIDVisionForward[2] = getConstant("Vision Drive: forward kd", Constants.PIDVisionForward[2]);
+        Constants.TURNING_PID[0] = getConstant("Turn kP", Constants.TURNING_PID[0]);
+        Constants.TURNING_PID[1] = getConstant("Turn kI", Constants.TURNING_PID[1]);
+        Constants.TURNING_PID[2] = getConstant("Turn kD", Constants.TURNING_PID[2]);
+        Constants.TURNING_PEAK = getConstant("Turn peak", Constants.TURNING_PEAK);
+
     }
     private double getConstant(String key, double constant) {
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
