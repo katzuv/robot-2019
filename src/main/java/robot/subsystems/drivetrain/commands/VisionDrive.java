@@ -25,7 +25,7 @@ public class VisionDrive extends Command {
     private Timer timeout = new Timer(); //this timer is meant to prevent jumps where the vision target gets lost
 
     private double TIMER_DELAY = 0.1;
-    private double ANGLE_SETPOINT = 0.8;
+    private double ANGLE_SETPOINT = 0;
 
     public VisionDrive(double targetDistance) {
         turnPid.setOutputLimits(-0.5, 0.5);

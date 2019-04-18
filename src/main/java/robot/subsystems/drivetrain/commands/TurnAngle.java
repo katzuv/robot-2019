@@ -38,6 +38,8 @@ public class TurnAngle extends Command {
         else
             this.setpoint = angle;
         drivetrain.setMotorsToBrake();
+
+        drivetrain.driveDistance(this.arcLength, -this.arcLength);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -48,7 +50,7 @@ public class TurnAngle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(this.setpoint - navx.getAngle()) < 5;
+        return Math.abs(this.setpoint - navx.getAngle()) < 1;
     }
 
     // Called once after isFinished returns true

@@ -29,7 +29,7 @@ import robot.subsystems.drivetrain.pure_pursuit.VectorPursuit;
 import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
 import robot.subsystems.drivetrain.ramsete.TalonTest;
 import robot.subsystems.drivetrain.ramsete.TrajectoryTracker;
-import robot.subsystems.drivetrain.sandstorm.TwoHatchFarRocket;
+import robot.subsystems.drivetrain.sandstorm.TwoHatchRocket;
 import robot.subsystems.drivetrain.talon_profiling.Profiles;
 import robot.subsystems.drivetrain.talon_profiling.TalonFollow;
 import robot.subsystems.elevator.Constants;
@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
     public static final Compressor compressor = new Compressor(0);
     public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = true;
-    public final static boolean debug = false;
+    public final static boolean debug = true;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
@@ -122,7 +122,7 @@ public class Robot extends TimedRobot {
 
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchFarRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH, true));
+        m_chooser.setDefaultOption("Right Rocket level 1", new TwoHatchRocket(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH, true));
 
         m_chooser.addOption("Do nothing", null);
         //        Path path = new Path(new Waypoint(0, 0), 0, new Waypoint(1.5, 2.3), 90,0.5);
@@ -160,13 +160,12 @@ public class Robot extends TimedRobot {
         toLoadingStation.add(new Pose2d(LengthKt.getFeet(9.463), LengthKt.getFeet(3.3), Rotation2dKt.getDegree(180)));
         m_chooser.addOption("Ramesete test", new TrajectoryTracker(toLoadingStation, 0, 1, false, false));
         m_chooser.addOption("Talon test", new TalonTest());
-        m_chooser.addOption("Talon follow", new TalonFollow(Profiles.toFarRocketLeft, Profiles.toFarRocketRight));
 
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
 
-        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
         camera.setWhiteBalanceAuto();
     }
 

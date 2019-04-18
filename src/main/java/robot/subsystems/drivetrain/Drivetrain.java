@@ -192,11 +192,6 @@ public class Drivetrain extends Subsystem {
         setRightVelocity(right);
     }
 
-    public void setMotionMagicDistance(double rightDistance, double leftDistance){
-        rightMaster.set(ControlMode.MotionMagic, rightDistance);
-        leftMaster.set(ControlMode.MotionMagic, leftDistance);
-    }
-
     /**
      * @return the speed of the left side of the Drivetrain
      */
@@ -392,11 +387,10 @@ public class Drivetrain extends Subsystem {
     /**
      * Drive with motion magic to a set position.
      *
-     * @param distance distance in meters
      */
-    public void driveDistance(double distance) {
-        leftMaster.set(ControlMode.MotionMagic, convertLeftDistanceToTicks(distance + getLeftDistance()));
-        rightMaster.set(ControlMode.MotionMagic, convertRightDistanceToTicks(distance + getRightDistance()));
+    public void driveDistance(double leftDistance, double rightDistance) {
+        leftMaster.set(ControlMode.MotionMagic, convertLeftDistanceToTicks(leftDistance + getLeftDistance()));
+        rightMaster.set(ControlMode.MotionMagic, convertRightDistanceToTicks(rightDistance + getRightDistance()));
     }
 
     /* Unused as of now */
