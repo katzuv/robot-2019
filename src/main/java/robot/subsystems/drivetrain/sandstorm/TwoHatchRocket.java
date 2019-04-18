@@ -35,7 +35,9 @@ public class TwoHatchRocket extends CommandGroup {
 //            }}); //Close wrist and flower while driving from the rocket to the loading station
         addSequential(new WaitCommand(0.3));
         addSequential(new TalonFollow(Profiles.toLoadingStationNearRocketLeft, Profiles.toLoadingStationNearRocketRight));
+        addSequential(new WaitCommand(0.3));
         addSequential(new TurnAngle(180, true));
+        addSequential(new WaitCommand(0.2));
         addSequential(new VisionTakeHatch());
         addSequential(new TalonFollow(Profiles.loadingStationToFarRocketLeft, Profiles.loadingStationToFarRocketRight));
         addSequential(new VisionPlaceHatch(height));
