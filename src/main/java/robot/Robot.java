@@ -165,7 +165,7 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
 
-        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
         camera.setWhiteBalanceAuto();
     }
 
