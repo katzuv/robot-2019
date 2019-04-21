@@ -71,9 +71,6 @@ public class Robot extends TimedRobot {
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
 
-    public static ArrayList<double[]> leftProfile;
-    public static ArrayList<double[]> rightProfile;
-
     Command m_autonomousCommand;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
