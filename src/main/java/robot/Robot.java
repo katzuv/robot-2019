@@ -9,6 +9,7 @@ package robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -165,8 +166,11 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
 
-        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setWhiteBalanceAuto();
+        camera.setExposureAuto();
+        camera.setBrightness(60);
+        camera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
     }
 
 
