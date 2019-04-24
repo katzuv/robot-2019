@@ -166,7 +166,7 @@ public class Robot extends TimedRobot {
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setWhiteBalanceAuto();
         camera.setExposureAuto();
-        camera.setBrightness(60);
+        camera.setBrightness(30);
         camera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
     }
 
