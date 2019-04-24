@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final WristControl wristControl = new WristControl();
     public static final GripperWheels gripperWheels = new GripperWheels();
-    public static final Compressor compressor = new Compressor(0);
+    public static final Compressor compressor = new Compressor(1);
     public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = false;
     public final static boolean debug = false;

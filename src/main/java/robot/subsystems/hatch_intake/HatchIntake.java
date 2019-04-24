@@ -20,8 +20,8 @@ import static robot.Robot.elevator;
  */
 public class HatchIntake extends Subsystem {
 
-    private final DoubleSolenoid flower = new DoubleSolenoid(16, Ports.flowerForward, Ports.flowerReverse);
-    private final DoubleSolenoid fangs = new DoubleSolenoid(16, Ports.pusherForward, Ports.pusherReverse);
+    private final DoubleSolenoid flower = new DoubleSolenoid(1, Ports.flowerForward, Ports.flowerReverse);
+    private final DoubleSolenoid fangs = new DoubleSolenoid(1, Ports.pusherForward, Ports.pusherReverse);
 
     public HatchIntake() {
     }
