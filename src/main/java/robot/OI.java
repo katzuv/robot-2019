@@ -133,12 +133,12 @@ public class OI {
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.FORWARD));
 
-        int shiftButton = 4; // (y)
+        int cargoButton = 4; // (y)
         int hatchVisionButton = 8; // Start
         int cargoVisionButton = 7; // Select
 
         povd.whenPressed(
-                new ShiftButton(xbox, shiftButton,
+                new ShiftButton(xbox, cargoButton,
                         new CargoScoring(0, false),
                         new ShiftButton(xbox, cargoVisionButton,
                                 new VisionConditionalCommand(new VisionPlaceCargo(0)),
@@ -148,14 +148,14 @@ public class OI {
         ); //If x is held, go to cargo height, and if not, goes down to zero.
 
         select.whenPressed(new ShiftButton(
-                xbox, shiftButton, new WristAndElevatorCommand(Constants.WRIST_ANGLES.FORWARD.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()),
+                xbox, cargoButton, new WristAndElevatorCommand(Constants.WRIST_ANGLES.FORWARD.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()),
                 null
         ));
 
         povr.whenPressed(
                 new ShiftButton(xbox, hatchVisionButton,
                         new RaiseToHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH),
-                        new ShiftButton(xbox, shiftButton,
+                        new ShiftButton(xbox, cargoButton,
                                 new CargoScoring(1, false),
                                 new ShiftButton(xbox, cargoVisionButton,
                                         new VisionConditionalCommand(new VisionPlaceCargo(1)),
@@ -169,7 +169,7 @@ public class OI {
         povl.whenPressed(
                 new ShiftButton(xbox, hatchVisionButton,
                         new RaiseToHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH),
-                        new ShiftButton(xbox, shiftButton,
+                        new ShiftButton(xbox, cargoButton,
                                 new CargoScoring(2, false),
                                 new ShiftButton(xbox, cargoVisionButton,
                                         new VisionConditionalCommand(new VisionPlaceCargo(2)),
@@ -182,7 +182,7 @@ public class OI {
         povu.whenPressed(
                 new ShiftButton(xbox, hatchVisionButton,
                         new RaiseToHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH_VISION),
-                        new ShiftButton(xbox, shiftButton,
+                        new ShiftButton(xbox, cargoButton,
                                 new CargoScoring(3, false),
                                 new ShiftButton(xbox, cargoVisionButton,
                                         new VisionConditionalCommand(new VisionPlaceCargo(3)),
