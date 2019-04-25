@@ -49,7 +49,7 @@ public class VisionDrive extends Command {
         double visionAngle = angleEntry.getDouble(0);
         double visionDistance = distanceEntry.getDouble(0);
 
-        double speed = Math.min(Constants.VISION_SPEED, velocityByDistance(0, 0.08, targetDistance, visionDistance));
+        double speed = Math.min(Constants.VISION_SPEED, velocityByDistance(0, 0.05, targetDistance, visionDistance));
         double turn = turnPid.getOutput(visionAngle, ANGLE_SETPOINT);
 
         if (visionAngle > 0.8 + ANGLE_SETPOINT) {
