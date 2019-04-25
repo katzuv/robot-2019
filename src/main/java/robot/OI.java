@@ -182,7 +182,7 @@ public class OI {
 
         povu.whenPressed(
                 new ShiftButton(xbox, hatchVisionButton,
-                        new RaiseToHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH_VISION),
+                        new RaiseToHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH),
                         new ShiftButton(xbox, cargoButton,
                                 new CargoScoring(3, false),
                                 new ShiftButton(xbox, cargoVisionButton,

@@ -18,11 +18,7 @@ public class RaiseToHatch extends CommandGroup {
         addSequential(new CommandGroup() {
             {
                 addParallel(new ElevatorCommand(height));
-                if (height == Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH_VISION) {
-                    addParallel(new WristTurn(118));
-                } else {
-                    addParallel(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
-                }
+                addParallel(new WristTurn(robot.subsystems.wrist_control.Constants.WRIST_ANGLES.FORWARD));
             }
         });
     }
