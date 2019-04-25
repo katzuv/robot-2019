@@ -37,6 +37,7 @@ import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.elevator.commands.ResetElevatorHeight;
 import robot.subsystems.hatch_intake.HatchIntake;
+import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
@@ -66,7 +67,7 @@ public class Robot extends TimedRobot {
     public static final Compressor compressor = new Compressor(1);
     public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = false;
-    public final static boolean debug = false;
+    public final static boolean debug = true;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
@@ -162,6 +163,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         elevator.ResetSetpoint();
+        drivetrain.setMotorsToCoast();
         /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
          * to cancel the motion magic that is currently taking place and will still run if you re enable
          */
@@ -254,6 +256,7 @@ public class Robot extends TimedRobot {
             SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
             SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
             SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
+            SmartDashboard.putData(new Flower(false));
         }
     }
 
