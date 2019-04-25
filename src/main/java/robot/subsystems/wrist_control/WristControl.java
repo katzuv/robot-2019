@@ -90,6 +90,7 @@ public class WristControl extends Subsystem {
                 Constants.REVERSE_NORMALLY_CLOSED ? LimitSwitchNormal.NormallyClosed : LimitSwitchNormal.NormallyOpen,
                 Constants.TALON_TIME_OUT);
 
+        wrist.setNeutralMode(NeutralMode.Brake);
 
     }
 

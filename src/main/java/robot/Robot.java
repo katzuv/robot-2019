@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     public static final Compressor compressor = new Compressor(1);
     public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = false;
-    public final static boolean debug = false;
+    public final static boolean debug = true;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
@@ -164,9 +164,11 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Robot A", isRobotA);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setResolution(240, 180);
+        camera.setFPS(20);
         camera.setWhiteBalanceAuto();
         camera.setExposureAuto();
-        camera.setBrightness(30);
+        camera.setBrightness(7);
         camera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
     }
 

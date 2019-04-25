@@ -42,7 +42,7 @@ public class Constants {
     final static boolean IS_MAG_ENCODER_RELATIVE = isRobotA ? true : true;
 
     /* Stall current constants */
-    public static final double DROP_WRIST_ANGLE = 3;
+    public static final double DROP_WRIST_ANGLE = 5;
     public static final double COM_ANGLE = 7.77 + 30; //the angle of the center of mass at the initial angle of the wrist. ~ in robot A the starting angle was calculated.
     static final double PEAK_PERCENT_COMPENSATION = 0.38; //The percent output that is given to the wrist to hold it in place at its peak.
     public static final double ZERO_ANGLE_COMPENSATION = 0.025;

@@ -48,7 +48,7 @@ public class Constants {
     static final int TALON_TIMEOUT_MS = 10; //timeout when configuring the robot, if takes longer an error is raised (1)
     static final int TALON_RUNNING_TIMEOUT_MS = 0; //as seen in the excerpt above, there should be no timeout on the talon in the robot loop.
     //Mechanical heights of the elevator, at its maximum position and semi position(where the elevator splits from one segment to two)
-    static final double ELEVATOR_MAX_HEIGHT = 1.58;
+    static final double ELEVATOR_MAX_HEIGHT = 1.62;
     static final double ELEVATOR_MID_HEIGHT = 0.797;
     /* Nominal Output- The "minimal" or "weakest" motor output allowed if the output is nonzero
      * Peak Output- The "maximal" or "strongest" motor output allowed.
@@ -69,11 +69,11 @@ public class Constants {
      * There are separate heights for hatch, cargo, and cargo backwards.
      */
     public enum ELEVATOR_HEIGHTS {
-        INTAKE_CARGO(0.085),
+        INTAKE_CARGO(0.05),
         LOADING_STATION(0.27),
-        LEVEL1_HATCH(0.3),
-        LEVEL2_HATCH(1),
-        LEVEL3_HATCH(1.575),
+        LEVEL1_HATCH(0.2),
+        LEVEL2_HATCH(0.96),
+        LEVEL3_HATCH(1.61),
         LEVEL3_HATCH_VISION(1.54),
         SHIP_CARGO(0.971),
         LEVEL1_CARGO(0.3),
