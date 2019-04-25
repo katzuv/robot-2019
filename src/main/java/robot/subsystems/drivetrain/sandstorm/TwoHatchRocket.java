@@ -32,6 +32,8 @@ public class TwoHatchRocket extends CommandGroup {
         addSequential(new TurnAngle(174, true));
         addSequential(new DistanceDrive(4), 1.5); //its not what it looks like i swear
         addSequential(new VisionTakeHatch());
+        addSequential(new DistanceDrive(-0.2), 0.5); //move out of the loading station
+        addSequential(new TurnAngle(180,true),0.5);
         addSequential(new TalonFollow(Profiles.loadingStationToFarRocketLeft, Profiles.loadingStationToFarRocketRight));
         addSequential(new VisionPlaceHatch(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
     }
