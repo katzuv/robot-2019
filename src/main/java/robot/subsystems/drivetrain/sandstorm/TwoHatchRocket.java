@@ -13,6 +13,8 @@ import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.commands.WristTurn;
 
+import static robot.Robot.drivetrain;
+
 /**
  *
  */
@@ -36,5 +38,10 @@ public class TwoHatchRocket extends CommandGroup {
         addSequential(new TurnAngle(180,true),0.5);
         addSequential(new TalonFollow(Profiles.loadingStationToFarRocketLeft, Profiles.loadingStationToFarRocketRight));
         addSequential(new VisionPlaceHatch(Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH));
+    }
+
+    @Override
+    public void interrupted(){
+        drivetrain.setMotorsToCoast();
     }
 }
