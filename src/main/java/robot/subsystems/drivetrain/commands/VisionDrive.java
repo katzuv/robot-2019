@@ -52,9 +52,9 @@ public class VisionDrive extends Command {
         double speed = Math.min(Constants.VISION_SPEED, velocityByDistance(0, 0.08, targetDistance, visionDistance));
         double turn = turnPid.getOutput(visionAngle, ANGLE_SETPOINT);
 
-        if (visionAngle > 1 + ANGLE_SETPOINT) {
+        if (visionAngle > 0.8 + ANGLE_SETPOINT) {
             turn -= Constants.MIN_AIM;
-        } else if (visionAngle < -1 + ANGLE_SETPOINT) {
+        } else if (visionAngle < -0.8 + ANGLE_SETPOINT) {
             turn += Constants.MIN_AIM;
         }
 
