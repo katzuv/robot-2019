@@ -15,7 +15,7 @@ import static robot.Robot.isRobotA;
  * Autonomously drive to a vision target.
  */
 public class VelocityVisionDrive extends Command {
-    private double targetDistance = 1.2; //distance from the target to stop
+    private double targetDistance = 1.15; //distance from the target to stop
 
     private double TIMER_DELAY = 0.1;
 
