@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
     public static final Compressor compressor = new Compressor(1);
     public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = false;
-    public final static boolean debug = true;
+    public final static boolean debug = false;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
