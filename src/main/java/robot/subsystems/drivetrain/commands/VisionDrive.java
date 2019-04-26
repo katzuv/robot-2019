@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
+import robot.utilities.Utils;
 
 import static robot.Robot.drivetrain;
 
@@ -37,10 +38,6 @@ public class VisionDrive extends Command {
         this(Constants.HATCH_TARGET_DISTANCE);
     }
 
-    public static double velocityByDistance(double targetSpeed, double acceleration, double startPos, double targetPos) {
-        return Math.sqrt(targetSpeed * targetSpeed + 2 * Math.abs(acceleration) * Math.abs(targetPos - startPos));
-    }
-
     protected void initialize() {
         updateConstants();
     }
@@ -49,7 +46,7 @@ public class VisionDrive extends Command {
         double visionAngle = angleEntry.getDouble(0);
         double visionDistance = distanceEntry.getDouble(0);
 
-        double speed = Math.min(Constants.VISION_SPEED, velocityByDistance(0, 0.05, targetDistance, visionDistance));
+        double speed = Math.min(Constants.VISION_SPEED, Utils.velocityByDistance(0, 0.05, targetDistance, visionDistance));
         double turn = turnPid.getOutput(visionAngle, ANGLE_SETPOINT);
 
         if (visionAngle > 0.8 + ANGLE_SETPOINT) {

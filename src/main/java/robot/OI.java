@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.command_groups.*;
 import robot.subsystems.drivetrain.commands.VelocityVisionDrive;
-import robot.subsystems.drivetrain.commands.VisionDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
@@ -194,7 +193,7 @@ public class OI {
         );
 
         trigger.whenPressed(new CancelAll());
-        left_joystick_seven.toggleWhenPressed(new VisionConditionalCommand(new VisionDrive()));
+        left_joystick_seven.toggleWhenPressed(new VisionConditionalCommand(new VelocityVisionDrive()));
         left_joystick_six.toggleWhenPressed(new VisionConditionalCommand(new VisionTakeHatch()));
 
 

@@ -70,6 +70,9 @@ public class Constants {
     public static double CARGO_TARGET_DISTANCE = 1.45;
 
     public static double[] PIDVisionTurn = isRobotA ? new double[]{0.025, 0, 0.017} : new double[]{0.02, 0.0001, 0.01};
+
+    public static double[] PIDAngularVelocity = isRobotA ? new double[]{0.45, 0.0003, 0.1} : new double[]{0.3, 0, 0};
+
     public static double[] PIDVisionForward = isRobotA ? new double[]{0.4, 0.0015, 0.1} : new double[]{0, 0, 0};
     public static double pathAngleKp = isRobotA ? 2.3 : 2;
 

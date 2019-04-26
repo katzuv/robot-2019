@@ -2,7 +2,7 @@ package robot.subsystems.command_groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
-import robot.subsystems.drivetrain.commands.VisionDrive;
+import robot.subsystems.drivetrain.commands.VelocityVisionDrive;
 import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Flower;
@@ -24,7 +24,7 @@ public class VisionTakeHatch extends CommandGroup {
         });
         addSequential(new Flower(true));
         addSequential(new WaitCommand(0.2));
-        addSequential(new VisionDrive(robot.subsystems.drivetrain.Constants.HATCH_TARGET_DISTANCE));
+        addSequential(new VelocityVisionDrive());
         addSequential(new WaitCommand(0.2));
         addSequential(new Flower(false));
 

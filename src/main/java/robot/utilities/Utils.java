@@ -80,4 +80,9 @@ public class Utils {
         return pathSegments;
 
     }
+
+    public static double velocityByDistance(double targetSpeed, double acceleration, double startPos, double targetPos) {
+        return Math.sqrt(targetSpeed * targetSpeed + 2 * Math.abs(acceleration) * Math.abs(targetPos - startPos));
+    }
+
 }
