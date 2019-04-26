@@ -19,6 +19,14 @@ public class Profiles {
     public static BufferedTrajectoryPointStream loadingStationToNearRocketLeft;
     public static BufferedTrajectoryPointStream loadingStationToNearRocketRight;
 
+    //Right cargo ship
+    public static BufferedTrajectoryPointStream toRightCargoLeft;
+    public static BufferedTrajectoryPointStream toRightCargoRight;
+
+    public static BufferedTrajectoryPointStream rightCargoToLoadingLeft;
+    public static BufferedTrajectoryPointStream rightCargoToLoadingRight;
+
+
     static {
         toNearRocketLeft = Drivetrain.loadTrajectoryFromCSV("near_rocket_left.csv");
         toNearRocketRight = Drivetrain.loadTrajectoryFromCSV("near_rocket_right.csv");
@@ -29,10 +37,14 @@ public class Profiles {
         loadingStationToFarRocketLeft = Drivetrain.loadTrajectoryFromCSV("loading_far_rocket_left.csv");
         loadingStationToFarRocketRight = Drivetrain.loadTrajectoryFromCSV("loading_far_rocket_right.csv");
 
-
         loadingStationToNearRocketLeft = Drivetrain.loadTrajectoryFromCSV("loading_to_near_left.csv");
         loadingStationToNearRocketRight = Drivetrain.loadTrajectoryFromCSV("loading_to_near_right.csv");
 
+        toRightCargoLeft = Drivetrain.loadTrajectoryFromCSV("right_cargo_ship_near_left.csv");
+        toRightCargoRight = Drivetrain.loadTrajectoryFromCSV("right_cargo_ship_near_right.csv");
+
+        rightCargoToLoadingLeft = Drivetrain.loadTrajectoryFromCSV("right_cargo_ship_loading_left.csv");
+        rightCargoToLoadingRight = Drivetrain.loadTrajectoryFromCSV("right_cargo_ship_loading_right.csv");
     }
 
 

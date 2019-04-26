@@ -19,21 +19,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import robot.subsystems.climb.Climb;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.pure_pursuit.Path;
-import robot.subsystems.drivetrain.pure_pursuit.PurePursue;
-import robot.subsystems.drivetrain.pure_pursuit.VectorPursuit;
-import robot.subsystems.drivetrain.pure_pursuit.Waypoint;
-import robot.subsystems.drivetrain.ramsete.TalonTest;
-import robot.subsystems.drivetrain.ramsete.TrajectoryTracker;
+import robot.subsystems.drivetrain.sandstorm.RightCargoShip;
 import robot.subsystems.drivetrain.sandstorm.TwoHatchRocket;
-import robot.subsystems.drivetrain.talon_profiling.Profiles;
-import robot.subsystems.drivetrain.talon_profiling.TalonFollow;
-import robot.subsystems.elevator.Constants;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.elevator.commands.ResetElevatorHeight;
 import robot.subsystems.hatch_intake.HatchIntake;
@@ -44,9 +33,7 @@ import robot.subsystems.wrist_control.commands.ResetWristAngle;
 import robot.utilities.MotorIssueDetector;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -72,12 +59,12 @@ public class Robot extends TimedRobot {
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
     public static OI m_oi;
 
-    Command m_autonomousCommand;
-    SendableChooser<Command> m_chooser = new SendableChooser<>();
-
     static {
         NetworkTableInstance.getDefault().setUpdateRate(0.01); //Set update rate to 10ms for vision
     }
+
+    Command m_autonomousCommand;
+    SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     /**
      * Send the match type and number to the "vision" table.
@@ -122,14 +109,13 @@ public class Robot extends TimedRobot {
         m_oi = new OI();
 
         m_chooser.setDefaultOption("Right Rocket", new TwoHatchRocket(true));
+        m_chooser.addOption("Right Cargo Ship", new RightCargoShip());
         m_chooser.addOption("Do nothing", null);
         SmartDashboard.putData("Sandstorm", m_chooser);
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-        camera.setResolution(240, 180);
-        camera.setFPS(20);
         camera.setWhiteBalanceAuto();
         camera.setExposureAuto();
         camera.setBrightness(7);
@@ -148,7 +134,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         addToShuffleboard();
-        if(debug) {
+        if (debug) {
             updateDashboardConstants();
         }
         motorChecker.update();
@@ -242,7 +228,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(150));
         SmartDashboard.putData("reset elevator height", new ResetElevatorHeight());
 
-        if(debug) {
+        if (debug) {
             SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
             SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
             SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
