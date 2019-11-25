@@ -193,8 +193,8 @@ public class OI {
         );
 
         trigger.whenPressed(new CancelAll());
-        left_joystick_seven.toggleWhenPressed(new VisionConditionalCommand(new VelocityVisionDrive()));
-        left_joystick_six.toggleWhenPressed(new VisionConditionalCommand(new VisionTakeHatch()));
+        //left_joystick_seven.toggleWhenPressed(new VisionConditionalCommand(new VelocityVisionDrive()));
+        //left_joystick_six.toggleWhenPressed(new VisionConditionalCommand(new VisionTakeHatch()));
 
 
         /*
