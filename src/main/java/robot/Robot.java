@@ -232,14 +232,6 @@ public class Robot extends TimedRobot {
             SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
             SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
             SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
-            SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
-            SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
-            SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
-            SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
-            SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-            SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());
-            SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
-            SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
             SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
             SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
             SmartDashboard.putData(new Flower(false));

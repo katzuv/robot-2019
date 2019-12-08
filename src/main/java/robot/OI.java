@@ -46,7 +46,7 @@ public class OI {
     /**
      * The Y value area in which the xbox joystick won't make the lift move.
      */
-    public static double XBOX_JOYSTICK_DEAD_BAND = 0;
+    public static double XBOX_JOYSTICK_DEAD_BAND = 0.08;
 
     public static Joystick leftStick = new Joystick(0);
     public static Joystick rightStick = new Joystick(1);
@@ -121,7 +121,7 @@ public class OI {
         RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
 
         //lb.whileHeld(new(Fangs(true,255)); while held fangs command
-        lb.whenPressed(new CargoRubbing(false));
+//        lb.whenPressed(new CargoRubbing(false));
 
         rb.whenPressed(new CommandGroup() {{
             addSequential(new Flower(true));
@@ -271,7 +271,6 @@ public class OI {
     public boolean enableElevator() {
         return xbox.getRawButton(10);
     }
-
 
     public boolean enableWrist() {
         return xbox.getRawButton(9);
