@@ -3,6 +3,7 @@ package robot.subsystems.wrist_control.commands;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.subsystems.wrist_control.Constants;
 
@@ -50,6 +51,7 @@ public class WristTurn extends Command {
     }
 
     // Called just before this Command runs the first time
+    @Override
     protected void initialize() {
         timer.reset();
         timer.start();
@@ -57,12 +59,14 @@ public class WristTurn extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
+    @Override
     protected void execute() {
         wristControl.setWristAngle(angle);
         wristControl.preventOverShoot();
     }
 
     // Make this return true when this Command no longer needs to run execute()
+    @Override
     protected boolean isFinished()
     {
         //If the target is in a range where the wrist should drop itself once reaching it, also allow the command to finish if the wrist is beyond the angle.
@@ -84,13 +88,8 @@ public class WristTurn extends Command {
     }
 
     // Called once after isFinished returns true
+    @Override
     protected void end() {
-        wristControl.setWristSpeed(0);
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-        end();
+        wristControl.setWristAngle(angle);
     }
 }
