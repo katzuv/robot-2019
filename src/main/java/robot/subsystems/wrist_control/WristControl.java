@@ -12,7 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
-import robot.subsystems.wrist_control.commands.JoystickWristTurn;
+import robot.subsystems.wrist_control.commands.JoystickRawWristTurn;
 
 import static robot.Robot.elevator;
 import static robot.Robot.wristControl;

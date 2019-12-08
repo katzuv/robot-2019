@@ -1,7 +1,7 @@
 package robot.subsystems.wrist_control.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import robot.OI;
 import robot.Robot;
 
 import static robot.Robot.wristControl;
@@ -9,33 +9,26 @@ import static robot.Robot.wristControl;
 /**
  *
  */
-public class RawWristTurn extends Command {
-    private double speed;
-    private double timeout;
-    private Timer timer = new Timer();
-    public RawWristTurn(double speed, double timeout) {
+public class JoystickRawWristTurn extends Command {
+    public JoystickRawWristTurn() {
         requires(wristControl);
-        this.speed = speed;
-        this.timeout = timeout;
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        timer.reset();
-        timer.start();
-        wristControl.setWristSpeed(speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        wristControl.setWristSpeed(speed);
+        double yAxis = Robot.m_oi.WristStick(); // invert the input to make up positive and down negative
+        // MAPPING (|dead-band to 1| -> |0 to 1|)
+        yAxis = Math.abs(yAxis) < OI.XBOX_JOYSTICK_DEAD_BAND ? 0 : yAxis;
+        yAxis *= 1 / (1 - OI.XBOX_JOYSTICK_DEAD_BAND);
+        wristControl.setWristSpeed(yAxis*0.4);
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished()
-    {
+    protected boolean isFinished() {
         return false;
     }
 
