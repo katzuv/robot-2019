@@ -30,6 +30,7 @@ import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
+import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.utilities.MotorIssueDetector;
 
 import java.lang.reflect.Field;
@@ -133,11 +134,13 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        compressor.stop();
         addToShuffleboard();
         if (debug) {
             updateDashboardConstants();
         }
         motorChecker.update();
+
         //SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
     }
 
