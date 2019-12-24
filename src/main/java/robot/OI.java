@@ -38,11 +38,11 @@ public class OI {
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
-    public static final double DOWN_SPEED_RATE = 0.05;
+    public static final double DOWN_SPEED_RATE = 0.1;
     /**
      * The rate at which the lift will goes up with the xbox joystick.
      */
-    public static final double UP_SPEED_RATE = 0.05;
+    public static final double UP_SPEED_RATE = 0.13;
     /**
      * The Y value area in which the xbox joystick won't make the lift move.
      */
@@ -132,7 +132,7 @@ public class OI {
         a.whenPressed(new Flower());
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.FORWARD));
-
+        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UNSAFE_HATCHES));
         int cargoButton = 4; // (y)
         int hatchVisionButton = 8; // Start
         int cargoVisionButton = 7; // Select

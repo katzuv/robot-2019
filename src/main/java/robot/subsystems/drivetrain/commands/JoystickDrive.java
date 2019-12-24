@@ -74,8 +74,8 @@ public class JoystickDrive extends Command {
                 }
                 break;
             case 6:
-                leftOutput = curve(leftInput);
-                rightOutput = curve(rightInput);
+                leftOutput = 0.7*curve(leftInput);
+                rightOutput = 0.7*curve(rightInput);
 
                 break;
             default:
