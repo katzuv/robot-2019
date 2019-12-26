@@ -51,6 +51,7 @@ public class Constants {
     public static final Length kDriveTrackWidth = LengthKt.getInch(26);
     public static final double kRobotMomentOfIntertia = 10;
     public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
+    public static final double FORWARD_SPEED_CONSTANT = 0;
     // (8 inches), the encoder sends 226
     // pulses every 360 degree turn
     static final boolean LEFT_MASTER_REVERSED = isRobotA ? false : false;
