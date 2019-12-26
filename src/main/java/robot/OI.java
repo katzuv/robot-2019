@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.command_groups.*;
+import robot.subsystems.drivetrain.commands.JoystickTurn;
 import robot.subsystems.drivetrain.commands.VelocityVisionDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Fangs;
@@ -100,6 +101,7 @@ public class OI {
     public static Button left_joystick_ten = new JoystickButton(leftStick, 10);
     public static Button left_joystick_eleven = new JoystickButton(leftStick, 11);
 
+    public static Button right_joystick_two = new JoystickButton(rightStick, 2);
     public static Button right_joystick_six = new JoystickButton(rightStick, 6);
     public static Button right_joystick_seven = new JoystickButton(rightStick, 7);
     public static Button right_joystick_eight = new JoystickButton(rightStick, 8);
@@ -112,6 +114,10 @@ public class OI {
     public static Button left_joystick_five = new JoystickButton(leftStick, 5);
 
     public OI() {
+
+        left_joystick_two.whileHeld(new JoystickTurn());
+        right_joystick_two.whileHeld(new JoystickTurn());
+
         /*
         Select (7) + POV = reverse cargo
         Y (4) + POV = front cargo
