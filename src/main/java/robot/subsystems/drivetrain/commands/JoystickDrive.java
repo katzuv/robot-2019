@@ -38,9 +38,10 @@ public class JoystickDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if(Math.abs(Robot.m_oi.leftStick.getY()) < 0.1 || Math.abs(Robot.m_oi.rightStick.getY()) < 0.1)
-            drivetrain.setSpeed(robot.subsystems.drivetrain.Constants.FORWARD_SPEED_CONSTANT*Math.signum(Robot.m_oi.leftStick.getZ())
-                    ,robot.subsystems.drivetrain.Constants.FORWARD_SPEED_CONSTANT*Math.signum(Robot.m_oi.leftStick.getZ()));
+        if ((Math.abs(Robot.m_oi.leftStick.getY()) < 0.1 || Math.abs(Robot.m_oi.rightStick.getY()) < 0.1) &&
+                (Math.abs(Robot.m_oi.leftStick.getZ()) > 0.1))
+            drivetrain.setSpeed(robot.subsystems.drivetrain.Constants.FORWARD_SPEED_CONSTANT * Math.signum(Robot.m_oi.leftStick.getZ())
+                    , robot.subsystems.drivetrain.Constants.FORWARD_SPEED_CONSTANT * Math.signum(Robot.m_oi.leftStick.getZ()));
         else {
             // 1: linear
             // 2: bell
