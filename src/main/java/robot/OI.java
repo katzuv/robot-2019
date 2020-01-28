@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import robot.subsystems.command_groups.*;
+import robot.subsystems.drivetrain.commands.JoystickTurn;
 import robot.subsystems.drivetrain.commands.VelocityVisionDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Fangs;
@@ -38,15 +39,15 @@ public class OI {
     /**
      * The rate at which the lift will goes down with the xbox joystick.
      */
-    public static final double DOWN_SPEED_RATE = 0.05;
+    public static final double DOWN_SPEED_RATE = 0.1;
     /**
      * The rate at which the lift will goes up with the xbox joystick.
      */
-    public static final double UP_SPEED_RATE = 0.05;
+    public static final double UP_SPEED_RATE = 0.13;
     /**
      * The Y value area in which the xbox joystick won't make the lift move.
      */
-    public static double XBOX_JOYSTICK_DEAD_BAND = 0;
+    public static double XBOX_JOYSTICK_DEAD_BAND = 0.08;
 
     public static Joystick leftStick = new Joystick(0);
     public static Joystick rightStick = new Joystick(1);
@@ -100,6 +101,7 @@ public class OI {
     public static Button left_joystick_ten = new JoystickButton(leftStick, 10);
     public static Button left_joystick_eleven = new JoystickButton(leftStick, 11);
 
+    public static Button right_joystick_two = new JoystickButton(rightStick, 2);
     public static Button right_joystick_six = new JoystickButton(rightStick, 6);
     public static Button right_joystick_seven = new JoystickButton(rightStick, 7);
     public static Button right_joystick_eight = new JoystickButton(rightStick, 8);
@@ -112,6 +114,10 @@ public class OI {
     public static Button left_joystick_five = new JoystickButton(leftStick, 5);
 
     public OI() {
+
+        left_joystick_two.whileHeld(new JoystickTurn());
+        right_joystick_two.whileHeld(new JoystickTurn());
+
         /*
         Select (7) + POV = reverse cargo
         Y (4) + POV = front cargo
@@ -121,7 +127,7 @@ public class OI {
         RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
 
         //lb.whileHeld(new(Fangs(true,255)); while held fangs command
-        lb.whenPressed(new CargoRubbing(false));
+//        lb.whenPressed(new CargoRubbing(false));
 
         rb.whenPressed(new CommandGroup() {{
             addSequential(new Flower(true));
@@ -132,7 +138,7 @@ public class OI {
         a.whenPressed(new Flower());
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
         x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.FORWARD));
-
+        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UNSAFE_HATCHES));
         int cargoButton = 4; // (y)
         int hatchVisionButton = 8; // Start
         int cargoVisionButton = 7; // Select
@@ -193,8 +199,8 @@ public class OI {
         );
 
         trigger.whenPressed(new CancelAll());
-        left_joystick_seven.toggleWhenPressed(new VisionConditionalCommand(new VelocityVisionDrive()));
-        left_joystick_six.toggleWhenPressed(new VisionConditionalCommand(new VisionTakeHatch()));
+        //left_joystick_seven.toggleWhenPressed(new VisionConditionalCommand(new VelocityVisionDrive()));
+        //left_joystick_six.toggleWhenPressed(new VisionConditionalCommand(new VisionTakeHatch()));
 
 
         /*
@@ -271,7 +277,6 @@ public class OI {
     public boolean enableElevator() {
         return xbox.getRawButton(10);
     }
-
 
     public boolean enableWrist() {
         return xbox.getRawButton(9);

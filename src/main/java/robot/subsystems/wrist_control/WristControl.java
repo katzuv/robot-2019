@@ -12,10 +12,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
-import robot.subsystems.wrist_control.commands.JoystickWristTurn;
+import robot.subsystems.wrist_control.commands.JoystickRawWristTurn;
 
 import static robot.Robot.elevator;
 import static robot.Robot.wristControl;
+import static robot.subsystems.wrist_control.Constants.kF;
 
 /**
  * New wrist subsystem for the 2019 robot 'GENESIS', after the district championships.
@@ -48,7 +49,7 @@ public class WristControl extends Subsystem {
         wrist.config_kP(0, Constants.kP, Constants.TALON_TIME_OUT);
         wrist.config_kI(0, Constants.kI, Constants.TALON_TIME_OUT);
         wrist.config_kD(0, Constants.kD, Constants.TALON_TIME_OUT);
-        wrist.config_kF(0, Constants.kF, Constants.TALON_TIME_OUT);
+        wrist.config_kF(0, kF, Constants.TALON_TIME_OUT);
         wrist.config_IntegralZone(0, Constants.IZone, Constants.TALON_TIME_OUT);
         /*
         status frame period config
@@ -74,7 +75,7 @@ public class WristControl extends Subsystem {
 
         wrist.configVoltageCompSaturation(12.0);
         wrist.enableVoltageCompensation(true);
-
+        wrist.configMotionSCurveStrength(6);
         wrist.configContinuousCurrentLimit(15, Constants.TALON_TIME_OUT);
         wrist.configPeakCurrentLimit(40, Constants.TALON_TIME_OUT);
         wrist.configPeakCurrentDuration(1000, Constants.TALON_TIME_OUT);
@@ -100,9 +101,11 @@ public class WristControl extends Subsystem {
      * @param speed
      */
     public void setWristSpeed(double speed) {
-        if (speed != 0) //in cases where we set speed 0, we usually still want the wrist to hold itself in place.
+        if (speed != 0) {//in cases where we set speed 0, we usually still want the wrist to hold itself in place.
             raw = true;
-        wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
+            wrist.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, stallCurrent());
+        } else
+            setWristAngle(getWristAngle());
     }
 
     /**
@@ -225,7 +228,7 @@ public class WristControl extends Subsystem {
     @Override
     public void initDefaultCommand() {
 
-        setDefaultCommand(new JoystickWristTurn());
+        setDefaultCommand(new JoystickRawWristTurn());
     }
 
     /**
@@ -250,10 +253,11 @@ public class WristControl extends Subsystem {
     public void update() {
         if (!raw) {
             if (dropWrist())
-                wristControl.wrist.set(ControlMode.PercentOutput, 0);
+                wrist.set(ControlMode.PercentOutput, 0);
             else
-                wristControl.wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, wristControl.stallCurrent());
+                wrist.set(ControlMode.MotionMagic, convertAngleToTicks(setPointAngle), DemandType.ArbitraryFeedForward, kF * Math.cos(getWristAngle() + 25));
         }
+        //, DemandType.ArbitraryFeedForward, wristControl.stallCurrent()
     }
 
     public boolean dropWrist() {
@@ -271,19 +275,23 @@ public class WristControl extends Subsystem {
     /**
      * Returns the maximal angle of the wrist. this method is used for when the maximal angle of the wrist changes,
      * for example when the elevator is in its bottom position, and can be used by commands to update their isFinished statement.
+     *
      * @return current maximal angle in degrees.
      */
-    public double getMaximalAngle(){
+    public double getMaximalAngle() {
         //if(Robot.elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
-        if(elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
+        if (elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
             return Constants.WRIST_ANGLES.MAXIMAL.getValue();
         else
             return Constants.WRIST_ANGLES.MAXIMAL_FLOOR.getValue();
 
 
     }
+
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("targetangle", setPointAngle);
+
         update();
     }
 

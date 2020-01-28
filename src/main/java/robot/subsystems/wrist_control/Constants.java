@@ -9,8 +9,8 @@ public class Constants {
     final static double CARGO_IN_VOLTAGE = isRobotA ? 1.2 : 1.2; //TODO: change
     final static double TICKS_PER_DEGREE = isRobotA ? 11.73333333333333333333333 * 4 : 11.73333333333333333333333 * 4; // (reduction=66/16) * (ticks_per_revolution=1024) / 360deg
 
-    final static boolean WRIST_MOTOR_REVERSED = isRobotA ? false : false;
-    final static boolean SENSOR_PHASE = isRobotA ? false : false;
+    final static boolean WRIST_MOTOR_REVERSED = isRobotA ? true : true;
+    final static boolean SENSOR_PHASE = isRobotA ? true : true;
 
     final static boolean SOFT_LIMIT_OVERRIDE = isRobotA ? false : false;
     final static boolean LIMIT_SWITCH_OVERRIDE = isRobotA ? false : false;
@@ -28,12 +28,12 @@ public class Constants {
     public static final int MOTION_MAGIC_ACCELERATION = isRobotA ? 3000 : 3000;
     public static final int CRUISE_VELOCITY  = isRobotA ? 4500 : 4500;
 
-    final static double kP = isRobotA ? 0.9 : 0.9;
-    final static double kD = isRobotA ? 70 : 70;
-    final static double kF = isRobotA ? 0.52 : 0.52;
+    final static double kP = isRobotA ? 0.4 : 0.4;
+    final static double kD = isRobotA ? 0.1 : 0.1;
+    final static double kF = isRobotA ? 0.13 : 0.13;
 
-    final static int IZone = isRobotA ? 200 : 200;
-    final static double kI = isRobotA ? 0.003 : 0.003;
+    final static int IZone = isRobotA ? 0 : 0;
+    final static double kI = isRobotA ? 0 : 0;
 
     final static double PEAK_OUTPUT_FORWARD = isRobotA ? 0.6 : 0.6;
     final static double PEAK_OUTPUT_REVERSE = isRobotA ? -0.6 : -0.6;
@@ -62,7 +62,7 @@ public class Constants {
         INITIAL(0),
         UNSAFE_HATCHES(60),
         UP(90 - COM_ANGLE),
-        FORWARD(150),
+        FORWARD(100),
         SHIP(137),
         SHIP_BACKWARD(0),
         LEVEL_1(106),

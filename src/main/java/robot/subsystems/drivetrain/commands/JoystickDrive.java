@@ -38,57 +38,63 @@ public class JoystickDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        // 1: linear
-        // 2: bell
-        // 3: x^3
-        // 4: e^C(x - 1)
-        int option = 6;
-        final int C = 5;
-        double leftInput = -Robot.m_oi.leftStick.getY();
-        double rightInput = -Robot.m_oi.rightStick.getY();
+        if ((Math.abs(Robot.m_oi.leftStick.getY()) < 0.1 || Math.abs(Robot.m_oi.rightStick.getY()) < 0.1) &&
+                (Math.abs(Robot.m_oi.leftStick.getZ()) > 0.1))
+            drivetrain.setSpeed(robot.subsystems.drivetrain.Constants.FORWARD_SPEED_CONSTANT * Math.signum(Robot.m_oi.leftStick.getZ())
+                    , robot.subsystems.drivetrain.Constants.FORWARD_SPEED_CONSTANT * Math.signum(Robot.m_oi.leftStick.getZ()));
+        else {
+            // 1: linear
+            // 2: bell
+            // 3: x^3
+            // 4: e^C(x - 1)
+            int option = 6;
+            final int C = 5;
+            double leftInput = -Robot.m_oi.leftStick.getY();
+            double rightInput = -Robot.m_oi.rightStick.getY();
 
-        double leftOutput, rightOutput;
-        switch (option) {
-            case 1:
-                leftOutput = leftInput;
-                rightOutput = rightInput;
-                break;
-            case 2:
-                leftOutput = bell(leftInput, C);
-                rightOutput = bell(rightInput, C);
-                break;
-            case 3:
-                leftOutput = Math.pow(leftInput, 3);
-                rightOutput = Math.pow(rightInput, 3);
-                break;
-            case 4:
-                if (leftInput > 0) {
-                    leftOutput = Math.pow(Math.E, C * (leftInput - 1));
-                } else {
-                    leftOutput = -Math.pow(Math.E, C * (-leftInput - 1));
-                }
-                if (rightInput > 0) {
-                    rightOutput = Math.pow(Math.E, C * (rightInput - 1));
-                } else {
-                    rightOutput = -Math.pow(Math.E, C * (-rightInput - 1));
-                }
-                break;
-            case 6:
-                leftOutput = curve(leftInput);
-                rightOutput = curve(rightInput);
+            double leftOutput, rightOutput;
+            switch (option) {
+                case 1:
+                    leftOutput = leftInput;
+                    rightOutput = rightInput;
+                    break;
+                case 2:
+                    leftOutput = bell(leftInput, C);
+                    rightOutput = bell(rightInput, C);
+                    break;
+                case 3:
+                    leftOutput = Math.pow(leftInput, 3);
+                    rightOutput = Math.pow(rightInput, 3);
+                    break;
+                case 4:
+                    if (leftInput > 0) {
+                        leftOutput = Math.pow(Math.E, C * (leftInput - 1));
+                    } else {
+                        leftOutput = -Math.pow(Math.E, C * (-leftInput - 1));
+                    }
+                    if (rightInput > 0) {
+                        rightOutput = Math.pow(Math.E, C * (rightInput - 1));
+                    } else {
+                        rightOutput = -Math.pow(Math.E, C * (-rightInput - 1));
+                    }
+                    break;
+                case 6:
+                    leftOutput = 0.7 * curve(leftInput);
+                    rightOutput = 0.7 * curve(rightInput);
 
-                break;
-            default:
-                throw new IllegalArgumentException("Number must be 1-4");
-        } //TODO: put this in subsystem
-        if (climb.isClimbing()) //maybe also lower speeds when back legs are lowered.
-        {
-            gripperWheels.setGripperSpeed(Math.min(0.9, Math.max(0, rightOutput))); //TODO: not good, no requires
-            drivetrain.setSpeed(rightOutput / Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR + OI.rightStick.getX() * 0.1,
-                    rightOutput / Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR - OI.rightStick.getX() * 0.1);
-        } else {
-            drivetrain.setSpeed(leftOutput, rightOutput);
-            climb.setWheelSpeed((rightOutput + leftOutput) * (0.8 / 2));
+                    break;
+                default:
+                    throw new IllegalArgumentException("Number must be 1-4");
+            } //TODO: put this in subsystem
+            if (climb.isClimbing()) //maybe also lower speeds when back legs are lowered.
+            {
+                gripperWheels.setGripperSpeed(Math.min(0.9, Math.max(0, rightOutput))); //TODO: not good, no requires
+                drivetrain.setSpeed(rightOutput / Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR + OI.rightStick.getX() * 0.1,
+                        rightOutput / Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR - OI.rightStick.getX() * 0.1);
+            } else {
+                drivetrain.setSpeed(leftOutput, rightOutput);
+                climb.setWheelSpeed((rightOutput + leftOutput) * (0.8 / 2));
+            }
         }
     }
 

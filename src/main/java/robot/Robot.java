@@ -30,6 +30,7 @@ import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
+import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.utilities.MotorIssueDetector;
 
 import java.lang.reflect.Field;
@@ -133,11 +134,13 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        compressor.stop();
         addToShuffleboard();
         if (debug) {
             updateDashboardConstants();
         }
         motorChecker.update();
+
         //SmartDashboard.putBoolean("Wrist: prevented reset", wristControl.preventEncoderJumps());
     }
 
@@ -232,14 +235,6 @@ public class Robot extends TimedRobot {
             SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
             SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
             SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
-            SmartDashboard.putNumber("Climb: BL height", climb.getLegBLHeight());
-            SmartDashboard.putNumber("Climb: BR height", climb.getLegBRHeight());
-            SmartDashboard.putNumber("Climb: FL height", climb.getLegFLHeight());
-            SmartDashboard.putNumber("Climb: FR height", climb.getLegFRHeight());
-            SmartDashboard.putBoolean("Climb working", !climb.isCompromised());
-            SmartDashboard.putBoolean("Climb electronical issue", climb.isCompromisedElectronical());
-            SmartDashboard.putBoolean("Is Climbing", climb.isClimbing());
-            SmartDashboard.putBoolean("Wrist: dropped", wristControl.dropWrist());
             SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
             SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
             SmartDashboard.putData(new Flower(false));
