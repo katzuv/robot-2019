@@ -11,7 +11,9 @@ import static robot.Robot.drivetrain;
 /**
  * The methods written here are all part of the Pure pursuit algorithm
  * all instances of the name 'the pure pursuit article' refer to this article by team DAWGMA 1712:
- * https://www.chiefdelphi.com/media/papers/download/5533
+ * https://www.chiefdelphi.com/uploads/default/original/3X/b/e/be0e06de00e07db66f97686505c3f4dde2e332dc.pdf
+ * or this link:
+ * https://www.chiefdelphi.com/t/paper-implementation-of-the-adaptive-pure-pursuit-controller/166552
  */
 public class PurePursue extends Command {
     private Path path; //Command specific path to follow
