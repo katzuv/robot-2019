@@ -210,6 +210,13 @@ public class OI {
         left_joystick_nine.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
         left_joystick_eight.whenPressed(new RiseToHeightEncoders(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
 
+        right_joystick_two.whenPressed(new RiseToHeightNew(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
+        right_joystick_eleven.whenPressed(new RiseToHeightNew(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
+        right_joystick_seven.whenPressed(new MoveFrontLegs(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
+        right_joystick_eight.whenPressed(new BalanceLegs(robot.subsystems.climb.Constants.LEVEL_TWO_LEG_LENGTH));
+        right_joystick_nine.whenPressed(new MoveFrontLegs(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
+        right_joystick_ten.whenPressed(new BalanceLegs(robot.subsystems.climb.Constants.LEVEL_THREE_LEG_LENGTH));
+
         manual_wrist.toggleWhenPressed(new RawWristTurn(0.5190, 1));
 
         left_joystick_four.whenPressed(new ResetWristAngle(0));
