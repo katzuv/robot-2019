@@ -1,8 +1,8 @@
 package robot.subsystems.drivetrain.commands;
 
 import com.stormbots.MiniPID;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
 
@@ -12,21 +12,21 @@ import static robot.Robot.navx;
 /**
  * Rotate the Drivetrain by a given angle.
  */
-public class TurnAngle extends Command {
+public class TurnAngle extends CommandBase {
     private double angle;
     private double setpoint;
     private boolean absolute; //if the angle is relative or absolute
     private MiniPID turnPID = new MiniPID(Constants.TURNING_PID[0], Constants.TURNING_PID[1], Constants.TURNING_PID[2]);
 
     public TurnAngle(double absoluteAngle, boolean isAbsolute) {
-        requires(drivetrain);
+        addRequirements(drivetrain);
         turnPID.setOutputLimits(Constants.TURNING_PEAK, Constants.TURNING_PEAK);
         absolute = isAbsolute;
         angle = absoluteAngle;
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
         if (!absolute)
             this.setpoint = drivetrain.getAngle() + angle;
         else
@@ -39,7 +39,7 @@ public class TurnAngle extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    public void execute() {
         double turnSpeed = turnPID.getOutput(drivetrain.getAngle(), setpoint);
         drivetrain.setVelocity(turnSpeed, -turnSpeed);
         if(Robot.debug) {
@@ -49,7 +49,7 @@ public class TurnAngle extends Command {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return Math.abs(this.setpoint - navx.getAngle()) < 4;
     }
 

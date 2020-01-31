@@ -1,7 +1,7 @@
 package robot.utilities;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  *
@@ -14,8 +14,8 @@ public class CancelAll extends InstantCommand {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
-        Scheduler.getInstance().removeAll();
+    public void initialize() {
+        CommandScheduler.getInstance().cancelAll();
     }
 
 }

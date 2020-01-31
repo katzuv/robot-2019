@@ -1,7 +1,7 @@
 package robot.subsystems.wrist_control.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.Robot;
 
 import static robot.Robot.wristControl;
@@ -9,12 +9,12 @@ import static robot.Robot.wristControl;
 /**
  *
  */
-public class RawWristTurn extends Command {
+public class RawWristTurn extends CommandBase {
     private double speed;
     private double timeout;
     private Timer timer = new Timer();
     public RawWristTurn(double speed, double timeout) {
-        requires(wristControl);
+        addRequirements(wristControl);
         this.speed = speed;
         this.timeout = timeout;
         // Use requires() here to declare subsystem dependencies
@@ -22,19 +22,19 @@ public class RawWristTurn extends Command {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
         timer.reset();
         timer.start();
         wristControl.setWristSpeed(speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    public void execute() {
         wristControl.setWristSpeed(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished()
+    public boolean isFinished()
     {
         return false;
     }

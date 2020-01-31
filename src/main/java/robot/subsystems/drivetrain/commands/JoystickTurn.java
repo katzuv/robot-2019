@@ -1,7 +1,7 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.Robot;
 
 import static robot.Robot.drivetrain;
@@ -10,20 +10,20 @@ import static robot.Robot.m_oi;
 /**
  *
  */
-public class JoystickTurn extends Command {
+public class JoystickTurn extends CommandBase {
 
     public JoystickTurn() {
-        requires(drivetrain);
+        addRequirements(drivetrain);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    public void execute() {
         if (m_oi.left_joystick_two.get())
             drivetrain.setSpeed(m_oi.leftStick.getY(), -m_oi.leftStick.getY());
         else
@@ -31,7 +31,7 @@ public class JoystickTurn extends Command {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 

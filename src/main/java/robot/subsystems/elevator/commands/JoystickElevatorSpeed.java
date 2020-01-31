@@ -1,31 +1,32 @@
 package robot.subsystems.elevator.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.Robot;
 
 /**
  * Control the raw output of the elevator using the joystick.
  */
-public class JoystickElevatorSpeed extends Command {
+public class JoystickElevatorSpeed extends CommandBase {
 
     public JoystickElevatorSpeed() {
-        requires(Robot.elevator);
+        addRequirements(Robot.elevator);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    public void execute() {
         double speed = 1 * Robot.m_oi.ElevatorStick();
         Robot.elevator.setSpeed(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 

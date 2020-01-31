@@ -1,6 +1,6 @@
 package robot.subsystems.wrist_control.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.OI;
 import robot.Robot;
 
@@ -9,17 +9,17 @@ import static robot.Robot.wristControl;
 /**
  *
  */
-public class JoystickRawWristTurn extends Command {
+public class JoystickRawWristTurn extends CommandBase {
     public JoystickRawWristTurn() {
-        requires(wristControl);
+        addRequirements(wristControl);
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    public void execute() {
         double yAxis = Robot.m_oi.WristStick(); // invert the input to make up positive and down negative
         // MAPPING (|dead-band to 1| -> |0 to 1|)
         yAxis = Math.abs(yAxis) < OI.XBOX_JOYSTICK_DEAD_BAND ? 0 : yAxis;
@@ -28,7 +28,7 @@ public class JoystickRawWristTurn extends Command {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 

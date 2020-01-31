@@ -2,8 +2,8 @@ package robot.subsystems.wrist_control.commands;
 
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.Robot;
 import robot.subsystems.wrist_control.Constants;
 
@@ -12,7 +12,7 @@ import static robot.Robot.wristControl;
 /**
  *
  */
-public class WristTurn extends Command {
+public class WristTurn extends CommandBase {
     private double angle;
     private boolean usingTimer;
     private double timeout;
@@ -21,7 +21,7 @@ public class WristTurn extends Command {
         this.angle = angle;
         usingTimer=true;
         this.timeout = Constants.DEFAULT_TIMEOUT;
-        requires(wristControl);
+        addRequirements(wristControl);
     }
 
     /**
@@ -52,7 +52,7 @@ public class WristTurn extends Command {
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
         timer.reset();
         timer.start();
         wristControl.setWristAngle(angle);
@@ -60,14 +60,14 @@ public class WristTurn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         wristControl.setWristAngle(angle);
         wristControl.preventOverShoot();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished()
+    public boolean isFinished()
     {
         //If the target is in a range where the wrist should drop itself once reaching it, also allow the command to finish if the wrist is beyond the angle.
         if(angle > wristControl.getMaximalAngle() - Constants.DROP_WRIST_ANGLE) {
@@ -89,7 +89,7 @@ public class WristTurn extends Command {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         wristControl.setWristAngle(angle);
     }
 }

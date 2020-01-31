@@ -1,6 +1,6 @@
 package robot.subsystems.wrist_control.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.OI;
 import robot.Robot;
 import robot.subsystems.wrist_control.Constants;
@@ -10,16 +10,16 @@ import static robot.Robot.wristControl;
 /**
  *
  */
-public class JoystickWristTurn extends Command {
+public class JoystickWristTurn extends CommandBase {
     public JoystickWristTurn() {
-        requires(wristControl);
+        addRequirements(wristControl);
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
     }
 
-    protected void execute() {
+    public void execute() {
         double yAxis = Robot.m_oi.WristStick(); // invert the input to make up positive and down negative
         if (!Robot.m_oi.enableWrist())
             return;
@@ -36,7 +36,7 @@ public class JoystickWristTurn extends Command {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    public boolean isFinished(boolean interrupted) {
         return false;
     }
 

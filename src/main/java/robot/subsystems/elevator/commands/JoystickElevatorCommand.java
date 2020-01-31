@@ -1,27 +1,27 @@
 package robot.subsystems.elevator.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.OI;
 import robot.Robot;
 import robot.subsystems.elevator.Elevator;
 /**
  *this command is used to move the elevator with the joystick instead of set heights
  */
-public class JoystickElevatorCommand extends Command {
+public class JoystickElevatorCommand extends CommandBase {
 
     private Elevator elevator = Robot.elevator;
 
 
     public JoystickElevatorCommand() {
-        requires(elevator);
+        addRequirements(elevator);
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    public void execute() {
         double yAxis = Robot.m_oi.ElevatorStick(); // invert the input to make up positive and down negative
         if (!Robot.m_oi.enableElevator())
             return;
@@ -38,7 +38,7 @@ public class JoystickElevatorCommand extends Command {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 

@@ -3,7 +3,7 @@ package robot.subsystems.drivetrain.commands;
 import com.stormbots.MiniPID;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
 import robot.utilities.Utils;
@@ -13,7 +13,7 @@ import static robot.Robot.drivetrain;
 /**
  * Autonomously drive to a vision target.
  */
-public class VisionDrive extends Command {
+public class VisionDrive extends CommandBase {
     /*
             For now have all the constants here for testing, when done move to constants file
          */
@@ -31,18 +31,18 @@ public class VisionDrive extends Command {
     public VisionDrive(double targetDistance) {
         turnPid.setOutputLimits(-0.5, 0.5);
         this.targetDistance = targetDistance;
-        requires(drivetrain);
+        addRequirements(drivetrain);
     }
 
     public VisionDrive() {
         this(Constants.HATCH_TARGET_DISTANCE);
     }
 
-    protected void initialize() {
+    public void initialize() {
         updateConstants();
     }
 
-    protected void execute() {
+    public void execute() {
         double visionAngle = angleEntry.getDouble(0);
         double visionDistance = distanceEntry.getDouble(0);
 
@@ -60,7 +60,7 @@ public class VisionDrive extends Command {
         }
     }
 
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return (!seenEntry.getBoolean(false) && timeout.get() > TIMER_DELAY) || distanceEntry.getDouble(0) < targetDistance;
     }
 

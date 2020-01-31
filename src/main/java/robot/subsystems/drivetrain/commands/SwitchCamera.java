@@ -1,7 +1,7 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import robot.Robot;
 
 /**
@@ -15,7 +15,7 @@ public class SwitchCamera extends InstantCommand {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
         String currentState = streamedCameraEntry.getString("cargo");
         streamedCameraEntry.setString(currentState.equals("cargo") ? "hatch" : "cargo");
     }

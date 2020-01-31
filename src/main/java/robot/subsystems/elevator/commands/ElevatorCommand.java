@@ -1,6 +1,6 @@
 package robot.subsystems.elevator.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.subsystems.elevator.Constants;
 
 import static robot.Robot.elevator; //elevator subsystem
@@ -9,7 +9,7 @@ import static robot.Robot.elevator; //elevator subsystem
 /**
  * Move the elevator to a certain height
  */
-public class ElevatorCommand extends Command {
+public class ElevatorCommand extends CommandBase {
     private double tolerance = Constants.ELEVATOR_TOLERANCE;
     private double height;
 
@@ -19,7 +19,7 @@ public class ElevatorCommand extends Command {
      * @param height height in meters of the elevator
      */
     public ElevatorCommand(double height) {
-        requires(elevator);
+        addRequirements(elevator);
         this.height = height;
     }
 
@@ -33,17 +33,17 @@ public class ElevatorCommand extends Command {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
         elevator.setHeight(height);
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    public void execute() {
         elevator.update();
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return Math.abs(elevator.getHeight() - height) < tolerance;
     }
 

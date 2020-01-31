@@ -1,10 +1,10 @@
 package robot.subsystems.hatch_intake.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.Robot;
 
-public class Fangs extends Command {
+public class Fangs extends CommandBase {
     private final double timeout;
     private Timer timer = new Timer();
     private fangState current;//enum variable that indicates the current mode of the pusher
@@ -15,7 +15,7 @@ public class Fangs extends Command {
      * @param extend if true the pusher will extend and if false it will retract
      */
     public Fangs(boolean extend, double timeout) {
-        requires(Robot.hatchIntake);
+        addRequirements(Robot.hatchIntake);
         if (extend)
             current = fangState.EXTEND_FANGS;
         else
@@ -51,7 +51,7 @@ public class Fangs extends Command {
     }
 
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         Robot.hatchIntake.setFangs(false);
     }
 
@@ -60,12 +60,7 @@ public class Fangs extends Command {
         return timer.get() > timeout;
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-        end();
-    }
+
 
     public enum fangState {
         EXTEND_FANGS,

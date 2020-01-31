@@ -1,6 +1,6 @@
 package robot.subsystems.hatch_intake.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import static robot.Robot.hatchIntake;
 
@@ -16,7 +16,7 @@ public class Flower extends InstantCommand {
      * instead of going to the wanted state
      */
     public Flower() {
-        requires(hatchIntake);
+        addRequirements(hatchIntake);
         current = gripperState.TOGGLE_FLOWER;
 
     }
@@ -27,7 +27,7 @@ public class Flower extends InstantCommand {
      * @param open if true changes the wanted state to open and otherwise sets the wanted state to cloes
      */
     public Flower(boolean open) {
-        requires(hatchIntake);
+        addRequirements(hatchIntake);
         if (open)
             current = gripperState.FLOWER_GRAB;
         else
@@ -55,19 +55,9 @@ public class Flower extends InstantCommand {
     }
 
     @Override
-    protected boolean isFinished() {
-        return true;
+    public void end(boolean interrupted) {
     }
 
-    @Override
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-    }
 
     /**
      * enum to indicate the state of the gripper
