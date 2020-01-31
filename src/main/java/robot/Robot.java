@@ -14,7 +14,10 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,11 +27,9 @@ import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.elevator.commands.ResetElevatorHeight;
 import robot.subsystems.hatch_intake.HatchIntake;
-import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.GripperWheels;
 import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
-import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.utilities.MotorIssueDetector;
 
 import java.lang.reflect.Field;
@@ -49,7 +50,6 @@ public class Robot extends TimedRobot {
     public static final HatchIntake hatchIntake = new HatchIntake();
     public static final WristControl wristControl = new WristControl();
     public static final GripperWheels gripperWheels = new GripperWheels();
-    public static final Compressor compressor = new Compressor(1);
     public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = false;
     public final static boolean debug = false;
@@ -128,7 +128,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        compressor.stop();
         addToShuffleboard();
         if (debug) {
             updateDashboardConstants();
