@@ -10,11 +10,12 @@ package robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.POVButton;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
+
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import robot.subsystems.command_groups.*;
 import robot.subsystems.drivetrain.commands.JoystickTurn;
 import robot.subsystems.drivetrain.commands.VelocityVisionDrive;
@@ -52,7 +53,7 @@ public class OI {
     public static Joystick leftStick = new Joystick(0);
     public static Joystick rightStick = new Joystick(1);
     public static XboxController xbox = new XboxController(2);
-    public static Button a = new JoystickButton(xbox, 1);
+    public static JoystickButton a = new JoystickButton(xbox, 1);
     public static Button b = new JoystickButton(xbox, 2);
     public static Button x = new JoystickButton(xbox, 3);
     public static Button y = new JoystickButton(xbox, 4);
@@ -129,10 +130,10 @@ public class OI {
         //lb.whileHeld(new(Fangs(true,255)); while held fangs command
 //        lb.whenPressed(new CargoRubbing(false));
 
-        rb.whenPressed(new CommandGroup() {{
-            addSequential(new Flower(true));
-            addSequential(new WaitCommand(0.2));
-            addSequential(new Fangs(true, 0.5));
+        rb.whenPressed(new SequentialCommandGroup() {{
+            addCommands((new Flower(true)),
+                    (new WaitCommand(0.2)),
+            (new Fangs(true, 0.5)));
         }});
 
         a.whenPressed(new Flower());
@@ -147,7 +148,7 @@ public class OI {
                 new ShiftButton(xbox, cargoButton,
                         new CargoScoring(0, false),
                         new ShiftButton(xbox, cargoVisionButton,
-                                new VisionConditionalCommand(new VisionPlaceCargo(0)),
+                                null,
                                 new ElevatorCommand(0.04)
                         )
                 )
@@ -164,7 +165,7 @@ public class OI {
                         new ShiftButton(xbox, cargoButton,
                                 new CargoScoring(1, false),
                                 new ShiftButton(xbox, cargoVisionButton,
-                                        new VisionConditionalCommand(new VisionPlaceCargo(1)),
+                                        null,
                                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)
                                 )
                         )
@@ -178,7 +179,7 @@ public class OI {
                         new ShiftButton(xbox, cargoButton,
                                 new CargoScoring(2, false),
                                 new ShiftButton(xbox, cargoVisionButton,
-                                        new VisionConditionalCommand(new VisionPlaceCargo(2)),
+                                        null,
                                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)
                                 )
                         )
@@ -191,7 +192,7 @@ public class OI {
                         new ShiftButton(xbox, cargoButton,
                                 new CargoScoring(3, false),
                                 new ShiftButton(xbox, cargoVisionButton,
-                                        new VisionConditionalCommand(new VisionPlaceCargo(3)),
+                                        null,
                                         new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)
                                 )
                         )
