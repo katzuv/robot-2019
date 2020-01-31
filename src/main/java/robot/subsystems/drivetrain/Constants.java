@@ -1,17 +1,4 @@
 package robot.subsystems.drivetrain;
-
-import com.team254.lib.physics.DCMotorTransmission;
-import com.team254.lib.physics.DifferentialDrive;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,10 +34,7 @@ public class Constants {
     //Model constants
     public static final double kRobotMass = 55;
     public static final double kRobotAngularDrag = 12;
-    public static final Length kDriveWheelRadius = LengthKt.getInch(3);
-    public static final Length kDriveTrackWidth = LengthKt.getInch(26);
     public static final double kRobotMomentOfIntertia = 10;
-    public static final List<TimingConstraint<Pose2dWithCurvature>> constraints = new ArrayList<>();
     public static final double FORWARD_SPEED_CONSTANT = 0;
     // (8 inches), the encoder sends 226
     // pulses every 360 degree turn
@@ -87,29 +71,6 @@ public class Constants {
     public static double kDriveRightKa = 0.2865 / 3.28;
     public static double kDriveRightKs = 0.8486 / 3.28;
 
-    public static DCMotorTransmission leftTransmission = new DCMotorTransmission(
-            1 / kDriveLeftKv,
-            Math.pow(kDriveWheelRadius.getValue(), 2) * kRobotMass / (2.0 * kDriveLeftKa),
-            kDriveLeftKs
-    );
-    public static DCMotorTransmission rightTransmission = new DCMotorTransmission(
-            1 / kDriveRightKv,
-            Math.pow(kDriveWheelRadius.getValue(), 2) * kRobotMass / (2.0 * kDriveRightKa),
-            kDriveRightKs
-    );
-    public static final DifferentialDrive driveModel = new DifferentialDrive(
-            kRobotMass,
-            kRobotMomentOfIntertia,
-            kRobotAngularDrag,
-            kDriveWheelRadius.getValue(),
-            kDriveTrackWidth.getValue() / 2,
-            leftTransmission,
-            rightTransmission
-    );
 
-    static {
-        constraints.add(new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getMeter(ACCELERATION_CONSTRAINT))));
-        constraints.add(new VelocityLimitRegionConstraint(new Rectangle2d(LengthKt.getFeet(RECTANGLE_1), LengthKt.getFeet(RECTANGLE_2), LengthKt.getFeet(RECTANGLE_3), LengthKt.getFeet(RECTANGLE_4)), VelocityKt.getVelocity(LengthKt.getFeet(VELOCITY_CONSTRAINT))));
-    }
 
 }
