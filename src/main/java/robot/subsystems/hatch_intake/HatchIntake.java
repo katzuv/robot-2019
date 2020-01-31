@@ -8,7 +8,7 @@
 package robot.subsystems.hatch_intake;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static robot.Robot.elevator;
 
@@ -18,7 +18,7 @@ import static robot.Robot.elevator;
  *
  * @author paulo
  */
-public class HatchIntake extends Subsystem {
+public class HatchIntake extends SubsystemBase {
 
     private final DoubleSolenoid flower = new DoubleSolenoid(1, Ports.flowerForward, Ports.flowerReverse);
     private final DoubleSolenoid fangs = new DoubleSolenoid(1, Ports.pusherForward, Ports.pusherReverse);
@@ -61,10 +61,7 @@ public class HatchIntake extends Subsystem {
         return fangs.get() == DoubleSolenoid.Value.kForward;
     }
 
-    @Override
-    public void initDefaultCommand() {
-        // There is no default command for the hatches currently
-    }
+
 
     /**
      * This is called whenever the mechanism is in danger.

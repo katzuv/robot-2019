@@ -1,7 +1,7 @@
 package robot.subsystems.wrist_control.commands;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.OI;
 import robot.Robot;
 import robot.subsystems.wrist_control.Constants;
@@ -14,19 +14,19 @@ import static robot.Robot.*;
  *
  * @author Lior
  */
-public class GripperControl extends Command {
+public class GripperControl extends CommandBase {
     private double speed;//speed of the gripper
     private double timeout = 0;
     private boolean useTrigger;
     private GenericHID.Hand hand;
     public GripperControl(double speed){
-        requires(gripperWheels);
+        addRequirements(gripperWheels);
         this.speed = speed;
         this.useTrigger = false;
     }
 
     public GripperControl(double speed, boolean useTrigger, GenericHID.Hand wantedHand){
-        requires(gripperWheels);
+        addRequirements(gripperWheels);
         this.useTrigger = useTrigger;
         this.speed = speed;
         this.hand = wantedHand;
@@ -46,27 +46,23 @@ public class GripperControl extends Command {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    public void initialize() {
 
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-        if(!climb.isClimbing()) {
+    public void execute() {
 
-            if (!(gripperWheels.isCargoInside() && speed < 0)) {
-                if (useTrigger)
-                    gripperWheels.setGripperSpeed(speed * (Constants.TRIGGER_MINIMAL_VALUE + (1 - Constants.TRIGGER_MINIMAL_VALUE) * OI.xbox.getTriggerAxis(hand))); //scale the trigger with its value, starting from the constant starting value, with the maximum speed being the parameter
-                else
-                    gripperWheels.setGripperSpeed(speed);
-            }
+        if (!(gripperWheels.isCargoInside() && speed < 0)) {
+            if (useTrigger)
+                gripperWheels.setGripperSpeed(speed * (Constants.TRIGGER_MINIMAL_VALUE + (1 - Constants.TRIGGER_MINIMAL_VALUE) * OI.xbox.getTriggerAxis(hand))); //scale the trigger with its value, starting from the constant starting value, with the maximum speed being the parameter
+            else
+                gripperWheels.setGripperSpeed(speed);
         }
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        if(climb.isClimbing())
-            return true;
+    public boolean isFinished() {
         if (speed < 0)
             return gripperWheels.isCargoInside() && speed < 0;
         else {

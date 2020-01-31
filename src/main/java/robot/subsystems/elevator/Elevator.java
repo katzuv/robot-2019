@@ -10,9 +10,8 @@ package robot.subsystems.elevator;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import robot.Robot;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
@@ -23,7 +22,7 @@ import static robot.Robot.wristControl;
  *
  * @author paulo
  */
-public class Elevator extends Subsystem {
+public class Elevator extends SubsystemBase {
     
     private final VictorSPX slaveMotor = new VictorSPX(Ports.victorPort);
     private final TalonSRX masterMotor = new TalonSRX(Ports.talonPort);
@@ -84,6 +83,8 @@ public class Elevator extends Subsystem {
 
         masterMotor.configVoltageCompSaturation(12);
         masterMotor.enableVoltageCompensation(true);
+        setDefaultCommand(new JoystickElevatorCommand());
+
     }
 
     /**
@@ -249,10 +250,9 @@ public class Elevator extends Subsystem {
         setHeight(0);
     }
 
-    @Override
+
     public void initDefaultCommand() {
         //setDefaultCommand(new ElevatorCommand(1.2));
-        setDefaultCommand(new JoystickElevatorCommand());
     }
 
     /**

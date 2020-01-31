@@ -9,8 +9,8 @@ package robot.subsystems.wrist_control;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import robot.Robot;
 import robot.subsystems.wrist_control.commands.JoystickRawWristTurn;
 
@@ -23,7 +23,7 @@ import static robot.subsystems.wrist_control.Constants.kF;
  *
  * @author lior
  */
-public class WristControl extends Subsystem {
+public class WristControl extends SubsystemBase {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private double setPointAngle;
     private boolean raw = false;
@@ -223,12 +223,6 @@ public class WristControl extends Subsystem {
     public int getVelocity() {
 
         return wrist.getSelectedSensorVelocity();
-    }
-
-    @Override
-    public void initDefaultCommand() {
-
-        setDefaultCommand(new JoystickRawWristTurn());
     }
 
     /**
