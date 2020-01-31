@@ -10,15 +10,14 @@ package robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import robot.subsystems.command_groups.*;
+import robot.subsystems.command_groups.CargoScoring;
+import robot.subsystems.command_groups.RaiseToHatch;
 import robot.subsystems.drivetrain.commands.JoystickTurn;
-import robot.subsystems.drivetrain.commands.VelocityVisionDrive;
 import robot.subsystems.elevator.commands.ElevatorCommand;
 import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
@@ -26,7 +25,10 @@ import robot.subsystems.wrist_control.Constants;
 import robot.subsystems.wrist_control.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.WristAndElevatorCommand;
 import robot.subsystems.wrist_control.commands.WristTurn;
-import robot.utilities.*;
+import robot.utilities.ButtonCombination;
+import robot.utilities.CancelAll;
+import robot.utilities.ShiftButton;
+import robot.utilities.TriggerButton;
 
 import static robot.subsystems.drivetrain.Constants.SLOW_JOYSTICK_SPEED;
 
@@ -130,11 +132,14 @@ public class OI {
         //lb.whileHeld(new(Fangs(true,255)); while held fangs command
 //        lb.whenPressed(new CargoRubbing(false));
 
-        rb.whenPressed(new SequentialCommandGroup() {{
-            addCommands((new Flower(true)),
-                    (new WaitCommand(0.2)),
-            (new Fangs(true, 0.5)));
-        }});
+        rb.whenPressed(new SequentialCommandGroup() {
+                           {
+                               addCommands((new Flower(true)),
+                                       (new WaitCommand(0.2)),
+                                       (new Fangs(true, 0.5)));
+                           }
+                       }
+        );
 
         a.whenPressed(new Flower());
         b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
