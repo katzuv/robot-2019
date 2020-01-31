@@ -15,14 +15,12 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.climb.Climb;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.eclipse.jetty.util.thread.Scheduler;
 import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.sandstorm.RightCargoShip;
-import robot.subsystems.drivetrain.sandstorm.TwoHatchRocket;
 import robot.subsystems.elevator.Elevator;
 import robot.subsystems.elevator.commands.ResetElevatorHeight;
 import robot.subsystems.hatch_intake.HatchIntake;
@@ -46,7 +44,6 @@ import java.util.Set;
  */
 public class Robot extends TimedRobot {
     public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
-    public static final Climb climb = new Climb();
     public static final Elevator elevator = new Elevator();
     public static final Drivetrain drivetrain = new Drivetrain();
     public static final HatchIntake hatchIntake = new HatchIntake();
@@ -109,10 +106,7 @@ public class Robot extends TimedRobot {
 
         m_oi = new OI();
 
-        m_chooser.setDefaultOption("Right Rocket", new TwoHatchRocket(true));
-        m_chooser.addOption("Right Cargo Ship", new RightCargoShip());
-        m_chooser.addOption("Do nothing", null);
-        SmartDashboard.putData("Sandstorm", m_chooser);
+
 
         SmartDashboard.putBoolean("Robot A", isRobotA);
 
@@ -161,7 +155,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         wristControl.disabledPeriodic();
-        Scheduler.getInstance().run();
+        CommandScheduler.getInstance().run();
         sendMatchInformation();
     }
 
@@ -181,7 +175,7 @@ public class Robot extends TimedRobot {
         resetAll();
         m_autonomousCommand = m_chooser.getSelected();
         if (m_autonomousCommand != null) {
-            m_autonomousCommand.start();
+            m_autonomousCommand.schedule();
         }
 
         drivetrain.setMotorsToBrake();
@@ -192,7 +186,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
+        CommandScheduler.getInstance().run();
     }
 
     @Override
@@ -209,7 +203,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         //updateDashboardConstants();
-        Scheduler.getInstance().run();
+        CommandScheduler.getInstance().run();
     }
 
     /**
@@ -232,12 +226,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("reset elevator height", new ResetElevatorHeight());
 
         if (debug) {
-            SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
             SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
             SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
-            SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
-            SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
-            SmartDashboard.putData(new Flower(false));
         }
     }
 
@@ -251,24 +241,16 @@ public class Robot extends TimedRobot {
         try {
             Field field = Scheduler.class.getField("m_commandTable");
             field.setAccessible(true);
-            Hashtable table = ((Hashtable) field.get(Scheduler.getInstance()));
+            Hashtable table = ((Hashtable) field.get(CommandScheduler.getInstance()));
             Set<Command> commands = table.keySet();
             commands.forEach(c -> System.out.println(c.getName()));
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
     }
-
-    public void printAllCommands() {
-        SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
-        SmartDashboard.putString("Wrist command", wristControl.getCurrentCommandName());
-        SmartDashboard.putString("Cargo wheels command", gripperWheels.getCurrentCommandName());
-    }
-
     public void resetAll() {
         wristControl.resetSensors();
         elevator.resetEncoders();
         navx.reset();
-        drivetrain.resetLocation();
     }
 }
