@@ -81,7 +81,7 @@ public class Elevator extends SubsystemBase {
 
         masterMotor.configVoltageCompSaturation(12);
         masterMotor.enableVoltageCompensation(true);
-        setDefaultCommand(new JoystickElevatorCommand(Robot.m_oi.elevator));
+        setDefaultCommand(new JoystickElevatorCommand(this));
 
     }
 

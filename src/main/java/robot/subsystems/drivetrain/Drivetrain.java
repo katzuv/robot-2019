@@ -104,7 +104,7 @@ public class Drivetrain extends SubsystemBase {
         rightMaster.config_kD(0, Constants.PIDFRight[2], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kF(0, Constants.PIDFRight[3], Constants.TALON_TIMEOUT_MS);
 
-        setDefaultCommand(new JoystickDrive(OI.drivetrain));
+        setDefaultCommand(new JoystickDrive(this));
         //Set the delay between each update of the method
     }
 
