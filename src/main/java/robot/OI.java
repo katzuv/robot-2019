@@ -146,7 +146,7 @@ public class OI {
 
         rb.whenPressed(new SequentialCommandGroup() {
                            {
-                               addCommands((new Flower(true)),
+                               addCommands((new Flower(hatchIntake, true)),
                                        (new WaitCommand(0.2)),
                                        (new Fangs(hatchIntake, true, 0.5)));
                            }

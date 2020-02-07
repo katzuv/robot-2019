@@ -27,8 +27,9 @@ public class Flower extends InstantCommand {
      *
      * @param open if true changes the wanted state to open and otherwise sets the wanted state to cloes
      */
-    public Flower(boolean open) {
+    public Flower(HatchIntake hatchIntake, boolean open) {
         addRequirements(hatchIntake);
+        this.hatchIntake = hatchIntake;
         if (open)
             current = gripperState.FLOWER_GRAB;
         else
