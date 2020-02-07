@@ -9,8 +9,7 @@ package robot.subsystems.hatch_intake;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import static robot.Robot.elevator;
+import robot.Robot;
 
 /**
  * Hatch subsystem for the 2019 robot 'GENESIS'
@@ -30,7 +29,7 @@ public class HatchIntake extends SubsystemBase {
      * a command to set the flower, close it if it is already open and open it if it is already closed
      */
     public void setFlower(boolean open) {
-        if (open && !elevator.isHatchMechanismInDanger())
+        if (open && !Robot.m_oi.elevator.isHatchMechanismInDanger())
             flower.set(DoubleSolenoid.Value.kForward);
         else
             if(!areFangsExtended())
@@ -48,7 +47,7 @@ public class HatchIntake extends SubsystemBase {
      * if true, extend forward
      */
     public void setFangs(boolean extend) {
-        if (extend && !elevator.isHatchMechanismInDanger() && isFlowerOpen())
+        if (extend && !Robot.m_oi.elevator.isHatchMechanismInDanger() && isFlowerOpen())
             fangs.set(DoubleSolenoid.Value.kForward);
         else
             fangs.set(DoubleSolenoid.Value.kReverse);

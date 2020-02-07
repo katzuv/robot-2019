@@ -8,38 +8,24 @@
 package robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
-import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.TrajectoryPoint;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.ghrobotics.lib.localization.Localization;
-import org.ghrobotics.lib.localization.TankEncoderLocalization;
+import robot.OI;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
 import robot.utilities.Point;
 import robot.utilities.Utils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Drivetrain subsystem for the 2019 robot 'GENESIS'
- *
+ * <p>
  * this subsystem holds most of the code for the falcon 5190 kotlin library and its implementation.
  */
 
@@ -57,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
     /**
      * Falcon class. is in charge of the trajectory following, using the constants defined beforehand.
      * Full documentation HERE []
-     *
+     * <p>
      * i actually have no idea what this does, but by feeding it a robot position in the vision class,
      * the trajectory is fed to the falcon dashboard, and to the vision path drive.
      */
@@ -74,8 +60,8 @@ public class Drivetrain extends SubsystemBase {
         leftMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
         rightMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
 
-            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
-            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
+        rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
+        rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
 
         leftSlave1.follow(leftMaster);
         leftSlave2.follow(leftMaster);
@@ -118,10 +104,30 @@ public class Drivetrain extends SubsystemBase {
         rightMaster.config_kD(0, Constants.PIDFRight[2], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kF(0, Constants.PIDFRight[3], Constants.TALON_TIMEOUT_MS);
 
-        setDefaultCommand(new JoystickDrive());
+        setDefaultCommand(new JoystickDrive(OI.drivetrain));
         //Set the delay between each update of the method
     }
 
+    public static BufferedTrajectoryPointStream loadTrajectoryFromCSV(String name) {
+        BufferedTrajectoryPointStream pointStream = new BufferedTrajectoryPointStream();
+        ArrayList<double[]> profile = Utils.readCSVMotionProfileFile(Filesystem.getDeployDirectory() + "/" + name);
+
+        TrajectoryPoint point = new TrajectoryPoint();
+
+        for (int i = 0; i < profile.size(); i++) {
+            point.position = OI.drivetrain.convertRightDistanceToTicks(profile.get(i)[0]);     // meters -> rotations -> ticks
+            point.velocity = OI.drivetrain.convertRightDistanceToTicks(profile.get(i)[1]) / 10.0;     // meters/second -> ticks/sec -> ticks/100ms
+            point.timeDur = 50;
+            point.profileSlotSelect0 = 0;
+
+            point.zeroPos = i == 0;
+            point.isLastPoint = (i + 1) == profile.size();
+
+            pointStream.Write(point);
+        }
+
+        return pointStream;
+    }
 
     /**
      * Set the speed for both sides.
@@ -203,7 +209,6 @@ public class Drivetrain extends SubsystemBase {
         return convertRightTicksToDistance(rightMaster.getSelectedSensorPosition(0));
     }
 
-
     /**
      * Sets all the motors of the drivetrain to a brake neutral mode
      */
@@ -227,7 +232,6 @@ public class Drivetrain extends SubsystemBase {
         rightSlave2.setNeutralMode(NeutralMode.Coast);
         rightSlave1.setNeutralMode(NeutralMode.Coast);
     }
-
 
     /**
      * Convert distance in meters to ticks of the encoder.
@@ -310,49 +314,25 @@ public class Drivetrain extends SubsystemBase {
 //        Constants.TURNING_PEAK = getConstant("Turn peak", Constants.TURNING_PEAK);
 
     }
+
     private double getConstant(String key, double constant) {
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
         return SmartDashboard.getNumber(key, constant);
     }
-
-
 
     @Override
     public void periodic() {
 
     }
 
+    /* Unused as of now */
+
     /**
      * Drive with motion magic to a set position.
-     *
      */
     public void driveDistance(double leftDistance, double rightDistance) {
         leftMaster.set(ControlMode.MotionMagic, convertLeftDistanceToTicks(leftDistance + getLeftDistance()));
         rightMaster.set(ControlMode.MotionMagic, convertRightDistanceToTicks(rightDistance + getRightDistance()));
-    }
-
-    /* Unused as of now */
-
-
-    public static BufferedTrajectoryPointStream loadTrajectoryFromCSV(String name) {
-        BufferedTrajectoryPointStream pointStream = new BufferedTrajectoryPointStream();
-        ArrayList<double[]> profile = Utils.readCSVMotionProfileFile(Filesystem.getDeployDirectory() + "/" + name);
-
-        TrajectoryPoint point = new TrajectoryPoint();
-
-        for (int i = 0; i < profile.size(); i++) {
-            point.position = Robot.drivetrain.convertRightDistanceToTicks(profile.get(i)[0]);     // meters -> rotations -> ticks
-            point.velocity = Robot.drivetrain.convertRightDistanceToTicks(profile.get(i)[1]) / 10.0;     // meters/second -> ticks/sec -> ticks/100ms
-            point.timeDur = 50;
-            point.profileSlotSelect0 = 0;
-
-            point.zeroPos = i == 0;
-            point.isLastPoint = (i + 1) == profile.size();
-
-            pointStream.Write(point);
-        }
-
-        return pointStream;
     }
 
     public void startMotionProfile(BufferedTrajectoryPointStream left, BufferedTrajectoryPointStream right) {
@@ -364,7 +344,7 @@ public class Drivetrain extends SubsystemBase {
         return leftMaster.isMotionProfileFinished() && rightMaster.isMotionProfileFinished();
     }
 
-    public void printMotionProfileBuffer(){
+    public void printMotionProfileBuffer() {
 
     }
 

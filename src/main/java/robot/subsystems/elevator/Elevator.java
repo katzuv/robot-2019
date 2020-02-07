@@ -15,15 +15,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import robot.Robot;
 import robot.subsystems.elevator.commands.JoystickElevatorCommand;
 
-import static robot.Robot.wristControl;
-
 /**
  * Elevator subsystem for the 2019 robot 'GENESIS'
  *
  * @author paulo
  */
 public class Elevator extends SubsystemBase {
-    
+
     private final VictorSPX slaveMotor = new VictorSPX(Ports.victorPort);
     private final TalonSRX masterMotor = new TalonSRX(Ports.talonPort);
     private int setpoint;
@@ -83,7 +81,7 @@ public class Elevator extends SubsystemBase {
 
         masterMotor.configVoltageCompSaturation(12);
         masterMotor.enableVoltageCompensation(true);
-        setDefaultCommand(new JoystickElevatorCommand());
+        setDefaultCommand(new JoystickElevatorCommand(Robot.m_oi.elevator));
 
     }
 
@@ -126,17 +124,17 @@ public class Elevator extends SubsystemBase {
      * Moves the elevator to the current setpoint, assigned in setHeight()
      */
     public void moveElevator() {
-        if(Robot.debug) {
+        if (Robot.debug) {
             SmartDashboard.putNumber("setPoint ", setpoint);
         }
-    if (getHeight() < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT && setpoint < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT) //let the robot go if its below a certain height
+        if (getHeight() < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT && setpoint < Constants.ELEVATOR_HOLD_IN_PLACE_HEIGHT) //let the robot go if its below a certain height
             masterMotor.set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, Constants.FLOOR_FEEDFORWARD);
         else if (atSecondStage())
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.SECOND_STAGE_FEEDFORWARD);
         else
             masterMotor.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Constants.FIRST_STAGE_FEEDFORWARD);
-        if (isHatchMechanismInDanger() && wristControl.getWristAngle() <= robot.subsystems.wrist_control.Constants.WRIST_ANGLES.UNSAFE_HATCHES.getValue())
-            Robot.hatchIntake.emergencyClose();
+        if (isHatchMechanismInDanger() && Robot.m_oi.wristControl.getWristAngle() <= robot.subsystems.wrist_control.Constants.WRIST_ANGLES.UNSAFE_HATCHES.getValue())
+            Robot.m_oi.hatchIntake.emergencyClose();
 
     }
 
@@ -204,11 +202,12 @@ public class Elevator extends SubsystemBase {
 
     /**
      * checks if the elevator is in range of the genesis profile to make sure the hatch system isn't open when in that zone
+     *
      * @return
      */
     public boolean isHatchMechanismInDanger() {
         return ((getHeight() < Constants.UPPER_DANGER_ZONE && convertTicksToHeight(setpoint) > Constants.LOWER_DANGER_ZONE) ||
-                (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE)) && wristControl.getWristAngle() <= robot.subsystems.wrist_control.Constants.WRIST_DANGER_ANGLE;
+                (getHeight() > Constants.LOWER_DANGER_ZONE && convertTicksToHeight(setpoint) < Constants.UPPER_DANGER_ZONE)) && Robot.m_oi.wristControl.getWristAngle() <= robot.subsystems.wrist_control.Constants.WRIST_DANGER_ANGLE;
 
     }
 

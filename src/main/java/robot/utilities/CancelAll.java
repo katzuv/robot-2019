@@ -14,6 +14,7 @@ public class CancelAll extends InstantCommand {
     }
 
     // Called just before this Command runs the first time
+    @Override
     public void initialize() {
         CommandScheduler.getInstance().cancelAll();
     }

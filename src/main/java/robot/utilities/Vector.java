@@ -24,7 +24,6 @@ public class Vector extends Vector2d {
     }
 
 
-
     public Vector subtract(Vector2d vec) {
         return new Vector(x - vec.x, y - vec.y);
     }

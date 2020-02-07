@@ -17,11 +17,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import robot.subsystems.command_groups.CargoScoring;
 import robot.subsystems.command_groups.RaiseToHatch;
+import robot.subsystems.drivetrain.Drivetrain;
 import robot.subsystems.drivetrain.commands.JoystickTurn;
+import robot.subsystems.elevator.Elevator;
 import robot.subsystems.elevator.commands.ElevatorCommand;
+import robot.subsystems.hatch_intake.HatchIntake;
 import robot.subsystems.hatch_intake.commands.Fangs;
 import robot.subsystems.hatch_intake.commands.Flower;
 import robot.subsystems.wrist_control.Constants;
+import robot.subsystems.wrist_control.GripperWheels;
+import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.GripperControl;
 import robot.subsystems.wrist_control.commands.WristAndElevatorCommand;
 import robot.subsystems.wrist_control.commands.WristTurn;
@@ -37,6 +42,13 @@ import static robot.subsystems.drivetrain.Constants.SLOW_JOYSTICK_SPEED;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+
+    public static final Elevator elevator = new Elevator();
+    public static final Drivetrain drivetrain = new Drivetrain();
+    public static final HatchIntake hatchIntake = new HatchIntake();
+    public static final WristControl wristControl = new WristControl();
+    public static final GripperWheels gripperWheels = new GripperWheels();
+
 
     public static final double WRIST_ROTATE_RATE = 20;
     /**
@@ -118,16 +130,16 @@ public class OI {
 
     public OI() {
 
-        left_joystick_two.whileHeld(new JoystickTurn());
-        right_joystick_two.whileHeld(new JoystickTurn());
+        left_joystick_two.whileHeld(new JoystickTurn(drivetrain));
+        right_joystick_two.whileHeld(new JoystickTurn(drivetrain));
 
         /*
         Select (7) + POV = reverse cargo
         Y (4) + POV = front cargo
         Start (8) + POV = Hatch scoring
          */
-        LT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.INTAKE));
-        RT.whileHeld(new GripperControl(Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
+        LT.whileHeld(new GripperControl(gripperWheels, Constants.GRIPPER_SPEED.INTAKE));
+        RT.whileHeld(new GripperControl(gripperWheels, Constants.GRIPPER_SPEED.SHIP, true, GenericHID.Hand.kRight));
 
         //lb.whileHeld(new(Fangs(true,255)); while held fangs command
 //        lb.whenPressed(new CargoRubbing(false));
@@ -136,42 +148,42 @@ public class OI {
                            {
                                addCommands((new Flower(true)),
                                        (new WaitCommand(0.2)),
-                                       (new Fangs(true, 0.5)));
+                                       (new Fangs(hatchIntake, true, 0.5)));
                            }
                        }
         );
 
-        a.whenPressed(new Flower());
-        b.whenPressed(new WristTurn(Constants.WRIST_ANGLES.INITIAL));
-        x.whenPressed(new WristTurn(Constants.WRIST_ANGLES.FORWARD));
-        y.whenPressed(new WristTurn(Constants.WRIST_ANGLES.UNSAFE_HATCHES));
+        a.whenPressed(new Flower(hatchIntake));
+        b.whenPressed(new WristTurn(wristControl, Constants.WRIST_ANGLES.INITIAL));
+        x.whenPressed(new WristTurn(wristControl, Constants.WRIST_ANGLES.FORWARD));
+        y.whenPressed(new WristTurn(wristControl, Constants.WRIST_ANGLES.UNSAFE_HATCHES));
         int cargoButton = 4; // (y)
         int hatchVisionButton = 8; // Start
         int cargoVisionButton = 7; // Select
 
         povd.whenPressed(
                 new ShiftButton(xbox, cargoButton,
-                        new CargoScoring(0, false),
+                        new CargoScoring(wristControl, elevator, 0, false),
                         new ShiftButton(xbox, cargoVisionButton,
                                 null,
-                                new ElevatorCommand(0.04)
+                                new ElevatorCommand(elevator, 0.04)
                         )
                 )
         ); //If x is held, go to cargo height, and if not, goes down to zero.
 
         select.whenPressed(new ShiftButton(
-                xbox, cargoButton, new WristAndElevatorCommand(Constants.WRIST_ANGLES.FORWARD.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()),
+                xbox, cargoButton, new WristAndElevatorCommand(elevator, wristControl, Constants.WRIST_ANGLES.FORWARD.getValue(), robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.INTAKE_CARGO.getLevelHeight()),
                 null
         ));
 
         povr.whenPressed(
                 new ShiftButton(xbox, hatchVisionButton,
-                        new RaiseToHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH),
+                        new RaiseToHatch(elevator, wristControl, robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH),
                         new ShiftButton(xbox, cargoButton,
-                                new CargoScoring(1, false),
+                                new CargoScoring(wristControl, elevator, 1, false),
                                 new ShiftButton(xbox, cargoVisionButton,
                                         null,
-                                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)
+                                        new ElevatorCommand(elevator, robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL1_HATCH)
                                 )
                         )
                 )
@@ -180,12 +192,12 @@ public class OI {
 
         povl.whenPressed(
                 new ShiftButton(xbox, hatchVisionButton,
-                        new RaiseToHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH),
+                        new RaiseToHatch(elevator, wristControl, robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH),
                         new ShiftButton(xbox, cargoButton,
-                                new CargoScoring(2, false),
+                                new CargoScoring(wristControl, elevator, 2, false),
                                 new ShiftButton(xbox, cargoVisionButton,
                                         null,
-                                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)
+                                        new ElevatorCommand(elevator, robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL2_HATCH)
                                 )
                         )
                 )
@@ -193,12 +205,12 @@ public class OI {
 
         povu.whenPressed(
                 new ShiftButton(xbox, hatchVisionButton,
-                        new RaiseToHatch(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH),
+                        new RaiseToHatch(elevator, wristControl, robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH),
                         new ShiftButton(xbox, cargoButton,
-                                new CargoScoring(3, false),
+                                new CargoScoring(wristControl, elevator, 3, false),
                                 new ShiftButton(xbox, cargoVisionButton,
                                         null,
-                                        new ElevatorCommand(robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)
+                                        new ElevatorCommand(elevator, robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS.LEVEL3_HATCH)
                                 )
                         )
                 )

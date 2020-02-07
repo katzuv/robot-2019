@@ -1,12 +1,14 @@
 package robot.subsystems.command_groups;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import robot.subsystems.wrist_control.commands.WristTurn;
+import robot.subsystems.elevator.Elevator;
 import robot.subsystems.elevator.commands.ElevatorCommand;
+import robot.subsystems.wrist_control.WristControl;
+import robot.subsystems.wrist_control.commands.WristTurn;
 
 import static robot.subsystems.elevator.Constants.ELEVATOR_HEIGHTS;
-import static robot.subsystems.wrist_control.Constants.WRIST_ANGLES;
 import static robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
+import static robot.subsystems.wrist_control.Constants.WRIST_ANGLES;
 
 
 /**
@@ -14,12 +16,12 @@ import static robot.subsystems.wrist_control.Constants.GRIPPER_SPEED;
  */
 public class CargoScoring extends ParallelCommandGroup {
 
-    public CargoScoring(int state, boolean isBackward) {
+    public CargoScoring(WristControl wristControl, Elevator elevator, int state, boolean isBackward) {
 
         ELEVATOR_HEIGHTS height = getHeight(state, isBackward);
         WRIST_ANGLES angle = getAngle(state, isBackward);
         GRIPPER_SPEED speed = getSpeed(state, isBackward);
-        addCommands(new WristTurn(angle), new ElevatorCommand(height));
+        addCommands(new WristTurn(wristControl, angle), new ElevatorCommand(elevator, height));
     }
 
 

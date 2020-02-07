@@ -23,12 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.eclipse.jetty.util.thread.Scheduler;
-import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.elevator.Elevator;
 import robot.subsystems.elevator.commands.ResetElevatorHeight;
-import robot.subsystems.hatch_intake.HatchIntake;
-import robot.subsystems.wrist_control.GripperWheels;
-import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
 import robot.utilities.MotorIssueDetector;
 
@@ -45,11 +40,6 @@ import java.util.Set;
  */
 public class Robot extends TimedRobot {
     public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
-    public static final Elevator elevator = new Elevator();
-    public static final Drivetrain drivetrain = new Drivetrain();
-    public static final HatchIntake hatchIntake = new HatchIntake();
-    public static final WristControl wristControl = new WristControl();
-    public static final GripperWheels gripperWheels = new GripperWheels();
     public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = false;
     public final static boolean debug = false;
@@ -107,7 +97,6 @@ public class Robot extends TimedRobot {
         m_oi = new OI();
 
 
-
         SmartDashboard.putBoolean("Robot A", isRobotA);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -144,8 +133,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-        elevator.ResetSetpoint();
-        drivetrain.setMotorsToCoast();
+        OI.elevator.ResetSetpoint();
+        OI.drivetrain.setMotorsToCoast();
         /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
          * to cancel the motion magic that is currently taking place and will still run if you re enable
          */
@@ -153,7 +142,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        wristControl.disabledPeriodic();
+        OI.wristControl.disabledPeriodic();
         CommandScheduler.getInstance().run();
         sendMatchInformation();
     }
@@ -177,7 +166,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.schedule();
         }
 
-        drivetrain.setMotorsToBrake();
+        OI.drivetrain.setMotorsToBrake();
     }
 
     /**
@@ -190,7 +179,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        drivetrain.setMotorsToCoast();
+        OI.drivetrain.setMotorsToCoast();
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
@@ -212,28 +201,26 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
     }
 
-
     public void addToShuffleboard() {
         SmartDashboard.putData(pdp);
-        SmartDashboard.putNumber("Elevator: height - centimeters", elevator.getHeight());
-        SmartDashboard.putNumber("Wrist: wrist angle", wristControl.getWristAngle());
-        SmartDashboard.putBoolean("Flower open", hatchIntake.isFlowerOpen());
+        SmartDashboard.putNumber("Elevator: height - centimeters", OI.elevator.getHeight());
+        SmartDashboard.putNumber("Wrist: wrist angle", OI.wristControl.getWristAngle());
+        SmartDashboard.putBoolean("Flower open", OI.hatchIntake.isFlowerOpen());
 
         SmartDashboard.putData("navx", navx);
-        SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
-        SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(150));
-        SmartDashboard.putData("reset elevator height", new ResetElevatorHeight());
+        SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(OI.wristControl, 0));
+        SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(OI.wristControl, 150));
+        SmartDashboard.putData("reset elevator height", new ResetElevatorHeight(OI.elevator));
 
         if (debug) {
-            SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
-            SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
+            SmartDashboard.putNumber("Wrist: proximity value", OI.gripperWheels.getProximityVoltage());
+            SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", OI.drivetrain.currentLocation.getX(), OI.drivetrain.currentLocation.getY()));
         }
     }
 
     public void updateDashboardConstants() {
-        drivetrain.updateConstants();
-        wristControl.updateConstants();
-
+        OI.drivetrain.updateConstants();
+        OI.wristControl.updateConstants();
     }
 
     public void printRunningCommands() {
@@ -247,9 +234,10 @@ public class Robot extends TimedRobot {
             e.printStackTrace();
         }
     }
+
     public void resetAll() {
-        wristControl.resetSensors();
-        elevator.resetEncoders();
+        OI.wristControl.resetSensors();
+        OI.elevator.resetEncoders();
         navx.reset();
     }
 }

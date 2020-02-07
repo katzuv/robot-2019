@@ -15,6 +15,7 @@ public class SwitchCamera extends InstantCommand {
     }
 
     // Called just before this Command runs the first time
+    @Override
     public void initialize() {
         String currentState = streamedCameraEntry.getString("cargo");
         streamedCameraEntry.setString(currentState.equals("cargo") ? "hatch" : "cargo");

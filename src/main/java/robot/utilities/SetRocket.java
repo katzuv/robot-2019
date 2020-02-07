@@ -17,6 +17,7 @@ public class SetRocket extends InstantCommand {
     }
 
     // Called just before this Command runs the first time
+   @Override
     public void initialize() {
         Robot.visionTable.getEntry("target_type").setString("rocket");
         Robot.visionTable.getEntry("game_piece").setString(hatch ? "hatch" : "cargo");

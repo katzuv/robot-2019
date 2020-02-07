@@ -8,17 +8,18 @@
 package robot.subsystems.drivetrain.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import robot.OI;
 import robot.Robot;
-
-import static robot.Robot.*;
+import robot.subsystems.drivetrain.Drivetrain;
 
 /**
  * Control the Drivetrain via the joysticks.
  */
 public class JoystickDrive extends CommandBase {
-    public JoystickDrive() {
+    private Drivetrain drivetrain;
+
+    public JoystickDrive(Drivetrain drivetrain) {
         addRequirements(drivetrain);
+        this.drivetrain = drivetrain;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -104,7 +105,6 @@ public class JoystickDrive extends CommandBase {
     public void end(boolean interrupted) {
         drivetrain.setSpeed(0, 0);
     }
-
 
 
 }

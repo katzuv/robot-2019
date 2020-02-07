@@ -1,22 +1,23 @@
 package robot.subsystems.hatch_intake.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
-import static robot.Robot.hatchIntake;
+import robot.subsystems.hatch_intake.HatchIntake;
 
 /*
 this command controls the flower on the robot
  */
 public class Flower extends InstantCommand {
 
+    private HatchIntake hatchIntake;
     private gripperState current;//enum variable that indicates the current mode of the flower
 
     /**
      * empty constructor, sets the wanted state to toggle meaning whenever the command is called it will toggle the current state
      * instead of going to the wanted state
      */
-    public Flower() {
+    public Flower(HatchIntake hatchIntake) {
         addRequirements(hatchIntake);
+        this.hatchIntake = hatchIntake;
         current = gripperState.TOGGLE_FLOWER;
 
     }

@@ -6,9 +6,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.Robot;
 import robot.subsystems.drivetrain.Constants;
+import robot.subsystems.drivetrain.Drivetrain;
 import robot.utilities.Utils;
-
-import static robot.Robot.drivetrain;
 
 /**
  * Autonomously drive to a vision target.
@@ -19,6 +18,7 @@ public class VisionDrive extends CommandBase {
          */
     private double targetDistance = 1.2; //distance from the target to stop
 
+    private Drivetrain drivetrain;
     private MiniPID turnPid = new MiniPID(Constants.PIDVisionTurn[0], Constants.PIDVisionTurn[1], Constants.PIDVisionTurn[2]);
     private NetworkTableEntry angleEntry = Robot.visionTable.getEntry("tape_angle");
     private NetworkTableEntry distanceEntry = Robot.visionTable.getEntry("tape_distance");
@@ -28,20 +28,23 @@ public class VisionDrive extends CommandBase {
     private double TIMER_DELAY = 0.1;
     private double ANGLE_SETPOINT = 0;
 
-    public VisionDrive(double targetDistance) {
+    public VisionDrive(Drivetrain drivetrain, double targetDistance) {
         turnPid.setOutputLimits(-0.5, 0.5);
+        this.drivetrain = drivetrain;
         this.targetDistance = targetDistance;
         addRequirements(drivetrain);
     }
 
-    public VisionDrive() {
-        this(Constants.HATCH_TARGET_DISTANCE);
+    public VisionDrive(Drivetrain drivetrain) {
+        this(drivetrain, Constants.HATCH_TARGET_DISTANCE);
     }
 
+    @Override
     public void initialize() {
         updateConstants();
     }
 
+    @Override
     public void execute() {
         double visionAngle = angleEntry.getDouble(0);
         double visionDistance = distanceEntry.getDouble(0);
@@ -60,16 +63,14 @@ public class VisionDrive extends CommandBase {
         }
     }
 
+    @Override
     public boolean isFinished() {
         return (!seenEntry.getBoolean(false) && timeout.get() > TIMER_DELAY) || distanceEntry.getDouble(0) < targetDistance;
     }
 
-    protected void end() {
+    @Override
+    public void end(boolean interrupted) {
         drivetrain.setSpeed(0, 0);
-    }
-
-    protected void interrupted() {
-        end();
     }
 
     public void updateConstants() {
