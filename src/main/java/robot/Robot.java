@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
     public final static boolean debug = false;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
-    public static OI m_oi;
+    public static OI m_oi = new OI();
 
     static {
         NetworkTableInstance.getDefault().setUpdateRate(0.01); //Set update rate to 10ms for vision
@@ -94,10 +94,10 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         resetAll();
 
-        m_oi = new OI();
-
-
         SmartDashboard.putBoolean("Robot A", isRobotA);
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("canShoot");
+        NetworkTableEntry speedValidEntry = table.getEntry("speedValid");
+        speedValidEntry.setBoolean(true);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setWhiteBalanceAuto();
