@@ -1,13 +1,20 @@
 package robot.subsystems.elevator.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import robot.Robot;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import robot.subsystems.elevator.Elevator;
 
 public class ResetElevatorHeight extends InstantCommand {
-    
 
-    protected void initialize() {
-        Robot.elevator.resetEncoders();
+    private Elevator elevator;
+
+    public ResetElevatorHeight(Elevator elevator) {
+        addRequirements(elevator);
+        this.elevator = elevator;
+    }
+
+    @Override
+    public void initialize() {
+        elevator.resetEncoders();
     }
 
 }

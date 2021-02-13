@@ -9,13 +9,10 @@ package robot.subsystems.wrist_control;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import robot.Robot;
-import robot.subsystems.wrist_control.commands.JoystickRawWristTurn;
 
-import static robot.Robot.elevator;
-import static robot.Robot.wristControl;
 import static robot.subsystems.wrist_control.Constants.kF;
 
 /**
@@ -23,7 +20,7 @@ import static robot.subsystems.wrist_control.Constants.kF;
  *
  * @author lior
  */
-public class WristControl extends Subsystem {
+public class WristControl extends SubsystemBase {
     private final TalonSRX wrist = new TalonSRX(Ports.WristMotor);
     private double setPointAngle;
     private boolean raw = false;
@@ -126,10 +123,10 @@ public class WristControl extends Subsystem {
      * @return
      */
     public double stallCurrent() {
-        final double wristAngle = wristControl.getWristAngle(); //for readability
+        final double wristAngle = getWristAngle(); //for readability
         if (dropWrist())
             return 0;
-        double multiplier = Robot.gripperWheels.isCargoInside() ? Constants.CARGO_MULTIPLIER : 1; //TODO: add hatch comp aswell
+        double multiplier = Robot.m_oi.gripperWheels.isCargoInside() ? Constants.CARGO_MULTIPLIER : 1; //TODO: add hatch comp aswell
         return multiplier * (
                 (Constants.PEAK_PERCENT_COMPENSATION - Constants.ZERO_ANGLE_COMPENSATION) * Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle))
                         + Constants.ZERO_ANGLE_COMPENSATION * Math.signum(Math.cos(Math.toRadians(Constants.COM_ANGLE + wristAngle))));
@@ -225,12 +222,6 @@ public class WristControl extends Subsystem {
         return wrist.getSelectedSensorVelocity();
     }
 
-    @Override
-    public void initDefaultCommand() {
-
-        setDefaultCommand(new JoystickRawWristTurn());
-    }
-
     /**
      * Detects if the difference in wrist angle from the last loop is higher than a constant. if so, the encoder jumped.
      *
@@ -265,9 +256,9 @@ public class WristControl extends Subsystem {
 //                setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
 //                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE &&
 //                        setPointAngle > Constants.WRIST_ANGLES.MAXIMAL.getValue() - Constants.DROP_WRIST_ANGLE / 2));
-        return (wristControl.getWristAngle() < Constants.DROP_WRIST_ANGLE &&
+        return (getWristAngle() < Constants.DROP_WRIST_ANGLE &&
                 setPointAngle < Constants.DROP_WRIST_ANGLE / 2) ||
-                (Constants.WRIST_FORWARD_DROP_DISABLED || (wristControl.getWristAngle() > getMaximalAngle() - Constants.DROP_WRIST_ANGLE &&
+                (Constants.WRIST_FORWARD_DROP_DISABLED || (getWristAngle() > getMaximalAngle() - Constants.DROP_WRIST_ANGLE &&
                         setPointAngle > getMaximalAngle() - Constants.DROP_WRIST_ANGLE / 2));
 
     }
@@ -280,7 +271,7 @@ public class WristControl extends Subsystem {
      */
     public double getMaximalAngle() {
         //if(Robot.elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
-        if (elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
+        if (Robot.m_oi.elevator.getHeight() > Constants.ELEVATOR_HEIGHT_ALLOW_MAXIMAL_ANGLE)
             return Constants.WRIST_ANGLES.MAXIMAL.getValue();
         else
             return Constants.WRIST_ANGLES.MAXIMAL_FLOOR.getValue();

@@ -1,22 +1,23 @@
 package robot.subsystems.wrist_control.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-
-import static robot.Robot.wristControl;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import robot.subsystems.wrist_control.WristControl;
 
 /**
  *
  */
 public class ResetWristAngle extends InstantCommand {
+    private WristControl wristControl;
     private double angle;
 
-    public ResetWristAngle(double angle) {
+    public ResetWristAngle(WristControl wristControl, double angle) {
+        addRequirements(wristControl);
         this.angle = angle;
-        setRunWhenDisabled(true);
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    @Override
+    public void initialize() {
         wristControl.setEncoderAngle(angle);
     }
 

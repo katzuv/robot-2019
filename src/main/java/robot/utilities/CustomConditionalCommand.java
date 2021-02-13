@@ -7,8 +7,9 @@
 
 package robot.utilities;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
 
 /**
  * A {@link CustomConditionalCommand} is a {@link Command} that starts one of two commands.
@@ -19,7 +20,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  * </p>
  *
  * <p>
- * A {@link CustomConditionalCommand} adds the proper {@link Command} to the {@link Scheduler} during
+ * A {@link CustomConditionalCommand} adds the proper {@link Command} to the {@link } during
  * {@link CustomConditionalCommand#initialize()} and then {@link CustomConditionalCommand#isFinished()} will
  * return true once that {@link Command} has finished executing.
  * </p>
@@ -30,11 +31,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  * </p>
  *
  * @see Command
- * @see Scheduler
  *
- * Our own copy of ConditionalCommand in order to avoid requiring all subsystems, used for shift button purposes
  */
-public abstract class CustomConditionalCommand extends Command {
+public abstract class CustomConditionalCommand extends CommandBase {
     /**
      * The Command to execute if {@link CustomConditionalCommand#condition()} returns true.
      */
@@ -96,7 +95,7 @@ public abstract class CustomConditionalCommand extends Command {
      * @param onFalse The Command to execute if {@link CustomConditionalCommand#condition()} returns false
      */
     public CustomConditionalCommand(String name, Command onTrue, Command onFalse) {
-        super(name);
+        super();
         m_onTrue = onTrue;
         m_onFalse = onFalse;
     }
@@ -113,7 +112,7 @@ public abstract class CustomConditionalCommand extends Command {
      */
     
     @Override
-    protected void initialize() {
+    public void initialize() {
         if (condition()) {
             m_chosenCommand = m_onTrue;
         } else {
@@ -122,14 +121,14 @@ public abstract class CustomConditionalCommand extends Command {
 
         if (m_chosenCommand != null) {
 
-            m_chosenCommand.start();
+            m_chosenCommand.schedule();
         }
         super.initialize();
     }
 
     @Override
     public synchronized void cancel() {
-        if (m_chosenCommand != null && m_chosenCommand.isRunning()) {
+        if (m_chosenCommand != null && !m_chosenCommand.isFinished()) {
             m_chosenCommand.cancel();
         }
 
@@ -137,20 +136,12 @@ public abstract class CustomConditionalCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         if (m_chosenCommand != null) {
-            return m_chosenCommand.isCompleted();
+            return m_chosenCommand.isFinished();
         } else {
             return true;
         }
     }
 
-    @Override
-    protected void interrupted() {
-        if (m_chosenCommand != null && m_chosenCommand.isRunning()) {
-            m_chosenCommand.cancel();
-        }
-
-        super.interrupted();
-    }
 }

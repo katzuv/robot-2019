@@ -1,8 +1,6 @@
 package robot.subsystems.drivetrain.talon_profiling;
 
 import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
-
-import com.team254.lib.physics.DifferentialDrive;
 import robot.subsystems.drivetrain.Drivetrain;
 
 public class Profiles {

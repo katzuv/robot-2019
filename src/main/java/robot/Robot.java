@@ -14,23 +14,17 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.subsystems.climb.Climb;
-import robot.subsystems.drivetrain.Drivetrain;
-import robot.subsystems.drivetrain.sandstorm.RightCargoShip;
-import robot.subsystems.drivetrain.sandstorm.TwoHatchRocket;
-import robot.subsystems.elevator.Elevator;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.eclipse.jetty.util.thread.Scheduler;
 import robot.subsystems.elevator.commands.ResetElevatorHeight;
-import robot.subsystems.hatch_intake.HatchIntake;
-import robot.subsystems.hatch_intake.commands.Flower;
-import robot.subsystems.wrist_control.GripperWheels;
-import robot.subsystems.wrist_control.WristControl;
 import robot.subsystems.wrist_control.commands.ResetWristAngle;
-import robot.subsystems.wrist_control.commands.WristTurn;
 import robot.utilities.MotorIssueDetector;
 
 import java.lang.reflect.Field;
@@ -46,19 +40,12 @@ import java.util.Set;
  */
 public class Robot extends TimedRobot {
     public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
-    public static final Climb climb = new Climb();
-    public static final Elevator elevator = new Elevator();
-    public static final Drivetrain drivetrain = new Drivetrain();
-    public static final HatchIntake hatchIntake = new HatchIntake();
-    public static final WristControl wristControl = new WristControl();
-    public static final GripperWheels gripperWheels = new GripperWheels();
-    public static final Compressor compressor = new Compressor(1);
     public static final MotorIssueDetector motorChecker = new MotorIssueDetector(pdp);
     public final static boolean isRobotA = false;
     public final static boolean debug = false;
     public static AHRS navx = new AHRS(SPI.Port.kMXP);
     public static NetworkTable visionTable = NetworkTableInstance.getDefault().getTable("vision");
-    public static OI m_oi;
+    public static OI m_oi = new OI();
 
     static {
         NetworkTableInstance.getDefault().setUpdateRate(0.01); //Set update rate to 10ms for vision
@@ -107,14 +94,10 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         resetAll();
 
-        m_oi = new OI();
-
-        m_chooser.setDefaultOption("Right Rocket", new TwoHatchRocket(true));
-        m_chooser.addOption("Right Cargo Ship", new RightCargoShip());
-        m_chooser.addOption("Do nothing", null);
-        SmartDashboard.putData("Sandstorm", m_chooser);
-
         SmartDashboard.putBoolean("Robot A", isRobotA);
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("canShoot");
+        NetworkTableEntry speedValidEntry = table.getEntry("speedValid");
+        speedValidEntry.setBoolean(true);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setWhiteBalanceAuto();
@@ -134,7 +117,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        compressor.stop();
         addToShuffleboard();
         if (debug) {
             updateDashboardConstants();
@@ -151,8 +133,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-        elevator.ResetSetpoint();
-        drivetrain.setMotorsToCoast();
+        OI.elevator.ResetSetpoint();
+        OI.drivetrain.setMotorsToCoast();
         /**TODO: make it so the motor of the wrist has precentoutput 0 or something along those lines
          * to cancel the motion magic that is currently taking place and will still run if you re enable
          */
@@ -160,8 +142,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        wristControl.disabledPeriodic();
-        Scheduler.getInstance().run();
+        OI.wristControl.disabledPeriodic();
+        CommandScheduler.getInstance().run();
         sendMatchInformation();
     }
 
@@ -181,10 +163,10 @@ public class Robot extends TimedRobot {
         resetAll();
         m_autonomousCommand = m_chooser.getSelected();
         if (m_autonomousCommand != null) {
-            m_autonomousCommand.start();
+            m_autonomousCommand.schedule();
         }
 
-        drivetrain.setMotorsToBrake();
+        OI.drivetrain.setMotorsToBrake();
     }
 
     /**
@@ -192,12 +174,12 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
+        CommandScheduler.getInstance().run();
     }
 
     @Override
     public void teleopInit() {
-        drivetrain.setMotorsToCoast();
+        OI.drivetrain.setMotorsToCoast();
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
@@ -209,7 +191,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         //updateDashboardConstants();
-        Scheduler.getInstance().run();
+        CommandScheduler.getInstance().run();
     }
 
     /**
@@ -219,39 +201,33 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
     }
 
-
     public void addToShuffleboard() {
         SmartDashboard.putData(pdp);
-        SmartDashboard.putNumber("Elevator: height - centimeters", elevator.getHeight());
-        SmartDashboard.putNumber("Wrist: wrist angle", wristControl.getWristAngle());
-        SmartDashboard.putBoolean("Flower open", hatchIntake.isFlowerOpen());
+        SmartDashboard.putNumber("Elevator: height - centimeters", OI.elevator.getHeight());
+        SmartDashboard.putNumber("Wrist: wrist angle", OI.wristControl.getWristAngle());
+        SmartDashboard.putBoolean("Flower open", OI.hatchIntake.isFlowerOpen());
 
         SmartDashboard.putData("navx", navx);
-        SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(0));
-        SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(150));
-        SmartDashboard.putData("reset elevator height", new ResetElevatorHeight());
+        SmartDashboard.putData("Reset wrist encoders", new ResetWristAngle(OI.wristControl, 0));
+        SmartDashboard.putData("Reset wrist to 150 degrees", new ResetWristAngle(OI.wristControl, 150));
+        SmartDashboard.putData("reset elevator height", new ResetElevatorHeight(OI.elevator));
 
         if (debug) {
-            SmartDashboard.putBoolean("Climb: isClosed", climb.areAllLegsUp());
-            SmartDashboard.putNumber("Wrist: proximity value", gripperWheels.getProximityVoltage());
-            SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", drivetrain.currentLocation.getX(), drivetrain.currentLocation.getY()));
-            SmartDashboard.putBoolean("Wrist: using joysticks", wristControl.getCurrentCommandName().equals("JoystickWristTurn"));
-            SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
-            SmartDashboard.putData(new Flower(false));
+            SmartDashboard.putNumber("Wrist: proximity value", OI.gripperWheels.getProximityVoltage());
+            SmartDashboard.putString("Drivetrain: location", String.format("%.4f %.4f", OI.drivetrain.currentLocation.getX(), OI.drivetrain.currentLocation.getY()));
         }
     }
 
     public void updateDashboardConstants() {
-        drivetrain.updateConstants();
-        wristControl.updateConstants();
-
+        OI.drivetrain.updateConstants();
+        OI.wristControl.updateConstants();
     }
 
     public void printRunningCommands() {
         try {
             Field field = Scheduler.class.getField("m_commandTable");
             field.setAccessible(true);
-            Hashtable table = ((Hashtable) field.get(Scheduler.getInstance()));
+            Hashtable table = ((Hashtable) field.get(CommandScheduler.getInstance()));
             Set<Command> commands = table.keySet();
             commands.forEach(c -> System.out.println(c.getName()));
         } catch (IllegalAccessException | NoSuchFieldException e) {
@@ -259,16 +235,9 @@ public class Robot extends TimedRobot {
         }
     }
 
-    public void printAllCommands() {
-        SmartDashboard.putString("Drivetrain command", drivetrain.getCurrentCommandName());
-        SmartDashboard.putString("Wrist command", wristControl.getCurrentCommandName());
-        SmartDashboard.putString("Cargo wheels command", gripperWheels.getCurrentCommandName());
-    }
-
     public void resetAll() {
-        wristControl.resetSensors();
-        elevator.resetEncoders();
+        OI.wristControl.resetSensors();
+        OI.elevator.resetEncoders();
         navx.reset();
-        drivetrain.resetLocation();
     }
 }

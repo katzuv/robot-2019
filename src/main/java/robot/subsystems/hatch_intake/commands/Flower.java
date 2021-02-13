@@ -1,22 +1,23 @@
 package robot.subsystems.hatch_intake.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-
-import static robot.Robot.hatchIntake;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import robot.subsystems.hatch_intake.HatchIntake;
 
 /*
 this command controls the flower on the robot
  */
 public class Flower extends InstantCommand {
 
+    private HatchIntake hatchIntake;
     private gripperState current;//enum variable that indicates the current mode of the flower
 
     /**
      * empty constructor, sets the wanted state to toggle meaning whenever the command is called it will toggle the current state
      * instead of going to the wanted state
      */
-    public Flower() {
-        requires(hatchIntake);
+    public Flower(HatchIntake hatchIntake) {
+        addRequirements(hatchIntake);
+        this.hatchIntake = hatchIntake;
         current = gripperState.TOGGLE_FLOWER;
 
     }
@@ -26,8 +27,9 @@ public class Flower extends InstantCommand {
      *
      * @param open if true changes the wanted state to open and otherwise sets the wanted state to cloes
      */
-    public Flower(boolean open) {
-        requires(hatchIntake);
+    public Flower(HatchIntake hatchIntake, boolean open) {
+        addRequirements(hatchIntake);
+        this.hatchIntake = hatchIntake;
         if (open)
             current = gripperState.FLOWER_GRAB;
         else
@@ -55,19 +57,9 @@ public class Flower extends InstantCommand {
     }
 
     @Override
-    protected boolean isFinished() {
-        return true;
+    public void end(boolean interrupted) {
     }
 
-    @Override
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-    }
 
     /**
      * enum to indicate the state of the gripper

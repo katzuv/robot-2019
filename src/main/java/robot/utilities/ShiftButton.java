@@ -1,8 +1,7 @@
 package robot.utilities;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  *

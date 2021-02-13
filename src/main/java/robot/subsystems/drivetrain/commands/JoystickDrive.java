@@ -7,19 +7,19 @@
 
 package robot.subsystems.drivetrain.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import robot.OI;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import robot.Robot;
-import robot.subsystems.climb.Constants;
-
-import static robot.Robot.*;
+import robot.subsystems.drivetrain.Drivetrain;
 
 /**
  * Control the Drivetrain via the joysticks.
  */
-public class JoystickDrive extends Command {
-    public JoystickDrive() {
-        requires(drivetrain);
+public class JoystickDrive extends CommandBase {
+    private Drivetrain drivetrain;
+
+    public JoystickDrive(Drivetrain drivetrain) {
+        addRequirements(drivetrain);
+        this.drivetrain = drivetrain;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -31,13 +31,13 @@ public class JoystickDrive extends Command {
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
 
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         if ((Math.abs(Robot.m_oi.leftStick.getY()) < 0.1 || Math.abs(Robot.m_oi.rightStick.getY()) < 0.1) &&
                 (Math.abs(Robot.m_oi.leftStick.getZ()) > 0.1))
             drivetrain.setSpeed(robot.subsystems.drivetrain.Constants.FORWARD_SPEED_CONSTANT * Math.signum(Robot.m_oi.leftStick.getZ())
@@ -86,15 +86,7 @@ public class JoystickDrive extends Command {
                 default:
                     throw new IllegalArgumentException("Number must be 1-4");
             } //TODO: put this in subsystem
-            if (climb.isClimbing()) //maybe also lower speeds when back legs are lowered.
-            {
-                gripperWheels.setGripperSpeed(Math.min(0.9, Math.max(0, rightOutput))); //TODO: not good, no requires
-                drivetrain.setSpeed(rightOutput / Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR + OI.rightStick.getX() * 0.1,
-                        rightOutput / Constants.DRIVE_CLIMB_DRIVETRAIN_DIVISOR - OI.rightStick.getX() * 0.1);
-            } else {
-                drivetrain.setSpeed(leftOutput, rightOutput);
-                climb.setWheelSpeed((rightOutput + leftOutput) * (0.8 / 2));
-            }
+
         }
     }
 
@@ -104,21 +96,15 @@ public class JoystickDrive extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         drivetrain.setSpeed(0, 0);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-        end();
-    }
 
 }

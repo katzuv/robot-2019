@@ -8,9 +8,8 @@
 package robot.subsystems.hatch_intake;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.command.Subsystem;
-
-import static robot.Robot.elevator;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import robot.Robot;
 
 /**
  * Hatch subsystem for the 2019 robot 'GENESIS'
@@ -18,7 +17,7 @@ import static robot.Robot.elevator;
  *
  * @author paulo
  */
-public class HatchIntake extends Subsystem {
+public class HatchIntake extends SubsystemBase {
 
     private final DoubleSolenoid flower = new DoubleSolenoid(1, Ports.flowerForward, Ports.flowerReverse);
     private final DoubleSolenoid fangs = new DoubleSolenoid(1, Ports.pusherForward, Ports.pusherReverse);
@@ -30,7 +29,7 @@ public class HatchIntake extends Subsystem {
      * a command to set the flower, close it if it is already open and open it if it is already closed
      */
     public void setFlower(boolean open) {
-        if (open && !elevator.isHatchMechanismInDanger())
+        if (open && !Robot.m_oi.elevator.isHatchMechanismInDanger())
             flower.set(DoubleSolenoid.Value.kForward);
         else
             if(!areFangsExtended())
@@ -48,7 +47,7 @@ public class HatchIntake extends Subsystem {
      * if true, extend forward
      */
     public void setFangs(boolean extend) {
-        if (extend && !elevator.isHatchMechanismInDanger() && isFlowerOpen())
+        if (extend && !Robot.m_oi.elevator.isHatchMechanismInDanger() && isFlowerOpen())
             fangs.set(DoubleSolenoid.Value.kForward);
         else
             fangs.set(DoubleSolenoid.Value.kReverse);
@@ -61,10 +60,7 @@ public class HatchIntake extends Subsystem {
         return fangs.get() == DoubleSolenoid.Value.kForward;
     }
 
-    @Override
-    public void initDefaultCommand() {
-        // There is no default command for the hatches currently
-    }
+
 
     /**
      * This is called whenever the mechanism is in danger.

@@ -8,50 +8,28 @@
 package robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
-import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.TrajectoryPoint;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.team254.lib.physics.DifferentialDrive;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.ghrobotics.lib.debug.LiveDashboard;
-import org.ghrobotics.lib.localization.Localization;
-import org.ghrobotics.lib.localization.TankEncoderLocalization;
-import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
-import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import robot.OI;
 import robot.Robot;
 import robot.subsystems.drivetrain.commands.JoystickDrive;
 import robot.utilities.Point;
 import robot.utilities.Utils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Drivetrain subsystem for the 2019 robot 'GENESIS'
- *
+ * <p>
  * this subsystem holds most of the code for the falcon 5190 kotlin library and its implementation.
  */
 
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends SubsystemBase {
     private final TalonSRX leftMaster = new TalonSRX(Ports.leftMaster);
     private final VictorSPX leftSlave1 = new VictorSPX(Ports.leftSlave1);
     private final VictorSPX leftSlave2 = new VictorSPX(Ports.leftSlave2);
@@ -61,30 +39,14 @@ public class Drivetrain extends Subsystem {
 
     public Point currentLocation = new Point(0, 0);
 
-    /**
-     * Falcon class. can be called to read the robots position, it stores the robot angle, location and previous location.
-     * this class can do many things, and for the full list of methods see the documentation HERE []
-     *
-     * some of the methods in this kotlin class:
-     * .reset(location) ~ sets the robot location (location is a kotlin class aswell)
-     * .getRobotPosition() ~ returns a kotlin point, storing all the robots position values.
-     * .setRobotX(),.setRobotY(),.setRobotHeading() ~ update the robots position and rotation.
-     *
-     */
-    public Localization localization = new TankEncoderLocalization(
-            () -> Rotation2dKt.getDegree(getAngle()),
-            () -> LengthKt.getMeter(getLeftDistance()),
-            () -> LengthKt.getMeter(getRightDistance())
-    );
 
     /**
      * Falcon class. is in charge of the trajectory following, using the constants defined beforehand.
      * Full documentation HERE []
-     *
+     * <p>
      * i actually have no idea what this does, but by feeding it a robot position in the vision class,
      * the trajectory is fed to the falcon dashboard, and to the vision path drive.
      */
-    public TrajectoryTracker trajectoryTracker = new RamseteTracker(Constants.kBeta, Constants.kZeta);
 
     public Drivetrain() {
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
@@ -98,8 +60,8 @@ public class Drivetrain extends Subsystem {
         leftMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
         rightMaster.configMotionAcceleration(convertLeftDistanceToTicks(Constants.MOTION_ACCELERATION) / 10);
 
-            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
-            rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
+        rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
+        rightMaster.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
 
         leftSlave1.follow(leftMaster);
         leftSlave2.follow(leftMaster);
@@ -142,22 +104,29 @@ public class Drivetrain extends Subsystem {
         rightMaster.config_kD(0, Constants.PIDFRight[2], Constants.TALON_TIMEOUT_MS);
         rightMaster.config_kF(0, Constants.PIDFRight[3], Constants.TALON_TIMEOUT_MS);
 
-        /**
-         * WPILIB class. makes the localization update run in periodically
-         * documentation for those interested:
-         * http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/Notifier.html
-         */
-        Notifier localizationNotifier = new Notifier(
-                () -> localization.update()
-        );
-
+        setDefaultCommand(new JoystickDrive(this));
         //Set the delay between each update of the method
-        localizationNotifier.startPeriodic(1.0 / 100.0); //TODO: isn't 100Hz very load intensive? most roborio loops run at 50Hz
     }
 
-    @Override
-    public void initDefaultCommand() {
-        setDefaultCommand(new JoystickDrive());
+    public static BufferedTrajectoryPointStream loadTrajectoryFromCSV(String name) {
+        BufferedTrajectoryPointStream pointStream = new BufferedTrajectoryPointStream();
+        ArrayList<double[]> profile = Utils.readCSVMotionProfileFile(Filesystem.getDeployDirectory() + "/" + name);
+
+        TrajectoryPoint point = new TrajectoryPoint();
+
+        for (int i = 0; i < profile.size(); i++) {
+            point.position = OI.drivetrain.convertRightDistanceToTicks(profile.get(i)[0]);     // meters -> rotations -> ticks
+            point.velocity = OI.drivetrain.convertRightDistanceToTicks(profile.get(i)[1]) / 10.0;     // meters/second -> ticks/sec -> ticks/100ms
+            point.timeDur = 50;
+            point.profileSlotSelect0 = 0;
+
+            point.zeroPos = i == 0;
+            point.isLastPoint = (i + 1) == profile.size();
+
+            pointStream.Write(point);
+        }
+
+        return pointStream;
     }
 
     /**
@@ -240,27 +209,6 @@ public class Drivetrain extends Subsystem {
         return convertRightTicksToDistance(rightMaster.getSelectedSensorPosition(0));
     }
 
-    public void resetEncoders() {
-        Pose2d robotLocationBeforeReset = localization.getRobotPosition(); //make sure the robots position doesn't move because of the reset encoders.
-        leftMaster.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
-        rightMaster.setSelectedSensorPosition(0, 0, Constants.TALON_RUNNING_TIMEOUT_MS);
-        localization.reset(robotLocationBeforeReset);
-    }
-
-    public Pose2d getRobotPosition() {
-        return localization.getRobotPosition();
-    }
-
-    public void resetLocation() {
-        localization.reset(new Pose2d(LengthKt.getFeet(6.321), LengthKt.getFeet(9.408), Rotation2dKt.getDegree(0))); //TODO: make this a constant
-        currentLocation.setX(0);
-        currentLocation.setY(0);
-    }
-
-    public void resetLocation(Pose2d pose) {
-        localization.reset(pose);
-    }
-
     /**
      * Sets all the motors of the drivetrain to a brake neutral mode
      */
@@ -284,7 +232,6 @@ public class Drivetrain extends Subsystem {
         rightSlave2.setNeutralMode(NeutralMode.Coast);
         rightSlave1.setNeutralMode(NeutralMode.Coast);
     }
-
 
     /**
      * Convert distance in meters to ticks of the encoder.
@@ -367,102 +314,25 @@ public class Drivetrain extends Subsystem {
 //        Constants.TURNING_PEAK = getConstant("Turn peak", Constants.TURNING_PEAK);
 
     }
+
     private double getConstant(String key, double constant) {
         SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, constant));
         return SmartDashboard.getNumber(key, constant);
     }
 
-    /**
-     * Sends robot position to the falcon dashboard.
-     */
-    private void updateFalconDashboard(){
-        LiveDashboard.INSTANCE.setRobotX(localization.getRobotPosition().getTranslation().getX().getFeet());
-        LiveDashboard.INSTANCE.setRobotY(localization.getRobotPosition().getTranslation().getY().getFeet());
-        LiveDashboard.INSTANCE.setRobotHeading(localization.getRobotPosition().getRotation().getRadian());
-    }
-
-    /**
-     * Sends current path to the falcon dashboard
-     */
-    public void updateLiveDashboard() {
-        LiveDashboard.INSTANCE.setPathX(trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getX().getFeet());
-        LiveDashboard.INSTANCE.setPathY(trajectoryTracker.getReferencePoint().getState().getState().getPose().getTranslation().getY().getFeet());
-        LiveDashboard.INSTANCE.setPathHeading(trajectoryTracker.getReferencePoint().getState().getState().getPose().getRotation().getRadian());
-    }
-
     @Override
     public void periodic() {
-        updateFalconDashboard();
-    }
 
-    /**
-     * Drive with motion magic to a set position.
-     *
-     */
-    public void driveDistance(double leftDistance, double rightDistance) {
-        leftMaster.set(ControlMode.MotionMagic, convertLeftDistanceToTicks(leftDistance + getLeftDistance()));
-        rightMaster.set(ControlMode.MotionMagic, convertRightDistanceToTicks(rightDistance + getRightDistance()));
     }
 
     /* Unused as of now */
 
     /**
-     * Use the trajectory output directly.
-     * @param output
+     * Drive with motion magic to a set position.
      */
-    public void setOutput(TrajectoryTrackerOutput output) {
-        setOutputFromDynamics(output.getDifferentialDriveVelocity(), output.getDifferentialDriveAcceleration());
-    }
-
-    /**
-     * Robot characterization.
-     * @param chassisVelocity
-     * @param chassisAcceleration
-     */
-    public void setOutputFromDynamics(DifferentialDrive.ChassisState chassisVelocity, DifferentialDrive.ChassisState chassisAcceleration) {
-        DifferentialDrive.DriveDynamics dynamics = Constants.driveModel.solveInverseDynamics(chassisVelocity, chassisAcceleration);
-        setOutput(dynamics.getWheelVelocity(), dynamics.getVoltage());
-    }
-
-    /**
-     * Robot characterization. no idea what this does, but it internal calculations based on the robots characteristics
-     * to determine what voltage to give each motor.
-     * @param wheelVelocities
-     * @param wheelVoltages
-     */
-    public void setOutput(DifferentialDrive.WheelState wheelVelocities, DifferentialDrive.WheelState wheelVoltages) {
-        leftMaster.set(
-                ControlMode.Velocity, convertRightDistanceToTicks(wheelVelocities.getLeft() * Constants.driveModel.getWheelRadius()) / 10.0,
-                DemandType.ArbitraryFeedForward,
-                wheelVoltages.getLeft() / 12
-        );
-
-        rightMaster.set(
-                ControlMode.Velocity, convertRightDistanceToTicks(wheelVelocities.getRight() * Constants.driveModel.getWheelRadius()) / 10.0,
-                DemandType.ArbitraryFeedForward,
-                wheelVoltages.getRight() / 12
-        );
-    }
-
-    public static BufferedTrajectoryPointStream loadTrajectoryFromCSV(String name) {
-        BufferedTrajectoryPointStream pointStream = new BufferedTrajectoryPointStream();
-        ArrayList<double[]> profile = Utils.readCSVMotionProfileFile(Filesystem.getDeployDirectory() + "/" + name);
-
-        TrajectoryPoint point = new TrajectoryPoint();
-
-        for (int i = 0; i < profile.size(); i++) {
-            point.position = Robot.drivetrain.convertRightDistanceToTicks(profile.get(i)[0]);     // meters -> rotations -> ticks
-            point.velocity = Robot.drivetrain.convertRightDistanceToTicks(profile.get(i)[1]) / 10.0;     // meters/second -> ticks/sec -> ticks/100ms
-            point.timeDur = 50;
-            point.profileSlotSelect0 = 0;
-
-            point.zeroPos = i == 0;
-            point.isLastPoint = (i + 1) == profile.size();
-
-            pointStream.Write(point);
-        }
-
-        return pointStream;
+    public void driveDistance(double leftDistance, double rightDistance) {
+        leftMaster.set(ControlMode.MotionMagic, convertLeftDistanceToTicks(leftDistance + getLeftDistance()));
+        rightMaster.set(ControlMode.MotionMagic, convertRightDistanceToTicks(rightDistance + getRightDistance()));
     }
 
     public void startMotionProfile(BufferedTrajectoryPointStream left, BufferedTrajectoryPointStream right) {
@@ -474,7 +344,7 @@ public class Drivetrain extends Subsystem {
         return leftMaster.isMotionProfileFinished() && rightMaster.isMotionProfileFinished();
     }
 
-    public void printMotionProfileBuffer(){
+    public void printMotionProfileBuffer() {
 
     }
 
